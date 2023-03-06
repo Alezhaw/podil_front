@@ -28,7 +28,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Chat from "./pages/ChatComponent/Chat";
 
-export const socket = io.connect(`https://back-yipq.onrender.com`);
+export const socket = io.connect(`https://back-nnk5.onrender.com`);
 
 function App() {
   const audioPlayer = useRef(null);

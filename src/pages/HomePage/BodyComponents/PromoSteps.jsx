@@ -6,6 +6,8 @@ import HandshakeIcon from '@mui/icons-material/Handshake';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../../store/reduxHooks';
 import { motion } from 'framer-motion';
+import HomeIcon from '@mui/icons-material/Home';
+import phoneIconSvg from '../../../image/phone.svg';
 
 function PromoSteps() {
     const { user } = useAppSelector((store) => store.user);
@@ -29,6 +31,8 @@ function PromoSteps() {
                 <motion.h3 variants={AnimetionMain} viewport={{ amount: 0.2, once: true }} className="header-inner_title">
                     Как это работает
                 </motion.h3>
+                <img src={phoneIconSvg} width="100px" height="100px" style={{ color: 'red' }} />
+                {/* <HomeIcon style={{ color: 'red', width: '200px', height: '200px' }} /> */}
                 <ul className="list-steps">
                     <motion.li
                         initial={{

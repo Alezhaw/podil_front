@@ -50,4 +50,6 @@ export interface ICitiesKz {
     w_toku: boolean;
     zamkniete: boolean;
     base_stat_6: string;
+    createdAt: string;
+    updatedAt: string;
 }

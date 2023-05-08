@@ -11,4 +11,6 @@ export interface IBaseRu {
     base_sogl_2: number;
     base_sogl_3: number;
     base_comment: string;
+    createdAt: string;
+    updatedAt: string;
 }

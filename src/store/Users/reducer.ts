@@ -11,6 +11,10 @@ import { IWalletSite } from '../../interfaces/wallet';
 import { IAdminChat } from '../../interfaces/adminChat';
 import { IMessageToAdmin } from '../../interfaces/messageToAdmin';
 import { ITelegramUser } from '../../interfaces/telegramUser';
+import { ICitiesRu } from '../../interfaces/citiesRu';
+import { ICitiesKz } from '../../interfaces/citiesKz';
+import { IBaseRu } from '../../interfaces/baseRu';
+import { IBaseKz } from '../../interfaces/baseKz';
 
 export interface IUsersReducer {
     user: IUser | {};
@@ -34,6 +38,10 @@ export interface IUsersReducer {
     adminMessage: IMessageToAdmin[] | [];
     messageToAdmin: IMessageToAdmin[] | [];
     telegramUser: ITelegramUser[] | [];
+    citiesRu: ICitiesRu[] | [];
+    citiesKz: ICitiesKz[] | [];
+    basesRu: IBaseRu[] | [];
+    basesKz: IBaseKz[] | [];
 }
 
 export const INITIAL: IUsersReducer = {
@@ -63,6 +71,10 @@ export const INITIAL: IUsersReducer = {
     adminMessage: [],
     messageToAdmin: [],
     telegramUser: [],
+    citiesRu: [],
+    citiesKz: [],
+    basesRu: [],
+    basesKz: [],
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -109,6 +121,14 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
             return { ...state, messageToAdmin: payload };
         case reducerTypes.GET_TELEGRAM_USER:
             return { ...state, telegramUser: payload };
+        case reducerTypes.GET_CITIES_RU:
+            return { ...state, citiesRu: payload };
+        case reducerTypes.GET_CITIES_KZ:
+            return { ...state, citiesKz: payload };
+        case reducerTypes.GET_BASES_RU:
+            return { ...state, basesRu: payload };
+        case reducerTypes.GET_BASES_KZ:
+            return { ...state, basesKz: payload };
         default:
             return state;
     }

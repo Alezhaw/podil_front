@@ -15,6 +15,8 @@ import { useDispatch } from 'react-redux';
 import { reducerTypes } from '../../store/Users/types';
 import sound from '../../sound/newMessage.mp3';
 import BotAdmin from './SettingBot/BotAdmin';
+import CitiesRu from './PodzialRu/AllCitiesRu';
+import CitiesKz from './PodzialKz/AllCitiesKz';
 
 export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
 
@@ -89,6 +91,12 @@ function AdminPanel() {
                 break;
             case '6':
                 setItem(6);
+                break;
+            case '7':
+                setItem(7);
+                break;
+            case '8':
+                setItem(8);
                 break;
             default:
         }
@@ -186,6 +194,12 @@ function AdminPanel() {
                     <button onClick={(e) => visibleItem(e)} name="6" className={item === 6 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
                         <h4> НАСТРОЙКИ БОТА </h4>
                     </button>
+                    <button onClick={(e) => visibleItem(e)} name="7" className={item === 7 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
+                        <h4> ПОДИЛ РУ </h4>
+                    </button>
+                    <button onClick={(e) => visibleItem(e)} name="8" className={item === 8 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
+                        <h4> ПОДИЛ КЗ </h4>
+                    </button>
                     <button
                         onClick={() => {
                             localStorage.setItem('backroundImg', !statebackground ? ' ' : '');
@@ -242,6 +256,20 @@ function AdminPanel() {
                     {item === 6 ? (
                         <div style={{ display: 'block' }}>
                             <BotAdmin />
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    {item === 7 ? (
+                        <div style={{ display: 'block' }}>
+                            <CitiesRu />
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    {item === 8 ? (
+                        <div style={{ display: 'block' }}>
+                            <CitiesKz />
                         </div>
                     ) : (
                         ''

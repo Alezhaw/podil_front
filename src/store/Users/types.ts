@@ -20,6 +20,10 @@ export const reducerTypes = {
     GET_ADMIN_MESSAGE: 'reducer/GET_ADMIN_MESSAGE',
     GET_MESSAGE_TO_ADMIN: 'reducer/GET_MESSAGE_TO_ADMIN',
     GET_TELEGRAM_USER: 'reducer/GET_TELEGRAM_USER',
+    GET_CITIES_RU: 'reducer/GET_CITIES_RU',
+    GET_CITIES_KZ: 'reducer/GET_CITIES_KZ',
+    GET_BASES_RU: 'reducer/GET_BASES_RU',
+    GET_BASES_KZ: 'reducer/GET_BASES_KZ',
 };
 
 export const sagaTypes = {

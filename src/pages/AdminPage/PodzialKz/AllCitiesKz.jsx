@@ -8,7 +8,6 @@ import PaginationItem from '@mui/material/PaginationItem';
 import { axiosGetAllCitiesKz, axiosDeleteCityKz } from '../../../api/podzialKz';
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
-import { dealStatusMock } from '../../../components/mock/OutputMock';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
 
 function CitiesKz() {

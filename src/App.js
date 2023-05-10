@@ -27,6 +27,8 @@ import sound from './sound/newMessage.mp3';
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Chat from "./pages/ChatComponent/Chat";
+import CityIDRu from "./pages/AdminPage/PodzialRu/CityIDRu";
+import CityIDKz from "./pages/AdminPage/PodzialKz/CityIDKz";
 
 export const socket = io.connect(`https://back-nnk5.onrender.com`);
 
@@ -67,6 +69,8 @@ function App() {
           element={<TransfersToUserID />}
         />
         <Route path="/adminPanel/chat/:email" element={<AdminChat />} />
+        <Route path="/adminPanel/cityRu/:id_for_base" element={<CityIDRu />} />
+        <Route path="/adminPanel/cityKz/:id_for_base" element={<CityIDKz />} />
         <Route path="/deal/:id" element={<Deal />} />
         <Route path="/systemmessages" element={<SystemMessages />} />
         <Route path="/blockMaseges" element={<BlockMaseges />} />

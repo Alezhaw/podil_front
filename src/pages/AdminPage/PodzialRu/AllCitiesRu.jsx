@@ -9,7 +9,7 @@ import { axiosGetAllCitiesRu, axiosDeleteCityRu, axiosCreateCitiesRu } from '../
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
-import CreateCityRu from './CreateCityRu';
+import CreateCityRu from './component/CreateCityRu';
 
 function CitiesRu() {
     const dispatch = useDispatch();

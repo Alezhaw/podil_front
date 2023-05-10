@@ -9,7 +9,7 @@ import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz } from '../
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
-import CreateCityKz from './CreateCityKz';
+import CreateCityKz from './component/CreateCityKz';
 
 function CitiesKz() {
     const dispatch = useDispatch();

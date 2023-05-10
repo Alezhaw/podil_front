@@ -5,10 +5,11 @@ import { reducerTypes } from '../../../store/Users/types';
 import Checkbox from '@mui/material/Checkbox';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import { axiosGetAllCitiesKz, axiosDeleteCityKz } from '../../../api/podzialKz';
+import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz } from '../../../api/podzialKz';
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
+import CloseIcon from '@mui/icons-material/Close';
 
 function CitiesKz() {
     const dispatch = useDispatch();
@@ -25,6 +26,10 @@ function CitiesKz() {
     const [deleteCities, setDeleteCities] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState(100);
     const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+    const [firstTime, setFirstTime] = useState({});
+    const [secondTime, setSecondTime] = useState({});
+    const [thirdTime, setThirdTime] = useState({});
 
     async function getAllCities() {
         const data = await axiosGetAllCitiesKz();
@@ -41,6 +46,26 @@ function CitiesKz() {
             setDeleteCities((prev) => [...prev, id_for_base]);
         } else {
             setDeleteCities((prev) => prev.filter((item) => item !== id_for_base));
+        }
+    }
+
+    function changeCityValues(key, value) {
+        const setCity = [setFirstTime, setSecondTime, setThirdTime];
+        setCity.map((item) => item((prev) => ({ ...prev, [key]: value })));
+    }
+
+    async function createCity(firstTime, secondTime, thirdTime) {
+        const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
+        const result = await axiosCreateCitiesKz(city);
+        if (result) {
+            getAllCities();
+            alert('Sucess');
+            setFirstTime({});
+            setSecondTime({});
+            setThirdTime({});
+            setIsOpen(false);
+        } else {
+            alert('Что-то пошло не так');
         }
     }
 
@@ -89,6 +114,280 @@ function CitiesKz() {
                     <h5 style={{ margin: '0' }}>...</h5> <Checkbox value={filterArbitration} defaultChecked onChange={() => setFilterArbitration((prev) => !prev)} color="error" />
                 </div>
             </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginTop: '40px' }}>
+                <div onClick={() => setIsOpen(true)} style={{ maxWidth: '205px !important' }} className="tabl-flex-admin-button-global2">
+                    Новый зал
+                </div>
+            </div>
+            {isOpen ? (
+                <div onClick={() => setIsOpen(false)} style={{ background: 'rgba(17, 17, 18, 0.95)' }} className="modalStyles">
+                    <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', width: '59%', flexDirection: 'row-reverse' }}>
+                        <CloseIcon style={{ cursor: 'pointer' }} onClick={() => setIsOpen(false)}></CloseIcon>
+                    </div>
+                    <div onClick={(e) => e.stopPropagation()} className="modalContentStyles">
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Первое время</h6>
+                                    <input
+                                        onChange={(e) => setFirstTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.godzina || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Второе время</h6>
+                                    <input
+                                        onChange={(e) => setSecondTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={secondTime?.godzina || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Третье время</h6>
+                                    <input
+                                        onChange={(e) => setThirdTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        s
+                                        required
+                                        value={thirdTime?.godzina || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', width: '300px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Город</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('miasto_lokal', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px', height: '269px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.miasto_lokal || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', width: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>KP</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('projekt', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.projekt || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', width: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Часовой пояс</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('timezone', Number(e.target.value) || null)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="number"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.timezone || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', width: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>ID for base</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('id_for_base', Number(e.target.value) || null)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="number"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.id_for_base || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Лимит 1</h6>
+                                    <input
+                                        onChange={(e) => setFirstTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="number"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.limit || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Лимит 2</h6>
+                                    <input
+                                        onChange={(e) => setSecondTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="number"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={secondTime?.limit || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Лимит 3</h6>
+                                    <input
+                                        onChange={(e) => setThirdTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="number"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        s
+                                        required
+                                        value={thirdTime?.limit || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Dodawanie rekordów</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('dodawanie_rekordow', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.dodawanie_rekordow || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Scenariusze</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('scenariusze', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.scenariusze || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Weryfikacja DKJ</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('weryfikacja_dkj', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        s
+                                        required
+                                        value={firstTime?.weryfikacja_dkj || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Podpinanie scenari.</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('podpinanie_scenariuszy', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.podpinanie_scenariuszy || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>VIP формат</h6>
+                                    <input
+                                        onChange={(e) => changeCityValues('vip_format', e.target.value)}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.vip_format || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Limit regalo 1</h6>
+                                    <input
+                                        onChange={(e) => setFirstTime((prev) => ({ ...prev, present: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={firstTime?.present || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center' }}>Limit regalo 2</h6>
+                                    <input
+                                        onChange={(e) => setSecondTime((prev) => ({ ...prev, present: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        required
+                                        value={secondTime?.present || ''}
+                                    />
+                                </div>
+                                <div style={{ flexDirection: 'column', maxWidth: '110px' }} className="pages-user-block">
+                                    <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Limit regalo 3</h6>
+                                    <input
+                                        onChange={(e) => setThirdTime((prev) => ({ ...prev, present: e.target.value }))}
+                                        className="tabl-flex-admin-user-scores "
+                                        style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
+                                        type="text"
+                                        placeholder=""
+                                        autoComplete="off"
+                                        s
+                                        required
+                                        value={thirdTime?.present || ''}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="tabl-flex-admin-button-global2" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
+                            Создать зал
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                ''
+            )}
 
             <h3 style={{ textAlign: 'center' }}>Города</h3>
 

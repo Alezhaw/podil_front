@@ -30,6 +30,18 @@
     align-items: center;
     font-family: inherit;
 }
+.basesTableCell {
+    border: 1px solid white;
+    padding: 0 10px;
+}
+
+.tableInput {
+    background: none;
+    color: white;
+    border: none;
+    text-align: center;
+}
+
 .adminChats {
     overflow: scroll;
     overflow: overlay;
@@ -120,7 +132,9 @@
     color: rgba(255, 255, 255, 0.879);
 }
 
-.flex-box-2,.flex-box-1,.flex-box-0 {
+.flex-box-2,
+.flex-box-1,
+.flex-box-0 {
     max-width: 850px;
 }
 

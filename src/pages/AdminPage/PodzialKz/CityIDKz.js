@@ -43,7 +43,6 @@ function CityIDKz() {
         const temporaryCities = citiesKz?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
         if (temporaryCities) {
             temporaryCities?.map((item, index) => setCity[index](item))
-            console.log(1, temporaryCities)
         }
         // eslint-disable-next-line
     }, [citiesKz]);

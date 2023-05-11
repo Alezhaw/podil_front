@@ -5,7 +5,7 @@ import { reducerTypes } from '../../../store/Users/types';
 import Checkbox from '@mui/material/Checkbox';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz } from '../../../api/podzialKz';
+import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz, axiosGetAllBasesKz } from '../../../api/podzialKz';
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
@@ -20,7 +20,7 @@ function CitiesKz() {
     const [filterComplete, setFilterComplete] = useState(true);
     const [filterArbitration, setFilterArbitration] = useState(true);
     const [sortId, setSortId] = useState(true);
-    const { citiesKz, user } = useAppSelector((store) => store.user);
+    const { citiesKz, basesKz, user } = useAppSelector((store) => store.user);
     const [cities, setCities] = useState([]);
     const [page, setPage] = useState(0);
     const [deleteCities, setDeleteCities] = useState([]);
@@ -36,6 +36,16 @@ function CitiesKz() {
         if (data) {
             dispatch({
                 type: reducerTypes.GET_CITIES_KZ,
+                payload: data,
+            });
+        }
+    }
+
+    async function getAllBases() {
+        const data = await axiosGetAllBasesKz();
+        if (data) {
+            dispatch({
+                type: reducerTypes.GET_BASES_KZ,
                 payload: data,
             });
         }
@@ -89,7 +99,12 @@ function CitiesKz() {
     }, [citiesKz, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
 
     useEffect(() => {
-        getAllCities();
+        if (!citiesKz[0]) {
+            getAllCities();
+        }
+        if (!basesKz[0]) {
+            getAllBases();
+        }
         // eslint-disable-next-line
     }, [user]);
 

@@ -5,7 +5,7 @@ import { reducerTypes } from '../../../store/Users/types';
 import Checkbox from '@mui/material/Checkbox';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import { axiosGetAllCitiesRu, axiosDeleteCityRu, axiosCreateCitiesRu } from '../../../api/podzialRu';
+import { axiosGetAllCitiesRu, axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetAllBasesRu } from '../../../api/podzialRu';
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
@@ -20,7 +20,7 @@ function CitiesRu() {
     const [filterComplete, setFilterComplete] = useState(true);
     const [filterArbitration, setFilterArbitration] = useState(true);
     const [sortId, setSortId] = useState(true);
-    const { citiesRu, user } = useAppSelector((store) => store.user);
+    const { citiesRu, basesRu, user } = useAppSelector((store) => store.user);
     const [cities, setCities] = useState([]);
     const [page, setPage] = useState(0);
     const [deleteCities, setDeleteCities] = useState([]);
@@ -36,6 +36,16 @@ function CitiesRu() {
         if (data) {
             dispatch({
                 type: reducerTypes.GET_CITIES_RU,
+                payload: data,
+            });
+        }
+    }
+
+    async function getAllBases() {
+        const data = await axiosGetAllBasesRu();
+        if (data) {
+            dispatch({
+                type: reducerTypes.GET_BASES_RU,
                 payload: data,
             });
         }
@@ -89,7 +99,12 @@ function CitiesRu() {
     }, [citiesRu, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
 
     useEffect(() => {
-        getAllCities();
+        if (!citiesRu[0]) {
+            getAllCities();
+        }
+        if (!basesRu[0]) {
+            getAllBases();
+        }
         // eslint-disable-next-line
     }, [user]);
 

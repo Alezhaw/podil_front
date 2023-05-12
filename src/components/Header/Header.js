@@ -210,9 +210,9 @@ function Header() {
   if (window.location.href.includes('adminPanel')) return null;
 
   return <>
-    <Alert.Heading className="alert-navBar "><span className="fade-in-out">{text}</span></Alert.Heading>
+    {/* <Alert.Heading className="alert-navBar "><span className="fade-in-out">{text}</span></Alert.Heading> */}
     <div className="navbar-header">
-      <SwipeableDrawer anchor={'left'} open={sideBar} onClose={() => setSideBar(false)} onOpen={() => setSideBar(true)}>
+      {/* <SwipeableDrawer anchor={'left'} open={sideBar} onClose={() => setSideBar(false)} onOpen={() => setSideBar(true)}>
         {user?.id ?
           <div style={{ display: "flex", flexDirection: "column", padding: '20px', gap: "15px", fontSize: "18px", background: "#191919", height: '100%' }} >
             <Link className="color-nav-link color" to="/"><HomeIcon></HomeIcon> НА ГЛАВНУЮ</Link>
@@ -239,31 +239,31 @@ function Header() {
             </div>
 
           </div>}
-      </SwipeableDrawer>
+      </SwipeableDrawer> */}
       <div className="nav-main-header">
-        <Link className="color-nav-link color header-home" to="/"><HomeIcon></HomeIcon></Link>
-        <FormatListBulletedIcon onClick={() => setSideBar(true)} className="color-nav-link color header-burder"></FormatListBulletedIcon>
+        {/* <Link className="color-nav-link color header-home" to="/"><HomeIcon></HomeIcon></Link> */}
+        {/* <FormatListBulletedIcon onClick={() => setSideBar(true)} className="color-nav-link color header-burder"></FormatListBulletedIcon> */}
         {user?.id ?
           <div className="header-navBar" style={{ marginLeft: "25px", display: "flex", width: "666px", justifyContent: "space-between", alignItems: "center" }} >
-            <Link className="color-nav-link color" to="/deals">МОИ СДЕЛКИ</Link>
+            {/* <Link className="color-nav-link color" to="/deals">МОИ СДЕЛКИ</Link>
             <Link className="color-nav-link color" to="/output">МОЙ СЧЕТ:{user.score} РУБ.</Link>
             <Link className="color-nav-link color" to="/howitwork">ПОМОЩЬ</Link>
             <Link className="color-nav-link color" to="/disputes">РАЗРЕШЕНИЕ СПОРОВ</Link>
-            <Link className="color-nav-link color" to="/sertificates">СЕРТИФИКАТЫ</Link>
-            <div style={{ cursor: 'pointer' }} onClick={() => navigate('/', {
+            <Link className="color-nav-link color" to="/sertificates">СЕРТИФИКАТЫ</Link> */}
+            {/* <div style={{ cursor: 'pointer' }} onClick={() => navigate('/', {
               state: { key: 'revievs', value: 'true', },
             })} className="color-nav-link color" > ОТЗЫВЫ
-            </div>
+            </div> */}
           </div>
           :
           <div className="flex-nav-link header-navBar">
-            <Link className="color-nav-link color" to="/howitwork">ПОМОЩЬ</Link>
+            {/* <Link className="color-nav-link color" to="/howitwork">ПОМОЩЬ</Link>
             <Link className="color-nav-link color" to="/disputes">РАЗРЕШЕНИЕ СПОРОВ</Link>
             <Link className="color-nav-link color" to="/sertificates">СЕРТИФИКАТЫ</Link>
             <div style={{ cursor: 'pointer' }} onClick={() => navigate('/', {
               state: { key: 'revievs', value: 'true', },
             })} className="color-nav-link color" > ОТЗЫВЫ
-            </div>
+            </div> */}
 
           </div>}
       </div>
@@ -277,8 +277,8 @@ function Header() {
               {user?.role === 'USER' || null || '' ?
                 '' :
                 <li className="nav-detail_item"><Link className="nav-detail_link" to="/adminPanel">Админ панель</Link></li>}
-              <li className="nav-detail_item"><Link className="nav-detail_link" to="/systemmessages">Системные сообщения {(bellState && !checkReadMessage) || (user?.systemMessage === 'true' && !checkReadMessage) ? <NotificationsNoneIcon className="bell-color"></NotificationsNoneIcon> : ''}</Link></li>
-              <li className="nav-detail_item"><Link className="nav-detail_link" to="/settings">Мои настройки</Link></li>
+              {/* <li className="nav-detail_item"><Link className="nav-detail_link" to="/systemmessages">Системные сообщения {(bellState && !checkReadMessage) || (user?.systemMessage === 'true' && !checkReadMessage) ? <NotificationsNoneIcon className="bell-color"></NotificationsNoneIcon> : ''}</Link></li> */}
+              {/* <li className="nav-detail_item"><Link className="nav-detail_link" to="/settings">Мои настройки</Link></li> */}
               <li className="nav-detail_item border-exit"><Link onClick={logOut} className="nav-detail_link" to="/">Выход</Link></li>
             </ul>
           </div>

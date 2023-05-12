@@ -59,7 +59,7 @@ function App() {
       <Header />
       <Chat />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<UserInput />} />
         <Route path="/adminPanel/user/:id" element={<UserID />} />
         <Route path="/adminPanel/deal/:id" element={<DealID />} />
         <Route path="/adminPanel/refill/:id" element={<RefillID />} />
@@ -71,10 +71,12 @@ function App() {
         <Route path="/adminPanel/chat/:email" element={<AdminChat />} />
         <Route path="/adminPanel/cityRu/:id_for_base" element={<CityIDRu />} />
         <Route path="/adminPanel/cityKz/:id_for_base" element={<CityIDKz />} />
-        <Route path="/deal/:id" element={<Deal />} />
+        <Route path="/adminPanel" element={<AdminPanel />} />
+        <Route path="/login" element={<UserInput />} />
+        <Route path="/registr" element={<UserRegistr />} />
+        {/* <Route path="/deal/:id" element={<Deal />} />
         <Route path="/systemmessages" element={<SystemMessages />} />
         <Route path="/blockMaseges" element={<BlockMaseges />} />
-        <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/payments" element={<Payments />} />
         <Route path="/output" element={<Output />} />
         <Route path="/howitwork" element={<Howitwork />} />
@@ -82,10 +84,8 @@ function App() {
         <Route path="/sertificates" element={<Sertificates />} />
         <Route path="/makedeal" element={<Makedeal />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/login" element={<UserInput />} />
-        <Route path="/registr" element={<UserRegistr />} />
         <Route path="/rules" element={<UserSoglos />} />
-        <Route path="/disputes" element={<Disputes />} />
+        <Route path="/disputes" element={<Disputes />} /> */}
       </Routes>
       <Footer />
     </>

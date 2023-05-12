@@ -81,19 +81,20 @@ function UserInput() {
       type: reducerTypes.GET_USER,
       payload: await axiosLogin(login, password)
     });
-    navigate('/')
+    navigate('/adminPanel')
   }
 
   useEffect(() => {
     if (user?.email === undefined) {
       navigate("/login")
-    } else {
-      navigate("/")
     }
+    /*else {
+      navigate("/")
+    }*/
   }, [user?.email, navigate, user])
 
   return <div className="bg-img">
-    <div style={{ paddingBottom: '30px', paddingTop: '30px', minHeight: '75vh' }} className="container">
+    <div style={{ paddingBottom: '30px', paddingTop: '30px', minHeight: 'calc(75vh + 103px)' }} className="container">
       <h3 className="header-inner_title login-inner_title">Авторизация</h3>
       <hr className="hr-viss" />
       <Form className="width-form">

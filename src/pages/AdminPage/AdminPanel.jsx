@@ -173,7 +173,7 @@ function AdminPanel() {
                     <button onClick={(e) => visibleItem(e)} name="0" className={item === 0 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
                         <h4>ВСЕ ПОЛЬЗОВАТЕЛИ</h4>
                     </button>
-                    <button onClick={(e) => visibleItem(e)} name="1" className={item === 1 ? 'block_user_panel activ-block-admin' : 'block_user_panel'} style={{ color: checkDeals ? 'red' : 'white' }}>
+                    {/* <button onClick={(e) => visibleItem(e)} name="1" className={item === 1 ? 'block_user_panel activ-block-admin' : 'block_user_panel'} style={{ color: checkDeals ? 'red' : 'white' }}>
                         <h4>ВСЕ СДЕЛКИ</h4>
                     </button>
                     <button onClick={(e) => visibleItem(e)} name="2" className={item === 2 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
@@ -193,7 +193,7 @@ function AdminPanel() {
                     </button>
                     <button onClick={(e) => visibleItem(e)} name="6" className={item === 6 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
                         <h4> НАСТРОЙКИ БОТА </h4>
-                    </button>
+                    </button> */}
                     <button onClick={(e) => visibleItem(e)} name="7" className={item === 7 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
                         <h4> ПОДИЛ РУ </h4>
                     </button>

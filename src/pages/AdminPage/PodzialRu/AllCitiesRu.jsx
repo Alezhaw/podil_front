@@ -9,7 +9,7 @@ import { axiosGetAllCitiesRu, axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetAl
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
-import CreateCityRu from './component/CreateCityRu';
+import CreateCity from '../components/CreateCity';
 
 function CitiesRu() {
     const dispatch = useDispatch();
@@ -137,7 +137,7 @@ function CitiesRu() {
                 </div>
             </div>
             {isOpen ? (
-                <CreateCityRu
+                <CreateCity
                     setIsOpen={setIsOpen}
                     firstTime={firstTime}
                     setFirstTime={setFirstTime}

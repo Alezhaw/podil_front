@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 
-function CreateCityKz({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondTime, thirdTime, setThirdTime, changeCityValues, createCity }) {
+function CreateBase({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondTime, thirdTime, setThirdTime, changeCityValues, createBase }) {
     return (
         <div onClick={() => setIsOpen(false)} style={{ background: 'rgba(17, 17, 18, 0.95)' }} className="modalStyles">
             <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', width: '59%', flexDirection: 'row-reverse' }}>
@@ -261,7 +261,7 @@ function CreateCityKz({ setIsOpen, firstTime, setFirstTime, secondTime, setSecon
                         </div>
                     </div>
                 </div>
-                <div className="tabl-flex-admin-button-global2" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
+                <div className="tabl-flex-admin-button-global2" onClick={() => createBase(firstTime, secondTime, thirdTime)}>
                     Создать зал
                 </div>
             </div>
@@ -269,4 +269,4 @@ function CreateCityKz({ setIsOpen, firstTime, setFirstTime, secondTime, setSecon
     );
 }
 
-export default CreateCityKz;
+export default CreateBase;

@@ -9,7 +9,7 @@ import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz, axiosGetAl
 import { StyledInput } from '../../../style/styles';
 import { useNavigate } from 'react-router-dom';
 import { StyledDiv, StyledDivHeader } from '../Users/style';
-import CreateCityKz from './component/CreateCityKz';
+import CreateCity from '../components/CreateCity';
 
 function CitiesKz() {
     const dispatch = useDispatch();
@@ -138,7 +138,7 @@ function CitiesKz() {
                 </div>
             </div>
             {isOpen ? (
-                <CreateCityKz
+                <CreateCity
                     setIsOpen={setIsOpen}
                     firstTime={firstTime}
                     setFirstTime={setFirstTime}

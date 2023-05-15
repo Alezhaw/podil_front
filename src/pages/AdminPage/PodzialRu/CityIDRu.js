@@ -7,6 +7,7 @@ import { axiosGetAllCitiesRu, axiosCreateCitiesRu, axiosGetAllBasesRu, axiosCrea
 import { Container } from "@material-ui/core";
 import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
+import CreateBase from "../components/CreateBase";
 
 function CityIDRu() {
   const { id_for_base } = useParams();
@@ -20,6 +21,7 @@ function CityIDRu() {
   const setCity = [setFirstTime, setSecondTime, setThirdTime];
   const currentCities = [firstTime, secondTime, thirdTime]?.filter((el) => !!el?.godzina);
   const [currentBases, setCurrentBases] = useState([]);
+  const [newBase, setNewBase] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   async function getAllCities() {
@@ -59,13 +61,15 @@ function CityIDRu() {
     console.log(result);
     if (result.update) {
       getAllBases();
-      alert("Sucess");
+      alert("Обновлено");
     } else {
       if (result.notIdForBase) {
         return alert("Не указан id_for_base");
       }
       if (result.bases[0]) {
-        getAllBases();
+        await getAllBases();
+        setNewBase({ id_for_base: currentCities[0]?.id_for_base });
+        setIsOpen(false);
         return alert("Успешно создано");
       }
       alert("Что-то пошло не так");
@@ -76,6 +80,7 @@ function CityIDRu() {
     const temporaryCities = citiesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       temporaryCities?.map((item, index) => setCity[index](item));
+      setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line
   }, [citiesRu]);
@@ -179,6 +184,12 @@ function CityIDRu() {
                   Внести изменения
                 </div>
               </div>
+              <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "40px" }}>
+                <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
+                  Новая База
+                </div>
+              </div>
+              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} /> : ""}
             </div>
           </div>
         </div>

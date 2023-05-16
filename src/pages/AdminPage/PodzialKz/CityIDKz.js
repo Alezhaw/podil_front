@@ -22,6 +22,7 @@ function CityIDKz() {
   const currentCities = [firstTime, secondTime, thirdTime]?.filter((el) => !!el?.godzina);
   const [currentBases, setCurrentBases] = useState([]);
   const [newBase, setNewBase] = useState({});
+  const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   async function getAllCities() {
@@ -58,7 +59,6 @@ function CityIDKz() {
 
   async function createBase(currentBases) {
     const result = await axiosCreateBaseKz(currentBases);
-    console.log(result);
     if (result.update) {
       getAllBases();
       alert("Обновлено");
@@ -73,6 +73,14 @@ function CityIDKz() {
         return alert("Успешно создано");
       }
       alert("Что-то пошло не так");
+    }
+  }
+
+  function changeDeleteBases(checked, id) {
+    if (checked) {
+      setDeleteBases((prev) => [...prev, id]);
+    } else {
+      setDeleteBases((prev) => prev.filter((item) => item !== id));
     }
   }
 
@@ -164,7 +172,7 @@ function CityIDKz() {
                   <table style={{ textAlign: "center" }}>
                     <tbody style={{ display: "flex", flexDirection: "row" }}>
                       {currentBases?.map((item) => (
-                        <Base item={item} setCurrentBases={setCurrentBases} />
+                        <Base item={item} setCurrentBases={setCurrentBases} changeDeleteBases={changeDeleteBases} />
                       ))}
                     </tbody>
                   </table>
@@ -176,10 +184,18 @@ function CityIDKz() {
                   display: "flex",
                   marginTop: "20px",
                   justifyContent: "center",
+                  flexDirection: "row",
                 }}
               >
-                <div className="tabl-flex-admin-button-global" onClick={() => createBase(currentBases)}>
-                  Внести изменения
+                <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
+                  <div className="tabl-flex-admin-button-global" onClick={() => createBase(currentBases)}>
+                    Внести изменения
+                  </div>
+                </div>
+                <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
+                  <div className="tabl-flex-admin-button-global" onClick={() => null}>
+                    Удалить
+                  </div>
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "40px" }}>

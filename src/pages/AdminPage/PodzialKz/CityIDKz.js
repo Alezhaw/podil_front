@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosGetAllCitiesKz, axiosCreateCitiesKz, axiosCreateBaseKz, axiosGetAllBasesKz } from "../../../api/podzialKz";
+import { axiosGetAllCitiesKz, axiosCreateCitiesKz, axiosCreateBaseKz, axiosGetAllBasesKz, axiosDeleteBaseKz } from "../../../api/podzialKz";
 import { Container } from "@material-ui/core";
 import Base from "../components/Base";
 import CityTableID from "../components/CityTableID";
@@ -73,6 +73,19 @@ function CityIDKz() {
         return alert("Успешно создано");
       }
       alert("Что-то пошло не так");
+    }
+  }
+
+  async function deleteBase(deleteBases) {
+    {
+      try {
+        await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseKz(Number(id))));
+        setDeleteBases([]);
+        await getAllBases();
+        alert("Success");
+      } catch (e) {
+        alert("Что-то пошло не так");
+      }
     }
   }
 
@@ -193,7 +206,7 @@ function CityIDKz() {
                   </div>
                 </div>
                 <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
-                  <div className="tabl-flex-admin-button-global" onClick={() => null}>
+                  <div className="tabl-flex-admin-button-global" onClick={() => deleteBase(deleteBases)}>
                     Удалить
                   </div>
                 </div>

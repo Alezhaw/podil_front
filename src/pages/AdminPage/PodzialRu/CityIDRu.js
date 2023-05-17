@@ -49,7 +49,7 @@ function CityIDRu() {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesRu(city);
     if (!result.cities[0]) {
-      getAllCities();
+      await getAllCities();
       if (result.updated[0]) return alert("Город обновлен");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
     } else {
@@ -70,7 +70,7 @@ function CityIDRu() {
   async function createBase(currentBases) {
     const result = await axiosCreateBaseRu(currentBases);
     if (result.update) {
-      getAllBases();
+      await getAllBases();
       alert("Обновлено");
     } else {
       if (result.notIdForBase) {
@@ -111,7 +111,7 @@ function CityIDRu() {
     const temporaryCities = citiesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       setCity.map((set) => set({}));
-      temporaryCities?.map((item, index) => setCity[index](item));
+      temporaryCities?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line

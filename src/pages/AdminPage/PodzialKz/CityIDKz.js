@@ -48,13 +48,11 @@ function CityIDKz() {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesKz(city);
-    if (!result.cities[0]) {
-      await getAllCities();
-      if (result.updated[0]) return alert("Город обновлен");
-      if (result.not_id_for_base) return alert("Не указан id_for_base");
-    } else {
-      alert("Что-то пошло не так");
-    }
+    await getAllCities();
+    if (result.updated[0]) return alert("Город обновлен");
+    if (result.not_id_for_base) return alert("Не указан id_for_base");
+    if (result.cities[0]) return alert("Сохранено");
+    alert("Что-то пошло не так");
   }
 
   async function deleteTime(id) {

@@ -5,12 +5,44 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
 
+  function addTime(setCity, currentCities) {
+    const time = prompt("Какое время вы хотите добавить?", "10:00");
+    if (!time) return;
+    setCity[currentCities.length]({
+      ...currentCities[0],
+      id: "create",
+      godzina: time || " ",
+      os_poj: null,
+      pary: null,
+      limit: null,
+      ilosc_zaproszen: null,
+      dzien_1_aktualna_ilosc_zaproszen: null,
+      dzien_2_aktualna_ilosc_zaproszen: null,
+      dzien_3_aktualna_ilosc_zaproszen: null,
+      vip_limit: null,
+      vip_coming: null,
+      vip_total_steam: null,
+      vip_percent_coming: null,
+      zgoda_wyniki_potwierdzen: null,
+      odmowy_wyniki_potwierdzen: null,
+      kropki_wyniki_potwierdzen: null,
+    });
+  }
+
   return (
     <Container style={{ padding: "0px" }}>
       <table style={{ textAlign: "center" }}>
         <thead>
           <tr>
-            <th></th>
+            <th>
+              {currentCities.length < 3 ? (
+                <Button style={{ color: "white", fontSize: "30px" }} onClick={async () => addTime(setCity, currentCities)}>
+                  +
+                </Button>
+              ) : (
+                ""
+              )}
+            </th>
             <th className="basesTableCell">L.p</th>
             <th className="basesTableCell">Godzina</th>
             <th className="basesTableCell">Приход всего</th>
@@ -141,7 +173,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
         </thead>
         <tbody>
           {currentCities?.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={item.id == "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
               <td>
                 {" "}
                 <Button
@@ -172,7 +204,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
               )}
               <td className="basesTableCell">
                 <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, godzina: e.target.value }))}
+                  onChange={(e) => setCity[index]((prev) => ({ ...prev, godzina: e.target.value.trim() || " " }))}
                   className="tableInput"
                   style={{ width: "50px" }}
                   type="text"

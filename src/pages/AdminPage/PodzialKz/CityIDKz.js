@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosGetAllCitiesKz, axiosCreateCitiesKz, axiosCreateBaseKz, axiosGetAllBasesKz, axiosDeleteBaseKz } from "../../../api/podzialKz";
+import { axiosGetAllCitiesKz, axiosCreateCitiesKz, axiosDeleteTimeKz, axiosCreateBaseKz, axiosGetAllBasesKz, axiosDeleteBaseKz } from "../../../api/podzialKz";
 import { Container } from "@material-ui/core";
 import Base from "../components/Base";
 import CityTableID from "../components/CityTableID";
@@ -57,6 +57,16 @@ function CityIDKz() {
     }
   }
 
+  async function deleteTime(id) {
+    const result = await axiosDeleteTimeKz(id);
+    if (result) {
+      await getAllCities();
+      alert("Удалено");
+    } else {
+      alert("Что-то пошло не так");
+    }
+  }
+
   async function createBase(currentBases) {
     const result = await axiosCreateBaseKz(currentBases);
     if (result.update) {
@@ -100,6 +110,7 @@ function CityIDKz() {
   useEffect(() => {
     const temporaryCities = citiesKz?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
+      setCity.map((set) => set({}));
       temporaryCities?.map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
@@ -163,7 +174,7 @@ function CityIDKz() {
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              <CityTableID setCity={setCity} currentCities={currentCities} />
+              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} />
             </div>
             <div
               style={{

@@ -30,7 +30,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
   }
 
   return (
-    <Container style={{ padding: "0px" }}>
+    <Container style={{ padding: "0px", margin: "0px" }}>
       <table style={{ textAlign: "center" }}>
         <thead>
           <tr>
@@ -173,7 +173,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
         </thead>
         <tbody>
           {currentCities?.map((item, index) => (
-            <tr key={item.id == "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
+            <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
               <td>
                 {" "}
                 <Button
@@ -216,7 +216,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 <input
                   onChange={(e) => setCity[index]((prev) => ({ ...prev, os_poj: e.target.value }))}
                   className="tableInput"
-                  //style={{ color: "white", borderRadius: "5px", minWidth: '0px', width: '130px' }}
+                  style={{ minWidth: "0px", width: "100px" }}
                   type="text"
                   autoComplete="off"
                   value={item.os_poj || ""}

@@ -154,7 +154,7 @@ function CityIDRu() {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            padding: "0px 50px",
             background: "rgba(17, 17, 18, 0.65)",
           }}
         >
@@ -191,7 +191,7 @@ function CityIDRu() {
               {/* <div style={{ overflowX: 'auto', padding: '0px 25px', marginTop: '25px' }}> */}
               <div style={{ overflow: "auto" }}>
                 {/* <table style={{ minWidth: `${currentBases?.length * 358}px`, textAlign: 'center' }}> */}
-                <Container style={{ padding: "0px", marginTop: "20px" }}>
+                <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
                   <table style={{ textAlign: "center" }}>
                     <tbody style={{ display: "flex", flexDirection: "row" }}>
                       {currentBases?.map((item) => (

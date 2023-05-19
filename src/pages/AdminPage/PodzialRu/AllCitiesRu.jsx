@@ -10,6 +10,7 @@ import { StyledInput } from "../../../style/styles";
 import { useNavigate } from "react-router-dom";
 import { StyledDiv, StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
+import AllCityTable from "../components/AllCityTable";
 
 function CitiesRu() {
   const dispatch = useDispatch();
@@ -94,7 +95,8 @@ function CitiesRu() {
             (checkbox?.status === 4 && filterComplete) ||
             (checkbox?.status === 5 && filterArbitration)
         )
-        ?.sort((a, b) => (sortId ? Number(b.id_for_base) - Number(a.id_for_base) : Number(a.id_for_base) - Number(b.id_for_base)))
+        ?.map((el) => citiesRu?.filter((time) => time.id_for_base === el.id_for_base))
+        ?.sort((a, b) => (sortId ? Number(b[0].id_for_base) - Number(a[0].id_for_base) : Number(a[0].id_for_base) - Number(b[0].id_for_base)))
     );
   }, [citiesRu, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
 
@@ -157,29 +159,17 @@ function CitiesRu() {
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          ID{" "}
+          СОРТ
         </StyledDivHeader>
-        <StyledDivHeader size="324px">Город</StyledDivHeader>
-        <StyledDivHeader size="80px">Закрыт</StyledDivHeader>
-        <StyledDivHeader size="210px">В току</StyledDivHeader>
-        <StyledDivHeader size="80px">Удалить</StyledDivHeader>
       </div>
 
-      {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-        <div style={{ marginTop: "5px", borderRadius: "5px" }} className="tabl-flex-admin-user" key={item?.id}>
-          <StyledDiv size="80px" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/cityRu/${item?.id_for_base}`)}>
-            {item?.id_for_base}
-          </StyledDiv>
-          <StyledDiv size="324px" style={{ height: "auto" }}>
-            {item?.miasto_lokal}
-          </StyledDiv>
-          <StyledDiv size="80px">{item?.zamkniete ? <>Да</> : <>Нет</>}</StyledDiv>
-          <StyledDiv size="210px">{item?.w_toku ? <>Да</> : <>Нет</>}</StyledDiv>
-          <StyledDiv size="80px" onChange={(e) => changeDeleteCities(e.target.checked, item?.id_for_base)}>
-            <Checkbox color="error" />
-          </StyledDiv>
-        </div>
-      ))}
+      <div style={{ overflowX: "auto" }}>
+        {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+          <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
+            <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />
+          </div>
+        ))}
+      </div>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div
           className="tabl-flex-admin-button"

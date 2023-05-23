@@ -331,7 +331,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               </td>
               <td className="basesTableCell">
                 <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
-                  IN P.
+                  {item.zgody_inne_miasto || ""}
                 </div>
               </td>
               {index === 0 ? (

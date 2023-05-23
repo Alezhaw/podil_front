@@ -449,7 +449,14 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               <td className="basesTableCell">
-                <input onChange={(e) => null} className="tableInput" style={{ width: "50px" }} type="text" autoComplete="off" value="IN P." />
+                <input
+                  onChange={(e) => setCity[index]((prev) => ({ ...prev, zgody_inne_miasto: e.target.value }))}
+                  className="tableInput"
+                  style={{ width: "50px" }}
+                  type="number"
+                  autoComplete="off"
+                  value={item.zgody_inne_miasto || ""}
+                />
               </td>
               {index === 0 ? (
                 <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">

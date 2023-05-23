@@ -52,4 +52,5 @@ export interface ICitiesRu {
     base_stat_6: string | null;
     createdAt: string | null;
     updatedAt: string | null;
+    zgody_inne_miasto: number| null;
 }

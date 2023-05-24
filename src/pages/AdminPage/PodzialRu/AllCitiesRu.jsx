@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { StyledDiv, StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
+import { Container } from "@material-ui/core";
 
 function CitiesRu() {
   const dispatch = useDispatch();
@@ -163,7 +164,152 @@ function CitiesRu() {
         </StyledDivHeader>
       </div>
 
-      <div style={{ overflowX: "auto" }}>
+      <div style={{ overflowX: "auto", textAlign: "center" }}>
+        <Container style={{ padding: "0 10px", margin: "20px 0 0" }}>
+          <table>
+            <thead style={{ background: "rgba(90, 89, 89, 0.75)" }}>
+              <tr>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  ID
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  L.p
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  Godzina
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  Приход всего
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  Пар всего
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "86px" }}>
+                  Проверка прихода
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  КР
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "250px" }}>
+                  Miasto / Lokal
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "78px" }}>
+                  Часовой Пояс
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  Лимит
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "85px" }}>
+                  W toku
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
+                  Zamkniete
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "126.8px" }}>
+                  Dodawanie rekordów
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
+                  Scenariusze
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "94px" }}>
+                  Weryfikacja DKJ
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "96px" }}>
+                  Podpinanie scenariuszy
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
+                  Limit regalo
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "78.4px" }}>
+                  Rekodow na 1 zgode
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
+                  WB 1
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  WB 2
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "87px" }}>
+                  Ilość Zaproszeń
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                  Zgody inne miasto
+                </th>
+                <th colspan="2" style={{ border: "1px solid white", minWidth: "130px" }}>
+                  <tr>
+                    <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                    <th>Aktualna ilość zaproszeń</th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" style={{ borderTop: "1px solid white", position: "relative", top: "6px" }}>
+                      1 dzień
+                    </th>
+                  </tr>
+                </th>
+                <th colspan="2" style={{ border: "1px solid white", minWidth: "130px" }}>
+                  <tr>
+                    <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                    <th>Aktualna ilość zaproszeń</th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" style={{ borderTop: "1px solid white", position: "relative", top: "6px" }}>
+                      2 dzień
+                    </th>
+                  </tr>
+                </th>
+                <th colspan="2" style={{ border: "1px solid white", minWidth: "130px" }}>
+                  <tr>
+                    <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                    <th>Aktualna ilość zaproszeń</th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" style={{ borderTop: "1px solid white", position: "relative", top: "6px" }}>
+                      3 dzień
+                    </th>
+                  </tr>
+                </th>
+                <th colspan="6" style={{ border: "1px solid white" }}>
+                  <th colspan="6" style={{ width: "335px", borderBottom: "1px solid white", height: "75px" }}>
+                    VIP
+                  </th>
+                  <tr style={{ height: "55px" }}>
+                    <th style={{ borderRight: "1px solid white", minWidth: "100.8px" }}>ID</th>
+                    <th style={{ borderRight: "1px solid white", minWidth: "100.8px" }}>Формат</th>
+                    <th style={{ borderRight: "1px solid white", minWidth: "70.8px" }}>Лимит</th>
+                    <th style={{ borderRight: "1px solid white", minWidth: "70.8px" }}>Приход</th>
+                    <th style={{ borderRight: "1px solid white", minWidth: "70.8px" }}>Пар всего</th>
+                    <th style={{ minWidth: "70.8px" }}>%, прихода</th>
+                  </tr>
+                </th>
+                <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
+                  ЗАМЕТКА
+                </th>
+                <th colspan="3" style={{ border: "1px solid white" }}>
+                  <th colspan="3" style={{ borderBottom: "1px solid white", height: "75px" }}>
+                    WYNIKI POTWIERDZEŃ
+                  </th>
+                  <tr>
+                    <th style={{ borderRight: "1px solid white", minWidth: "68.8px", height: "55px" }}>Zgoda</th>
+                    <th style={{ borderRight: "1px solid white", minWidth: "68.8px" }}>Odmowy</th>
+                    <th style={{ minWidth: "68.8px" }}>Kropki</th>
+                  </tr>
+                </th>
+                <th colspan="2" style={{ border: "1px solid white" }}>
+                  <th colspan="2" style={{ borderBottom: "1px solid white", height: "75px" }}>
+                    SMS
+                  </th>
+                  <tr>
+                    <th style={{ borderRight: "1px solid white", maxWidth: "70.8px", height: "55px" }}>Umawianie</th>
+                    <th style={{ maxWidth: "95px" }}>Potwierdzanie</th>
+                  </tr>
+                </th>
+                <th className="basesTableCell" style={{ maxWidth: "75px" }}>
+                  Удалить
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </Container>
         {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
           <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
             <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />

@@ -9,140 +9,56 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
 
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
-      <table style={{ textAlign: "center", background: "rgba(90, 89, 89, 0.75)" }}>
+      <table style={{ textAlign: "center" }}>
         <thead>
-          <tr>
-            <th className="basesTableCell">ID</th>
-            <th className="basesTableCell">L.p</th>
-            <th className="basesTableCell">Godzina</th>
-            <th className="basesTableCell">Приход всего</th>
-            <th className="basesTableCell">Пар всего</th>
-            <th className="basesTableCell">Проверка прихода</th>
-            <th className="basesTableCell">КР</th>
-            <th className="basesTableCell">Miasto / Lokal</th>
-            <th className="basesTableCell">Часовой Пояс</th>
-            <th className="basesTableCell">Лимит</th>
-            <th className="basesTableCell">W toku</th>
-            <th className="basesTableCell">Zamkniete</th>
-            <th className="basesTableCell">Dodawanie rekordów</th>
-            <th className="basesTableCell">Scenariusze</th>
-            <th className="basesTableCell">Weryfikacja DKJ</th>
-            <th className="basesTableCell">Podpinanie scenariuszy</th>
-            <th className="basesTableCell">Limit regalo</th>
-            <th className="basesTableCell">Rekodow na 1 zgode</th>
-            <th className="basesTableCell">WB 1</th>
-            <th className="basesTableCell">WB 2</th>
-            <th className="basesTableCell">Ilość Zaproszeń</th>
-            <th className="basesTableCell">Zgody inne miasto</th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
-              <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
-                <th>Aktualna ilość zaproszeń</th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
-                  1 dzień
-                </th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
-                  {
-                    <input
-                      //onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_1_data: e.target.value })))}
-                      className="tableInput"
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dzien_1_data || "") || ""}
-                    />
-                  }
-                </th>
-              </tr>
+          <tr style={{ height: "26.8px" }}>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+              <div className="tableInput">{formatDate(currentCities[0]?.dzien_1_data || "") || ""}</div>
             </th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
-              <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
-                <th>Aktualna ilość zaproszeń</th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
-                  2 dzień
-                </th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
-                  {
-                    <input
-                      //onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_2_data: e.target.value })))}
-                      className="tableInput"
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dzien_2_data || "") || ""}
-                    />
-                  }
-                </th>
-              </tr>
+            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+              <div className="tableInput">{formatDate(currentCities[0]?.dzien_2_data || "") || ""}</div>
             </th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
-              <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
-                <th>Aktualna ilość zaproszeń</th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
-                  3 dzień
-                </th>
-              </tr>
-              <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
-                  {
-                    <input
-                      //onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_3_data: e.target.value })))}
-                      className="tableInput"
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dzien_3_data || "") || ""}
-                    />
-                  }
-                </th>
-              </tr>
+            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+              <div className="tableInput">{formatDate(currentCities[0]?.dzien_3_data || "") || ""}</div>
             </th>
-            <th colspan="6" style={{ border: "1px solid white" }}>
-              <th colspan="6" style={{ width: "335px", borderBottom: "1px solid white", height: "75px" }}>
-                VIP
-              </th>
-              <tr style={{ height: "55px" }}>
-                <th style={{ borderRight: "1px solid white", width: "100px" }}>ID</th>
-                <th style={{ borderRight: "1px solid white", width: "100px" }}>Формат</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Лимит</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Приход</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Пар всего</th>
-                <th style={{ width: "70.89px" }}>%, прихода</th>
-              </tr>
-            </th>
-            <th className="basesTableCell">ЗАМЕТКА</th>
-            <th colspan="3" style={{ border: "1px solid white" }}>
-              <th colspan="3" style={{ borderBottom: "1px solid white", height: "75px" }}>
-                WYNIKI POTWIERDZEŃ
-              </th>
-              <tr>
-                <th style={{ borderRight: "1px solid white", width: "70.89px", height: "55px" }}>Zgoda</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Odmowy</th>
-                <th style={{ width: "70.89px" }}>Kropki</th>
-              </tr>
-            </th>
-            <th colspan="2" style={{ border: "1px solid white", minWidth: "220px" }}>
-              <th colspan="2" style={{ borderBottom: "1px solid white", height: "75px", width: "220px" }}>
-                SMS
-              </th>
-              <tr>
-                <th style={{ borderRight: "1px solid white", width: "110px", height: "55px" }}>Umawianie</th>
-                <th>Potwierdzanie</th>
-              </tr>
-            </th>
-            <th className="basesTableCell">Удалить город</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ background: "rgba(90, 89, 89, 0.75)" }}>
           {currentCities?.map((item, index) => (
             <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
               {index === 0 ? (
@@ -179,7 +95,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 </div>
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px" }}>
                   <input
                     // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
                     className="tableInput"
@@ -211,7 +127,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
                   <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
                     {item.timezone || 0}
                   </div>
@@ -225,7 +141,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 </div>
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
                   <input
                     // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, w_toku: e.target.checked })))}
                     className="tableInput"
@@ -239,7 +155,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
                   <input
                     // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, zamkniete: e.target.checked })))}
                     className="tableInput"
@@ -262,7 +178,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px" }} className="basesTableCell">
                   <div className="tableInput" style={{ textAlign: "center" }}>
                     {item.scenariusze || ""}
                   </div>
@@ -271,7 +187,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "94px" }} className="basesTableCell">
                   <div className="tableInput" style={{ textAlign: "center" }}>
                     {item.weryfikacja_dkj || ""}
                   </div>
@@ -280,7 +196,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "96px" }} className="basesTableCell">
                   <div className="tableInput" style={{ textAlign: "center" }}>
                     {item.podpinanie_scenariuszy || ""}
                   </div>
@@ -298,7 +214,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "78.4px" }} className="basesTableCell">
                   <div className="tableInput" style={{ textAlign: "center" }}>
                     {Number(item.rekodow_na_1_zgode).toFixed() || ""}
                   </div>
@@ -324,13 +240,13 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               ) : (
                 ""
               )}
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ textAlign: "center" }}>
+              <td className="basesTableCell" style={{ minWidth: "87px" }}>
+                <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
                   {item.ilosc_zaproszen || ""}
                 </div>
               </td>
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+              <td className="basesTableCell" style={{ minWidth: "65px" }}>
+                <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
                   {item.zgody_inne_miasto || ""}
                 </div>
               </td>
@@ -440,21 +356,21 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
                 </div>
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
                   <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_umawianie} />
                 </td>
               ) : (
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "95px" }}>
                   <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_potwierdzen} />
                 </td>
               ) : (
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "75px" }}>
                   <input onChange={(e) => changeDeleteCities(e.target.checked, item?.id_for_base)} className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" />
                 </td>
               ) : (

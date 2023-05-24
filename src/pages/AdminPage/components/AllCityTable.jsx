@@ -170,7 +170,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               )}
               {index === 0 ? (
                 <td rowspan={`${currentCities.length}`} className="basesTableCell">
-                  <div className="tableInput" style={{ textAlign: "center", minWidth: "106px" }}>
+                  <div className="tableInput" style={{ textAlign: "center", minWidth: "119px" }}>
                     {item.dodawanie_rekordow || ""}
                   </div>
                 </td>
@@ -261,7 +261,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               )}
               <td className="basesTableCell">
                 <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-                  {item.dzien_1_aktualna_ilosc_zaproszen || ""}
+                  {Number(item.dzien_1_aktualna_ilosc_zaproszen).toFixed() == 0 ? "" : Number(item.dzien_1_aktualna_ilosc_zaproszen).toFixed()}
                 </div>
               </td>
               {index === 0 ? (
@@ -275,7 +275,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               )}
               <td className="basesTableCell">
                 <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-                  {item.dzien_2_aktualna_ilosc_zaproszen || ""}
+                  {Number(item.dzien_2_aktualna_ilosc_zaproszen).toFixed() == 0 ? "" : Number(item.dzien_2_aktualna_ilosc_zaproszen).toFixed()}
                 </div>
               </td>
               {index === 0 ? (
@@ -289,7 +289,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
               )}
               <td className="basesTableCell">
                 <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-                  {item.dzien_3_aktualna_ilosc_zaproszen || ""}
+                  {Number(item.dzien_3_aktualna_ilosc_zaproszen).toFixed() == 0 ? "" : Number(item.dzien_3_aktualna_ilosc_zaproszen).toFixed()}
                 </div>
               </td>
               {index === 0 ? (

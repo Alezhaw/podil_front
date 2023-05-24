@@ -205,7 +205,7 @@ function CitiesRu() {
                 <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
                   Zamkniete
                 </th>
-                <th className="basesTableCell" style={{ minWidth: "126.8px" }}>
+                <th className="basesTableCell" style={{ minWidth: "140px" }}>
                   Dodawanie rekordów
                 </th>
                 <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
@@ -310,11 +310,14 @@ function CitiesRu() {
             </thead>
           </table>
         </Container>
-        {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-          <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-            <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />
-          </div>
-        ))}
+        <div style={{ width: "3500px", overflowY: "auto", height: "150vh" }}>
+          {/*style={{ width: "fit-content", overflowY: "auto", height: "calc(100vh - 30vh)" }} */}
+          {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+            <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
+              <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div

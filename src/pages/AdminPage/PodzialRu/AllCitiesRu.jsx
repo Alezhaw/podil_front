@@ -310,14 +310,12 @@ function CitiesRu() {
             </thead>
           </table>
         </Container>
-        <div style={{ width: "3500px", overflowY: "auto", height: "150vh" }}>
-          {/*style={{ width: "fit-content", overflowY: "auto", height: "calc(100vh - 30vh)" }} */}
-          {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-            <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-              <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />
-            </div>
-          ))}
-        </div>
+        {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
+        {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+          <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
+            <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} />
+          </div>
+        ))}
       </div>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div

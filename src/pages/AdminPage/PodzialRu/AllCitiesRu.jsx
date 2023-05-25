@@ -13,7 +13,7 @@ import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
 import { Container } from "@material-ui/core";
 
-function CitiesRu() {
+function AllCitiesRu() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
@@ -362,4 +362,4 @@ function CitiesRu() {
   );
 }
 
-export default CitiesRu;
+export default AllCitiesRu;

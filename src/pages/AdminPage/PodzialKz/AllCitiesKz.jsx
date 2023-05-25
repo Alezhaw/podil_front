@@ -13,7 +13,7 @@ import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
 import { Container } from "@material-ui/core";
 
-function CitiesKz() {
+function AllCitiesKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
@@ -26,7 +26,7 @@ function CitiesKz() {
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(100);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [firstTime, setFirstTime] = useState({});
@@ -361,4 +361,4 @@ function CitiesKz() {
   );
 }
 
-export default CitiesKz;
+export default AllCitiesKz;

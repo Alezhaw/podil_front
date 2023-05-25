@@ -53,4 +53,7 @@ export interface ICitiesRu {
     createdAt: string | null;
     updatedAt: string | null;
     zgody_inne_miasto: number| null;
+    check_base: boolean | null;
+    check_speaker: boolean | null;
+    check_scenario: boolean | null;
 }

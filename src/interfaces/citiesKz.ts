@@ -53,4 +53,7 @@ export interface ICitiesKz {
     createdAt: string | null;
     updatedAt: string | null;
     zgody_inne_miasto: string | null;
+    check_base: boolean | null;
+    check_speaker: boolean | null;
+    check_scenario: boolean | null;
 }

@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
-function AllCityTable({ currentCities, country, changeDeleteCities, setCity }) {
+function AllCityTable({ currentCities, country, changeDeleteCities }) {
   const navigate = useNavigate();
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";

@@ -15,8 +15,15 @@ import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../store/Users/types";
 import sound from "../../sound/newMessage.mp3";
 import BotAdmin from "./SettingBot/BotAdmin";
-import CitiesRu from "./PodzialRu/AllCitiesRu";
-import CitiesKz from "./PodzialKz/AllCitiesKz";
+import AllCitiesRu from "./PodzialRu/AllCitiesRu";
+import AllCitiesKz from "./PodzialKz/AllCitiesKz";
+import { Menu, MenuItem } from "@mui/material";
+import CheckBasesRu from "./CheckBases/CheckBasesRu";
+import CheckBasesKz from "./CheckBases/CheckBasesKz";
+import CheckSpeakerRu from "./CheckSpeaker/CheckSpeakerRu";
+import CheckSpeakerKz from "./CheckSpeaker/CheckSpeakerKz";
+import CheckScenarioRu from "./CheckScenario/CheckScenarioRu";
+import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
 
 export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
 
@@ -29,6 +36,12 @@ function AdminPanel() {
   const navigate = useNavigate();
   const audioPlayer = useRef(null);
   const [checkDeals, setCheckDeals] = useState(false);
+  const [basePage, setBasePage] = useState("БАЗЫ");
+  const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
+  const [scenarioPage, setScenarioPage] = useState("СЦЕНАРИЙ");
+  const [baseMenuOpen, setBaseMenuOpen] = useState(false);
+  const [speakerMenuOpen, setSpeakerMenuOpen] = useState(false);
+  const [scenarioMenuOpen, setScenarioMenuOpen] = useState(false);
 
   async function auth() {
     const getUsers = await check();
@@ -69,37 +82,11 @@ function AdminPanel() {
     }
   }
 
-  function visibleItem(e) {
-    switch (e.currentTarget.name) {
-      case "0":
-        setItem(0);
-        break;
-      case "1":
-        setItem(1);
-        break;
-      case "2":
-        setItem(2);
-        break;
-      case "3":
-        setItem(3);
-        break;
-      case "4":
-        setItem(4);
-        break;
-      case "5":
-        setItem(5);
-        break;
-      case "6":
-        setItem(6);
-        break;
-      case "7":
-        setItem(7);
-        break;
-      case "8":
-        setItem(8);
-        break;
-      default:
-    }
+  function visibleItem(name) {
+    setBasePage(" БАЗЫ ");
+    setSpeakerPage(" ДИКТОР ");
+    setScenarioPage(" СЦЕНАРИЙ ");
+    setItem(Number(name));
   }
 
   useEffect(() => {
@@ -169,8 +156,8 @@ function AdminPanel() {
     <div style={{ minHeight: "100vh" }}>
       <audio ref={audioPlayer} src={sound} />
       <div style={{ display: "flex", minHeight: "100vh" }} className={!statebackground ? "styleAdminPanel" : "styleAdminPanel2"}>
-        <div style={{ display: "flex", flexDirection: "column", width: "10%" }} className="panel_user">
-          <button onClick={(e) => visibleItem(e)} name="0" className={item === 0 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+        <div style={{ display: "flex", flexDirection: "column", width: "11%" }} className="panel_user">
+          <button onClick={(e) => visibleItem(e.currentTarget.name)} name="0" className={item === 0 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4>ВСЕ ЮЗЕРЫ</h4>
           </button>
           {/* <button onClick={(e) => visibleItem(e)} name="1" className={item === 1 ? 'block_user_panel activ-block-admin' : 'block_user_panel'} style={{ color: checkDeals ? 'red' : 'white' }}>
@@ -194,12 +181,112 @@ function AdminPanel() {
                     <button onClick={(e) => visibleItem(e)} name="6" className={item === 6 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
                         <h4> НАСТРОЙКИ БОТА </h4>
                     </button> */}
-          <button onClick={(e) => visibleItem(e)} name="7" className={item === 7 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+          <button onClick={(e) => visibleItem(e.currentTarget.name)} name="7" className={item === 7 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> ПОДИЛ РУ </h4>
           </button>
-          <button onClick={(e) => visibleItem(e)} name="8" className={item === 8 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+          <button onClick={(e) => visibleItem(e.currentTarget.name)} name="8" className={item === 8 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> ПОДИЛ КЗ </h4>
           </button>
+          <button onClick={(e) => setBaseMenuOpen((prev) => !prev)} className={item === 9 || item === 10 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+            <h4> {basePage} </h4>
+          </button>
+          <Menu
+            id="basic-menu"
+            open={baseMenuOpen}
+            onClose={() => setBaseMenuOpen(false)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            style={{
+              left: "4px",
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                visibleItem("9");
+                setBasePage(" БАЗЫ РУ");
+                setBaseMenuOpen(false);
+              }}
+            >
+              РОССИЯ
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                visibleItem("10");
+                setBasePage(" БАЗЫ КЗ");
+                setBaseMenuOpen(false);
+              }}
+            >
+              КАЗАХСТАН
+            </MenuItem>
+          </Menu>
+          <button onClick={(e) => setSpeakerMenuOpen((prev) => !prev)} className={item === 11 || item === 12 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+            <h4> {speakerPage} </h4>
+          </button>
+          <Menu
+            id="basic-menu"
+            open={speakerMenuOpen}
+            onClose={() => setSpeakerMenuOpen(false)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            style={{
+              left: "4px",
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                visibleItem("11");
+                setSpeakerPage(" ДИКТОР РУ");
+                setSpeakerMenuOpen(false);
+              }}
+            >
+              РОССИЯ
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                visibleItem("12");
+                setSpeakerPage(" ДИКТОР КЗ");
+                setSpeakerMenuOpen(false);
+              }}
+            >
+              КАЗАХСТАН
+            </MenuItem>
+          </Menu>
+
+          <button onClick={(e) => setScenarioMenuOpen((prev) => !prev)} className={item === 13 || item === 14 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+            <h4> {scenarioPage} </h4>
+          </button>
+          <Menu
+            id="basic-menu"
+            open={scenarioMenuOpen}
+            onClose={() => setScenarioMenuOpen(false)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            style={{
+              left: "4px",
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                visibleItem("13");
+                setScenarioPage(" СЦЕНАРИЙ РУ");
+                setScenarioMenuOpen(false);
+              }}
+            >
+              РОССИЯ
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                visibleItem("14");
+                setScenarioPage(" СЦЕНАРИЙ КЗ");
+                setScenarioMenuOpen(false);
+              }}
+            >
+              КАЗАХСТАН
+            </MenuItem>
+          </Menu>
           <button
             onClick={() => {
               localStorage.setItem("backroundImg", !statebackground ? " " : "");
@@ -262,14 +349,56 @@ function AdminPanel() {
           )}
           {item === 7 ? (
             <div style={{ display: "block" }}>
-              <CitiesRu />
+              <AllCitiesRu />
             </div>
           ) : (
             ""
           )}
           {item === 8 ? (
             <div style={{ display: "block" }}>
-              <CitiesKz />
+              <AllCitiesKz />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 9 ? (
+            <div style={{ display: "block" }}>
+              <CheckBasesRu />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 10 ? (
+            <div style={{ display: "block" }}>
+              <CheckBasesKz />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 11 ? (
+            <div style={{ display: "block" }}>
+              <CheckSpeakerRu />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 12 ? (
+            <div style={{ display: "block" }}>
+              <CheckSpeakerKz />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 13 ? (
+            <div style={{ display: "block" }}>
+              <CheckScenarioRu />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 14 ? (
+            <div style={{ display: "block" }}>
+              <CheckScenarioKz />
             </div>
           ) : (
             ""

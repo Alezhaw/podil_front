@@ -18,6 +18,12 @@
     font-family: 'Roboto Condensed', 'Arial Narrow', Arial, sans-serif;
 }
 
+/* mui menu */
+.MuiMenu-root ul{ 
+    background-color: rgba(0, 0, 0, .78);
+    color: white;
+  }
+
 .tabl-flex-admin-user {
     backdrop-filter: blur(5.5px);
     -webkit-backdrop-filter: blur(5.5px);

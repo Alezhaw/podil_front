@@ -52,8 +52,8 @@ function CheckScenarioKz() {
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
         ?.filter(
           (checkbox) =>
-            (!checkbox?.check_base && filterInProgress) ||
-            (!!checkbox?.check_base && filterComplete) ||
+            (!checkbox?.check_scenario && filterInProgress) ||
+            (!!checkbox?.check_scenario && filterComplete) ||
             (checkbox?.status === 4 && filterZamkniete) ||
             (checkbox?.status === 3 && filterPayed) ||
             (checkbox?.status === 5 && filterArbitration)

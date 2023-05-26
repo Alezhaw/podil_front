@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosGetAllCitiesKz, axiosGetAllBasesKz } from "../../../api/podzialKz";
+import { axiosGetAllCitiesKz, axiosGetAllBasesKz, axiosChangeCheckKz } from "../../../api/podzialKz";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import { Container } from "@material-ui/core";
@@ -42,6 +42,20 @@ function CheckBasesKz() {
         type: reducerTypes.GET_BASES_KZ,
         payload: data,
       });
+    }
+  }
+
+  async function changeCheckKz(checked, id_for_base) {
+    const checkConfirm = window.confirm("Вы уверены?");
+    if (!checkConfirm) return;
+    const data = await axiosChangeCheckKz(Number(id_for_base), null, checked);
+    if (data) {
+      dispatch({
+        type: reducerTypes.GET_CITIES_KZ,
+        payload: data,
+      });
+    } else {
+      alert(`Что-то пошло не так ${id_for_base}`);
     }
   }
 
@@ -150,7 +164,7 @@ function CheckBasesKz() {
         {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
         {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
           <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-            <CheckBaseTable currentCities={item} country="cityKz" key="check_base" />
+            <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_base" changeCheck={changeCheckKz} />
           </div>
         ))}
       </div>

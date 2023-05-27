@@ -10,8 +10,8 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
       <table style={{ textAlign: "center" }}>
-        <thead>
-          <tr style={{ height: "26.8px" }}>
+        <thead> 
+          <tr style={{ height: "26.8px", background: "#f37dea"}}>
             <th></th>
             <th></th>
             <th></th>
@@ -34,13 +34,13 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             <th></th>
             <th></th>
             <th></th>
-            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+            <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px"  }}>
               <div className="tableInput">{formatDate(currentCities[0]?.dzien_1_data || "") || ""}</div>
             </th>
-            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+            <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px"    }}>
               <div className="tableInput">{formatDate(currentCities[0]?.dzien_2_data || "") || ""}</div>
             </th>
-            <th colspan="2" style={{ border: "1px solid white", background: "rgba(90, 89, 89, 0.75)", minWidth: "130px" }}>
+            <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black" , border: "solid black 1px"   }}>
               <div className="tableInput">{formatDate(currentCities[0]?.dzien_3_data || "") || ""}</div>
             </th>
             <th></th>
@@ -58,7 +58,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             <th></th>
           </tr>
         </thead>
-        <tbody style={{ background: "rgba(90, 89, 89, 0.75)" }}>
+        <tbody style={{ background: "white", color: "black"}}>
           {currentCities?.map((item, index) => (
             <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
               {index === 0 ? (
@@ -95,7 +95,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 </div>
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px" }}>
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
                   <input
                     // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
                     className="tableInput"
@@ -109,8 +109,8 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
-                  <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{background: "lightgreen", color: "black"}}>
+                  <div className="tableInput" style={{ width: "50px", textAlign: "center"}}>
                     {item.projekt || ""}
                   </div>
                 </td>
@@ -178,7 +178,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px",}} className="basesTableCell">
                   <div className="tableInput" style={{ textAlign: "center" }}>
                     {item.scenariusze || ""}
                   </div>
@@ -205,7 +205,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
                   <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
                     {item.present || ""}
                   </div>

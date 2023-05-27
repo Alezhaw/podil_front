@@ -32,7 +32,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
       <table style={{ textAlign: "center" }}>
-        <thead>
+        <thead  style={{ background: "#5a5959bf" }}>
           <tr>
             <th>
               {currentCities.length < 3 ? (

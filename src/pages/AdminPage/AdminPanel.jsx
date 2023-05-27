@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import AllDeposit from "./Refills/AllDeposit";
 import AllDeals from "./Deals/AllDeals";
@@ -39,9 +40,12 @@ function AdminPanel() {
   const [basePage, setBasePage] = useState("БАЗЫ");
   const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
   const [scenarioPage, setScenarioPage] = useState("СЦЕНАРИЙ");
-  const [baseMenuOpen, setBaseMenuOpen] = useState(false);
-  const [speakerMenuOpen, setSpeakerMenuOpen] = useState(false);
-  const [scenarioMenuOpen, setScenarioMenuOpen] = useState(false);
+  const [anchorElBase, setAnchorElBase] = useState(null);
+  const [anchorElSpeaker, setAnchorElSpeaker] = useState(null);
+  const [anchorElScenario, setAnchorElScenario] = useState(null);
+  const baseMenuOpen = Boolean(anchorElBase);
+  const speakerMenuOpen = Boolean(anchorElSpeaker);
+  const scenarioMenuOpen = Boolean(anchorElScenario);
 
   async function auth() {
     const getUsers = await check();
@@ -187,25 +191,23 @@ function AdminPanel() {
           <button onClick={(e) => visibleItem(e.currentTarget.name)} name="8" className={item === 8 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> ПОДИЛ КЗ </h4>
           </button>
-          <button onClick={(e) => setBaseMenuOpen((prev) => !prev)} className={item === 9 || item === 10 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+          <button onClick={(e) => setAnchorElBase((prev) => (!!prev ? null : e.currentTarget))} className={item === 9 || item === 10 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> {basePage} </h4>
           </button>
           <Menu
             id="basic-menu"
+            anchorEl={anchorElBase}
             open={baseMenuOpen}
-            onClose={() => setBaseMenuOpen(false)}
+            onClose={() => setAnchorElBase(null)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
-            }}
-            style={{
-              left: "4px",
             }}
           >
             <MenuItem
               onClick={() => {
                 visibleItem("9");
                 setBasePage(" БАЗЫ РУ");
-                setBaseMenuOpen(false);
+                setAnchorElBase(null);
               }}
             >
               РОССИЯ
@@ -214,31 +216,29 @@ function AdminPanel() {
               onClick={() => {
                 visibleItem("10");
                 setBasePage(" БАЗЫ КЗ");
-                setBaseMenuOpen(false);
+                setAnchorElBase(null);
               }}
             >
               КАЗАХСТАН
             </MenuItem>
           </Menu>
-          <button onClick={(e) => setSpeakerMenuOpen((prev) => !prev)} className={item === 11 || item === 12 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+          <button onClick={(e) => setAnchorElSpeaker((prev) => (!!prev ? null : e.currentTarget))} className={item === 11 || item === 12 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> {speakerPage} </h4>
           </button>
           <Menu
             id="basic-menu"
+            anchorEl={anchorElSpeaker}
             open={speakerMenuOpen}
-            onClose={() => setSpeakerMenuOpen(false)}
+            onClose={() => setAnchorElSpeaker(null)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
-            }}
-            style={{
-              left: "4px",
             }}
           >
             <MenuItem
               onClick={() => {
                 visibleItem("11");
                 setSpeakerPage(" ДИКТОР РУ");
-                setSpeakerMenuOpen(false);
+                setAnchorElSpeaker(null);
               }}
             >
               РОССИЯ
@@ -247,32 +247,30 @@ function AdminPanel() {
               onClick={() => {
                 visibleItem("12");
                 setSpeakerPage(" ДИКТОР КЗ");
-                setSpeakerMenuOpen(false);
+                setAnchorElSpeaker(null);
               }}
             >
               КАЗАХСТАН
             </MenuItem>
           </Menu>
 
-          <button onClick={(e) => setScenarioMenuOpen((prev) => !prev)} className={item === 13 || item === 14 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
+          <button onClick={(e) => setAnchorElScenario((prev) => (!!prev ? null : e.currentTarget))} className={item === 13 || item === 14 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> {scenarioPage} </h4>
           </button>
           <Menu
             id="basic-menu"
+            anchorEl={anchorElScenario}
             open={scenarioMenuOpen}
-            onClose={() => setScenarioMenuOpen(false)}
+            onClose={() => setAnchorElScenario(null)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
-            }}
-            style={{
-              left: "4px",
             }}
           >
             <MenuItem
               onClick={() => {
                 visibleItem("13");
                 setScenarioPage(" СЦЕНАРИЙ РУ");
-                setScenarioMenuOpen(false);
+                setAnchorElScenario(null);
               }}
             >
               РОССИЯ
@@ -281,7 +279,7 @@ function AdminPanel() {
               onClick={() => {
                 visibleItem("14");
                 setScenarioPage(" СЦЕНАРИЙ КЗ");
-                setScenarioMenuOpen(false);
+                setAnchorElScenario(null);
               }}
             >
               КАЗАХСТАН

@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
-function CheckBaseTable({ currentCities, country, key }) {
+function CheckBaseTable({ currentCities, country, checkKey, changeCheck }) {
   const navigate = useNavigate();
 
   return (
@@ -106,12 +106,12 @@ function CheckBaseTable({ currentCities, country, key }) {
               {index === 0 ? (
                 <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
                   <input
-                    // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
+                    onChange={(e) => changeCheck(e.target.checked, item.id_for_base)}
                     className="tableInput"
                     style={{ width: "25px", height: "25px" }}
                     type="checkbox"
                     autoComplete="off"
-                    checked={!!item[key]}
+                    checked={!!item[checkKey]}
                   />
                 </td>
               ) : (

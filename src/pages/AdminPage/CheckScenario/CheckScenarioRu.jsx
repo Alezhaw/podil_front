@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosGetAllCitiesRu, axiosGetAllBasesRu } from "../../../api/podzialRu";
+import { axiosGetAllCitiesRu, axiosGetAllBasesRu, axiosChangeCheckRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import { Container } from "@material-ui/core";
@@ -45,6 +45,20 @@ function CheckScenarioRu() {
     }
   }
 
+  async function changeCheckRu(checked, id_for_base) {
+    const checkConfirm = window.confirm("Вы уверены?");
+    if (!checkConfirm) return;
+    const data = await axiosChangeCheckRu(Number(id_for_base), null, null, null, checked);
+    if (data) {
+      dispatch({
+        type: reducerTypes.GET_CITIES_RU,
+        payload: data,
+      });
+    } else {
+      alert(`Что-то пошло не так ${id_for_base}`);
+    }
+  }
+
   useEffect(() => {
     setCities(
       citiesRu
@@ -52,8 +66,8 @@ function CheckScenarioRu() {
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
         ?.filter(
           (checkbox) =>
-            (!checkbox?.check_base && filterInProgress) ||
-            (!!checkbox?.check_base && filterComplete) ||
+            (!checkbox?.check_scenario && filterInProgress) ||
+            (!!checkbox?.check_scenario && filterComplete) ||
             (checkbox?.status === 4 && filterZamkniete) ||
             (checkbox?.status === 3 && filterPayed) ||
             (checkbox?.status === 5 && filterArbitration)
@@ -150,7 +164,7 @@ function CheckScenarioRu() {
         {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
         {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
           <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-            <CheckBaseTable currentCities={item} country="cityRu" key="check_scenario" />
+            <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_scenario" changeCheck={changeCheckRu} />
           </div>
         ))}
       </div>

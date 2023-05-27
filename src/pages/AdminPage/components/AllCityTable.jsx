@@ -7,6 +7,8 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
 
+console.log('ok');
+
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
       <table style={{ textAlign: "center" }}>

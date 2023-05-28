@@ -164,7 +164,7 @@ function AllCitiesKz() {
         </StyledDivHeader>
       </div>
 
-      <div style={{ overflowX: "auto", textAlign: "center", background: "white" }}>
+      <div style={{ overflowX: "auto", textAlign: "center"}}>
         <Container style={{ padding: "0 10px", margin: "20px 0 0" }}>
           <table>
             <thead style={{ background: "#5a5959" }}>

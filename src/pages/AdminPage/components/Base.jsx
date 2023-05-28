@@ -2,9 +2,9 @@ import Checkbox from "@mui/material/Checkbox";
 
 function Base({ item, setCurrentBases, changeDeleteBases }) {
   return (
-    <div style={{ minWidth: "100px", margin: "0px 5px" }} key={item.id}>
+    <div style={{ minWidth: "100px", margin: "0px 5px", background: "white" }} key={item.id}>
       <tr>
-        <td colspan="3" className="basesTableCell">
+        <td colspan="3" className="basesTableCell" style={{ background: "" }}>
           <input
             onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_id: e.target.value } : el)))}
             className="tableInput"

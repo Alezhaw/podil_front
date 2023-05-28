@@ -31,12 +31,12 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
 
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
-      <table style={{ textAlign: "center" }}>
-        <thead  style={{ background: "#5a5959bf" }}>
+      <table style={{ textAlign: "center"}}>
+        <thead  style={{ background: "#5a5959" }}>
           <tr>
             <th>
               {currentCities.length < 3 ? (
-                <Button style={{ color: "white", fontSize: "30px" }} onClick={async () => addTime(setCity, currentCities)}>
+                <Button style={{color: "white", fontSize: "30px" }} onClick={async () => addTime(setCity, currentCities)}>
                   +
                 </Button>
               ) : (
@@ -64,13 +64,13 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">Ilość Zaproszeń</th>
             <th className="basesTableCell">Zgody inne miasto</th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
+            <th colspan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
+                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   1 dzień
                 </th>
               </tr>
@@ -88,13 +88,13 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
+            <th colspan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
+                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   2 dzień
                 </th>
               </tr>
@@ -112,13 +112,13 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid white" }}>
+            <th colspan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid white" }}>Rekodow na 1 zgode</th>
+                <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid white", borderBottom: "1px solid white" }}>
+                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   3 dzień
                 </th>
               </tr>
@@ -136,48 +136,48 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="6" style={{ border: "1px solid white" }}>
-              <th colspan="6" style={{ width: "335px", borderBottom: "1px solid white", height: "75px" }}>
+            <th colspan="6" style={{ border: "1px solid black" }}>
+              <th colspan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
                 VIP
               </th>
               <tr style={{ height: "55px" }}>
-                <th style={{ borderRight: "1px solid white", width: "100px" }}>ID</th>
-                <th style={{ borderRight: "1px solid white", width: "100px" }}>Формат</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Лимит</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Приход</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Пар всего</th>
+                <th style={{ borderRight: "1px solid black", width: "100px" }}>ID</th>
+                <th style={{ borderRight: "1px solid black", width: "100px" }}>Формат</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Лимит</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Приход</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Пар всего</th>
                 <th style={{ width: "70.89px" }}>%, прихода</th>
               </tr>
             </th>
             <th className="basesTableCell">ЗАМЕТКА</th>
-            <th colspan="3" style={{ border: "1px solid white" }}>
-              <th colspan="3" style={{ borderBottom: "1px solid white", height: "75px" }}>
+            <th colspan="3" style={{ border: "1px solid black" }}>
+              <th colspan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                 WYNIKI POTWIERDZEŃ
               </th>
               <tr>
-                <th style={{ borderRight: "1px solid white", width: "70.89px", height: "55px" }}>Zgoda</th>
-                <th style={{ borderRight: "1px solid white", width: "70.89px" }}>Odmowy</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px", height: "55px" }}>Zgoda</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Odmowy</th>
                 <th style={{ width: "70.89px" }}>Kropki</th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid white", minWidth: "220px" }}>
-              <th colspan="2" style={{ borderBottom: "1px solid white", height: "75px", width: "220px" }}>
+            <th colspan="2" style={{ border: "1px solid black", minWidth: "220px" }}>
+              <th colspan="2" style={{ borderBottom: "1px solid black", height: "75px", width: "220px" }}>
                 SMS
               </th>
               <tr>
-                <th style={{ borderRight: "1px solid white", width: "110px", height: "55px" }}>Umawianie</th>
+                <th style={{ borderRight: "1px solid black", width: "110px", height: "55px" }}>Umawianie</th>
                 <th>Potwierdzanie</th>
               </tr>
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ background: "white" }}>
           {currentCities?.map((item, index) => (
             <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
               <td>
                 {" "}
                 <Button
-                  style={{ color: "white" }}
+                  style={{background: "lightgreen",  color: "white" }}
                   onClick={async () => {
                     let checkConfirm = window.confirm("Вы уверены?");
                     if (checkConfirm) {

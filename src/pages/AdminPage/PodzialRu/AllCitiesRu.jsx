@@ -232,45 +232,45 @@ function AllCitiesRu() {
                 <th className="basesTableCell" style={{ minWidth: "87px" }}>
                   Ilość Zaproszeń
                 </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black"}}>
+                <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
                   Zgody inne miasto
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       1 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       2 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       3 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="6" style={{ border: "1px solid black" }}>
-                  <th colspan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
-                    VIP
+                <th colSpan="6" style={{ border: "1px solid black" }}>
+                  <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
+                    colSpan
                   </th>
                   <tr style={{ height: "55px" }}>
                     <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>ID</th>
@@ -284,8 +284,8 @@ function AllCitiesRu() {
                 <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
                   ЗАМЕТКА
                 </th>
-                <th colspan="3" style={{ border: "1px solid black" }}>
-                  <th colspan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
+                <th colSpan="3" style={{ border: "1px solid black" }}>
+                  <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     WYNIKI POTWIERDZEŃ
                   </th>
                   <tr>
@@ -294,8 +294,8 @@ function AllCitiesRu() {
                     <th style={{ minWidth: "68.8px" }}>Kropki</th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black" }}>
-                  <th colspan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
+                <th colSpan="2" style={{ border: "1px solid black" }}>
+                  <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     SMS
                   </th>
                   <tr>

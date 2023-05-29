@@ -2,6 +2,8 @@ import axios from './axios';
 import { getConfig } from './axios';
 import { ICitiesKz } from '../interfaces/citiesKz';
 import { IBaseKz } from '../interfaces/baseKz';
+let controllerGetAllCitiesKz: AbortController | null = null;
+let controllerGetAllBasesKz: AbortController | null = null;
 
 export const axiosCreateCitiesKz = async (cities: ICitiesKz[]) => {
     try {
@@ -15,11 +17,19 @@ export const axiosCreateCitiesKz = async (cities: ICitiesKz[]) => {
 
 export const axiosGetAllCitiesKz = async () => {
     try {
-        const { data } = await axios.get('api/citykz/get', getConfig());
+        if(controllerGetAllCitiesKz !== null) {
+            controllerGetAllCitiesKz.abort()
+        }
+        controllerGetAllCitiesKz = new AbortController();
+        const { data } = await axios.get('api/citykz/get', {...getConfig(), signal: controllerGetAllCitiesKz.signal});
 
         return data;
     } catch (e) {
+        if (axios.isCancel(e))  {
+            console.log('Request canceled', e.message);
+        }else {
         console.error(e);
+        }
     }
 };
 
@@ -76,11 +86,18 @@ export const axiosCreateBaseKz = async (bases: IBaseKz[]) => {
 
 export const axiosGetAllBasesKz = async () => {
     try {
-        const { data } = await axios.get('api/basekz/get', getConfig());
-
+        if(controllerGetAllBasesKz !== null) {
+            controllerGetAllBasesKz.abort()
+        }
+        controllerGetAllBasesKz = new AbortController();
+        const { data } = await axios.get('api/basekz/get', {...getConfig(), signal: controllerGetAllBasesKz.signal});
         return data;
     } catch (e) {
+        if (axios.isCancel(e))  {
+            console.log('Request canceled', e.message);
+        }else {
         console.error(e);
+        }
     }
 };
 

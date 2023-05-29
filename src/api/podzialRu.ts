@@ -2,6 +2,8 @@ import axios from './axios';
 import { getConfig } from './axios';
 import { ICitiesRu } from '../interfaces/citiesRu';
 import { IBaseRu } from '../interfaces/baseRu';
+let controllerGetAllCitiesRu: AbortController | null = null;
+let controllerGetAllBasesRu: AbortController | null = null;
 
 export const axiosCreateCitiesRu = async (cities: ICitiesRu[]) => {
     try {
@@ -15,11 +17,18 @@ export const axiosCreateCitiesRu = async (cities: ICitiesRu[]) => {
 
 export const axiosGetAllCitiesRu = async () => {
     try {
-        const { data } = await axios.get('api/city/get', getConfig());
-
+        if(controllerGetAllCitiesRu !== null) {
+            controllerGetAllCitiesRu.abort()
+        }
+        controllerGetAllCitiesRu = new AbortController();
+        const { data } = await axios.get('api/city/get', {...getConfig(), signal: controllerGetAllCitiesRu.signal});
         return data;
     } catch (e) {
+        if (axios.isCancel(e))  {
+            console.log('Request canceled', e.message);
+        }else {
         console.error(e);
+        }
     }
 };
 
@@ -75,11 +84,19 @@ export const axiosCreateBaseRu = async (bases: IBaseRu[]) => {
 
 export const axiosGetAllBasesRu = async () => {
     try {
-        const { data } = await axios.get('api/base/get', getConfig());
+        if(controllerGetAllBasesRu !== null) {
+            controllerGetAllBasesRu.abort()
+        }
+        controllerGetAllBasesRu = new AbortController();
+        const { data } = await axios.get('api/base/get', {...getConfig(), signal: controllerGetAllBasesRu.signal});
 
         return data;
     } catch (e) {
+        if (axios.isCancel(e))  {
+            console.log('Request canceled', e.message);
+        }else {
         console.error(e);
+        }
     }
 };
 

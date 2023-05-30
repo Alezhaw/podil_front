@@ -225,7 +225,7 @@ function CityIDKz() {
                   Новая База
                 </div>
               </div>
-              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} /> : ""}
+              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} cities={citiesKz} bases={basesKz} currentBases={currentBases} /> : ""}
             </div>
           </div>
         </div>

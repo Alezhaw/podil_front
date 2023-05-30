@@ -226,7 +226,7 @@ function CityIDRu() {
                   Новая База
                 </div>
               </div>
-              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} /> : ""}
+              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} cities={citiesRu} bases={basesRu} currentBases={currentBases} /> : ""}
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import Checkbox from "@mui/material/Checkbox";
 
-function Base({ item, setCurrentBases, changeDeleteBases }) {
+function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
   return (
-    <div style={{ minWidth: "100px", margin: "0px 5px", background: "white" }} key={item.id}>
+    <div style={{ minWidth: "100px", margin: "0px 5px", background: "white", color: "black" }} key={item.id}>
       <tr>
         <td colspan="3" className="basesTableCell" style={{ background: "" }}>
           <input
@@ -115,19 +115,21 @@ function Base({ item, setCurrentBases, changeDeleteBases }) {
           />
         </td>
       </tr>
-      <tr colspan="3" className="basesTableCell">
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} onChange={(e) => null}>
-          <span style={{ position: "relative", left: "15px" }}>Удалить: </span>
-          <input
-            onChange={(e) => changeDeleteBases(e.target.checked, item.id)}
-            className="tableInput"
-            style={{ width: "25px", height: "42px", position: "relative", left: "111px" }}
-            type="checkbox"
-            defaultChecked={false}
-            autoComplete="off"
-          />
-        </div>
-      </tr>
+      {!forSearch ? (
+        <tr colspan="3" className="basesTableCell">
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} onChange={(e) => null}>
+            <span style={{ position: "relative", left: "15px" }}>Удалить: </span>
+            <input
+              onChange={(e) => changeDeleteBases(e.target.checked, item.id)}
+              className="tableInput"
+              style={{ width: "25px", height: "42px", position: "relative", left: "111px" }}
+              type="checkbox"
+              defaultChecked={false}
+              autoComplete="off"
+            />
+          </div>
+        </tr>
+      ) : null}
     </div>
   );
 }

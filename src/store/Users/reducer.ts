@@ -15,6 +15,8 @@ import { ICitiesRu } from '../../interfaces/citiesRu';
 import { ICitiesKz } from '../../interfaces/citiesKz';
 import { IBaseRu } from '../../interfaces/baseRu';
 import { IBaseKz } from '../../interfaces/baseKz';
+import { ILogsCity } from '../../interfaces/logsCity';
+import { ILogsBase } from '../../interfaces/logsBase';
 
 export interface IUsersReducer {
     user: IUser | {};
@@ -42,6 +44,8 @@ export interface IUsersReducer {
     citiesKz: ICitiesKz[] | [];
     basesRu: IBaseRu[] | [];
     basesKz: IBaseKz[] | [];
+    logsCity: ILogsCity[] | [];
+    logsBase: ILogsBase[] | [];
 }
 
 export const INITIAL: IUsersReducer = {
@@ -75,6 +79,8 @@ export const INITIAL: IUsersReducer = {
     citiesKz: [],
     basesRu: [],
     basesKz: [],
+    logsCity: [],
+    logsBase: [],
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {

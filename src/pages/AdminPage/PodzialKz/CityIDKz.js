@@ -85,15 +85,13 @@ function CityIDKz() {
   }
 
   async function deleteBase(deleteBases) {
-    {
-      try {
-        await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseKz(Number(id))));
-        setDeleteBases([]);
-        await getAllBases();
-        alert("Success");
-      } catch (e) {
-        alert("Что-то пошло не так");
-      }
+    try {
+      await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseKz(Number(id))));
+      setDeleteBases([]);
+      await getAllBases();
+      alert("Success");
+    } catch (e) {
+      alert("Что-то пошло не так");
     }
   }
 

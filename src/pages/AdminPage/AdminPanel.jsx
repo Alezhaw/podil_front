@@ -31,12 +31,11 @@ export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
 function AdminPanel() {
   const dispatch = useDispatch();
   const [item, setItem] = useState();
-  const [checkNewMessage, setCheckNewMessage] = useState(false);
+  const [checkNewMessage, setCheckNewMessage] = useState(false); // позже будет добавлять чаты
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
-  const { user, adminChat, allDeals } = useAppSelector((store) => store.user);
+  const { user, adminChat } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const audioPlayer = useRef(null);
-  const [checkDeals, setCheckDeals] = useState(false);
   const [basePage, setBasePage] = useState("БАЗЫ");
   const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
   const [scenarioPage, setScenarioPage] = useState("СЦЕНАРИЙ");
@@ -99,62 +98,31 @@ function AdminPanel() {
   }, [adminChat]);
 
   useEffect(() => {
-    getAllChats();
-    // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    if (user?.role) {
-      if (user?.role === "USER" || user?.role === null || user?.role === "" || user?.role === undefined) {
-        navigate("/");
-      }
-    }
-  }, [user?.role, navigate, user]);
-
-  useEffect(() => {
     socketAdmin.on("newMessage", ({ data }) => {
       if (data) {
         getAllChats();
       }
     });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     socketAdmin.on("newMessage", ({ data }) => {
       playAudio();
     });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (user?.email) {
-      socketAdmin.emit("join", { name: "1", room: "1" });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    getAllDeals();
-    // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    if (!allDeals) return;
-    const result = allDeals?.some((item) => item?.status === 5);
-    if (result) {
-      console.log("result", result, allDeals);
-      setCheckDeals(result);
-    }
-
-    // eslint-disable-next-line
-  }, [allDeals]);
-
-  useEffect(() => {
     socketAdmin.on("changeDealStatus", ({ data }) => {
       if (data?.check) getAllDeals();
     });
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (!user?.role) {
+      navigate("/login");
+    }
+    getAllDeals();
+    getAllChats();
+    if (user?.email) {
+      socketAdmin.emit("join", { name: "1", room: "1" });
+    }
+    // eslint-disable-next-line
+  }, [user]);
 
   return (
     <div style={{ minHeight: "100vh" }}>
@@ -402,7 +370,7 @@ function AdminPanel() {
             ""
           )}
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
-            <div onClick={() => navigate("/")} className="tabl-flex-admin-button-global2">
+            <div onClick={() => navigate("/login/true")} className="tabl-flex-admin-button-global2">
               Вернуться назад
             </div>
           </div>

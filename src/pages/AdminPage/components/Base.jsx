@@ -1,5 +1,3 @@
-import Checkbox from "@mui/material/Checkbox";
-
 function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
   return (
     <div style={{ minWidth: "100px", margin: "0px 5px", background: "white", color: "black" }} key={item.id}>

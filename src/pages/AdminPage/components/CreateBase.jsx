@@ -24,7 +24,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, cities, bases,
           ?.map((base) => ({ ...base, miasto_lokal: cities?.filter((city) => Number(city.id_for_base) === Number(base.id_for_base))[0]?.miasto_lokal }));
 
     setFilteredBases(finalBases);
-  }, [cities, search, bases]);
+  }, [cities, search, bases, currentBases]);
 
   return (
     <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.9)" }} className="modalStyles">

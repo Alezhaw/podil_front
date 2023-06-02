@@ -23,7 +23,7 @@ import Disputes from "./pages/Disputes/Disputes";
 import AdminChat from "./pages/AdminPage/Chats/AdminChat";
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
-import sound from './sound/newMessage.mp3';
+import sound from "./sound/newMessage.mp3";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Chat from "./pages/ChatComponent/Chat";
@@ -41,17 +41,16 @@ function App() {
         audioPlayer.current.play();
       }
     } catch {
-      console.log('Ошибка воспроизведения аудио, обновите страницу')
+      console.log("Ошибка воспроизведения аудио, обновите страницу");
     }
   }
 
   useEffect(() => {
-    socket.on('messageToAdmin', ({ data }) => {
+    socket.on("messageToAdmin", ({ data }) => {
       if (!data?.nickname) playAudio();
     });
     // eslint-disable-next-line
   }, []);
-
 
   return (
     <>
@@ -64,15 +63,13 @@ function App() {
         <Route path="/adminPanel/deal/:id" element={<DealID />} />
         <Route path="/adminPanel/refill/:id" element={<RefillID />} />
         <Route path="/adminPanel/transfers/:id" element={<TransfersID />} />
-        <Route
-          path="/adminPanel/transferstouser/:id"
-          element={<TransfersToUserID />}
-        />
+        <Route path="/adminPanel/transferstouser/:id" element={<TransfersToUserID />} />
         <Route path="/adminPanel/chat/:email" element={<AdminChat />} />
         <Route path="/adminPanel/cityRu/:id_for_base" element={<CityIDRu />} />
         <Route path="/adminPanel/cityKz/:id_for_base" element={<CityIDKz />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
-        <Route path="/login" element={<UserInput />} />
+        <Route path="/login/:logout" element={<UserInput />} />
+        <Route path="/login/" element={<UserInput />} />
         <Route path="/registr" element={<UserRegistr />} />
         {/* <Route path="/deal/:id" element={<Deal />} />
         <Route path="/systemmessages" element={<SystemMessages />} />

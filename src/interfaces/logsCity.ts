@@ -4,7 +4,7 @@ export interface ILogsCity {
     action: string,
     user_id: number,
     user_email: string,
-    differences: JSON,
+    differences: string | [string, string, string][],
     id_for_base: number,
     godzina: string,
     miasto_lokal: string,

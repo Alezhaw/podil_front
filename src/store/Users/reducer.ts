@@ -135,6 +135,10 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
             return { ...state, basesRu: payload };
         case reducerTypes.GET_BASES_KZ:
             return { ...state, basesKz: payload };
+        case reducerTypes.GET_LOGS_CITIES:
+            return { ...state, logsCity: payload };
+        case reducerTypes.GET_LOGS_BASES:
+            return { ...state, logsBase: payload };
         default:
             return state;
     }

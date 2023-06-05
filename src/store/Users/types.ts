@@ -24,6 +24,8 @@ export const reducerTypes = {
     GET_CITIES_KZ: 'reducer/GET_CITIES_KZ',
     GET_BASES_RU: 'reducer/GET_BASES_RU',
     GET_BASES_KZ: 'reducer/GET_BASES_KZ',
+    GET_LOGS_CITIES: 'reducer/GET_LOGS_CITIES',
+    GET_LOGS_BASES: 'reducer/GET_LOGS_BASES',
 };
 
 export const sagaTypes = {

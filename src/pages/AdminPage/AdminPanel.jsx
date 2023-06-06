@@ -26,6 +26,7 @@ import CheckSpeakerKz from "./CheckSpeaker/CheckSpeakerKz";
 import CheckScenarioRu from "./CheckScenario/CheckScenarioRu";
 import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
 import LogsCities from "./Logs/LogsCities";
+import LogsBases from "./Logs/LogsBases";
 
 export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
 
@@ -409,6 +410,13 @@ function AdminPanel() {
           {item === 15 ? (
             <div style={{ display: "block" }}>
               <LogsCities />
+            </div>
+          ) : (
+            ""
+          )}
+          {item === 16 ? (
+            <div style={{ display: "block" }}>
+              <LogsBases />
             </div>
           ) : (
             ""

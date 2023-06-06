@@ -4,28 +4,31 @@ import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { Checkbox, Pagination, PaginationItem } from "@mui/material";
 import { StyledInput } from "../../../style/styles";
-import { axiosGetAllLogsCity } from "../../../api/logs";
+import { axiosGetAllLogsBase } from "../../../api/logs";
 import { ContainerForTable } from "./Logs.styled";
-import LogsCitiesTableRow from "../components/LogsCitiesTableRow";
+import LogsBasesTableRow from "../components/LogsBasesTableRow";
 
-function LogsCities() {
+function LogsBases() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [filterUpdate, setFilterUpdate] = useState(true);
   const [filterCreate, setFilterCreate] = useState(true);
   const [filterDelete, setFilterDelete] = useState(true);
-  const { user, logsCity } = useAppSelector((store) => store.user);
+  const [filterPayed, setFilterPayed] = useState(true);
+  const [filterArbitration, setFilterArbitration] = useState(true);
+  const [sortId, setSortId] = useState(true);
+  const { user, logsBase } = useAppSelector((store) => store.user);
   const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [country, setCountry] = useState("");
   const [countrySelectOptions, setCountrySelectOptions] = useState([]);
 
-  async function getCitiesLogs() {
-    const data = await axiosGetAllLogsCity();
+  async function getBasesLogs() {
+    const data = await axiosGetAllLogsBase();
     if (data) {
       dispatch({
-        type: reducerTypes.GET_LOGS_CITIES,
+        type: reducerTypes.GET_LOGS_BASES,
         payload: data,
       });
     }
@@ -37,31 +40,27 @@ function LogsCities() {
 
   useEffect(() => {
     setLogs(
-      logsCity
+      logsBase
         ?.filter((log) => (country ? log.country === country : true))
-        ?.filter((el, i, ar) => (search ? el?.miasto_lokal?.toLowerCase()?.includes(search) : true))
-        ?.filter((item, i, ar) => {
-          return ar.map((el) => `${el.miasto_lokal} ${getCorrectTime(el)}`).indexOf(`${item.miasto_lokal} ${getCorrectTime(item)}`) === i;
-        })
+        ?.filter((el, i, ar) => (search ? el?.base_id?.toLowerCase()?.includes(search) : true))
         ?.filter((checkbox) => (checkbox?.action === "update" && filterUpdate) || (checkbox?.action === "create" && filterCreate) || (checkbox?.action === "delete" && filterDelete))
         ?.sort((a, b) => Number(b.id) - Number(a.id))
-        ?.map((el) => logsCity?.filter((log) => log.miasto_lokal === el.miasto_lokal && getCorrectTime(log) === getCorrectTime(el)))
     );
     setCountrySelectOptions(
-      logsCity
+      logsBase
         ?.filter((item, i, ar) => {
           return ar.map((el) => el.country).indexOf(item.country) === i;
         })
         ?.map((log) => log.country)
     );
-  }, [logsCity, search, country, filterUpdate, filterDelete, filterCreate]);
+  }, [logsBase, search, country, filterUpdate, filterDelete, filterPayed, filterCreate, filterArbitration, sortId]);
 
   useEffect(() => {
-    if (!logsCity[0]) {
-      getCitiesLogs();
+    if (!logsBase[0]) {
+      getBasesLogs();
     }
     // eslint-disable-next-line
-  }, [user, logsCity]);
+  }, [user, logsBase]);
 
   return (
     <>
@@ -106,14 +105,13 @@ function LogsCities() {
                   <th className="default-col">Страна</th>
                   <th className="default-col">Действие</th>
                   <th className="default-col">Изменений</th>
-                  <th className="miasto-col">Город</th>
                   <th className="default-col">Время</th>
                   <th className="default-col">Кто</th>
                 </tr>
               </thead>
               <tbody style={{}}>
                 {logs?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-                  <LogsCitiesTableRow items={item} key={item[0].id} getCorrectTime={getCorrectTime} />
+                  <LogsBasesTableRow item={item} key={item.id} getCorrectTime={getCorrectTime} />
                 ))}
               </tbody>
             </table>
@@ -149,4 +147,4 @@ function LogsCities() {
   );
 }
 
-export default LogsCities;
+export default LogsBases;

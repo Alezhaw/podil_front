@@ -9,4 +9,6 @@ export interface ILogsCity {
     godzina: string,
     miasto_lokal: string,
     time: Date,
+    createdAt: string;
+    updatedAt: string;
 }

@@ -14,9 +14,6 @@ function LogsBases() {
   const [filterUpdate, setFilterUpdate] = useState(true);
   const [filterCreate, setFilterCreate] = useState(true);
   const [filterDelete, setFilterDelete] = useState(true);
-  const [filterPayed, setFilterPayed] = useState(true);
-  const [filterArbitration, setFilterArbitration] = useState(true);
-  const [sortId, setSortId] = useState(true);
   const { user, logsBase } = useAppSelector((store) => store.user);
   const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(0);
@@ -53,7 +50,7 @@ function LogsBases() {
         })
         ?.map((log) => log.country)
     );
-  }, [logsBase, search, country, filterUpdate, filterDelete, filterPayed, filterCreate, filterArbitration, sortId]);
+  }, [logsBase, search, country, filterUpdate, filterDelete, filterCreate]);
 
   useEffect(() => {
     if (!logsBase[0]) {

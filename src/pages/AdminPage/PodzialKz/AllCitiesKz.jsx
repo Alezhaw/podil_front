@@ -121,7 +121,10 @@ function AllCitiesKz() {
           id="Search"
           value={search}
           placeholder="Поиск"
-          onChange={(e) => setSearch(e.target.value?.toLowerCase())}
+          onChange={(e) => {
+            setPage(0);
+            setSearch(e.target.value?.toLowerCase());
+          }}
           autoComplete="off"
           required
         />
@@ -164,7 +167,7 @@ function AllCitiesKz() {
         </StyledDivHeader>
       </div>
 
-      <div style={{ overflowX: "auto", textAlign: "center"}}>
+      <div style={{ overflowX: "auto", textAlign: "center" }}>
         <Container style={{ padding: "0 10px", margin: "20px 0 0" }}>
           <table>
             <thead style={{ background: "#5a5959" }}>
@@ -232,7 +235,7 @@ function AllCitiesKz() {
                 <th className="basesTableCell" style={{ minWidth: "87px" }}>
                   Ilość Zaproszeń
                 </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black"}}>
+                <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
                   Zgody inne miasto
                 </th>
                 <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
@@ -340,6 +343,7 @@ function AllCitiesKz() {
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}
+        page={Number(page + 1)}
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>

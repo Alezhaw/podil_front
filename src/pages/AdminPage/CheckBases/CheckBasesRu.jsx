@@ -98,7 +98,10 @@ function CheckBasesRu() {
           id="Search"
           value={search}
           placeholder="Поиск"
-          onChange={(e) => setSearch(e.target.value?.toLowerCase())}
+          onChange={(e) => {
+            setPage(0);
+            setSearch(e.target.value?.toLowerCase());
+          }}
           autoComplete="off"
           required
         />
@@ -155,6 +158,7 @@ function CheckBasesRu() {
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}
+        page={Number(page + 1)}
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>

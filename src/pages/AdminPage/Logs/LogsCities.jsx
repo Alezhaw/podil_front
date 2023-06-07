@@ -73,7 +73,10 @@ function LogsCities() {
           id="Search"
           value={search}
           placeholder="Поиск"
-          onChange={(e) => setSearch(e.target.value?.toLowerCase())}
+          onChange={(e) => {
+            setPage(0);
+            setSearch(e.target.value?.toLowerCase());
+          }}
           autoComplete="off"
           required
         />

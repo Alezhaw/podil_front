@@ -76,6 +76,14 @@ export const ContainerForTable = styled.div`
     }
   }
 
+  .col-padding {
+    padding: 7.5px 0;
+  }
+
+.row-borders {
+  border: 1px solid #cdcdcd;
+}
+
   .footer-buttons {
     display: flex;
     align-items: center;

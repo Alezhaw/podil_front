@@ -5,13 +5,12 @@ function LogsBasesTableRow({ item, getCorrectTime }) {
 
   return (
     <>
-      <tr className="clickable" key={item.id} onClick={() => setOpen((prev) => !prev)}>
-        <th className="default-col not-bold">{item.base_id}</th>
+      <tr className="clickable row-borders" key={item.id} onClick={() => setOpen((prev) => !prev)}>
+        <th className="default-col not-bold col-padding">{item.base_id}</th>
         <th className="default-col not-bold">{item.id_base}</th>
         <th className="default-col not-bold">{item.country}</th>
         <th className="default-col not-bold">{item.action}</th>
         <th className="default-col not-bold">{item.differencesLength}</th>
-        {/* <th className="miasto-col not-bold">{item.miasto_lokal}</th> */}
         <th className="default-col not-bold">{getCorrectTime(item)}</th>
         <th className="default-col not-bold">{item.user_email}</th>
       </tr>

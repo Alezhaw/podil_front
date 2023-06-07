@@ -138,27 +138,6 @@ function AdminPanel() {
           <button onClick={(e) => visibleItem(e.currentTarget.name)} name="0" className={item === 0 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4>ВСЕ ЮЗЕРЫ</h4>
           </button>
-          {/* <button onClick={(e) => visibleItem(e)} name="1" className={item === 1 ? 'block_user_panel activ-block-admin' : 'block_user_panel'} style={{ color: checkDeals ? 'red' : 'white' }}>
-                        <h4>ВСЕ СДЕЛКИ</h4>
-                    </button>
-                    <button onClick={(e) => visibleItem(e)} name="2" className={item === 2 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
-                        <h4>ПОПОЛНЕНИЯ</h4>
-                    </button>
-                    <button onClick={(e) => visibleItem(e)} name="3" className={item === 3 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
-                        <h4>ПЕРЕВОДЫ</h4>
-                    </button>
-                    <button onClick={(e) => visibleItem(e)} name="4" className={item === 4 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
-                        <h4 style={{ color: checkNewMessage ? 'red' : 'white' }}>ВСЕ ЧАТЫ</h4>
-                    </button>
-                    <button onClick={(e) => visibleItem(e)} name="5" className={item === 5 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
-                        <h4>
-                            {' '}
-                            СМЕНА ИМЕНИ САЙТА <br /> И КОШЕЛЬКА{' '}
-                        </h4>
-                    </button>
-                    <button onClick={(e) => visibleItem(e)} name="6" className={item === 6 ? 'block_user_panel activ-block-admin' : 'block_user_panel'}>
-                        <h4> НАСТРОЙКИ БОТА </h4>
-                    </button> */}
           <button onClick={(e) => visibleItem(e.currentTarget.name)} name="7" className={item === 7 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
             <h4> ПОДИЛ РУ </h4>
           </button>
@@ -352,7 +331,7 @@ function AdminPanel() {
             ""
           )}
           {item === 7 ? (
-            <div style={{ display: "block" }}>
+            <div style={{ display: "block", width: "100%" }}>
               <AllCitiesRu />
             </div>
           ) : (

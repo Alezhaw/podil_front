@@ -6,13 +6,13 @@ function LogsCitiesTableRow({ items, getCorrectTime }) {
 
   return (
     <>
-      <tr className="clickable" key={generalItem.id} onClick={() => setOpen((prev) => !prev)}>
+      <tr className="clickable row-borders" key={generalItem.id} onClick={() => setOpen((prev) => !prev)}>
         <th className="default-col not-bold">{generalItem.id}</th>
         <th className="default-col not-bold">{generalItem.id_for_base}</th>
         <th className="default-col not-bold">{generalItem.country}</th>
         <th className="default-col not-bold">{generalItem.action}</th>
         <th className="default-col not-bold">{generalItem.differencesLength}</th>
-        <th className="miasto-col not-bold">{generalItem.miasto_lokal}</th>
+        <th className="miasto-col not-bold col-padding">{generalItem.miasto_lokal}</th>
         <th className="default-col not-bold">{getCorrectTime(generalItem)}</th>
         <th className="default-col not-bold">{generalItem.user_email}</th>
       </tr>

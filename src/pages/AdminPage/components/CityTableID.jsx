@@ -31,12 +31,12 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
 
   return (
     <Container style={{ padding: "0px", margin: "0px" }}>
-      <table style={{ textAlign: "center"}}>
-        <thead  style={{ background: "#5a5959" }}>
+      <table style={{ textAlign: "center" }}>
+        <thead style={{ background: "#5a5959" }}>
           <tr>
             <th>
               {currentCities.length < 3 ? (
-                <Button style={{color: "white", fontSize: "30px" }} onClick={async () => addTime(setCity, currentCities)}>
+                <Button style={{ color: "white", fontSize: "30px" }} onClick={async () => addTime(setCity, currentCities)}>
                   +
                 </Button>
               ) : (
@@ -59,7 +59,9 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
             <th className="basesTableCell">Weryfikacja DKJ</th>
             <th className="basesTableCell">Podpinanie scenariuszy</th>
             <th className="basesTableCell">Limit regalo</th>
-            <th className="basesTableCell">Rekodow na 1 zgode</th>
+            <th className="basesTableCell" style={{ background: "#c8ff03", color: "black" }}>
+              Rekodow na 1 zgode
+            </th>
             <th className="basesTableCell">WB 1</th>
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">Ilość Zaproszeń</th>
@@ -80,6 +82,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_1_data: e.target.value })))}
                       className="tableInput"
+                      style={{ color: "white" }}
                       type="text"
                       autoComplete="off"
                       value={formatDate(currentCities[0]?.dzien_1_data || "") || ""}
@@ -104,6 +107,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_2_data: e.target.value })))}
                       className="tableInput"
+                      style={{ color: "white" }}
                       type="text"
                       autoComplete="off"
                       value={formatDate(currentCities[0]?.dzien_2_data || "") || ""}
@@ -128,6 +132,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_3_data: e.target.value })))}
                       className="tableInput"
+                      style={{ color: "white" }}
                       type="text"
                       autoComplete="off"
                       value={formatDate(currentCities[0]?.dzien_3_data || "") || ""}
@@ -177,7 +182,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
               <td>
                 {" "}
                 <Button
-                  style={{background: "lightgreen",  color: "white" }}
+                  style={{ background: "lightgreen", color: "black" }}
                   onClick={async () => {
                     let checkConfirm = window.confirm("Вы уверены?");
                     if (checkConfirm) {
@@ -233,7 +238,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
                     className="tableInput"
@@ -247,7 +252,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, projekt: e.target.value })))}
                     className="tableInput"
@@ -383,7 +388,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, present: e.target.value })))}
                     className="tableInput"

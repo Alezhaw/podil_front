@@ -5,8 +5,8 @@ import { reducerTypes } from "../../../store/Users/types";
 import { Checkbox, Pagination, PaginationItem } from "@mui/material";
 import { StyledInput } from "../../../style/styles";
 import { axiosGetAllLogsCity } from "../../../api/logs";
-import { ContainerForTable } from "./Logs.styled";
-import LogsCitiesTableRow from "../components/LogsCitiesTableRow";
+import { ContainerForTable } from "../components/Table.styled";
+import LogsCitiesTableRow from "./LogsCitiesTableRow";
 
 function LogsCities() {
   const dispatch = useDispatch();

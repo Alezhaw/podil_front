@@ -107,6 +107,14 @@ export const ContainerForTable = styled.div`
     max-width: 86px;
   }
 
+  .coming-check-col {
+    background: #f2ffac;
+  }
+
+  .project-check-col {
+    background: lightgreen;
+  }
+
   .miasto-col {
     min-width: 250px;
     max-width: 250px;

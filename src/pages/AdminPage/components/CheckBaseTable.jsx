@@ -5,123 +5,56 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck }) {
   const navigate = useNavigate();
 
   return (
-    <Container style={{ padding: "0px", margin: "0px" }}>
-      <table style={{ textAlign: "center" }}>
-        <thead>
-          <tr style={{ height: "26.8px" }}>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody style={{ background: "rgba(90, 89, 89, 0.75)" }}>
-          {currentCities?.map((item, index) => (
-            <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/${country}/${item?.id_for_base}`)}>
-                  <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-                    {item.id_for_base || ""}
-                  </div>
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
-                  <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-                    {item.l_p || ""}
-                  </div>
-                </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-                  {item.godzina || ""}
-                </div>
-              </td>
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ width: "89.3px", textAlign: "center" }}>
-                  {item.os_poj || ""}
-                </div>
-              </td>
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ width: "65.91px", textAlign: "center" }}>
-                  {item.pary || ""}
-                </div>
-              </td>
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "144.06px" }}>
-                  <input
-                    // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
-                    className="tableInput"
-                    style={{ width: "25px", height: "25px" }}
-                    type="checkbox"
-                    autoComplete="off"
-                    checked={!!item.wyjasnienia}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
-                  <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-                    {item.projekt || ""}
-                  </div>
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
-                    {item.miasto_lokal || ""}
-                  </div>
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "114.67px" }}>
-                  <div className="tableInput" style={{ textAlign: "center" }}>
-                    {item.timezone || 0}
-                  </div>
-                </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-                  {item.limit || ""}
-                </div>
-              </td>
-              {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  <input
-                    onChange={(e) => changeCheck(e.target.checked, item.id_for_base)}
-                    className="tableInput"
-                    style={{ width: "25px", height: "25px" }}
-                    type="checkbox"
-                    autoComplete="off"
-                    checked={!!item[checkKey]}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </Container>
+    <>
+      {currentCities?.map((item, index) => (
+        <tr className="row-borders" key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
+          {index === 0 ? (
+            <th
+              rowspan={`${currentCities.length}`}
+              className="default-col not-bold clickable row-borders"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/adminPanel/${country}/${item?.id_for_base}`)}
+            >
+              {item.id_for_base || ""}
+            </th>
+          ) : null}
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="default-col not-bold row-borders">
+              {item.l_p || ""}
+            </th>
+          ) : null}
+          <th className="default-col not-bold row-borders">{item.godzina || ""}</th>
+          <th className="default-col not-bold row-borders">{item.os_poj || ""}</th>
+          <th className="default-col not-bold row-borders">{item.pary || ""}</th>
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="coming-col not-bold row-borders coming-check-col">
+              <input style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.wyjasnienia} />
+            </th>
+          ) : null}
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="default-col not-bold row-borders project-check-col">
+              {item.projekt || ""}
+            </th>
+          ) : null}
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="miasto-col not-bold row-borders">
+              {item.miasto_lokal || ""}
+            </th>
+          ) : null}
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="timezone-col not-bold row-borders">
+              {item.timezone || 0}
+            </th>
+          ) : null}
+          <th className="default-col not-bold row-borders">{item.limit || ""}</th>
+          {index === 0 ? (
+            <th rowspan={`${currentCities.length}`} className="default-col not-bold row-borders">
+              <input onChange={(e) => changeCheck(e.target.checked, item.id_for_base)} style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item[checkKey]} />
+            </th>
+          ) : null}
+        </tr>
+      ))}
+    </>
   );
 }
 

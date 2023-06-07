@@ -8,8 +8,8 @@ import PaginationItem from "@mui/material/PaginationItem";
 import { axiosGetAllCitiesRu, axiosGetAllBasesRu, axiosChangeCheckRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
-import { Container } from "@material-ui/core";
 import CheckBaseTable from "../components/CheckBaseTable";
+import { ContainerForTable } from "../components/Table.styled";
 
 function CheckBasesRu() {
   const dispatch = useDispatch();
@@ -120,53 +120,32 @@ function CheckBasesRu() {
       </div>
 
       <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <Container style={{ padding: "0 10px", margin: "20px 0 0" }}>
-          <table>
-            <thead style={{ background: "rgba(90, 89, 89, 0.75)" }}>
-              <tr>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  ID
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  L.p
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  Godzina
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  Приход всего
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  Пар всего
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "86px" }}>
-                  Проверка прихода
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  КР
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "250px" }}>
-                  Miasto / Lokal
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "78px" }}>
-                  Часовой Пояс
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  Лимит
-                </th>
-                <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                  готово
-                </th>
-              </tr>
-            </thead>
-          </table>
-        </Container>
-        {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
-        {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-          <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-            <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={changeCheckRu} />
+        <ContainerForTable>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th className="default-col"> ID</th>
+                  <th className="default-col">L.p</th>
+                  <th className="default-col">Godzina</th>
+                  <th className="default-col">Приход всего</th>
+                  <th className="default-col">Пар всего</th>
+                  <th className="coming-col">Проверка прихода</th>
+                  <th className="default-col">КР</th>
+                  <th className="miasto-col">Miasto / Lokal</th>
+                  <th className="timezone-col">Часовой Пояс</th>
+                  <th className="default-col">Лимит</th>
+                  <th className="default-col">Готово</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+                  <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={changeCheckRu} />
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
+        </ContainerForTable>
       </div>
 
       <Pagination

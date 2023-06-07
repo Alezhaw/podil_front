@@ -74,6 +74,7 @@ function CheckBasesRu() {
         )
         ?.map((el) => citiesRu?.filter((time) => time.id_for_base === el.id_for_base))
         ?.sort((a, b) => (sortId ? Number(b[0].id_for_base) - Number(a[0].id_for_base) : Number(a[0].id_for_base) - Number(b[0].id_for_base)))
+        ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
   }, [citiesRu, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
 

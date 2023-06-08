@@ -8,10 +8,10 @@ import PaginationItem from "@mui/material/PaginationItem";
 import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz, axiosGetAllBasesKz } from "../../../api/podzialKz";
 import { StyledInput } from "../../../style/styles";
 import { useNavigate } from "react-router-dom";
-import { StyledDiv, StyledDivHeader } from "../Users/style";
+import { StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
-import { Container } from "@material-ui/core";
+import { ContainerForTable } from "../components/Table.styled";
 
 function AllCitiesKz() {
   const dispatch = useDispatch();
@@ -98,6 +98,7 @@ function AllCitiesKz() {
         )
         ?.map((el) => citiesKz?.filter((time) => time.id_for_base === el.id_for_base))
         ?.sort((a, b) => (sortId ? Number(b[0].id_for_base) - Number(a[0].id_for_base) : Number(a[0].id_for_base) - Number(b[0].id_for_base)))
+        ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
   }, [citiesKz, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
 
@@ -168,10 +169,10 @@ function AllCitiesKz() {
       </div>
 
       <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <Container style={{ padding: "0 10px", margin: "20px 0 0" }}>
+        <ContainerForTable style={{ padding: "0 10px", margin: "20px 0 0" }}>
           <table>
             <thead style={{ background: "#5a5959" }}>
-              <tr>
+              <tr style={{ background: "none" }}>
                 <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
                   ID
                 </th>
@@ -239,33 +240,33 @@ function AllCitiesKz() {
                   Zgody inne miasto
                 </th>
                 <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       1 dzień
                     </th>
                   </tr>
                 </th>
                 <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       2 dzień
                     </th>
                   </tr>
                 </th>
                 <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       3 dzień
                     </th>
@@ -275,7 +276,7 @@ function AllCitiesKz() {
                   <th colspan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
                     VIP
                   </th>
-                  <tr style={{ height: "55px" }}>
+                  <tr style={{ height: "55px", background: "none" }}>
                     <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>ID</th>
                     <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>Формат</th>
                     <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Лимит</th>
@@ -291,7 +292,7 @@ function AllCitiesKz() {
                   <th colspan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     WYNIKI POTWIERDZEŃ
                   </th>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black", minWidth: "68.8px", height: "55px" }}>Zgoda</th>
                     <th style={{ borderRight: "1px solid black", minWidth: "68.8px" }}>Odmowy</th>
                     <th style={{ minWidth: "68.8px" }}>Kropki</th>
@@ -301,7 +302,7 @@ function AllCitiesKz() {
                   <th colspan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     SMS
                   </th>
-                  <tr>
+                  <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black", maxWidth: "70.8px", height: "55px" }}>Umawianie</th>
                     <th style={{ maxWidth: "95px" }}>Potwierdzanie</th>
                   </tr>
@@ -311,13 +312,13 @@ function AllCitiesKz() {
                 </th>
               </tr>
             </thead>
+            <tbody>
+              {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+                <AllCityTable currentCities={item} country="cityKz" changeDeleteCities={changeDeleteCities} key={index} />
+              ))}
+            </tbody>
           </table>
-        </Container>
-        {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-          <div className="tabl-flex-admin-user" style={{ marginTop: "5px", borderRadius: "5px", background: "none" }} key={item[0]?.id}>
-            <AllCityTable currentCities={item} country="cityKz" changeDeleteCities={changeDeleteCities} />
-          </div>
-        ))}
+        </ContainerForTable>
       </div>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div

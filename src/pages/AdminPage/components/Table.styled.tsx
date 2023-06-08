@@ -102,9 +102,54 @@ export const ContainerForTable = styled.div`
     max-width: 30px;
   }
 
+  .rekodow-col {
+    min-width: 78.4px;
+    max-width: 78.4px;
+  }
+
+  .checkbox-col {
+    min-width: 85px;
+    max-width: 85px;
+  }
+
   .coming-col {
     min-width: 86px;
     max-width: 86px;
+  }
+
+  .Ilość-col {
+    min-width: 87px;
+    max-width: 87px;
+  }
+  
+  .weryfikacja-col {
+    min-width: 94px;
+    max-width: 94px;
+  }
+
+  .podpinanie-col {
+    min-width: 96px;
+    max-width: 96px;
+  }
+
+  .scenariusze-col {
+    min-width: 97.5px;
+    max-width: 97.5px;
+  }
+
+  .limit-col {
+    min-width: 100.8px;
+    max-width: 100.8px;
+  }
+
+  .dzien-col {
+    min-width: 130px;
+    max-width: 130px;
+  }
+
+  .dodawanie-col {
+    min-width: 140px;
+    max-width: 140px;
   }
 
   .coming-check-col {

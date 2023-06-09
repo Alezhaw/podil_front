@@ -5,7 +5,6 @@ import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
 import { axiosChangeDeal, axiosGetAllDeal } from "../../../api/deal";
 import { dealStatusMock } from "../../../components/mock/OutputMock";
-import { socketAdmin } from "../AdminPanel";
 import { StyledDiv, StyledDivHeader } from "../Users/style";
 
 function DealID() {
@@ -35,11 +34,11 @@ function DealID() {
   function sendAdminMessage(message) {
     if (!currentDeal?.id || !message) return alert("Сделка не найдена");
     const time = new Date().toLocaleString().replaceAll(",", "");
-    socketAdmin.emit("sendAdminMessage", {
-      dealId: currentDeal.id,
-      message,
-      time,
-    });
+    // socketAdmin.emit("sendAdminMessage", {
+    //   dealId: currentDeal.id,
+    //   message,
+    //   time,
+    // });
   }
 
   function setDescpittions(e) {
@@ -65,26 +64,12 @@ function DealID() {
   }
 
   async function changeDeal() {
-    if (descriptionDeal?.length < 30)
-      return alert("Описание должно состоять минимум из 30 символов");
-    if (!nameDeal || !sumDeal || !statusDeal)
-      return alert("Введите все данные");
+    if (descriptionDeal?.length < 30) return alert("Описание должно состоять минимум из 30 символов");
+    if (!nameDeal || !sumDeal || !statusDeal) return alert("Введите все данные");
     if (sumDeal < 2000) return alert("Минимальная сумма 2000 рублей");
-    const result = await axiosChangeDeal(
-      currentDeal?.id,
-      nameDeal,
-      sumDeal,
-      Number(statusDeal),
-      descriptionDeal,
-      user?.email,
-      user?.password
-    );
+    const result = await axiosChangeDeal(currentDeal?.id, nameDeal, sumDeal, Number(statusDeal), descriptionDeal, user?.email, user?.password);
     if (result) {
-      sendAdminMessage(
-        `Гарант сменил статус сделки на: ${dealStatusMock[
-          statusDeal - 1
-        ]?.toLowerCase()}`
-      );
+      sendAdminMessage(`Гарант сменил статус сделки на: ${dealStatusMock[statusDeal - 1]?.toLowerCase()}`);
       getAllDeals();
       return alert("Успешно");
     }
@@ -104,10 +89,10 @@ function DealID() {
   }, [allDeals]);
 
   useEffect(() => {
-    if (user?.role === 'USER' || user?.role === null || user?.role === '' || user?.role === undefined) {
-      navigate("/")
+    if (user?.role === "USER" || user?.role === null || user?.role === "" || user?.role === undefined) {
+      navigate("/");
     }
-  }, [user?.role, navigate, user])
+  }, [user?.role, navigate, user]);
 
   useEffect(() => {
     getAllDeals();
@@ -142,97 +127,43 @@ function DealID() {
               color: "white",
             }}
           >
-            <div
-              onClick={() => navigate("/adminPanel")}
-              className="tabl-flex-admin-button-global2"
-            >
+            <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
               Вернуться назад
             </div>
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ borderRadius: "5px" }} className="tabl-flex-admin">
-              <StyledDivHeader size="50px" >
-                ID
-              </StyledDivHeader>
-              <StyledDivHeader size="155px" >
-                Название сделки
-              </StyledDivHeader>
-              <StyledDivHeader size="155px" >
-                Имя покупателя
-              </StyledDivHeader>
-              <StyledDivHeader size="155px"  >
-                Имя продавца
-              </StyledDivHeader>
-              <StyledDivHeader size="210px"  >
-                Почта покупателя
-              </StyledDivHeader>
-              <StyledDivHeader size="155px" >
-                Почта продавца
-              </StyledDivHeader>
-              <StyledDivHeader size="155px" >
-                Cумма сделки
-              </StyledDivHeader>
-              <StyledDivHeader size="155px"  >
-                Статус сделки
-              </StyledDivHeader>
-              <StyledDivHeader size="210px"  >
-                Описание
-              </StyledDivHeader>
+              <StyledDivHeader size="50px">ID</StyledDivHeader>
+              <StyledDivHeader size="155px">Название сделки</StyledDivHeader>
+              <StyledDivHeader size="155px">Имя покупателя</StyledDivHeader>
+              <StyledDivHeader size="155px">Имя продавца</StyledDivHeader>
+              <StyledDivHeader size="210px">Почта покупателя</StyledDivHeader>
+              <StyledDivHeader size="155px">Почта продавца</StyledDivHeader>
+              <StyledDivHeader size="155px">Cумма сделки</StyledDivHeader>
+              <StyledDivHeader size="155px">Статус сделки</StyledDivHeader>
+              <StyledDivHeader size="210px">Описание</StyledDivHeader>
             </div>
             {
-              <div
-                style={{ marginTop: "5px", borderRadius: "5px" }}
-                className="tabl-flex-admin-user"
-                key={currentDeal?.email}
-              >
-                <StyledDiv size="50px">
-                  {currentDeal?.id}
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {nameDeal}
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {currentDeal?.buyerNickname}
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {currentDeal?.sellerNickname}
-                </StyledDiv>
-                <StyledDiv size="210px">
-                  {currentDeal?.buyer}p
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {currentDeal?.seller}
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {sumDeal}
-                </StyledDiv>
-                <StyledDiv size="155px">
-                  {dealStatusMock[statusDeal - 1]}
-                </StyledDiv>
-                <StyledDiv size="210px">
-                  {descriptionDeal}
-                </StyledDiv>
+              <div style={{ marginTop: "5px", borderRadius: "5px" }} className="tabl-flex-admin-user" key={currentDeal?.email}>
+                <StyledDiv size="50px">{currentDeal?.id}</StyledDiv>
+                <StyledDiv size="155px">{nameDeal}</StyledDiv>
+                <StyledDiv size="155px">{currentDeal?.buyerNickname}</StyledDiv>
+                <StyledDiv size="155px">{currentDeal?.sellerNickname}</StyledDiv>
+                <StyledDiv size="210px">{currentDeal?.buyer}p</StyledDiv>
+                <StyledDiv size="155px">{currentDeal?.seller}</StyledDiv>
+                <StyledDiv size="155px">{sumDeal}</StyledDiv>
+                <StyledDiv size="155px">{dealStatusMock[statusDeal - 1]}</StyledDiv>
+                <StyledDiv size="210px">{descriptionDeal}</StyledDiv>
               </div>
             }
             <div className="pages-user-box-2" style={{ position: "relative" }}>
-              <div
-                className="tabl-flex-admin-button-global"
-                style={{ position: "absolute", bottom: "0px", left: "60px" }}
-              >
-                <Link
-                  style={{ color: "white", textDecoration: "none" }}
-                  to={`/deal/${currentDeal?.id}`}
-                >
+              <div className="tabl-flex-admin-button-global" style={{ position: "absolute", bottom: "0px", left: "60px" }}>
+                <Link style={{ color: "white", textDecoration: "none" }} to={`/deal/${currentDeal?.id}`}>
                   Зайти в чат
                 </Link>
               </div>
-              <div
-                style={{ flexDirection: "column" }}
-                className="pages-user-block"
-              >
-                <h6 style={{ margin: "0", textAlign: "center" }}>
-                  Изменение названия сделки
-                </h6>
+              <div style={{ flexDirection: "column" }} className="pages-user-block">
+                <h6 style={{ margin: "0", textAlign: "center" }}>Изменение названия сделки</h6>
                 <input
                   onChange={(e) => setNameDeal(e.target.value)}
                   className="tabl-flex-admin-user-scores "
@@ -245,13 +176,8 @@ function DealID() {
                   value={nameDeal || ""}
                 />
               </div>
-              <div
-                style={{ flexDirection: "column" }}
-                className="pages-user-block"
-              >
-                <h6 style={{ margin: "0", textAlign: "center" }}>
-                  Изменение суммы сделки
-                </h6>
+              <div style={{ flexDirection: "column" }} className="pages-user-block">
+                <h6 style={{ margin: "0", textAlign: "center" }}>Изменение суммы сделки</h6>
                 <input
                   onChange={sumFull}
                   className="tabl-flex-admin-user-scores "
@@ -265,13 +191,8 @@ function DealID() {
                 />
                 <h6 style={{ overflowWrap: "anywhere" }}>{errorSumDeal}</h6>
               </div>
-              <div
-                style={{ flexDirection: "column" }}
-                className="pages-user-block"
-              >
-                <h6 style={{ margin: "0", textAlign: "center" }}>
-                  Изменение статуса сделки
-                </h6>
+              <div style={{ flexDirection: "column" }} className="pages-user-block">
+                <h6 style={{ margin: "0", textAlign: "center" }}>Изменение статуса сделки</h6>
                 <select
                   onChange={(e) => setStatusDeal(e.target.value)}
                   style={{ color: "white", borderRadius: "5px" }}
@@ -286,13 +207,8 @@ function DealID() {
                   <option value="5">{dealStatusMock[4]}</option>
                 </select>
               </div>
-              <div
-                style={{ flexDirection: "column" }}
-                className="pages-user-block"
-              >
-                <h6 style={{ margin: "0", textAlign: "center" }}>
-                  Изменение описания сделки
-                </h6>
+              <div style={{ flexDirection: "column" }} className="pages-user-block">
+                <h6 style={{ margin: "0", textAlign: "center" }}>Изменение описания сделки</h6>
                 <input
                   onChange={setDescpittions}
                   className="tabl-flex-admin-user-scores "
@@ -315,10 +231,7 @@ function DealID() {
                 justifyContent: "center",
               }}
             >
-              <div
-                className="tabl-flex-admin-button-global"
-                onClick={changeDeal}
-              >
+              <div className="tabl-flex-admin-button-global" onClick={changeDeal}>
                 Внести изменения
               </div>
             </div>

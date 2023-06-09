@@ -1,7 +1,6 @@
 import "../../style/body.css";
 import { useAppSelector } from "../../store/reduxHooks";
 import { useEffect } from "react";
-import { socket } from "../../App";
 import PromoDescription from "./BodyComponents/PromoDescription";
 import PromoSteps from "./BodyComponents/PromoSteps";
 import PromoteSlider from "./BodyComponents/PromoteSlider";
@@ -44,7 +43,7 @@ function Body() {
   useEffect(() => {
     if (!user?.email) return;
     const time = new Date().toLocaleString().replaceAll(",", "");
-    socket.emit("location", { email: user?.email, location: document?.location?.pathname, time });
+    //socket.emit("location", { email: user?.email, location: document?.location?.pathname, time });
     // eslint-disable-next-line
   }, [user]);
 

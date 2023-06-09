@@ -10,7 +10,6 @@ import { axiosGetOneChat } from "../../api/adminChat";
 import { useAppSelector } from "../../store/reduxHooks";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../store/Users/types";
-import { socket } from "../../App";
 import RadioGroupRating from "./RadioGroupRating";
 import Face4Icon from "@mui/icons-material/Face4";
 import PortraitIcon from "@mui/icons-material/Portrait";
@@ -66,7 +65,7 @@ function Chat() {
         return alert("Отправлять можно только изображения!");
       }
       if (!message && reader?.result === "data:") return alert("Сообщение не может быть пустым");
-      socket.emit("sendMessageToAdmin", { nickname: user?.nickname, email: user?.email, time, message, image: reader?.result || null });
+      //socket.emit("sendMessageToAdmin", { nickname: user?.nickname, email: user?.email, time, message, image: reader?.result || null });
       localStorage.setItem("chatrate", "");
       localStorage.setItem("messagetoadminLength", String(messageToAdmin?.length + 1));
       setUserMessage("");
@@ -86,40 +85,31 @@ function Chat() {
   }, [user]);
 
   useEffect(() => {
-    socket.emit("join", { name: user?.email, room: user?.email });
+    // socket.emit("join", { name: user?.email, room: user?.email });
   }, [user]);
 
-  // useEffect(() => {
-  //     if (!messageToAdmin[7]) return;
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(new Blob(messageToAdmin[7]?.image.data));
-  //     reader.onload = () => {
-  //         setImageUrl(reader.result);
-  //     };
-  // }, [messageToAdmin]);
+  //   useEffect(() => {
+  //     socket.on("messageToAdmin", ({ data }) => {
+  //       if (messageToAdmin?.includes(data)) return;
+  //       dispatch({
+  //         type: reducerTypes.GET_MESSAGE_TO_ADMIN,
+  //         payload: [...messageToAdmin, data],
+  //       });
+  //       setNewMessage(true);
+  //       setChatStatus(1);
+  //     });
+  //     // eslint-disable-next-line
+  //   }, [messageToAdmin]);
 
-  useEffect(() => {
-    socket.on("messageToAdmin", ({ data }) => {
-      if (messageToAdmin?.includes(data)) return;
-      dispatch({
-        type: reducerTypes.GET_MESSAGE_TO_ADMIN,
-        payload: [...messageToAdmin, data],
-      });
-      setNewMessage(true);
-      setChatStatus(1);
-    });
-    // eslint-disable-next-line
-  }, [messageToAdmin]);
-
-  useEffect(() => {
-    socket.on("updateChatStatus", ({ data }) => {
-      if (data) {
-        getMessagesToAdmin();
-        getChatStatus();
-      }
-    });
-    // eslint-disable-next-line
-  }, []);
+  //   useEffect(() => {
+  //     socket.on("updateChatStatus", ({ data }) => {
+  //       if (data) {
+  //         getMessagesToAdmin();
+  //         getChatStatus();
+  //       }
+  //     });
+  //     // eslint-disable-next-line
+  //   }, []);
 
   useEffect(() => {
     if (chatRef.current) {

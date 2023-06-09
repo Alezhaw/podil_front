@@ -27,7 +27,7 @@ import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
 import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 
-export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
+//export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
 
 function AdminPanel() {
   const dispatch = useDispatch();
@@ -92,26 +92,26 @@ function AdminPanel() {
     // eslint-disable-next-line
   }, [adminChat]);
 
-  useEffect(() => {
-    socketAdmin.on("newMessage", ({ data }) => {
-      if (data) {
-        getAllChats();
-      }
-    });
-    socketAdmin.on("newMessage", ({ data }) => {
-      playAudio();
-    });
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   socketAdmin.on("newMessage", ({ data }) => {
+  //     if (data) {
+  //       getAllChats();
+  //     }
+  //   });
+  //   socketAdmin.on("newMessage", ({ data }) => {
+  //     playAudio();
+  //   });
+  //   // eslint-disable-next-line
+  // }, []);
 
   useEffect(() => {
     if (!user?.role) {
       navigate("/login");
     }
     //getAllChats();
-    if (user?.email) {
-      socketAdmin.emit("join", { name: "1", room: "1" });
-    }
+    // if (user?.email) {
+    //   socketAdmin.emit("join", { name: "1", room: "1" });
+    // }
     // eslint-disable-next-line
   }, [user]);
 

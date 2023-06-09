@@ -18,7 +18,7 @@ import Chat from "./pages/ChatComponent/Chat";
 import CityIDRu from "./pages/AdminPage/PodzialRu/CityIDRu";
 import CityIDKz from "./pages/AdminPage/PodzialKz/CityIDKz";
 
-export const socket = io.connect(`https://back-nnk5.onrender.com`);
+//export const socket = io.connect(`https://back-nnk5.onrender.com`);
 
 function App() {
   const audioPlayer = useRef(null);
@@ -34,9 +34,9 @@ function App() {
   }
 
   useEffect(() => {
-    socket.on("messageToAdmin", ({ data }) => {
-      if (!data?.nickname) playAudio();
-    });
+    // socket.on("messageToAdmin", ({ data }) => {
+    //   if (!data?.nickname) playAudio();
+    // });
     // eslint-disable-next-line
   }, []);
 

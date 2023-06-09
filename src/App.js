@@ -1,25 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import UserRegistr from "./pages/UserRegistr/UserRegistr";
 import UserInput from "./pages/UserInput/UserInput";
-import UserSoglos from "./pages/UserSoglos/UserSoglos";
 import HomePage from "./pages/HomePage/HomePage";
-import Settings from "./pages/Settings/Settings";
-import Makedeal from "./pages/Makedeal/Makedeal";
-import Deals from "./pages/Deals/Deals";
-import Output from "./pages/Output/Output";
-import Payments from "./pages/Payment/Payments";
-import SystemMessages from "./pages/SystemMassages/SystemMessages";
-import Deal from "./pages/Deals/Deal";
-import Howitwork from "./pages/Howitwork/Howitwork";
 import AdminPanel from "./pages/AdminPage/AdminPanel";
-import BlockMaseges from "./pages/BlockMasseges/BlockMaseges";
-import Sertificates from "./pages/Sertificates/Sertificates";
 import UserID from "./pages/AdminPage/Users/UserID";
 import DealID from "./pages/AdminPage/Deals/DealID";
 import RefillID from "./pages/AdminPage/Refills/RefillID";
 import TransfersID from "./pages/AdminPage/Transfers/ChildPages/TransfersID";
 import TransfersToUserID from "./pages/AdminPage/Transfers/ChildPages/TransfersToUserID";
-import Disputes from "./pages/Disputes/Disputes";
 import AdminChat from "./pages/AdminPage/Chats/AdminChat";
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
@@ -71,18 +59,6 @@ function App() {
         <Route path="/login/:logout" element={<UserInput />} />
         <Route path="/login/" element={<UserInput />} />
         <Route path="/registr" element={<UserRegistr />} />
-        {/* <Route path="/deal/:id" element={<Deal />} />
-        <Route path="/systemmessages" element={<SystemMessages />} />
-        <Route path="/blockMaseges" element={<BlockMaseges />} />
-        <Route path="/payments" element={<Payments />} />
-        <Route path="/output" element={<Output />} />
-        <Route path="/howitwork" element={<Howitwork />} />
-        <Route path="/deals" element={<Deals />} />
-        <Route path="/sertificates" element={<Sertificates />} />
-        <Route path="/makedeal" element={<Makedeal />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/rules" element={<UserSoglos />} />
-        <Route path="/disputes" element={<Disputes />} /> */}
       </Routes>
       <Footer />
     </>

@@ -10,7 +10,6 @@ import SetNameTheSite from "./SiteProps/SiteProps";
 import io from "socket.io-client";
 import AllChats from "./Chats/AllChats";
 import { axiosGetAdminChats } from "../../api/adminChat";
-import { axiosGetAllDeal } from "../../api/deal";
 import { check } from "../../api/user";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../store/Users/types";
@@ -69,16 +68,6 @@ function AdminPanel() {
     }
   }
 
-  async function getAllDeals() {
-    const data = await axiosGetAllDeal();
-    if (data) {
-      dispatch({
-        type: reducerTypes.GET_ALL_DEALS,
-        payload: data,
-      });
-    }
-  }
-
   async function getAllChats() {
     if (!user?.email) return auth();
     const data = await axiosGetAdminChats(user?.email, user?.password);
@@ -112,9 +101,6 @@ function AdminPanel() {
     socketAdmin.on("newMessage", ({ data }) => {
       playAudio();
     });
-    socketAdmin.on("changeDealStatus", ({ data }) => {
-      if (data?.check) getAllDeals();
-    });
     // eslint-disable-next-line
   }, []);
 
@@ -122,8 +108,7 @@ function AdminPanel() {
     if (!user?.role) {
       navigate("/login");
     }
-    getAllDeals();
-    getAllChats();
+    //getAllChats();
     if (user?.email) {
       socketAdmin.emit("join", { name: "1", room: "1" });
     }

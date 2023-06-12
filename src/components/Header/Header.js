@@ -3,12 +3,14 @@ import "../../style/header.css";
 import { useAppSelector } from "../../store/reduxHooks";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../store/Users/types";
 import { check } from "../../api/user";
 
 function Header() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { user } = useAppSelector((store) => store.user);
   const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ function Header() {
 
   async function auth() {
     const getUsers = await check();
+    if (!getUsers) return navigate("login");
     dispatch({
       type: reducerTypes.GET_USER,
       payload: getUsers,
@@ -45,6 +48,7 @@ function Header() {
     const checkLocation = window.location.href.includes("registr") || window.location.href.includes("login");
     if (!user?.email && !checkLocation) {
       auth();
+    } else {
     }
     // eslint-disable-next-line
   }, []);
@@ -78,8 +82,6 @@ function Header() {
                     </Link>
                   </li>
                 )}
-                {/* <li className="nav-detail_item"><Link className="nav-detail_link" to="/systemmessages">Системные сообщения {(bellState && !checkReadMessage) || (user?.systemMessage === 'true' && !checkReadMessage) ? <NotificationsNoneIcon className="bell-color"></NotificationsNoneIcon> : ''}</Link></li> */}
-                {/* <li className="nav-detail_item"><Link className="nav-detail_link" to="/settings">Мои настройки</Link></li> */}
                 <li className="nav-detail_item border-exit">
                   <Link onClick={logOut} className="nav-detail_link" to="/">
                     Выход

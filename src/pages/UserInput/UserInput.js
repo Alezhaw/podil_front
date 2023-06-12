@@ -88,7 +88,6 @@ function UserInput() {
     if (user?.email === undefined) {
       navigate("/login");
     } else {
-      console.log(logout);
       if (!logout) navigate("/adminPanel");
     }
   }, [navigate, user]);

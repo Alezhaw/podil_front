@@ -124,8 +124,9 @@ function CityIDKz() {
   }, [basesKz]);
 
   useEffect(() => {
-    if (user?.role === "USER" || user?.role === null || user?.role === "" || user?.role === undefined) {
-      navigate("/");
+    if (user?.role === "USER") {
+      alert("Нет доступа");
+      navigate("/login");
     }
   }, [user?.role, navigate, user]);
 

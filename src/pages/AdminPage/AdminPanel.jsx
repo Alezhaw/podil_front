@@ -1,20 +1,8 @@
 import * as React from "react";
-import { useEffect, useState, useRef } from "react";
-import AllDeposit from "./Refills/AllDeposit";
-import AllDeals from "./Deals/AllDeals";
+import { useEffect, useState } from "react";
 import AllUsers from "./Users/AllUsers";
-import AllTransfers from "./Transfers/AllTransfers";
 import { useAppSelector } from "../../store/reduxHooks";
 import { useNavigate } from "react-router-dom";
-import SetNameTheSite from "./SiteProps/SiteProps";
-import io from "socket.io-client";
-import AllChats from "./Chats/AllChats";
-import { axiosGetAdminChats } from "../../api/adminChat";
-import { check } from "../../api/user";
-import { useDispatch } from "react-redux";
-import { reducerTypes } from "../../store/Users/types";
-import sound from "../../sound/newMessage.mp3";
-import BotAdmin from "./SettingBot/BotAdmin";
 import AllCitiesRu from "./PodzialRu/AllCitiesRu";
 import AllCitiesKz from "./PodzialKz/AllCitiesKz";
 import { Menu, MenuItem } from "@mui/material";
@@ -27,16 +15,11 @@ import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
 import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 
-//export const socketAdmin = io.connect(`https://back-nnk5.onrender.com`);
-
 function AdminPanel() {
-  const dispatch = useDispatch();
-  const [item, setItem] = useState();
-  const [checkNewMessage, setCheckNewMessage] = useState(false); // позже будет добавлять чаты
+  const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) || null);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
-  const { user, adminChat } = useAppSelector((store) => store.user);
+  const { user } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
-  const audioPlayer = useRef(null);
   const [basePage, setBasePage] = useState("БАЗЫ");
   const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
   const [scenarioPage, setScenarioPage] = useState("СЦЕНАРИЙ");
@@ -50,74 +33,24 @@ function AdminPanel() {
   const scenarioMenuOpen = Boolean(anchorElScenario);
   const logsMenuOpen = Boolean(anchorElLogs);
 
-  async function auth() {
-    const getUsers = await check();
-    dispatch({
-      type: reducerTypes.GET_USER,
-      payload: getUsers,
-    });
-  }
-
-  function playAudio() {
-    try {
-      if (audioPlayer) {
-        audioPlayer.current.play();
-      }
-    } catch {
-      console.log("Ошибка воспроизведения аудио, обновите страницу");
-    }
-  }
-
-  async function getAllChats() {
-    if (!user?.email) return auth();
-    const data = await axiosGetAdminChats(user?.email, user?.password);
-    if (data) {
-      dispatch({
-        type: reducerTypes.GET_ADMIN_CHAT,
-        payload: data,
-      });
-    }
-  }
-
   function visibleItem(name) {
     setBasePage(" БАЗЫ ");
     setSpeakerPage(" ДИКТОР ");
     setScenarioPage(" СЦЕНАРИЙ ");
     setLogsPage(" ЛОГИ ");
     setItem(Number(name));
+    localStorage.setItem("adminPage", String(name));
   }
 
   useEffect(() => {
-    setCheckNewMessage(adminChat.some((item) => item.newMessage === 1));
-    // eslint-disable-next-line
-  }, [adminChat]);
-
-  // useEffect(() => {
-  //   socketAdmin.on("newMessage", ({ data }) => {
-  //     if (data) {
-  //       getAllChats();
-  //     }
-  //   });
-  //   socketAdmin.on("newMessage", ({ data }) => {
-  //     playAudio();
-  //   });
-  //   // eslint-disable-next-line
-  // }, []);
-
-  useEffect(() => {
-    if (!user?.role) {
-      navigate("/login");
-    }
-    //getAllChats();
-    // if (user?.email) {
-    //   socketAdmin.emit("join", { name: "1", room: "1" });
+    // if (!user?.role) {
+    //   navigate("/login");
     // }
     // eslint-disable-next-line
   }, [user]);
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <audio ref={audioPlayer} src={sound} />
       <div style={{ display: "flex", minHeight: "100vh" }} className={!statebackground ? "styleAdminPanel" : "styleAdminPanel2"}>
         <div style={{ display: "flex", flexDirection: "column", width: "11%" }} className="panel_user">
           <button onClick={(e) => visibleItem(e.currentTarget.name)} name="0" className={item === 0 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
@@ -269,48 +202,6 @@ function AdminPanel() {
           {item === 0 ? (
             <div style={{ display: "block", width: "100%" }}>
               <AllUsers />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 1 ? (
-            <div style={{ display: "block", width: "100%" }}>
-              <AllDeals />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 2 ? (
-            <div style={{ display: "block" }}>
-              <AllDeposit />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 3 ? (
-            <div style={{ display: "block", width: "100%" }}>
-              <AllTransfers />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 4 ? (
-            <div style={{ display: "block", width: "100%" }}>
-              <AllChats />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 5 ? (
-            <div style={{ display: "block" }}>
-              <SetNameTheSite />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 6 ? (
-            <div style={{ display: "block" }}>
-              <BotAdmin />
             </div>
           ) : (
             ""

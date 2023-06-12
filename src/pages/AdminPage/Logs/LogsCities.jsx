@@ -122,7 +122,6 @@ function LogsCities() {
             </table>
           </div>
         </ContainerForTable>
-        {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
       </div>
 
       <Pagination

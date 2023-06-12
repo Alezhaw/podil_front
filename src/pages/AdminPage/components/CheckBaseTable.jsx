@@ -1,4 +1,3 @@
-import { Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
 function CheckBaseTable({ currentCities, country, checkKey, changeCheck }) {

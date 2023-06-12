@@ -1,6 +1,8 @@
 import "../../style/footer.css";
+import { useLocation } from "react-router-dom";
 
 function Footer() {
+  const { state } = useLocation();
   if (window.location.href.includes("adminPanel")) return null;
 
   return (

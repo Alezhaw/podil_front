@@ -178,10 +178,8 @@ function UserRegistr() {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <div style={{ display: "flex" }}>
-              <Form.Check checked={!checked} onChange={() => setChecked(!checked)} style={{ marginRight: "5px" }} type="checkbox" />{" "}
-              <Link className="link-hover-effects" to="/rules">
-                Я ознакомлен с "Пользовательским соглашением"
-              </Link>
+              <Form.Check checked={!checked} onChange={() => setChecked(!checked)} style={{ marginRight: "5px" }} type="checkbox" />
+              <span style={{ color: "white" }}>Принять</span>
             </div>
           </Form.Group>
           <button disabled={!formValid} onClick={(e) => getUsers(e)} className="btn-class-v2">

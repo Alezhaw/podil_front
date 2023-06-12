@@ -42,13 +42,6 @@ function AdminPanel() {
     localStorage.setItem("adminPage", String(name));
   }
 
-  useEffect(() => {
-    // if (!user?.role) {
-    //   navigate("/login");
-    // }
-    // eslint-disable-next-line
-  }, [user]);
-
   return (
     <div style={{ minHeight: "100vh" }}>
       <div style={{ display: "flex", minHeight: "100vh" }} className={!statebackground ? "styleAdminPanel" : "styleAdminPanel2"}>

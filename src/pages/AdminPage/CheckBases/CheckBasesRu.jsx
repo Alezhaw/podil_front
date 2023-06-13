@@ -144,7 +144,7 @@ function CheckBasesRu() {
               </thead>
               <tbody>
                 {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-                  <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={changeCheckRu} />
+                  <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={changeCheckRu} bases={basesRu}/>
                 ))}
               </tbody>
             </table>

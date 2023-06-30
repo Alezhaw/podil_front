@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useParams } from "react";
+import { useState } from "react";
 import { Container } from "@material-ui/core";
-import Base from "../components/Base";
-import { useAppSelector } from "../../../store/reduxHooks";
+import { Button } from "@material-ui/core";
+
+import DropdownBaseTable from "./DropdownBaseTable";
 
 function CheckBaseTable({ currentCities, country, checkKey, changeCheck, bases }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [currentBases, setCurrentBases] = useState([]);
+
+
 
   return (
     <>
@@ -62,17 +64,15 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, bases }
             </th>
           ) : null}
         </tr>
-
           {open ? 
           index === currentCities.length - 1 ?
           <tr>
-            <th colSpan={11}>
-            <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
+
+            <th colSpan={11} style={{ overflow: "auto" }}>
+                <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
                   <table style={{ textAlign: "center" }}>
-                    <tbody style={{ display: "flex", flexDirection: "row" }}>
-                      {bases?.slice(0, 10)?.map((item) => (
-                        <Base item={item} setCurrentBases={setCurrentBases} />
-                      ))}
+                    <tbody>
+                      <DropdownBaseTable item={item} bases={bases} country={country}/>
                     </tbody>
                   </table>
                 </Container>

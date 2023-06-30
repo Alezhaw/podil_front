@@ -1,4 +1,6 @@
-function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
+import { Button } from "@material-ui/core";
+
+function Base({ item, setCurrentBases, changeDeleteBases, forSearch, forCheckTable, setNewBases }) {
   return (
     <div style={{ minWidth: "100px", margin: "0px 5px", background: "white", color: "black" }} key={item.id}>
       <tr>
@@ -28,7 +30,7 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
           <input
             onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_stat_2: e.target.value } : el)))}
             className="tableInput"
-            style={{ width: "120px" }}
+            style={{ width: "120px", maxWidth: "70px"}}
             type="text"
             autoComplete="off"
             value={item.base_stat_2 || ""}
@@ -52,6 +54,7 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
             className="tableInput"
             // style={{ width: '120px' }}
             type="text"
+            style={{ maxWidth: "120px" }}
             autoComplete="off"
             value={item.base_type || ""}
           />
@@ -60,7 +63,7 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
           <input
             onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_sort: e.target.value } : el)))}
             className="tableInput"
-            style={{ maxWidth: "120px" }} //140 сделать
+            style={{ maxWidth: "70px" }} //140 сделать
             type="text"
             autoComplete="off"
             value={item.base_sort || ""}
@@ -113,10 +116,11 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
           />
         </td>
       </tr>
+
       {!forSearch ? (
-        <tr colspan="3" className="basesTableCell">
+        !forCheckTable ? <tr colspan="3" className="basesTableCell">
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} onChange={(e) => null}>
-            <span style={{ position: "relative", left: "15px" }}>Удалить: </span>
+          <span style={{ position: "relative", left: "15px" }}>Удалить: </span>
             <input
               onChange={(e) => changeDeleteBases(e.target.checked, item.id)}
               className="tableInput"
@@ -124,9 +128,19 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch }) {
               type="checkbox"
               defaultChecked={false}
               autoComplete="off"
-            />
+            />  
+           
+            
           </div>
-        </tr>
+        </tr> : <tr colspan="3" className="basesTableCell">
+          <th colspan="3" style={{height: '42px', verticalAlign: 'middle'}}>
+          <Button 
+            style={{fontWeight: 700, fontSize: '16px'}}
+            onClick={() => setNewBases(prev => prev?.filter(el => el.id !== item.id))}>
+            Remove
+          </Button>
+          </th>
+          </tr>
       ) : null}
     </div>
   );

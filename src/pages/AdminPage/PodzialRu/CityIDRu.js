@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosGetAllCitiesRu, axiosCreateCitiesRu, axiosDeleteTimeRu, axiosGetAllBasesRu, axiosCreateBaseRu, axiosDeleteBaseRu } from "../../../api/podzialRu";
+import { axiosCreateCitiesRu, axiosDeleteTimeRu, axiosGetBasesForCityRu, axiosCreateBaseRu, axiosDeleteBaseRu, axiosGetOneCityRu, axiosGetFilteredBasesRu } from "../../../api/podzialRu";
 import { Container } from "@material-ui/core";
 import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
@@ -25,8 +25,8 @@ function CityIDRu() {
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  async function getAllCities() {
-    const data = await axiosGetAllCitiesRu();
+  async function getCity(id_for_base) {
+    const data = await axiosGetOneCityRu(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_CITIES_RU,
@@ -35,12 +35,12 @@ function CityIDRu() {
     }
   }
 
-  async function getAllBases() {
-    const data = await axiosGetAllBasesRu();
+  async function getBasesForCity(id_for_base) {
+    const data = await axiosGetBasesForCityRu(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_BASES_RU,
-        payload: data,
+        payload: data.sort((a, b) => a.id - b.id),
       });
     }
   }
@@ -48,7 +48,7 @@ function CityIDRu() {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesRu(city);
-    await getAllCities();
+    await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
     if (result.not_id_for_base) return alert("Не указан id_for_base");
     if (result.cities[0]) return alert("Сохранено");
@@ -58,7 +58,7 @@ function CityIDRu() {
   async function deleteTime(id) {
     const result = await axiosDeleteTimeRu(id);
     if (result) {
-      await getAllCities();
+      await getCity(id_for_base);
       alert("Удалено");
     } else {
       alert("Что-то пошло не так");
@@ -68,14 +68,14 @@ function CityIDRu() {
   async function createBase(currentBases) {
     const result = await axiosCreateBaseRu(currentBases);
     if (result.update) {
-      await getAllBases();
+      await getBasesForCity(id_for_base);
       alert("Обновлено");
     } else {
       if (result.notIdForBase) {
         return alert("Не указан id_for_base");
       }
       if (result.bases[0]) {
-        await getAllBases();
+        await getBasesForCity(id_for_base);
         setNewBase({ id_for_base: currentCities[0]?.id_for_base });
         setIsOpen(false);
         return alert("Успешно создано");
@@ -88,7 +88,7 @@ function CityIDRu() {
     try {
       await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseRu(Number(id))));
       setDeleteBases([]);
-      await getAllBases();
+      await getBasesForCity(id_for_base);
       alert("Success");
     } catch (e) {
       alert("Что-то пошло не так");
@@ -130,11 +130,13 @@ function CityIDRu() {
   }, [user?.role, navigate, user]);
 
   useEffect(() => {
-    if (!citiesRu[0]) {
-      getAllCities();
+    const checkCurrentCity = citiesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    const checkCurrentBases = basesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    if (!checkCurrentCity) {
+      getCity(id_for_base);
     }
-    if (!basesRu[0]) {
-      getAllBases();
+    if (!checkCurrentBases) {
+      getBasesForCity(id_for_base);
     }
     // eslint-disable-next-line
   }, [user]);
@@ -225,7 +227,20 @@ function CityIDRu() {
                   Новая База
                 </div>
               </div>
-              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} cities={citiesRu} bases={basesRu} currentBases={currentBases} /> : ""}
+              {isOpen ? (
+                <CreateBase
+                  setIsOpen={setIsOpen}
+                  newBase={newBase}
+                  setNewBase={setNewBase}
+                  createBase={createBase}
+                  cities={citiesRu}
+                  bases={basesRu}
+                  currentBases={currentBases}
+                  getFilteredBases={axiosGetFilteredBasesRu}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

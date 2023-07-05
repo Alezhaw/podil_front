@@ -82,6 +82,15 @@ export const axiosGetFilteredCitiesKz = async ({
   }
 };
 
+export const axiosGetOneCityKz = async (id_for_base: number) => {
+  try {
+    const { data } = await axios.post("api/citykz/getOne", { id_for_base }, getConfig());
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const axiosChangeCityKz = async (city: ICitiesKz) => {
   try {
     const { data } = await axios.post("api/citykz/changeOne", { ...city }, getConfig());
@@ -146,6 +155,26 @@ export const axiosGetAllBasesKz = async () => {
     } else {
       console.error(e);
     }
+  }
+};
+
+export const axiosGetBasesForCityKz = async (id_for_base: number) => {
+  try {
+    const { data } = await axios.post("api/basekz/getForCity", { id_for_base }, getConfig());
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const axiosGetFilteredBasesKz = async (search: string) => {
+  try {
+    const { data } = await axios.post("api/basekz/search", { search }, getConfig());
+
+    return data;
+  } catch (e) {
+    console.error(e);
   }
 };
 

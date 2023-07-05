@@ -80,6 +80,15 @@ export const axiosGetFilteredCitiesRu = async ({
   }
 };
 
+export const axiosGetOneCityRu = async (id_for_base: number) => {
+  try {
+    const { data } = await axios.post("api/city/getOne", { id_for_base }, getConfig());
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const axiosChangeCityRu = async (city: ICitiesRu) => {
   try {
     const { data } = await axios.post("api/city/changeOne", { ...city }, getConfig());
@@ -145,6 +154,26 @@ export const axiosGetAllBasesRu = async () => {
     } else {
       console.error(e);
     }
+  }
+};
+
+export const axiosGetBasesForCityRu = async (id_for_base: number) => {
+  try {
+    const { data } = await axios.post("api/base/getForCity", { id_for_base }, getConfig());
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const axiosGetFilteredBasesRu = async (search: string) => {
+  try {
+    const { data } = await axios.post("api/base/search", { search }, getConfig());
+
+    return data;
+  } catch (e) {
+    console.error(e);
   }
 };
 

@@ -4,27 +4,23 @@ import { Container } from "@material-ui/core";
 import { StyledInput } from "../../../style/styles";
 import { useEffect, useState } from "react";
 
-function CreateBase({ setIsOpen, newBase, setNewBase, createBase, cities, bases, currentBases }) {
+function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBases }) {
   const [search, setSearch] = useState("");
+  const [searchForInput, setSearchForInput] = useState("");
   const [filteredBases, setFilteredBases] = useState([]);
 
+  async function getBases(search) {
+    const data = await getFilteredBases(String(search));
+    if (data[0]) {
+      setFilteredBases(data);
+    }
+  }
+
   useEffect(() => {
-    const temporaryBases = cities
-      ?.filter((el, i, ar) => (search ? el?.miasto_lokal?.toLowerCase()?.includes(search) : false))
-      ?.filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-      ?.map((el) => ({ id_for_base: el.id_for_base, miasto_lokal: el.miasto_lokal }))
-      ?.map((city) => bases.filter((base) => Number(base?.id_for_base) === Number(city.id_for_base))?.map((base) => ({ ...base, miasto_lokal: city.miasto_lokal })))
-      ?.flat()
-      ?.filter((base) => !currentBases.filter((item) => item.base_id === base.base_id)[0]);
-
-    const finalBases = !!temporaryBases[0]
-      ? temporaryBases
-      : bases
-          ?.filter((item) => (search ? item?.base_id?.toLowerCase()?.includes(search?.toLowerCase()) : false))
-          ?.map((base) => ({ ...base, miasto_lokal: cities?.filter((city) => Number(city.id_for_base) === Number(base.id_for_base))[0]?.miasto_lokal }));
-
-    setFilteredBases(finalBases);
-  }, [cities, search, bases, currentBases]);
+    if (search) {
+      getBases(search);
+    }
+  }, [search]);
 
   return (
     <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.9)" }} className="modalStyles">
@@ -164,9 +160,17 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, cities, bases,
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
           type="search"
           id="Search"
-          value={search}
+          value={searchForInput}
           placeholder="Поиск"
-          onChange={(e) => setSearch(e.target.value?.toLowerCase())}
+          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+          onBlur={(e) => {
+            setSearch(e.target.value?.toLowerCase()?.trim());
+          }}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setSearch(e.target.value?.toLowerCase()?.trim());
+            }
+          }}
           autoComplete="off"
           required
         />

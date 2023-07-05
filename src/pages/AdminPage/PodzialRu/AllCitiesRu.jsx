@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetAllBasesRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
+import { axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
@@ -19,7 +19,7 @@ function AllCitiesRu() {
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
-  const { citiesRu, basesRu, user } = useAppSelector((store) => store.user);
+  const { citiesRu, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
@@ -31,23 +31,13 @@ function AllCitiesRu() {
   const [thirdTime, setThirdTime] = useState({});
   const [count, setCount] = useState(1);
 
-  async function getAllCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
     const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete });
     if (data) {
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_RU,
         payload: data.cities,
-      });
-    }
-  }
-
-  async function getAllBases() {
-    const data = await axiosGetAllBasesRu();
-    if (data) {
-      dispatch({
-        type: reducerTypes.GET_BASES_RU,
-        payload: data,
       });
     }
   }
@@ -69,7 +59,7 @@ function AllCitiesRu() {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesRu(city);
     if (result.cities[0]) {
-      getAllCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
@@ -93,16 +83,13 @@ function AllCitiesRu() {
 
   useEffect(() => {
     if (!citiesRu[0]) {
-      getAllCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
-    }
-    if (!basesRu[0]) {
-      getAllBases();
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getAllCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
 
@@ -345,7 +332,7 @@ function AllCitiesRu() {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityRu(Number(id_for_base))));
               setDeleteCities([]);
-              await getAllCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");

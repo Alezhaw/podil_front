@@ -318,7 +318,7 @@ function AllCitiesRu() {
             <tbody>
               {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
               {cities?.map((item, index) => (
-                <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} key={index} />
+                <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} key={item.id} />
               ))}
             </tbody>
           </table>

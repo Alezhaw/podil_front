@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosGetAllCitiesRu, axiosGetAllBasesRu, axiosChangeCheckRu } from "../../../api/podzialRu";
+import { axiosChangeCheckRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
@@ -14,33 +14,24 @@ import { ContainerForTable } from "../components/Table.styled";
 function CheckScenarioRu() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [searchForInput, setSearchForInput] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
-  const [filterZamkniete, setFilterZamkniete] = useState(true);
-  const [filterPayed, setFilterPayed] = useState(true);
-  const [filterArbitration, setFilterArbitration] = useState(true);
   const [sortId, setSortId] = useState(true);
-  const { citiesRu, basesRu, user } = useAppSelector((store) => store.user);
+  const { citiesRu, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
+  const [count, setCount] = useState(1);
 
-  async function getAllCities() {
-    const data = await axiosGetAllCitiesRu();
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
+    const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, speakerInProgress: filterInProgress, speakerZamkniete: filterComplete });
     if (data) {
+      setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_RU,
-        payload: data,
-      });
-    }
-  }
-
-  async function getAllBases() {
-    const data = await axiosGetAllBasesRu();
-    if (data) {
-      dispatch({
-        type: reducerTypes.GET_BASES_RU,
-        payload: data,
+        payload: data.cities,
       });
     }
   }
@@ -50,10 +41,7 @@ function CheckScenarioRu() {
     if (!checkConfirm) return;
     const data = await axiosChangeCheckRu(Number(id_for_base), null, null, null, checked);
     if (data) {
-      dispatch({
-        type: reducerTypes.GET_CITIES_RU,
-        payload: data,
-      });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
@@ -62,31 +50,23 @@ function CheckScenarioRu() {
   useEffect(() => {
     setCities(
       citiesRu
-        ?.filter((el, i, ar) => (search ? el?.miasto_lokal?.toLowerCase()?.includes(search) : true))
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-        ?.filter(
-          (checkbox) =>
-            (!checkbox?.check_scenario && filterInProgress) ||
-            (!!checkbox?.check_scenario && filterComplete) ||
-            (checkbox?.status === 4 && filterZamkniete) ||
-            (checkbox?.status === 3 && filterPayed) ||
-            (checkbox?.status === 5 && filterArbitration)
-        )
         ?.map((el) => citiesRu?.filter((time) => time.id_for_base === el.id_for_base))
-        ?.sort((a, b) => (sortId ? Number(b[0].id_for_base) - Number(a[0].id_for_base) : Number(a[0].id_for_base) - Number(b[0].id_for_base)))
         ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
-  }, [citiesRu, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
+  }, [citiesRu]);
 
   useEffect(() => {
     if (!citiesRu[0]) {
-      getAllCities();
-    }
-    if (!basesRu[0]) {
-      getAllBases();
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+    // eslint-disable-next-line
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
 
   return (
     <>
@@ -96,11 +76,18 @@ function CheckScenarioRu() {
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
           type="search"
           id="Search"
-          value={search}
+          value={searchForInput}
           placeholder="Поиск"
-          onChange={(e) => {
+          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+          onBlur={(e) => {
             setPage(0);
-            setSearch(e.target.value?.toLowerCase());
+            setSearch(e.target.value?.toLowerCase()?.trim());
+          }}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setPage(0);
+              setSearch(e.target.value?.toLowerCase()?.trim());
+            }
           }}
           autoComplete="off"
           required
@@ -109,9 +96,6 @@ function CheckScenarioRu() {
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
           <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterZamkniete} defaultChecked onChange={() => setFilterZamkniete((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterPayed} defaultChecked onChange={() => setFilterPayed((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterArbitration} defaultChecked onChange={() => setFilterArbitration((prev) => !prev)} color="error" />
         </div>
       </div>
 
@@ -143,8 +127,8 @@ function CheckScenarioRu() {
                 </tr>
               </thead>
               <tbody>
-                {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-                  <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_scenario" changeCheck={changeCheckRu} />
+                {cities?.map((item) => (
+                  <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_scenario" changeCheck={changeCheckRu} key={item.id} />
                 ))}
               </tbody>
             </table>
@@ -154,7 +138,7 @@ function CheckScenarioRu() {
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-        count={Math.ceil(cities?.length / itemsPerPage)}
+        count={count}
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}
@@ -168,10 +152,16 @@ function CheckScenarioRu() {
           style={{ color: "white", borderRadius: "5px" }}
           type="number"
           name="name"
-          value={itemsPerPage}
+          value={itemsPerPageForInput}
           placeholder="Елементов на странице"
           // className={styles.input}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
+          onBlur={(e) => setItemsPerPage(Number(e.target.value))}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setItemsPerPage(Number(e.target.value));
+            }
+          }}
           autoComplete="off"
           required
         />

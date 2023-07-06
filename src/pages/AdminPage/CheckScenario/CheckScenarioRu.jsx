@@ -61,7 +61,7 @@ function CheckScenarioRu() {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
-  }, [user]);
+  }, [user, citiesRu]);
 
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });

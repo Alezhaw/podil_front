@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { Checkbox, Pagination, PaginationItem } from "@mui/material";
 import { StyledInput } from "../../../style/styles";
-import { axiosGetAllLogsCity } from "../../../api/logs";
+import { axiosGetFilteredLogsCity } from "../../../api/logs";
 import { ContainerForTable } from "../components/Table.styled";
 import LogsCitiesTableRow from "./LogsCitiesTableRow";
 
 function LogsCities() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [searchForInput, setSearchForInput] = useState("");
   const [filterUpdate, setFilterUpdate] = useState(true);
   const [filterCreate, setFilterCreate] = useState(true);
   const [filterDelete, setFilterDelete] = useState(true);
@@ -18,15 +19,19 @@ function LogsCities() {
   const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
+  const [count, setCount] = useState(1);
   const [country, setCountry] = useState("");
   const [countrySelectOptions, setCountrySelectOptions] = useState([]);
 
-  async function getCitiesLogs() {
-    const data = await axiosGetAllLogsCity();
+  async function getCitiesLogs({ pageSize, page, search, country, updateFilter, createFilter, deleteFilter }) {
+    const data = await axiosGetFilteredLogsCity({ pageSize, page: page + 1, search, country, updateFilter, createFilter, deleteFilter });
     if (data) {
+      setCountrySelectOptions(data.countries);
+      setCount(data.count);
       dispatch({
         type: reducerTypes.GET_LOGS_CITIES,
-        payload: data,
+        payload: data.logs,
       });
     }
   }
@@ -38,30 +43,24 @@ function LogsCities() {
   useEffect(() => {
     setLogs(
       logsCity
-        ?.filter((log) => (country ? log.country === country : true))
-        ?.filter((el, i, ar) => (search ? el?.miasto_lokal?.toLowerCase()?.includes(search) : true))
         ?.filter((item, i, ar) => {
           return ar.map((el) => `${el.miasto_lokal} ${getCorrectTime(el)}`).indexOf(`${item.miasto_lokal} ${getCorrectTime(item)}`) === i;
         })
-        ?.filter((checkbox) => (checkbox?.action === "update" && filterUpdate) || (checkbox?.action === "create" && filterCreate) || (checkbox?.action === "delete" && filterDelete))
-        ?.sort((a, b) => Number(b.id) - Number(a.id))
         ?.map((el) => logsCity?.filter((log) => log.miasto_lokal === el.miasto_lokal && getCorrectTime(log) === getCorrectTime(el)))
     );
-    setCountrySelectOptions(
-      logsCity
-        ?.filter((item, i, ar) => {
-          return ar.map((el) => el.country).indexOf(item.country) === i;
-        })
-        ?.map((log) => log.country)
-    );
-  }, [logsCity, search, country, filterUpdate, filterDelete, filterCreate]);
+  }, [logsCity]);
 
   useEffect(() => {
     if (!logsCity[0]) {
-      getCitiesLogs();
+      getCitiesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
     }
     // eslint-disable-next-line
   }, [user, logsCity]);
+
+  useEffect(() => {
+    getCitiesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
+    // eslint-disable-next-line
+  }, [itemsPerPage, page, search, country, filterUpdate, filterCreate, filterDelete]);
 
   return (
     <>
@@ -71,11 +70,18 @@ function LogsCities() {
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
           type="search"
           id="Search"
-          value={search}
+          value={searchForInput}
           placeholder="Поиск"
-          onChange={(e) => {
+          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+          onBlur={(e) => {
             setPage(0);
-            setSearch(e.target.value?.toLowerCase());
+            setSearch(e.target.value?.toLowerCase()?.trim());
+          }}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setPage(0);
+              setSearch(e.target.value?.toLowerCase()?.trim());
+            }
           }}
           autoComplete="off"
           required
@@ -115,7 +121,7 @@ function LogsCities() {
                 </tr>
               </thead>
               <tbody style={{}}>
-                {logs?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+                {logs?.map((item, index) => (
                   <LogsCitiesTableRow items={item} key={item[0].id} getCorrectTime={getCorrectTime} />
                 ))}
               </tbody>
@@ -126,7 +132,7 @@ function LogsCities() {
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-        count={Math.ceil(logs?.length / itemsPerPage)}
+        count={count}
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}
@@ -140,10 +146,16 @@ function LogsCities() {
           style={{ color: "white", borderRadius: "5px" }}
           type="number"
           name="name"
-          value={itemsPerPage}
+          value={itemsPerPageForInput}
           placeholder="Елементов на странице"
           // className={styles.input}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
+          onBlur={(e) => setItemsPerPage(Number(e.target.value))}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setItemsPerPage(Number(e.target.value));
+            }
+          }}
           autoComplete="off"
           required
         />

@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { Checkbox, Pagination, PaginationItem } from "@mui/material";
 import { StyledInput } from "../../../style/styles";
-import { axiosGetAllLogsBase } from "../../../api/logs";
+import { axiosGetFilteredLogsBases } from "../../../api/logs";
 import { ContainerForTable } from "../components/Table.styled";
 import LogsBasesTableRow from "./LogsBasesTableRow";
 
 function LogsBases() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [searchForInput, setSearchForInput] = useState("");
   const [filterUpdate, setFilterUpdate] = useState(true);
   const [filterCreate, setFilterCreate] = useState(true);
   const [filterDelete, setFilterDelete] = useState(true);
@@ -18,15 +19,19 @@ function LogsBases() {
   const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
+  const [count, setCount] = useState(1);
   const [country, setCountry] = useState("");
   const [countrySelectOptions, setCountrySelectOptions] = useState([]);
 
-  async function getBasesLogs() {
-    const data = await axiosGetAllLogsBase();
+  async function getBasesLogs({ pageSize, page, search, country, updateFilter, createFilter, deleteFilter }) {
+    const data = await axiosGetFilteredLogsBases({ pageSize, page: page + 1, search, country, updateFilter, createFilter, deleteFilter });
     if (data) {
+      setCountrySelectOptions(data.countries);
+      setCount(data.count);
       dispatch({
         type: reducerTypes.GET_LOGS_BASES,
-        payload: data,
+        payload: data.logs,
       });
     }
   }
@@ -36,28 +41,20 @@ function LogsBases() {
   }
 
   useEffect(() => {
-    setLogs(
-      logsBase
-        ?.filter((log) => (country ? log.country === country : true))
-        ?.filter((el, i, ar) => (search ? el?.base_id?.toLowerCase()?.includes(search) : true))
-        ?.filter((checkbox) => (checkbox?.action === "update" && filterUpdate) || (checkbox?.action === "create" && filterCreate) || (checkbox?.action === "delete" && filterDelete))
-        ?.sort((a, b) => Number(b.id) - Number(a.id))
-    );
-    setCountrySelectOptions(
-      logsBase
-        ?.filter((item, i, ar) => {
-          return ar.map((el) => el.country).indexOf(item.country) === i;
-        })
-        ?.map((log) => log.country)
-    );
-  }, [logsBase, search, country, filterUpdate, filterDelete, filterCreate]);
+    setLogs(logsBase?.sort((a, b) => Number(b.id) - Number(a.id)));
+  }, [logsBase]);
 
   useEffect(() => {
     if (!logsBase[0]) {
-      getBasesLogs();
+      getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
     }
     // eslint-disable-next-line
   }, [user, logsBase]);
+
+  useEffect(() => {
+    getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
+    // eslint-disable-next-line
+  }, [itemsPerPage, page, search, country, filterUpdate, filterCreate, filterDelete]);
 
   return (
     <>
@@ -67,11 +64,18 @@ function LogsBases() {
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
           type="search"
           id="Search"
-          value={search}
+          value={searchForInput}
           placeholder="Поиск"
-          onChange={(e) => {
+          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+          onBlur={(e) => {
             setPage(0);
-            setSearch(e.target.value?.toLowerCase());
+            setSearch(e.target.value?.toLowerCase()?.trim());
+          }}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setPage(0);
+              setSearch(e.target.value?.toLowerCase()?.trim());
+            }
           }}
           autoComplete="off"
           required
@@ -110,7 +114,7 @@ function LogsBases() {
                 </tr>
               </thead>
               <tbody style={{}}>
-                {logs?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
+                {logs?.map((item, index) => (
                   <LogsBasesTableRow item={item} key={item.id} getCorrectTime={getCorrectTime} />
                 ))}
               </tbody>
@@ -122,7 +126,7 @@ function LogsBases() {
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-        count={Math.ceil(logs?.length / itemsPerPage)}
+        count={count}
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}
@@ -136,10 +140,16 @@ function LogsBases() {
           style={{ color: "white", borderRadius: "5px" }}
           type="number"
           name="name"
-          value={itemsPerPage}
+          value={itemsPerPageForInput}
           placeholder="Елементов на странице"
           // className={styles.input}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
+          onBlur={(e) => setItemsPerPage(Number(e.target.value))}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setItemsPerPage(Number(e.target.value));
+            }
+          }}
           autoComplete="off"
           required
         />

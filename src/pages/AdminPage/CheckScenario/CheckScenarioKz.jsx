@@ -26,7 +26,7 @@ function CheckScenarioKz() {
   const [count, setCount] = useState(1);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
-    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, speakerInProgress: filterInProgress, speakerZamkniete: filterComplete });
+    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, scenarioInProgress: filterInProgress, scenarioZamkniete: filterComplete });
     if (data) {
       setCount(data.count);
       dispatch({
@@ -61,7 +61,7 @@ function CheckScenarioKz() {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
-  }, [user, citiesKz]);
+  }, [user]);
 
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });

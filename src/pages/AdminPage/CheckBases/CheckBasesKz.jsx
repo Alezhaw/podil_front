@@ -61,7 +61,7 @@ function CheckBasesKz() {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
-  }, [user, citiesKz]);
+  }, [user]);
 
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });

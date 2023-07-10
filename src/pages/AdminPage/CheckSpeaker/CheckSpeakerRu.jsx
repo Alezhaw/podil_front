@@ -61,7 +61,7 @@ function CheckSpeakerRu() {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
-  }, [user, citiesRu]);
+  }, [user]);
 
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });

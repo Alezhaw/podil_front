@@ -18,11 +18,8 @@ function AllCitiesKz() {
   const [searchForInput, setSearchForInput] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
-  const [filterPayed, setFilterPayed] = useState(true);
-  const [filterArbitration, setFilterArbitration] = useState(true);
   const [sortId, setSortId] = useState(true);
   const { citiesKz, user } = useAppSelector((store) => store.user);
-  const [filterComplete, setFilterComplete] = useState(true);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
@@ -104,22 +101,44 @@ function AllCitiesKz() {
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
           type="search"
           id="Search"
-          value={search}
+          value={searchForInput}
           placeholder="Поиск"
-          onChange={(e) => {
+          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+          onBlur={(e) => {
             setPage(0);
-            setSearch(e.target.value?.toLowerCase());
+            setSearch(e.target.value?.toLowerCase()?.trim());
+          }}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setPage(0);
+              setSearch(e.target.value?.toLowerCase()?.trim());
+            }
           }}
           autoComplete="off"
           required
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
-          <h5 style={{ margin: "0" }}>Не закрыт</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Закрыт</h5> <Checkbox value={filterZamkniete} defaultChecked onChange={() => setFilterZamkniete((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterPayed} defaultChecked onChange={() => setFilterPayed((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>...</h5> <Checkbox value={filterArbitration} defaultChecked onChange={() => setFilterArbitration((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
+          <Checkbox
+            value={filterInProgress}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterInProgress((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Закрыт</h5>{" "}
+          <Checkbox
+            value={filterZamkniete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterZamkniete((prev) => !prev);
+            }}
+            color="error"
+          />
         </div>
       </div>
 
@@ -297,8 +316,9 @@ function AllCitiesKz() {
               </tr>
             </thead>
             <tbody>
-              {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => (
-                <AllCityTable currentCities={item} country="cityKz" changeDeleteCities={changeDeleteCities} key={index} />
+              {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
+              {cities?.map((item, index) => (
+                <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} key={item.id} />
               ))}
             </tbody>
           </table>
@@ -312,7 +332,7 @@ function AllCitiesKz() {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityKz(Number(id_for_base))));
               setDeleteCities([]);
-              await getFilteredCities();
+              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");
@@ -339,10 +359,16 @@ function AllCitiesKz() {
           style={{ color: "white", borderRadius: "5px" }}
           type="number"
           name="name"
-          value={itemsPerPage}
+          value={itemsPerPageForInput}
           placeholder="Елементов на странице"
           // className={styles.input}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
+          onBlur={(e) => setItemsPerPage(Number(e.target.value))}
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              setItemsPerPage(Number(e.target.value));
+            }
+          }}
           autoComplete="off"
           required
         />

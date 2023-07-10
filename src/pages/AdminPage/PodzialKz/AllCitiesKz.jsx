@@ -5,9 +5,8 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosGetAllCitiesKz, axiosDeleteCityKz, axiosCreateCitiesKz } from "../../../api/podzialKz";
+import { axiosDeleteCityKz, axiosCreateCitiesKz, axiosGetFilteredCitiesKz } from "../../../api/podzialKz";
 import { StyledInput } from "../../../style/styles";
-import { useNavigate } from "react-router-dom";
 import { StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
@@ -16,29 +15,32 @@ import { ContainerForTable } from "../components/Table.styled";
 function AllCitiesKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [searchForInput, setSearchForInput] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [filterPayed, setFilterPayed] = useState(true);
-  const [filterComplete, setFilterComplete] = useState(true);
   const [filterArbitration, setFilterArbitration] = useState(true);
   const [sortId, setSortId] = useState(true);
   const { citiesKz, user } = useAppSelector((store) => store.user);
+  const [filterComplete, setFilterComplete] = useState(true);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const navigate = useNavigate();
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [isOpen, setIsOpen] = useState(false);
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
   const [thirdTime, setThirdTime] = useState({});
+  const [count, setCount] = useState(1);
 
-  async function getAllCities() {
-    const data = await axiosGetAllCitiesKz();
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
+    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete });
     if (data) {
+      setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_KZ,
-        payload: data,
+        payload: data.cities,
       });
     }
   }
@@ -59,8 +61,8 @@ function AllCitiesKz() {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesKz(city);
-    if (result) {
-      getAllCities();
+    if (result.cities[0]) {
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
@@ -76,28 +78,23 @@ function AllCitiesKz() {
   useEffect(() => {
     setCities(
       citiesKz
-        ?.filter((el, i, ar) => (search ? el?.miasto_lokal?.toLowerCase()?.includes(search) : true))
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-        ?.filter(
-          (checkbox) =>
-            (!checkbox?.zamkniete && filterInProgress) ||
-            (!!checkbox?.zamkniete && filterZamkniete) ||
-            (checkbox?.status === 3 && filterPayed) ||
-            (checkbox?.status === 4 && filterComplete) ||
-            (checkbox?.status === 5 && filterArbitration)
-        )
         ?.map((el) => citiesKz?.filter((time) => time.id_for_base === el.id_for_base))
-        ?.sort((a, b) => (sortId ? Number(b[0].id_for_base) - Number(a[0].id_for_base) : Number(a[0].id_for_base) - Number(b[0].id_for_base)))
         ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
-  }, [citiesKz, search, filterInProgress, filterZamkniete, filterPayed, filterComplete, filterArbitration, sortId]);
+  }, [citiesKz]);
 
   useEffect(() => {
     if (!citiesKz[0]) {
-      getAllCities();
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     }
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    // eslint-disable-next-line
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
 
   return (
     <>
@@ -156,7 +153,7 @@ function AllCitiesKz() {
       </div>
 
       <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <ContainerForTable style={{ padding: "0 10px", margin: "20px 0 0" }}>
+        <ContainerForTable>
           <table>
             <thead style={{ background: "#5a5959" }}>
               <tr style={{ background: "none" }}>
@@ -196,7 +193,7 @@ function AllCitiesKz() {
                 <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
                   Zamkniete
                 </th>
-                <th className="basesTableCell" style={{ minWidth: "126.8px" }}>
+                <th className="basesTableCell" style={{ minWidth: "140px" }}>
                   Dodawanie rekordów
                 </th>
                 <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
@@ -226,41 +223,41 @@ function AllCitiesKz() {
                 <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
                   Zgody inne miasto
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr style={{ background: "none" }}>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       1 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr style={{ background: "none" }}>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       2 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+                <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
                   <tr style={{ background: "none" }}>
                     <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                     <th>Aktualna ilość zaproszeń</th>
                   </tr>
                   <tr style={{ background: "none" }}>
-                    <th colspan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
+                    <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
                       3 dzień
                     </th>
                   </tr>
                 </th>
-                <th colspan="6" style={{ border: "1px solid black" }}>
-                  <th colspan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
+                <th colSpan="6" style={{ border: "1px solid black" }}>
+                  <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
                     VIP
                   </th>
                   <tr style={{ height: "55px", background: "none" }}>
@@ -275,8 +272,8 @@ function AllCitiesKz() {
                 <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
                   ЗАМЕТКА
                 </th>
-                <th colspan="3" style={{ border: "1px solid black" }}>
-                  <th colspan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
+                <th colSpan="3" style={{ border: "1px solid black" }}>
+                  <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     WYNIKI POTWIERDZEŃ
                   </th>
                   <tr style={{ background: "none" }}>
@@ -285,8 +282,8 @@ function AllCitiesKz() {
                     <th style={{ minWidth: "68.8px" }}>Kropki</th>
                   </tr>
                 </th>
-                <th colspan="2" style={{ border: "1px solid black" }}>
-                  <th colspan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
+                <th colSpan="2" style={{ border: "1px solid black" }}>
+                  <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
                     SMS
                   </th>
                   <tr style={{ background: "none" }}>
@@ -306,6 +303,7 @@ function AllCitiesKz() {
             </tbody>
           </table>
         </ContainerForTable>
+        {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
       </div>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div
@@ -314,7 +312,7 @@ function AllCitiesKz() {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityKz(Number(id_for_base))));
               setDeleteCities([]);
-              await getAllCities();
+              await getFilteredCities();
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");
@@ -327,7 +325,7 @@ function AllCitiesKz() {
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-        count={Math.ceil(cities?.length / itemsPerPage)}
+        count={count}
         shape="rounded"
         onChange={(e, value) => setPage(Number(value) - 1)}
         renderItem={(item) => <PaginationItem {...item} />}

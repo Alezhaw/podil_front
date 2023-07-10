@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosGetAllCitiesKz, axiosCreateCitiesKz, axiosDeleteTimeKz, axiosCreateBaseKz, axiosGetAllBasesKz, axiosDeleteBaseKz } from "../../../api/podzialKz";
+import { axiosCreateCitiesKz, axiosDeleteTimeKz, axiosGetBasesForCityKz, axiosCreateBaseKz, axiosDeleteBaseKz, axiosGetOneCityKz, axiosGetFilteredBasesKz } from "../../../api/podzialKz";
 import { Container } from "@material-ui/core";
-import Base from "../components/Base";
 import CityTableID from "../components/CityTableID";
+import Base from "../components/Base";
 import CreateBase from "../components/CreateBase";
 
 function CityIDKz() {
@@ -25,8 +25,8 @@ function CityIDKz() {
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  async function getAllCities() {
-    const data = await axiosGetAllCitiesKz();
+  async function getCity(id_for_base) {
+    const data = await axiosGetOneCityKz(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_CITIES_KZ,
@@ -35,12 +35,12 @@ function CityIDKz() {
     }
   }
 
-  async function getAllBases() {
-    const data = await axiosGetAllBasesKz();
+  async function getBasesForCity(id_for_base) {
+    const data = await axiosGetBasesForCityKz(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_BASES_KZ,
-        payload: data,
+        payload: data.sort((a, b) => a.id - b.id),
       });
     }
   }
@@ -48,7 +48,7 @@ function CityIDKz() {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesKz(city);
-    await getAllCities();
+    await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
     if (result.not_id_for_base) return alert("Не указан id_for_base");
     if (result.cities[0]) return alert("Сохранено");
@@ -58,7 +58,7 @@ function CityIDKz() {
   async function deleteTime(id) {
     const result = await axiosDeleteTimeKz(id);
     if (result) {
-      await getAllCities();
+      await getCity(id_for_base);
       alert("Удалено");
     } else {
       alert("Что-то пошло не так");
@@ -68,14 +68,14 @@ function CityIDKz() {
   async function createBase(currentBases) {
     const result = await axiosCreateBaseKz(currentBases);
     if (result.update) {
-      await getAllBases();
+      await getBasesForCity(id_for_base);
       alert("Обновлено");
     } else {
       if (result.notIdForBase) {
         return alert("Не указан id_for_base");
       }
       if (result.bases[0]) {
-        getAllBases();
+        await getBasesForCity(id_for_base);
         setNewBase({ id_for_base: currentCities[0]?.id_for_base });
         setIsOpen(false);
         return alert("Успешно создано");
@@ -88,7 +88,7 @@ function CityIDKz() {
     try {
       await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseKz(Number(id))));
       setDeleteBases([]);
-      await getAllBases();
+      await getBasesForCity(id_for_base);
       alert("Success");
     } catch (e) {
       alert("Что-то пошло не так");
@@ -107,7 +107,7 @@ function CityIDKz() {
     const temporaryCities = citiesKz?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       setCity.map((set) => set({}));
-      temporaryCities.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
+      temporaryCities?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line
@@ -118,7 +118,6 @@ function CityIDKz() {
     if (temporaryBases) {
       // setCurrentBases([...temporaryBases, ...temporaryBases])
       setCurrentBases(temporaryBases);
-      console.log(1, temporaryBases);
     }
     // eslint-disable-next-line
   }, [basesKz]);
@@ -131,8 +130,13 @@ function CityIDKz() {
   }, [user?.role, navigate, user]);
 
   useEffect(() => {
-    if (!citiesKz[0]) {
-      getAllCities();
+    const checkCurrentCity = citiesKz?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    const checkCurrentBases = basesKz?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    if (!checkCurrentCity) {
+      getCity(id_for_base);
+    }
+    if (!checkCurrentBases) {
+      getBasesForCity(id_for_base);
     }
     // eslint-disable-next-line
   }, [user]);
@@ -143,7 +147,6 @@ function CityIDKz() {
         style={{
           display: "flex",
           minHeight: "100vh",
-          justifyContent: "center",
         }}
         className={!statebackground ? "styleAdminPanel" : "styleAdminPanel2"}
       >
@@ -224,7 +227,20 @@ function CityIDKz() {
                   Новая База
                 </div>
               </div>
-              {isOpen ? <CreateBase setIsOpen={setIsOpen} newBase={newBase} setNewBase={setNewBase} createBase={createBase} cities={citiesKz} bases={basesKz} currentBases={currentBases} /> : ""}
+              {isOpen ? (
+                <CreateBase
+                  setIsOpen={setIsOpen}
+                  newBase={newBase}
+                  setNewBase={setNewBase}
+                  createBase={createBase}
+                  cities={citiesKz}
+                  bases={basesKz}
+                  currentBases={currentBases}
+                  getFilteredBases={axiosGetFilteredBasesKz}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

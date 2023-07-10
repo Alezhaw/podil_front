@@ -5,7 +5,6 @@ import { IBaseKz } from "../interfaces/baseKz";
 let controllerGetAllCitiesKz: AbortController | null = null;
 let controllerGetFilteredCitiesKz: AbortController | null = null;
 let controllerGetAllBasesKz: AbortController | null = null;
-let controllerGetFilteredBasesKz: AbortController | null = null;
 
 export const axiosCreateCitiesKz = async (cities: ICitiesKz[]) => {
   try {

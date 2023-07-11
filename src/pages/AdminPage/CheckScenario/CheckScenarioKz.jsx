@@ -15,6 +15,7 @@ function CheckScenarioKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterSpeaker, setFilterSpeaker] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -94,6 +95,7 @@ function CheckScenarioKz() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
+          <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
         </div>
@@ -114,21 +116,21 @@ function CheckScenarioKz() {
               <thead>
                 <tr>
                   <th className="default-col"> ID</th>
-                  <th className="default-col">L.p</th>
+                  {!filterSpeaker && <th className="default-col">L.p</th>}
                   <th className="default-col">Godzina</th>
-                  <th className="default-col">Приход всего</th>
-                  <th className="default-col">Пар всего</th>
-                  <th className="coming-col">Проверка прихода</th>
+                  {!filterSpeaker && <th className="default-col">Приход всего</th>}
+                  {!filterSpeaker && <th className="default-col">Пар всего</th>}
+                  {!filterSpeaker && <th className="coming-col">Проверка прихода</th>}
                   <th className="default-col">КР</th>
                   <th className="miasto-col">Miasto / Lokal</th>
                   <th className="timezone-col">Часовой Пояс</th>
-                  <th className="default-col">Лимит</th>
+                  {!filterSpeaker && <th className="default-col">Лимит</th>}
                   <th className="default-col">Готово</th>
                 </tr>
               </thead>
               <tbody>
                 {cities?.map((item) => (
-                  <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_scenario" changeCheck={changeCheckKz} key={item.id} />
+                  <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_scenario" changeCheck={changeCheckKz} key={item.id} filterSpeaker={filterSpeaker} />
                 ))}
               </tbody>
             </table>

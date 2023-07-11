@@ -90,16 +90,6 @@ export const axiosGetOneCityKz = async (id_for_base: number) => {
   }
 };
 
-export const axiosChangeCityKz = async (city: ICitiesKz) => {
-  try {
-    const { data } = await axios.post("api/citykz/changeOne", { ...city }, getConfig());
-
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 export const axiosChangeCheckKz = async (id_for_base?: number, id?: number, check_base?: boolean, check_speaker?: boolean, check_scenario?: boolean) => {
   try {
     const { data } = await axios.post("api/citykz/changeCheck", { id_for_base, id, check_base, check_speaker, check_scenario }, getConfig());

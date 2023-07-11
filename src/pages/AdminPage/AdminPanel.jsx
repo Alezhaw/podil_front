@@ -1,7 +1,6 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AllUsers from "./Users/AllUsers";
-import { useAppSelector } from "../../store/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import AllCitiesRu from "./PodzialRu/AllCitiesRu";
 import AllCitiesKz from "./PodzialKz/AllCitiesKz";
@@ -14,15 +13,10 @@ import CheckScenarioRu from "./CheckScenario/CheckScenarioRu";
 import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
 import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
-import io from "socket.io-client";
-import { defaultUrl } from "../../api/axios";
-
-export const socket = io.connect(defaultUrl);
 
 function AdminPanel() {
   const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) || null);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
-  const { user } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [basePage, setBasePage] = useState("БАЗЫ");
   const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
@@ -45,21 +39,6 @@ function AdminPanel() {
     setItem(Number(name));
     localStorage.setItem("adminPage", String(name));
   }
-
-  useEffect(() => {
-    socket.on("updateCitiesRu", ({ data }) => {
-      console.log(1, data);
-      //  if (!data?.nickname) playAudio();
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (user?.email) {
-      socket.emit("join", { name: "1", room: "1" });
-      console.log(2);
-    }
-  }, [user]);
 
   return (
     <div style={{ minHeight: "100vh" }}>

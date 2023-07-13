@@ -167,16 +167,6 @@ export const axiosGetFilteredBasesKz = async (search: string) => {
   }
 };
 
-export const axiosChangeBaseKz = async (base: IBaseKz) => {
-  try {
-    const { data } = await axios.post("api/basekz/changeOne", { ...base }, getConfig());
-
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 export const axiosDeleteBaseKz = async (id?: number, base_id?: number) => {
   try {
     const { data } = await axios.post("api/basekz/deleteOne", { id, base_id }, getConfig());

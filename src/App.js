@@ -19,7 +19,7 @@ export const socket = io.connect(defaultUrl);
 
 function App() {
   const dispatch = useDispatch();
-  const { user, citiesRu, citiesKz } = useAppSelector((store) => store.user);
+  const { user, citiesRu, citiesKz, basesRu, basesKz } = useAppSelector((store) => store.user);
 
   useEffect(() => {
     if (user?.email) {
@@ -100,6 +100,64 @@ function App() {
     });
     // eslint-disable-next-line
   }, [citiesKz]);
+
+  useEffect(() => {
+    socket.on("updateBasesRu", ({ data }) => {
+      let updatedBases = basesRu?.map((city) => {
+        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
+        return updatedBase ? updatedBase : city;
+      });
+      const newBases = data.bases.filter((el) => {
+        return !basesRu?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+      });
+      updatedBases = [...updatedBases, ...newBases];
+      dispatch({
+        type: reducerTypes.GET_BASES_RU,
+        payload: updatedBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesRu]);
+
+  useEffect(() => {
+    socket.on("updateBasesKz", ({ data }) => {
+      let updatedBases = basesKz?.map((city) => {
+        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
+        return updatedBase ? updatedBase : city;
+      });
+      const newBases = data.bases.filter((el) => {
+        return !basesKz?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+      });
+      updatedBases = [...updatedBases, ...newBases];
+      dispatch({
+        type: reducerTypes.GET_BASES_KZ,
+        payload: updatedBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesKz]);
+
+  useEffect(() => {
+    socket.on("deleteBaseRu", ({ data }) => {
+      const filteredBases = basesRu?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+      dispatch({
+        type: reducerTypes.GET_BASES_RU,
+        payload: filteredBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesRu]);
+
+  useEffect(() => {
+    socket.on("deleteBaseKz", ({ data }) => {
+      const filteredBases = basesKz?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+      dispatch({
+        type: reducerTypes.GET_BASES_KZ,
+        payload: filteredBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesKz]);
 
   return (
     <>

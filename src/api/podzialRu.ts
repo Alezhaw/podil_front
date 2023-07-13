@@ -167,16 +167,6 @@ export const axiosGetFilteredBasesRu = async (search: string) => {
   }
 };
 
-export const axiosChangeBaseRu = async (base: IBaseRu) => {
-  try {
-    const { data } = await axios.post("api/base/changeOne", { ...base }, getConfig());
-
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 export const axiosDeleteBaseRu = async (id?: number, base_id?: number) => {
   try {
     const { data } = await axios.post("api/base/deleteOne", { id, base_id }, getConfig());

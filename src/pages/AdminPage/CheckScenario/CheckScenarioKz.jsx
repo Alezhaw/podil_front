@@ -10,12 +10,15 @@ import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
+import Spinner from "react-bootstrap/Spinner";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 function CheckScenarioKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
-  const [filterSpeaker, setFilterSpeaker] = useState(false);
+  const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -25,10 +28,13 @@ function CheckScenarioKz() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [count, setCount] = useState(1);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
+    setLoadingSpinner(false);
     const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, scenarioInProgress: filterInProgress, scenarioZamkniete: filterComplete });
     if (data) {
+      setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_KZ,
@@ -47,6 +53,10 @@ function CheckScenarioKz() {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("filterSpeaker", String(filterSpeaker));
+  }, [filterSpeaker]);
 
   useEffect(() => {
     setCities(
@@ -94,10 +104,15 @@ function CheckScenarioKz() {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+            <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Что-то еще</Dropdown.Item>
+          </DropdownButton>
         </div>
       </div>
 
@@ -109,34 +124,40 @@ function CheckScenarioKz() {
         </StyledDivHeader>
       </div>
 
-      <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <ContainerForTable>
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th className="default-col"> ID</th>
-                  {!filterSpeaker && <th className="default-col">L.p</th>}
-                  <th className="default-col">Godzina</th>
-                  {!filterSpeaker && <th className="default-col">Приход всего</th>}
-                  {!filterSpeaker && <th className="default-col">Пар всего</th>}
-                  {!filterSpeaker && <th className="coming-col">Проверка прихода</th>}
-                  <th className="default-col">КР</th>
-                  <th className="miasto-col">Miasto / Lokal</th>
-                  <th className="timezone-col">Часовой Пояс</th>
-                  {!filterSpeaker && <th className="default-col">Лимит</th>}
-                  <th className="default-col">Готово</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cities?.map((item) => (
-                  <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_scenario" changeCheck={changeCheckKz} key={item.id} filterSpeaker={filterSpeaker} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </ContainerForTable>
-      </div>
+      {loadingSpinner ? (
+        <div style={{ overflowX: "auto", textAlign: "center" }}>
+          <ContainerForTable>
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="default-col"> ID</th>
+                    {!filterSpeaker && <th className="default-col">L.p</th>}
+                    <th className="default-col">Godzina</th>
+                    {!filterSpeaker && <th className="default-col">Приход всего</th>}
+                    {!filterSpeaker && <th className="default-col">Пар всего</th>}
+                    {!filterSpeaker && <th className="coming-col">Проверка прихода</th>}
+                    <th className="default-col">КР</th>
+                    <th className="miasto-col">Miasto / Lokal</th>
+                    <th className="timezone-col">Часовой Пояс</th>
+                    {!filterSpeaker && <th className="default-col">Лимит</th>}
+                    <th className="default-col">Готово</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cities?.map((item) => (
+                    <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_scenario" changeCheck={changeCheckKz} key={item.id} filterSpeaker={filterSpeaker} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </ContainerForTable>
+        </div>
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <Spinner animation="border" role="status" style={{ height: "200px", width: "200px" }}></Spinner>
+        </div>
+      )}
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}

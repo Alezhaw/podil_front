@@ -7,6 +7,7 @@ import { StyledInput } from "../../../style/styles";
 import { axiosGetFilteredLogsBases } from "../../../api/logs";
 import { ContainerForTable } from "../components/Table.styled";
 import LogsBasesTableRow from "./LogsBasesTableRow";
+import Spinner from "react-bootstrap/Spinner";
 
 function LogsBases() {
   const dispatch = useDispatch();
@@ -23,10 +24,13 @@ function LogsBases() {
   const [count, setCount] = useState(1);
   const [country, setCountry] = useState("");
   const [countrySelectOptions, setCountrySelectOptions] = useState([]);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   async function getBasesLogs({ pageSize, page, search, country, updateFilter, createFilter, deleteFilter }) {
+    setLoadingSpinner(false);
     const data = await axiosGetFilteredLogsBases({ pageSize, page: page + 1, search, country, updateFilter, createFilter, deleteFilter });
     if (data) {
+      setLoadingSpinner(true);
       setCountrySelectOptions(data.countries);
       setCount(data.count);
       dispatch({
@@ -98,31 +102,37 @@ function LogsBases() {
 
       <h3 style={{ textAlign: "center" }}>Логи</h3>
 
-      <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <ContainerForTable>
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th className="default-col">ID</th>
-                  <th className="default-col">ID City</th>
-                  <th className="default-col">Страна</th>
-                  <th className="default-col">Действие</th>
-                  <th className="default-col">Изменений</th>
-                  <th className="default-col">Время</th>
-                  <th className="default-col">Кто</th>
-                </tr>
-              </thead>
-              <tbody style={{}}>
-                {logs?.map((item, index) => (
-                  <LogsBasesTableRow item={item} key={item.id} getCorrectTime={getCorrectTime} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </ContainerForTable>
-        {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
-      </div>
+      {loadingSpinner ? (
+        <div style={{ overflowX: "auto", textAlign: "center" }}>
+          <ContainerForTable>
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="default-col">ID</th>
+                    <th className="default-col">ID City</th>
+                    <th className="default-col">Страна</th>
+                    <th className="default-col">Действие</th>
+                    <th className="default-col">Изменений</th>
+                    <th className="default-col">Время</th>
+                    <th className="default-col">Кто</th>
+                  </tr>
+                </thead>
+                <tbody style={{}}>
+                  {logs?.map((item, index) => (
+                    <LogsBasesTableRow item={item} key={item.id} getCorrectTime={getCorrectTime} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </ContainerForTable>
+          {/*style={{ width: "3500px", overflowY: "auto", height: "150vh" }} */}
+        </div>
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <Spinner animation="border" role="status" style={{ height: "200px", width: "200px" }}></Spinner>
+        </div>
+      )}
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}

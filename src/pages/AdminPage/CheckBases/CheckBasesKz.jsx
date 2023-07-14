@@ -10,6 +10,7 @@ import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
+import Spinner from "react-bootstrap/Spinner";
 
 function CheckBasesKz() {
   const dispatch = useDispatch();
@@ -24,10 +25,13 @@ function CheckBasesKz() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [count, setCount] = useState(1);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
+    setLoadingSpinner(false);
     const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, baseInProgress: filterInProgress, baseZamkniete: filterComplete });
     if (data) {
+      setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_KZ,
@@ -107,34 +111,40 @@ function CheckBasesKz() {
         </StyledDivHeader>
       </div>
 
-      <div style={{ overflowX: "auto", textAlign: "center" }}>
-        <ContainerForTable>
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th className="default-col"> ID</th>
-                  <th className="default-col">L.p</th>
-                  <th className="default-col">Godzina</th>
-                  <th className="default-col">Приход всего</th>
-                  <th className="default-col">Пар всего</th>
-                  <th className="coming-col">Проверка прихода</th>
-                  <th className="default-col">КР</th>
-                  <th className="miasto-col">Miasto / Lokal</th>
-                  <th className="timezone-col">Часовой Пояс</th>
-                  <th className="default-col">Лимит</th>
-                  <th className="default-col">Готово</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cities?.map((item) => (
-                  <CheckBaseTable currentCities={item} country="cityKz" checkKey={"check_base"} changeCheck={changeCheckKz} key={item.id} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </ContainerForTable>
-      </div>
+      {loadingSpinner ? (
+        <div style={{ overflowX: "auto", textAlign: "center" }}>
+          <ContainerForTable>
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="default-col"> ID</th>
+                    <th className="default-col">L.p</th>
+                    <th className="default-col">Godzina</th>
+                    <th className="default-col">Приход всего</th>
+                    <th className="default-col">Пар всего</th>
+                    <th className="coming-col">Проверка прихода</th>
+                    <th className="default-col">КР</th>
+                    <th className="miasto-col">Miasto / Lokal</th>
+                    <th className="timezone-col">Часовой Пояс</th>
+                    <th className="default-col">Лимит</th>
+                    <th className="default-col">Готово</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cities?.map((item) => (
+                    <CheckBaseTable currentCities={item} country="cityKz" checkKey={"check_base"} changeCheck={changeCheckKz} key={item.id} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </ContainerForTable>
+        </div>
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <Spinner animation="border" role="status" style={{ height: "200px", width: "200px" }}></Spinner>
+        </div>
+      )}
 
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}

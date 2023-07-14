@@ -1,7 +1,6 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AllUsers from "./Users/AllUsers";
-import { useAppSelector } from "../../store/reduxHooks";
 import { useNavigate } from "react-router-dom";
 import AllCitiesRu from "./PodzialRu/AllCitiesRu";
 import AllCitiesKz from "./PodzialKz/AllCitiesKz";
@@ -18,7 +17,6 @@ import LogsBases from "./Logs/LogsBases";
 function AdminPanel() {
   const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) || null);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
-  const { user } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [basePage, setBasePage] = useState("БАЗЫ");
   const [speakerPage, setSpeakerPage] = useState("ДИКТОР");

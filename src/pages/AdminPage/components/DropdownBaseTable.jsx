@@ -3,6 +3,7 @@ import Base from "./Base";
 import { Button } from "@material-ui/core";
 import { axiosCreateBaseRu, axiosDeleteBaseRu, axiosGetBasesForCityRu } from "../../../api/podzialRu";
 import { axiosCreateBaseKz, axiosDeleteBaseKz, axiosGetBasesForCityKz } from "../../../api/podzialKz";
+import { socket } from "../../../App";
 
 function DropdownBaseTable({ item, country }) {
   const [newBases, setNewBases] = useState([{ id: 1, id_for_base: item.id_for_base }]);
@@ -10,8 +11,8 @@ function DropdownBaseTable({ item, country }) {
   const [deleteBases, setDeleteBases] = useState([]);
   const axiosFunctions =
     country === "cityRu"
-      ? { getBases: axiosGetBasesForCityRu, createBase: axiosCreateBaseRu, deleteBase: axiosDeleteBaseRu }
-      : { getBases: axiosGetBasesForCityKz, createBase: axiosCreateBaseKz, deleteBase: axiosDeleteBaseKz };
+      ? { getBases: axiosGetBasesForCityRu, createBase: axiosCreateBaseRu, deleteBase: axiosDeleteBaseRu, updateBasesSocket: "updateBasesRu", deleteBaseSocket: "deleteBaseRu" }
+      : { getBases: axiosGetBasesForCityKz, createBase: axiosCreateBaseKz, deleteBase: axiosDeleteBaseKz, updateBasesSocket: "updateBasesKz", deleteBaseSocket: "deleteBaseKz" };
 
   async function createBase(currentBases, newBases, item) {
     try {
@@ -67,6 +68,29 @@ function DropdownBaseTable({ item, country }) {
   }
 
   useEffect(() => {
+    socket.on(axiosFunctions.updateBasesSocket, ({ data }) => {
+      let updatedBases = currentBases?.map((city) => {
+        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
+        return updatedBase ? updatedBase : city;
+      });
+      const newBases = data.bases.filter((el) => {
+        return !currentBases?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+      });
+      updatedBases = [...updatedBases, ...newBases];
+      setCurrentBases(updatedBases);
+    });
+    // eslint-disable-next-line
+  }, [currentBases, axiosFunctions, setCurrentBases]);
+
+  useEffect(() => {
+    socket.on(axiosFunctions.deleteBaseSocket, ({ data }) => {
+      const filteredBases = currentBases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+      setCurrentBases(filteredBases);
+    });
+    // eslint-disable-next-line
+  }, [currentBases, axiosFunctions, setCurrentBases]);
+
+  useEffect(() => {
     getBasesForCity(item);
     // eslint-disable-next-line
   }, []);
@@ -74,9 +98,11 @@ function DropdownBaseTable({ item, country }) {
   return (
     <div style={{ position: "relative", marginTop: "40px" }}>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        {currentBases.map((item) => (
-          <Base item={item} setCurrentBases={setCurrentBases} changeDeleteBases={changeDeleteBases} />
-        ))}
+        {currentBases
+          ?.sort((a, b) => Number(b.id) - Number(a.id))
+          .map((item) => (
+            <Base item={item} setCurrentBases={setCurrentBases} changeDeleteBases={changeDeleteBases} />
+          ))}
         {newBases.map((item) => (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Base item={item} forCheckTable={true} setCurrentBases={setNewBases} setNewBases={setNewBases} />

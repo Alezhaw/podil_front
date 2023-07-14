@@ -331,6 +331,7 @@ function AllCitiesKz() {
           <Spinner animation="border" role="status" style={{ height: "200px", width: "200px" }}></Spinner>
         </div>
       )}
+
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div
           className="tabl-flex-admin-button"

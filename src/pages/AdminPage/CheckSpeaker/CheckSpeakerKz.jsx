@@ -11,12 +11,14 @@ import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 function CheckSpeakerKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
-  const [filterSpeaker, setFilterSpeaker] = useState(false);
+  const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -62,6 +64,10 @@ function CheckSpeakerKz() {
   }, [citiesKz]);
 
   useEffect(() => {
+    localStorage.setItem("filterSpeaker", String(filterSpeaker));
+  }, [filterSpeaker]);
+
+  useEffect(() => {
     if (!citiesKz[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
@@ -102,6 +108,11 @@ function CheckSpeakerKz() {
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+            <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Что-то еще</Dropdown.Item>
+          </DropdownButton>
         </div>
       </div>
 

@@ -1,4 +1,6 @@
 import { Container, Button } from "@material-ui/core";
+import { MenuItem, FormControl, Select } from "@mui/material";
+import { citiesStatus } from "../../../components/mock/OutputMock";
 
 function CityTableID({ setCity, currentCities, deleteTime }) {
   function formatDate(date) {
@@ -52,6 +54,9 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
             <th className="basesTableCell">Miasto / Lokal</th>
             <th className="basesTableCell">Часовой Пояс</th>
             <th className="basesTableCell">Лимит</th>
+            <th className="basesTableCell" style={{ minWidth: "160px" }}>
+              Статус
+            </th>
             <th className="basesTableCell">W toku</th>
             <th className="basesTableCell">Zamkniete</th>
             <th className="basesTableCell">Dodawanie rekordów</th>
@@ -303,6 +308,25 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                   value={item.limit || ""}
                 />
               </td>
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
+                  <FormControl variant="standard" sx={{ m: 1, minWidth: 120, display: "flex", flexDirection: "column" }}>
+                    <Select
+                      labelId="demo-simple-select-standard-label"
+                      id="demo-simple-select-standard"
+                      value={item.status}
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, status: e.target.value })))}
+                      style={{ fontWeight: 700, fontSize: "16px", display: "flex", flexDirection: "column" }}
+                    >
+                      {citiesStatus.map((item, index) => (
+                        <MenuItem value={index}>{item}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </td>
+              ) : (
+                ""
+              )}
               {index === 0 ? (
                 <td rowspan={`${currentCities.length}`} className="basesTableCell">
                   <input

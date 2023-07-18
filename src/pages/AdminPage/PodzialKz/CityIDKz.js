@@ -196,7 +196,7 @@ function CityIDKz() {
                   <table style={{ textAlign: "center" }}>
                     <tbody style={{ display: "flex", flexDirection: "row" }}>
                       {currentBases?.map((item) => (
-                        <Base item={item} setCurrentBases={setCurrentBases} changeDeleteBases={changeDeleteBases} />
+                        <Base item={item} setCurrentBases={setCurrentBases} changeDeleteBases={changeDeleteBases} key={item.id} />
                       ))}
                     </tbody>
                   </table>

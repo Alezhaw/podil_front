@@ -36,3 +36,5 @@ export const userPathForAdmin = {
   "/disputes": "Решение споров",
 };
 export const outputMock = ["История пополнений", "Перевод по реквизитам", "Перевод пользователю"];
+
+export const citiesStatus = ["Отменен", "В процессе", "Закрыт", "Ожидает"];

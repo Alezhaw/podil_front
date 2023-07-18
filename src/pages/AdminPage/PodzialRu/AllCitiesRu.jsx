@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
+import { axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetFilteredCitiesRu, axiosChangeStatusRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
@@ -73,6 +73,17 @@ function AllCitiesRu() {
       if (result.updated[0]) return alert("Город обновлен");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
       alert("Что-то пошло не так");
+    }
+  }
+
+  async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
+    setChangeStatus(true);
+    const result = await axiosChangeStatusRu(status, id_for_base);
+    setChangeStatus(false);
+    if (result) {
+      //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    } else {
+      alert(`Ошибка смены статуса, id: ${id_for_base}`);
     }
   }
 
@@ -211,6 +222,9 @@ function AllCitiesRu() {
                   <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
                     Лимит
                   </th>
+                  <th className="basesTableCell" style={{ minWidth: "160px" }}>
+                    Статус
+                  </th>
                   <th className="basesTableCell" style={{ minWidth: "85px" }}>
                     W toku
                   </th>
@@ -323,7 +337,7 @@ function AllCitiesRu() {
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} key={item.id} />
+                  <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} changeCitiesStatus={changeCitiesStatus} key={item.id} />
                 ))}
               </tbody>
             </table>

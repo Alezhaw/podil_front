@@ -100,6 +100,16 @@ export const axiosChangeCheckKz = async (id_for_base?: number, id?: number, chec
   }
 };
 
+export const axiosChangeStatusKz = async (status: number, id_for_base?: number, id?: number) => {
+  try {
+    const { data } = await axios.post("api/citykz/changeStatus", { id_for_base, id, status }, getConfig());
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const axiosDeleteCityKz = async (id_for_base: number) => {
   try {
     const { data } = await axios.post("api/citykz/deleteOne", { id_for_base }, getConfig());

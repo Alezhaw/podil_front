@@ -1,8 +1,11 @@
-import { Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import { citiesStatus } from "../../../components/mock/OutputMock";
+import { MenuItem, FormControl, Select } from "@mui/material";
+import { useState } from "react";
 
-function AllCityTable({ currentCities, country, changeDeleteCities }) {
+function AllCityTable({ currentCities, country, changeDeleteCities, changeCitiesStatus }) {
   const navigate = useNavigate();
+  const [changeStatus, setChangeStatus] = useState(false);
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
@@ -32,13 +35,14 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
         <th></th>
         <th></th>
         <th></th>
-        <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+        <th></th>
+        <th colSpan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
           <div className="tableInput">{formatDate(currentCities[0]?.dzien_1_data || "") || ""}</div>
         </th>
-        <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+        <th colSpan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
           <div className="tableInput">{formatDate(currentCities[0]?.dzien_2_data || "") || ""}</div>
         </th>
-        <th colspan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+        <th colSpan="2" style={{ border: "", background: "", minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
           <div className="tableInput">{formatDate(currentCities[0]?.dzien_3_data || "") || ""}</div>
         </th>
         <th></th>
@@ -58,7 +62,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
       {currentCities?.map((item, index) => (
         <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/${country}/${item?.id_for_base}`)}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/${country}/${item?.id_for_base}`)}>
               <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
                 {item.id_for_base || ""}
               </div>
@@ -67,7 +71,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell">
               <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
                 {item.l_p || ""}
               </div>
@@ -91,7 +95,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
               <input
                 // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
                 className="tableInput"
@@ -99,13 +103,14 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 type="checkbox"
                 autoComplete="off"
                 checked={!!item.wyjasnienia}
+                readOnly
               />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
               <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
                 {item.projekt || ""}
               </div>
@@ -114,7 +119,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
                 {item.miasto_lokal || ""}
               </div>
@@ -123,7 +128,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
               <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
                 {item.timezone || 0}
               </div>
@@ -137,7 +142,33 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
+            <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
+              {/* <input onChange={(e) => null} className="tableInput" style={{ width: "100px" }} type="text" autoComplete="off" value={citiesStatus[item.status] || ""} /> */}
+              {changeStatus ? (
+                <div className="tableInput" style={{ textAlign: "center" }}>
+                  loading...
+                </div>
+              ) : (
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={item.status}
+                    onChange={(e) => changeCitiesStatus(setChangeStatus, e.target.value, item.id_for_base)}
+                    style={{ fontWeight: 700, fontSize: "16px" }}
+                  >
+                    {citiesStatus.map((item, index) => (
+                      <MenuItem value={index}>{item}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </td>
+          ) : (
+            ""
+          )}
+          {index === 0 ? (
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
               <input
                 // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, w_toku: e.target.checked })))}
                 className="tableInput"
@@ -145,13 +176,14 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 type="checkbox"
                 autoComplete="off"
                 checked={!!item.w_toku}
+                readOnly
               />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
               <input
                 // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, zamkniete: e.target.checked })))}
                 className="tableInput"
@@ -159,13 +191,14 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
                 type="checkbox"
                 autoComplete="off"
                 checked={!!item.zamkniete}
+                readOnly
               />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", minWidth: "119px" }}>
                 {item.dodawanie_rekordow || ""}
               </div>
@@ -174,7 +207,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center" }}>
                 {item.scenariusze || ""}
               </div>
@@ -183,7 +216,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "94px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "94px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center" }}>
                 {item.weryfikacja_dkj || ""}
               </div>
@@ -192,7 +225,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "96px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "96px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center" }}>
                 {item.podpinanie_scenariuszy || ""}
               </div>
@@ -201,7 +234,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
               <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
                 {item.present || ""}
               </div>
@@ -210,7 +243,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "78.4px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "78.4px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center" }}>
                 {Number(item.rekodow_na_1_zgode).toFixed() || ""}
               </div>
@@ -219,7 +252,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
                 {item.wb_1 || ""}
               </div>
@@ -228,7 +261,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ width: "70px", textAlign: "center" }}>
                 {item.wb_2 || ""}
               </div>
@@ -247,7 +280,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
                 {Number(item.dzien_1_rekodow_na_1_zgode).toFixed() || ""}
               </div>
@@ -261,7 +294,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
                 {Number(item.dzien_2_rekodow_na_1_zgode).toFixed() || ""}
               </div>
@@ -275,7 +308,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
                 {Number(item.dzien_3_rekodow_na_1_zgode).toFixed() || ""}
               </div>
@@ -289,7 +322,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
                 {item.vip_id || ""}
               </div>
@@ -298,7 +331,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
                 {item.vip_format || ""}
               </div>
@@ -328,7 +361,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
               <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
                 {item.system || ""}
               </div>
@@ -352,21 +385,21 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             </div>
           </th>
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
-              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_umawianie} />
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
+              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_umawianie} readOnly />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "95px" }}>
-              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_potwierdzen} />
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "95px" }}>
+              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_potwierdzen} readOnly />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
-            <th rowspan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "75px" }}>
+            <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "75px" }}>
               <input onChange={(e) => changeDeleteCities(e.target.checked, item?.id_for_base)} className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" />
             </th>
           ) : (

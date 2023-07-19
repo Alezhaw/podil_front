@@ -13,11 +13,14 @@ import AllCityTable from "../components/AllCityTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import { allCitiesTableMock } from "../../../components/mock/OutputMock";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 function AllCitiesRu() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -94,9 +97,17 @@ function AllCitiesRu() {
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
-    // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns"));
+    if (savedFilterColumns.length > 0) {
+      const updatedFilterColumns = allCitiesTableMock.map((el) => {
+        const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
+        return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
+      });
+      setFilterColumns(updatedFilterColumns);
+    } else {
+      setFilterColumns(allCitiesTableMock);
+    }
+  }, [allCitiesTableMock]);
 
   return (
     <>
@@ -123,7 +134,7 @@ function AllCitiesRu() {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
           <Checkbox
             value={filterInProgress}
@@ -144,6 +155,30 @@ function AllCitiesRu() {
             }}
             color="error"
           />
+          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+            {filterColumns.map((el, index) => (
+              <Dropdown.Item
+                onClick={(e) => {
+                  const updatedFilterColumns = filterColumns.map((fc) => {
+                    if (fc.column === e.target.id) {
+                      return { ...fc, value: !fc.value };
+                    }
+                    return fc;
+                  });
+                  setFilterColumns(updatedFilterColumns);
+                  localStorage.setItem("filterColumns", JSON.stringify(updatedFilterColumns));
+                  e.stopPropagation();
+                }}
+                href=""
+                key={index}
+              >
+                <div id={el.column}>
+                  <Checkbox checked={el.value} id={el.column} />
+                  {el.column}
+                </div>
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
         </div>
       </div>
 
@@ -185,13 +220,13 @@ function AllCitiesRu() {
                   <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
                     ID
                   </th>
-                  {allCitiesTableMock.map((el) => el.header())}
+                  {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                 </tr>
               </thead>
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} key={item.id} />
+                  <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} key={item.id} />
                 ))}
               </tbody>
             </table>

@@ -1,8 +1,7 @@
 import { Container } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 
-function AllCityTable({ currentCities, country, changeDeleteCities }) {
+function AllCityTable({ currentCities, country, changeDeleteCities, filterColumns }) {
   const navigate = useNavigate();
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
@@ -12,7 +11,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
     <>
       <tr style={{ height: "26.8px", background: "#f37dea" }}>
         <th></th>
-        {allCitiesTableMock.map((el) => el.firstRow({ formatDate, currentCities }))}
+        {filterColumns?.filter((el) => el.value).map((el) => el.firstRow({ formatDate, currentCities }))}
       </tr>
       {currentCities?.map((item, index) => (
         <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
@@ -26,7 +25,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities }) {
             ""
           )}
 
-          {allCitiesTableMock.map((el) => el.content({ index, currentCities, item, changeDeleteCities }))}
+          {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeDeleteCities }))}
         </tr>
       ))}
     </>

@@ -39,9 +39,10 @@ function AllCitiesRu() {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
     setLoadingSpinner(false);
+    console.log(1);
     const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete });
+    setLoadingSpinner(true);
     if (data) {
-      setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_RU,
@@ -106,6 +107,11 @@ function AllCitiesRu() {
     }
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    // eslint-disable-next-line
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");

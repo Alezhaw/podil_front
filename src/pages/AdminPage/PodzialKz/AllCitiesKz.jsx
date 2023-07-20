@@ -108,6 +108,11 @@ function AllCitiesKz() {
   }, [user]);
 
   useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    // eslint-disable-next-line
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
+
+  useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
     if (savedFilterColumns.length > 0) {
       const updatedFilterColumns = allCitiesTableMock.map((el) => {

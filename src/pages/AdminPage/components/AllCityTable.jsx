@@ -54,7 +54,6 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
           ) : (
             ""
           )}
-          {console.log(1, filterColumns)}
           {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeDeleteCities }))}
         </tr>
       ))}

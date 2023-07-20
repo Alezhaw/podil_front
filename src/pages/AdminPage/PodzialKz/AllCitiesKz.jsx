@@ -12,11 +12,15 @@ import CreateCity from "../components/CreateCity";
 import AllCityTable from "../components/AllCityTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
+import { allCitiesTableMock } from "../../../components/mock/OutputMock";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 function AllCitiesKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -104,9 +108,17 @@ function AllCitiesKz() {
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
-    // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
+    if (savedFilterColumns.length > 0) {
+      const updatedFilterColumns = allCitiesTableMock.map((el) => {
+        const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
+        return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
+      });
+      setFilterColumns(updatedFilterColumns);
+    } else {
+      setFilterColumns(allCitiesTableMock);
+    }
+  }, [allCitiesTableMock]);
 
   return (
     <>
@@ -133,7 +145,7 @@ function AllCitiesKz() {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
           <Checkbox
             value={filterInProgress}
@@ -154,8 +166,33 @@ function AllCitiesKz() {
             }}
             color="error"
           />
+          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+            {filterColumns.map((el, index) => (
+              <Dropdown.Item
+                onClick={(e) => {
+                  const updatedFilterColumns = filterColumns.map((fc) => {
+                    if (fc.column === e.target.id) {
+                      return { ...fc, value: !fc.value };
+                    }
+                    return fc;
+                  });
+                  setFilterColumns(updatedFilterColumns);
+                  localStorage.setItem("filterColumns", JSON.stringify(updatedFilterColumns));
+                  e.stopPropagation();
+                }}
+                href=""
+                key={index}
+              >
+                <div id={el.column}>
+                  <Checkbox checked={el.value} id={el.column} />
+                  {el.column}
+                </div>
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
         </div>
       </div>
+
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
           Новый зал
@@ -176,12 +213,15 @@ function AllCitiesKz() {
       ) : (
         ""
       )}
+
       <h3 style={{ textAlign: "center" }}>Города</h3>
+
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
           СОРТ
         </StyledDivHeader>
       </div>
+
       {loadingSpinner ? (
         <div style={{ overflowX: "auto", textAlign: "center" }}>
           <ContainerForTable>
@@ -191,149 +231,16 @@ function AllCitiesKz() {
                   <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
                     ID
                   </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    L.p
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    Godzina
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    Приход всего
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    Пар всего
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "86px" }}>
-                    Проверка прихода
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    КР
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "250px" }}>
-                    Miasto / Lokal
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "78px" }}>
-                    Часовой Пояс
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    Лимит
-                  </th>
                   <th className="basesTableCell" style={{ minWidth: "160px" }}>
                     Статус
                   </th>
-                  <th className="basesTableCell" style={{ minWidth: "85px" }}>
-                    W toku
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
-                    Zamkniete
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "140px" }}>
-                    Dodawanie rekordów
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
-                    Scenariusze
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "94px" }}>
-                    Weryfikacja DKJ
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "96px" }}>
-                    Podpinanie scenariuszy
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-                    Limit regalo
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "78.4px" }}>
-                    Rekodow na 1 zgode
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-                    WB 1
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    WB 2
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "87px" }}>
-                    Ilość Zaproszeń
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
-                    Zgody inne miasto
-                  </th>
-                  <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                    <tr style={{ background: "none" }}>
-                      <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
-                      <th>Aktualna ilość zaproszeń</th>
-                    </tr>
-                    <tr style={{ background: "none" }}>
-                      <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
-                        1 dzień
-                      </th>
-                    </tr>
-                  </th>
-                  <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                    <tr style={{ background: "none" }}>
-                      <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
-                      <th>Aktualna ilość zaproszeń</th>
-                    </tr>
-                    <tr style={{ background: "none" }}>
-                      <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
-                        2 dzień
-                      </th>
-                    </tr>
-                  </th>
-                  <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
-                    <tr style={{ background: "none" }}>
-                      <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
-                      <th>Aktualna ilość zaproszeń</th>
-                    </tr>
-                    <tr style={{ background: "none" }}>
-                      <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
-                        3 dzień
-                      </th>
-                    </tr>
-                  </th>
-                  <th colSpan="6" style={{ border: "1px solid black" }}>
-                    <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
-                      VIP
-                    </th>
-                    <tr style={{ height: "55px", background: "none" }}>
-                      <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>ID</th>
-                      <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>Формат</th>
-                      <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Лимит</th>
-                      <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Приход</th>
-                      <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Пар всего</th>
-                      <th style={{ minWidth: "70.8px" }}>%, прихода</th>
-                    </tr>
-                  </th>
-                  <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-                    ЗАМЕТКА
-                  </th>
-                  <th colSpan="3" style={{ border: "1px solid black" }}>
-                    <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
-                      WYNIKI POTWIERDZEŃ
-                    </th>
-                    <tr style={{ background: "none" }}>
-                      <th style={{ borderRight: "1px solid black", minWidth: "68.8px", height: "55px" }}>Zgoda</th>
-                      <th style={{ borderRight: "1px solid black", minWidth: "68.8px" }}>Odmowy</th>
-                      <th style={{ minWidth: "68.8px" }}>Kropki</th>
-                    </tr>
-                  </th>
-                  <th colSpan="2" style={{ border: "1px solid black" }}>
-                    <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
-                      SMS
-                    </th>
-                    <tr style={{ background: "none" }}>
-                      <th style={{ borderRight: "1px solid black", maxWidth: "70.8px", height: "55px" }}>Umawianie</th>
-                      <th style={{ maxWidth: "95px" }}>Potwierdzanie</th>
-                    </tr>
-                  </th>
-                  <th className="basesTableCell" style={{ maxWidth: "75px" }}>
-                    Удалить
-                  </th>
+                  {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                 </tr>
               </thead>
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable currentCities={item} country="cityKz" changeDeleteCities={changeDeleteCities} changeCitiesStatus={changeCitiesStatus} key={item.id} />
+                  <AllCityTable currentCities={item} country="cityKz" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} key={item.id} />
                 ))}
               </tbody>
             </table>
@@ -345,7 +252,6 @@ function AllCitiesKz() {
           <Spinner animation="border" role="status" style={{ height: "200px", width: "200px" }}></Spinner>
         </div>
       )}
-
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "5px" }}>
         <div
           className="tabl-flex-admin-button"
@@ -363,6 +269,7 @@ function AllCitiesKz() {
           Удалить
         </div>
       </div>
+
       <Pagination
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
         count={count}
@@ -371,6 +278,7 @@ function AllCitiesKz() {
         renderItem={(item) => <PaginationItem {...item} />}
         page={Number(page + 1)}
       />
+
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
         <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
         <input

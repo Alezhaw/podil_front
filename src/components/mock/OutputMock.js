@@ -1,3 +1,5 @@
+import { MenuItem, FormControl, Select } from "@mui/material";
+
 export const validateCreditCard = (item) => {
   const itemReplace = item.replaceAll(" ", "");
   const checkLength = itemReplace.length === 16;
@@ -212,6 +214,42 @@ export const allCitiesTableMock = [
         </div>
       </th>
     ),
+  },
+  {
+    column: "Статус",
+    value: true,
+    header: () => (
+      <th className="basesTableCell" style={{ minWidth: "160px" }}>
+        Статус
+      </th>
+    ),
+    firstRow: () => <th></th>,
+    content: ({ currentCities, changeStatus, item, changeCitiesStatus, setChangeStatus, citiesStatus, index }) =>
+      index === 0 ? (
+        <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
+          {changeStatus ? (
+            <div className="tableInput" style={{ textAlign: "center" }}>
+              loading...
+            </div>
+          ) : (
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={item.status}
+                onChange={(e) => changeCitiesStatus(setChangeStatus, e.target.value, item.id_for_base)}
+                style={{ fontWeight: 700, fontSize: "16px" }}
+              >
+                {citiesStatus.map((item, index) => (
+                  <MenuItem value={index}>{item}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        </td>
+      ) : (
+        ""
+      ),
   },
   {
     column: "W toku",

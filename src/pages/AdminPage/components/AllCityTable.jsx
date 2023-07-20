@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { citiesStatus } from "../../../components/mock/OutputMock";
-import { MenuItem, FormControl, Select } from "@mui/material";
 import { useState } from "react";
 
 function AllCityTable({ currentCities, country, changeDeleteCities, filterColumns, changeCitiesStatus }) {
@@ -13,7 +12,6 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
   return (
     <>
       <tr style={{ height: "26.8px", background: "#f37dea" }}>
-        <th></th>
         <th></th>
         {filterColumns?.filter((el) => el.value).map((el) => el.firstRow({ formatDate, currentCities }))}
       </tr>
@@ -28,33 +26,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
           ) : (
             ""
           )}
-          {index === 0 ? (
-            <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
-              {/* <input onChange={(e) => null} className="tableInput" style={{ width: "100px" }} type="text" autoComplete="off" value={citiesStatus[item.status] || ""} /> */}
-              {changeStatus ? (
-                <div className="tableInput" style={{ textAlign: "center" }}>
-                  loading...
-                </div>
-              ) : (
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                  <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    value={item.status}
-                    onChange={(e) => changeCitiesStatus(setChangeStatus, e.target.value, item.id_for_base)}
-                    style={{ fontWeight: 700, fontSize: "16px" }}
-                  >
-                    {citiesStatus.map((item, index) => (
-                      <MenuItem value={index}>{item}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            </td>
-          ) : (
-            ""
-          )}
-          {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeDeleteCities }))}
+          {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeDeleteCities, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus }))}
         </tr>
       ))}
     </>

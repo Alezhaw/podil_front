@@ -236,9 +236,6 @@ function AllCitiesKz() {
                   <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
                     ID
                   </th>
-                  <th className="basesTableCell" style={{ minWidth: "160px" }}>
-                    Статус
-                  </th>
                   {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                 </tr>
               </thead>

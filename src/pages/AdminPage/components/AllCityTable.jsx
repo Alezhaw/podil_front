@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { citiesStatus } from "../../../components/mock/OutputMock";
+import { citiesStatus, citiesStatusColor } from "../../../components/mock/OutputMock";
 import { useState } from "react";
 
 function AllCityTable({ currentCities, country, changeDeleteCities, filterColumns, changeCitiesStatus }) {
@@ -26,7 +26,9 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
           ) : (
             ""
           )}
-          {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeDeleteCities, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus }))}
+          {filterColumns
+            ?.filter((el) => el.value)
+            .map((el) => el.content({ index, currentCities, item, changeDeleteCities, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus, citiesStatusColor }))}
         </tr>
       ))}
     </>

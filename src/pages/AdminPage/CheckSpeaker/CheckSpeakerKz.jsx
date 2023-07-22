@@ -19,6 +19,7 @@ function CheckSpeakerKz() {
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
+  const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -30,9 +31,17 @@ function CheckSpeakerKz() {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, speakerInProgress: filterInProgress, speakerZamkniete: filterComplete });
+    const data = await axiosGetFilteredCitiesKz({
+      page: page + 1,
+      pageSize: itemsPerPage,
+      sort: !sortId,
+      search,
+      speakerInProgress: filterInProgress,
+      speakerZamkniete: filterComplete,
+      speakerCanceled: filterCanceled,
+    });
     if (data) {
       setLoadingSpinner(true);
       setCount(data.count);
@@ -48,7 +57,7 @@ function CheckSpeakerKz() {
     if (!checkConfirm) return;
     const data = await axiosChangeCheckKz(Number(id_for_base), null, null, checked);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
@@ -69,15 +78,15 @@ function CheckSpeakerKz() {
 
   useEffect(() => {
     if (!citiesKz[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 
   return (
     <>
@@ -106,8 +115,35 @@ function CheckSpeakerKz() {
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <Checkbox
+            value={filterCanceled}
+            onChange={() => {
+              setPage(0);
+              setFilterCanceled((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
+          <Checkbox
+            value={filterInProgress}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterInProgress((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Complete</h5>{" "}
+          <Checkbox
+            value={filterComplete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterComplete((prev) => !prev);
+            }}
+            color="error"
+          />
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
             <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>
@@ -182,6 +218,7 @@ function CheckSpeakerKz() {
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
+              setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
           }}

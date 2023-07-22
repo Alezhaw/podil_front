@@ -39,12 +39,16 @@ export const axiosGetFilteredCitiesRu = async ({
   sort = true,
   speakerZamkniete = true,
   speakerInProgress = true,
+  speakerCanceled = true,
   scenarioZamkniete = true,
   scenarioInProgress = true,
+  scenarioCanceled = true,
   baseZamkniete = true,
   baseInProgress = true,
+  baseCanceled = true,
   zamkniete = true,
   inProgress = true,
+  canceled = true,
   search = "",
 }: {
   pageSize: number;
@@ -52,10 +56,14 @@ export const axiosGetFilteredCitiesRu = async ({
   scenarioInProgress: boolean;
   baseZamkniete: boolean;
   baseInProgress: boolean;
+  baseCanceled: boolean;
   zamkniete: boolean;
   inProgress: boolean;
+  canceled: boolean;
   search: string;
+  scenarioCanceled: boolean;
   scenarioZamkniete: boolean;
+  speakerCanceled: boolean;
   speakerInProgress: boolean;
   speakerZamkniete: boolean;
   sort: boolean;
@@ -67,7 +75,24 @@ export const axiosGetFilteredCitiesRu = async ({
     controllerGetFilteredCitiesRu = new AbortController();
     const { data } = await axios.post(
       "api/city/search",
-      { pageSize, page, sort, speakerZamkniete, speakerInProgress, scenarioZamkniete, scenarioInProgress, baseZamkniete, baseInProgress, zamkniete, inProgress, search },
+      {
+        pageSize,
+        page,
+        sort,
+        speakerZamkniete,
+        speakerInProgress,
+        speakerCanceled,
+        scenarioZamkniete,
+        scenarioInProgress,
+        scenarioCanceled,
+        baseZamkniete,
+        baseInProgress,
+        baseCanceled,
+        zamkniete,
+        inProgress,
+        canceled,
+        search,
+      },
       { ...getConfig(), signal: controllerGetFilteredCitiesRu.signal }
     );
     return data;

@@ -5,17 +5,21 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosChangeCheckRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
+import { axiosChangeCheckRu, axiosGetFilteredCitiesRu, axiosChangeStatusRu } from "../../../api/podzialRu";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
+import { allCitiesTableMock } from "../../../components/mock/OutputMock";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 function CheckBasesRu() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -51,6 +55,17 @@ function CheckBasesRu() {
     }
   }
 
+  async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
+    setChangeStatus(true);
+    const result = await axiosChangeStatusRu(status, id_for_base);
+    setChangeStatus(false);
+    if (result) {
+      //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    } else {
+      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+    }
+  }
+
   useEffect(() => {
     setCities(
       citiesRu
@@ -71,6 +86,19 @@ function CheckBasesRu() {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
+
+  useEffect(() => {
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
+    if (savedFilterColumns.length > 0) {
+      const updatedFilterColumns = [...allCitiesTableMock?.slice(0, 10)].map((el) => {
+        const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
+        return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
+      });
+      setFilterColumns(updatedFilterColumns);
+    } else {
+      setFilterColumns(allCitiesTableMock);
+    }
+  }, [allCitiesTableMock]);
 
   return (
     <>
@@ -97,9 +125,33 @@ function CheckBasesRu() {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+            {filterColumns.map((el, index) => (
+              <Dropdown.Item
+                onClick={(e) => {
+                  const updatedFilterColumns = filterColumns.map((fc) => {
+                    if (fc.column === e.target.id) {
+                      return { ...fc, value: !fc.value };
+                    }
+                    return fc;
+                  });
+                  setFilterColumns(updatedFilterColumns);
+                  localStorage.setItem("filterColumns", JSON.stringify(updatedFilterColumns));
+                  e.stopPropagation();
+                }}
+                href=""
+                key={index}
+              >
+                <div id={el.column}>
+                  <Checkbox checked={el.value} id={el.column} />
+                  {el.column}
+                </div>
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
         </div>
       </div>
 
@@ -118,22 +170,16 @@ function CheckBasesRu() {
               <table>
                 <thead>
                   <tr>
-                    <th className="default-col"> ID</th>
-                    <th className="default-col">L.p</th>
-                    <th className="default-col">Godzina</th>
-                    <th className="default-col">Приход всего</th>
-                    <th className="default-col">Пар всего</th>
-                    <th className="coming-col">Проверка прихода</th>
-                    <th className="default-col">КР</th>
-                    <th className="miasto-col">Miasto / Lokal</th>
-                    <th className="timezone-col">Часовой Пояс</th>
-                    <th className="default-col">Лимит</th>
-                    <th className="default-col">Готово</th>
+                    <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                      ID
+                    </th>
+
+                    {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                   </tr>
                 </thead>
                 <tbody>
-                  {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={changeCheckRu} key={item.id} />
+                  {cities?.map((item, index) => (
+                    <CheckBaseTable currentCities={item} country="cityRu" filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} changeCheck={changeCheckRu} key={item.id} />
                   ))}
                 </tbody>
               </table>

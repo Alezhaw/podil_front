@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { citiesStatus } from "../../../components/mock/OutputMock";
+import { citiesStatus, citiesStatusColor } from "../../../components/mock/OutputMock";
 
 function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterSpeaker, filterColumns, changeCitiesStatus }) {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterS
                 ) : (
                   ""
                 )}
-                {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus }))}
+                {filterColumns?.filter((el) => el.value).map((el) => el.content({ index, currentCities, item, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus, citiesStatusColor }))}
               </tr>
             ))}
           </>

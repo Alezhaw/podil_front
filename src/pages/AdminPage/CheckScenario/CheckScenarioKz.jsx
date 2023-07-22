@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosChangeCheckKz, axiosGetFilteredCitiesKz } from "../../../api/podzialKz";
+import { axiosChangeCheckKz, axiosGetFilteredCitiesKz, axiosChangeStatusKz } from "../../../api/podzialKz";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
@@ -13,6 +13,7 @@ import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 
 function CheckScenarioKz() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function CheckScenarioKz() {
   const [searchForInput, setSearchForInput] = useState("");
   const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterCanceled, setFilterCanceled] = useState(false);
+  const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -63,9 +65,16 @@ function CheckScenarioKz() {
     }
   }
 
-  useEffect(() => {
-    localStorage.setItem("filterSpeaker", String(filterSpeaker));
-  }, [filterSpeaker]);
+  async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
+    setChangeStatus(true);
+    const result = await axiosChangeStatusKz(status, id_for_base);
+    setChangeStatus(false);
+    if (result) {
+      //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    } else {
+      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+    }
+  }
 
   useEffect(() => {
     setCities(
@@ -87,6 +96,19 @@ function CheckScenarioKz() {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
+
+  useEffect(() => {
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
+    if (savedFilterColumns.length > 0) {
+      const updatedFilterColumns = [...allCitiesTableMock?.slice(0, 10)].map((el) => {
+        const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
+        return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
+      });
+      setFilterColumns(updatedFilterColumns);
+    } else {
+      setFilterColumns(allCitiesTableMock);
+    }
+  }, [allCitiesTableMock]);
 
   return (
     <>
@@ -144,9 +166,28 @@ function CheckScenarioKz() {
             color="error"
           />
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
-            <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Что-то еще</Dropdown.Item>
+            {filterColumns.map((el, index) => (
+              <Dropdown.Item
+                onClick={(e) => {
+                  const updatedFilterColumns = filterColumns.map((fc) => {
+                    if (fc.column === e.target.id) {
+                      return { ...fc, value: !fc.value };
+                    }
+                    return fc;
+                  });
+                  setFilterColumns(updatedFilterColumns);
+                  localStorage.setItem("filterColumns", JSON.stringify(updatedFilterColumns));
+                  e.stopPropagation();
+                }}
+                href=""
+                key={index}
+              >
+                <div id={el.column}>
+                  <Checkbox checked={el.value} id={el.column} />
+                  {el.column}
+                </div>
+              </Dropdown.Item>
+            ))}
           </DropdownButton>
         </div>
       </div>
@@ -164,24 +205,16 @@ function CheckScenarioKz() {
           <ContainerForTable>
             <div className="table-wrapper">
               <table>
-                <thead>
-                  <tr>
-                    <th className="default-col"> ID</th>
-                    {!filterSpeaker && <th className="default-col">L.p</th>}
-                    <th className="default-col">Godzina</th>
-                    {!filterSpeaker && <th className="default-col">Приход всего</th>}
-                    {!filterSpeaker && <th className="default-col">Пар всего</th>}
-                    {!filterSpeaker && <th className="coming-col">Проверка прихода</th>}
-                    <th className="default-col">КР</th>
-                    <th className="miasto-col">Miasto / Lokal</th>
-                    <th className="timezone-col">Часовой Пояс</th>
-                    {!filterSpeaker && <th className="default-col">Лимит</th>}
-                    <th className="default-col">Готово</th>
-                  </tr>
+                <thead style={{ background: "white" }}>
+                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+                    ID
+                  </th>
+
+                  {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                 </thead>
                 <tbody>
-                  {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityKz" checkKey="check_scenario" changeCheck={changeCheckKz} key={item.id} filterSpeaker={filterSpeaker} />
+                  {cities?.map((item, index) => (
+                    <CheckBaseTable currentCities={item} country="cityKz" filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} changeCheck={changeCheckKz} key={item.id} />
                   ))}
                 </tbody>
               </table>

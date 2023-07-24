@@ -21,7 +21,6 @@ function AllCitiesRu() {
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filterColumns, setFilterColumns] = useState([]);
-  const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -38,9 +37,10 @@ function AllCitiesRu() {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled });
+    console.log(1);
+    const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete });
     setLoadingSpinner(true);
     if (data) {
       setCount(data.count);
@@ -68,7 +68,7 @@ function AllCitiesRu() {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesRu(city);
     if (result.cities[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
@@ -103,15 +103,15 @@ function AllCitiesRu() {
 
   useEffect(() => {
     if (!citiesRu[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -152,15 +152,6 @@ function AllCitiesRu() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
-          <Checkbox
-            value={filterCanceled}
-            onChange={() => {
-              setPage(0);
-              setFilterCanceled((prev) => !prev);
-            }}
-            color="error"
-          />
           <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
           <Checkbox
             value={filterInProgress}
@@ -271,7 +262,7 @@ function AllCitiesRu() {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityRu(Number(id_for_base))));
               setDeleteCities([]);
-              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");
@@ -305,7 +296,6 @@ function AllCitiesRu() {
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
-              setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
           }}

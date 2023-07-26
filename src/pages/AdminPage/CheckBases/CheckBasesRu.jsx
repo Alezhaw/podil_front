@@ -215,7 +215,15 @@ function CheckBasesRu() {
                 </thead>
                 <tbody>
                   {cities?.map((item, index) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} changeCheck={changeCheckRu} key={item.id} />
+                    <CheckBaseTable
+                      currentCities={item}
+                      country="cityRu"
+                      checkKey={"check_base"}
+                      filterColumns={filterColumns}
+                      changeCitiesStatus={changeCitiesStatus}
+                      changeCheck={changeCheckRu}
+                      key={item.id}
+                    />
                   ))}
                 </tbody>
               </table>

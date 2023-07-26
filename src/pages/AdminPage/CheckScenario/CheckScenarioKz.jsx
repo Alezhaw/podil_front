@@ -19,7 +19,6 @@ function CheckScenarioKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
-  const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);

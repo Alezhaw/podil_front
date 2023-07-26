@@ -213,7 +213,15 @@ function CheckSpeakerKz() {
                 </thead>
                 <tbody>
                   {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityKz" filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} changeCheck={changeCheckKz} key={item.id} />
+                    <CheckBaseTable
+                      currentCities={item}
+                      country="cityKz"
+                      checkKey={"check_speaker"}
+                      filterColumns={filterColumns}
+                      changeCitiesStatus={changeCitiesStatus}
+                      changeCheck={changeCheckKz}
+                      key={item.id}
+                    />
                   ))}
                 </tbody>
               </table>

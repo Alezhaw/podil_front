@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosChangeCheckRu, axiosGetFilteredCitiesRu } from "../../../api/podzialRu";
+import Podzial from "../../../api/podzial";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
@@ -13,8 +13,9 @@ import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { store } from "../../../store/store";
 
-function CheckScenarioRu() {
+function CheckSpeakerRu() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -23,7 +24,7 @@ function CheckScenarioRu() {
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
-  const { citiesRu, user } = useAppSelector((store) => store.user);
+  const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -33,20 +34,20 @@ function CheckScenarioRu() {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesRu({
+    const data = await Podzial.getFilteredCities({
       page: page + 1,
       pageSize: itemsPerPage,
       sort: !sortId,
       search,
-      scenarioInProgress: filterInProgress,
-      scenarioZamkniete: filterComplete,
-      scenarioCanceled: filterCanceled,
+      speakerInProgress: filterInProgress,
+      speakerZamkniete: filterComplete,
+      speakerCanceled: filterCanceled,
     });
     if (data) {
       setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
-        type: reducerTypes.GET_CITIES_RU,
+        type: reducerTypes.GET_CITIES,
         payload: data.cities,
       });
     }
@@ -55,36 +56,36 @@ function CheckScenarioRu() {
   async function changeCheckRu(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await axiosChangeCheckRu(Number(id_for_base), null, null, null, checked);
+    const data = await Podzial.changeCheckRu(Number(id_for_base), null, null, checked);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
   }
 
   useEffect(() => {
+    setCities(
+      storedCities
+        .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
+        ?.map((el) => storedCities?.filter((time) => time.id_for_base === el.id_for_base))
+        ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
+    );
+  }, [storedCities]);
+
+  useEffect(() => {
     localStorage.setItem("filterSpeaker", String(filterSpeaker));
   }, [filterSpeaker]);
 
-  useEffect(() => {
-    setCities(
-      citiesRu
-        .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-        ?.map((el) => citiesRu?.filter((time) => time.id_for_base === el.id_for_base))
-        ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
-    );
-  }, [citiesRu]);
-
-  useEffect(() => {
-    if (!citiesRu[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+  useEffect(async () => {
+    if (!storedCities[0]) {
+      await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
 
-  useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+  useEffect(async () => {
+    await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 
@@ -113,7 +114,7 @@ function CheckScenarioRu() {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
           <Checkbox
@@ -182,7 +183,7 @@ function CheckScenarioRu() {
                 </thead>
                 <tbody>
                   {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_scenario" changeCheck={changeCheckRu} key={item.id} filterSpeaker={filterSpeaker} />
+                    <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_speaker" changeCheck={changeCheckRu} key={item.id} filterSpeaker={filterSpeaker} />
                   ))}
                 </tbody>
               </table>
@@ -230,4 +231,4 @@ function CheckScenarioRu() {
   );
 }
 
-export default CheckScenarioRu;
+export default CheckSpeakerRu;

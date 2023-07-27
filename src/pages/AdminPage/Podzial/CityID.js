@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosCreateCitiesRu, axiosDeleteTimeRu, axiosGetBasesForCityRu, axiosCreateBaseRu, axiosDeleteBaseRu, axiosGetOneCityRu, axiosGetFilteredBasesRu } from "../../../api/podzialRu";
+import Podzial from "../../../api/podzial";
 import { Container } from "@material-ui/core";
 import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
 import CreateBase from "../components/CreateBase";
 
-function CityIDRu() {
+function CityID() {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
@@ -26,7 +26,7 @@ function CityIDRu() {
   const [isOpen, setIsOpen] = useState(false);
 
   async function getCity(id_for_base) {
-    const data = await axiosGetOneCityRu(Number(id_for_base) || 0);
+    const data = await Podzial.getOneCity(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_CITIES_RU,
@@ -36,7 +36,7 @@ function CityIDRu() {
   }
 
   async function getBasesForCity(id_for_base) {
-    const data = await axiosGetBasesForCityRu(Number(id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_BASES_RU,
@@ -47,7 +47,7 @@ function CityIDRu() {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
-    const result = await axiosCreateCitiesRu(city);
+    const result = await Podzial.createCities(city);
     await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
     if (result.not_id_for_base) return alert("Не указан id_for_base");
@@ -56,7 +56,7 @@ function CityIDRu() {
   }
 
   async function deleteTime(id) {
-    const result = await axiosDeleteTimeRu(id);
+    const result = await Podzial.deleteTime(id);
     if (result) {
       await getCity(id_for_base);
       alert("Удалено");
@@ -66,7 +66,7 @@ function CityIDRu() {
   }
 
   async function createBase(currentBases) {
-    const result = await axiosCreateBaseRu(currentBases);
+    const result = await Podzial.CreateBase(currentBases);
     if (result.update) {
       await getBasesForCity(id_for_base);
       alert("Обновлено");
@@ -86,7 +86,7 @@ function CityIDRu() {
 
   async function deleteBase(deleteBases) {
     try {
-      await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseRu(Number(id))));
+      await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBaseRu(Number(id))));
       setDeleteBases([]);
       await getBasesForCity(id_for_base);
       alert("Success");
@@ -236,7 +236,7 @@ function CityIDRu() {
                   cities={citiesRu}
                   bases={basesRu}
                   currentBases={currentBases}
-                  getFilteredBases={axiosGetFilteredBasesRu}
+                  getFilteredBases={Podzial.getFilteredBases}
                 />
               ) : (
                 ""
@@ -249,4 +249,4 @@ function CityIDRu() {
   );
 }
 
-export default CityIDRu;
+export default CityID;

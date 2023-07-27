@@ -30,7 +30,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
       <div onClick={(e) => e.stopPropagation()} className="modalContentStyles">
         <div style={{ minWidth: "100px", margin: "0px 5px", textAlign: "center", background: "white", color: "black" }}>
           <tr>
-            <td colspan="3" className="basesTableCell">
+            <td colSpan="3" className="basesTableCell">
               <input
                 onChange={(e) => setNewBase((prev) => ({ ...prev, base_id: e.target.value }))}
                 className="tableInput"
@@ -78,7 +78,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
             </td>
           </tr>
           <tr>
-            <td colspan="2" className="basesTableCell">
+            <td colSpan="2" className="basesTableCell">
               <input
                 onChange={(e) => setNewBase((prev) => ({ ...prev, base_type: e.target.value }))}
                 className="tableInput"
@@ -137,7 +137,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
             </td>
           </tr>
           <tr>
-            <td colspan="3" className="basesTableCell">
+            <td colSpan="3" className="basesTableCell">
               {" "}
               Ком:{" "}
               <input
@@ -182,7 +182,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 {filteredBases?.map((item) => (
                   <div style={{ marginBottom: "20px" }}>
                     <tr style={{ height: "100px" }}>
-                      <td colspan="3" className="basesTableCell" style={{ background: "", maxWidth: "354px" }}>
+                      <td colSpan="3" className="basesTableCell" style={{ background: "", maxWidth: "354px" }}>
                         {item.miasto_lokal}
                       </td>
                     </tr>

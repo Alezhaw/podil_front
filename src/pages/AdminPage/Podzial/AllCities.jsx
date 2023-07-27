@@ -5,7 +5,7 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosDeleteCityRu, axiosCreateCitiesRu, axiosGetFilteredCitiesRu, axiosChangeStatusRu } from "../../../api/podzialRu";
+import Podzial from "../../../api/podzial";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CreateCity from "../components/CreateCity";
@@ -16,7 +16,7 @@ import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-function AllCitiesRu() {
+function AllCities() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -25,7 +25,7 @@ function AllCitiesRu() {
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
-  const { citiesRu, user } = useAppSelector((store) => store.user);
+  const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
@@ -40,12 +40,12 @@ function AllCitiesRu() {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled });
+    const data = await Podzial.getFilteredCities({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled });
     setLoadingSpinner(true);
     if (data) {
       setCount(data.count);
       dispatch({
-        type: reducerTypes.GET_CITIES_RU,
+        type: reducerTypes.GET_CITIES,
         payload: data.cities,
       });
     }
@@ -66,7 +66,7 @@ function AllCitiesRu() {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
-    const result = await axiosCreateCitiesRu(city);
+    const result = await Podzial.createCities(city);
     if (result.cities[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       alert("Sucess");
@@ -83,7 +83,7 @@ function AllCitiesRu() {
 
   async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
     setChangeStatus(true);
-    const result = await axiosChangeStatusRu(status, id_for_base);
+    const result = await Podzial.changeStatus(status, id_for_base);
     setChangeStatus(false);
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
@@ -94,16 +94,16 @@ function AllCitiesRu() {
 
   useEffect(() => {
     setCities(
-      citiesRu
+      storedCities
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-        ?.map((el) => citiesRu?.filter((time) => time.id_for_base === el.id_for_base))
+        ?.map((el) => storedCities?.filter((time) => time.id_for_base === el.id_for_base))
         ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
-  }, [citiesRu]);
+  }, [storedCities]);
 
   useEffect(() => {
-    if (!citiesRu[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+    if (!storedCities[0]) {
+      Podzial.getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
@@ -142,7 +142,7 @@ function AllCitiesRu() {
             setSearch(e.target.value?.toLowerCase()?.trim());
           }}
           onKeyUp={(e) => {
-            if (e.keyCode === 13) {
+            if (e.key === "Enter") {
               setPage(0);
               setSearch(e.target.value?.toLowerCase()?.trim());
             }
@@ -252,7 +252,7 @@ function AllCitiesRu() {
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} key={item.id} />
+                  <AllCityTable key={item.id} currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} />
                 ))}
               </tbody>
             </table>
@@ -269,9 +269,9 @@ function AllCitiesRu() {
           className="tabl-flex-admin-button"
           onClick={async () => {
             try {
-              await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityRu(Number(id_for_base))));
+              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base))));
               setDeleteCities([]);
-              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+              await Podzial.getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");
@@ -304,7 +304,7 @@ function AllCitiesRu() {
           onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
-            if (e.keyCode === 13) {
+            if (e.key === "Enter") {
               setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
@@ -317,4 +317,4 @@ function AllCitiesRu() {
   );
 }
 
-export default AllCitiesRu;
+export default AllCities;

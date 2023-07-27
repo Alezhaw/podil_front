@@ -7,8 +7,7 @@ import AdminPanel from "./pages/AdminPage/AdminPanel";
 import UserID from "./pages/AdminPage/Users/UserID";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import CityIDRu from "./pages/AdminPage/PodzialRu/CityIDRu";
-import CityIDKz from "./pages/AdminPage/PodzialKz/CityIDKz";
+import CityID from "./pages/AdminPage/Podzial/CityID";
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
@@ -19,7 +18,7 @@ export const socket = io.connect(defaultUrl);
 
 function App() {
   const dispatch = useDispatch();
-  const { user, citiesRu, citiesKz, basesRu, basesKz } = useAppSelector((store) => store.user);
+  const { user, storedCities, citiesRu, citiesKz, bases, basesRu, basesKz } = useAppSelector((store) => store.user);
 
   useEffect(() => {
     if (user?.email) {
@@ -44,6 +43,24 @@ function App() {
     });
     // eslint-disable-next-line
   }, [citiesRu]);
+
+  useEffect(() => {
+    socket.on("updateCities", ({ data }) => {
+      let updatedCities = citiesRu?.map((city) => {
+        const updatedCity = data.cities.filter((el) => Number(el.id) === city.id)[0];
+        return updatedCity ? updatedCity : city;
+      });
+      const newTimes = data.cities.filter((el) => {
+        return !storedCities?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+      });
+      updatedCities = [...updatedCities, ...newTimes];
+      dispatch({
+        type: reducerTypes.GET_CITIES_RU,
+        payload: updatedCities,
+      });
+    });
+    // eslint-disable-next-line
+  }, [storedCities]);
 
   useEffect(() => {
     socket.on("updateCitiesKz", ({ data }) => {
@@ -83,6 +100,25 @@ function App() {
   }, [citiesRu]);
 
   useEffect(() => {
+    socket.on("deleteCity", ({ data }) => {
+      if (data.deleteTime ?? false) {
+        const filteredCities = storedCities?.filter((el) => Number(el.id) !== Number(data.deleteTime));
+        dispatch({
+          type: reducerTypes.GET_CITIES,
+          payload: filteredCities,
+        });
+      } else {
+        const filteredCities = citiesRu?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
+        dispatch({
+          type: reducerTypes.GET_CITIES,
+          payload: filteredCities,
+        });
+      }
+    });
+    // eslint-disable-next-line
+  }, [storedCities]);
+
+  useEffect(() => {
     socket.on("deleteCityKz", ({ data }) => {
       if (data.deleteTime ?? false) {
         const filteredCities = citiesKz?.filter((el) => Number(el.id) !== Number(data.deleteTime));
@@ -103,6 +139,24 @@ function App() {
 
   useEffect(() => {
     socket.on("updateBasesRu", ({ data }) => {
+      let updatedBases = basesRu?.map((city) => {
+        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
+        return updatedBase ? updatedBase : city;
+      });
+      const newBases = data.bases.filter((el) => {
+        return !basesRu?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+      });
+      updatedBases = [...updatedBases, ...newBases];
+      dispatch({
+        type: reducerTypes.GET_BASES_RU,
+        payload: updatedBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesRu]);
+
+  useEffect(() => {
+    socket.on("updateBases", ({ data }) => {
       let updatedBases = basesRu?.map((city) => {
         const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
         return updatedBase ? updatedBase : city;
@@ -149,6 +203,17 @@ function App() {
   }, [basesRu]);
 
   useEffect(() => {
+    socket.on("deleteBase", ({ data }) => {
+      const filteredBases = basesRu?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+      dispatch({
+        type: reducerTypes.GET_BASES,
+        payload: filteredBases,
+      });
+    });
+    // eslint-disable-next-line
+  }, [basesRu]);
+
+  useEffect(() => {
     socket.on("deleteBaseKz", ({ data }) => {
       const filteredBases = basesKz?.filter((el) => Number(el.id) !== Number(data.deleteBase));
       dispatch({
@@ -165,8 +230,9 @@ function App() {
       <Routes>
         <Route path="/" element={<UserInput />} />
         <Route path="/adminPanel/user/:id" element={<UserID />} />
-        <Route path="/adminPanel/cityRu/:id_for_base" element={<CityIDRu />} />
-        <Route path="/adminPanel/cityKz/:id_for_base" element={<CityIDKz />} />
+        <Route path="/adminPanel/city/:id_for_base" element={<CityID />} />
+        <Route path="/adminPanel/cityRu/:id_for_base" element={<CityID country="RU"/>} />
+        <Route path="/adminPanel/cityKz/:id_for_base" element={<CityID country="KZ" />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />
         <Route path="/login/" element={<UserInput />} />

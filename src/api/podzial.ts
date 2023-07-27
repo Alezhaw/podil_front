@@ -1,14 +1,13 @@
 import axios from "./axios";
-import { getConfig } from "./axios";
-import { ICitiesRu } from "../interfaces/citiesRu";
-import { IBaseRu } from "../interfaces/baseRu";
+import { ICities } from "../interfaces/cities";
+import { IBase } from "../interfaces/base";
 let controllerGetAllCitiesRu: AbortController | null = null;
 let controllerGetFilteredCitiesRu: AbortController | null = null;
 let controllerGetAllBasesRu: AbortController | null = null;
 
-export const axiosCreateCitiesRu = async (cities: ICitiesRu[]) => {
+export const createCities = async (cities: ICities[]) => {
   try {
-    const { data } = await axios.post("api/city/create", { data: cities }, getConfig());
+    const { data } = await axios.post("api/city/create", { data: cities });
 
     return data;
   } catch (e) {
@@ -16,13 +15,13 @@ export const axiosCreateCitiesRu = async (cities: ICitiesRu[]) => {
   }
 };
 
-export const axiosGetAllCitiesRu = async () => {
+export const getAllCities = async () => {
   try {
     if (controllerGetAllCitiesRu !== null) {
       controllerGetAllCitiesRu.abort();
     }
     controllerGetAllCitiesRu = new AbortController();
-    const { data } = await axios.get("api/city/get", { ...getConfig(), signal: controllerGetAllCitiesRu.signal });
+    const { data } = await axios.get("api/city/get", { signal: controllerGetAllCitiesRu.signal });
     return data;
   } catch (e) {
     if (axios.isCancel(e)) {
@@ -33,7 +32,7 @@ export const axiosGetAllCitiesRu = async () => {
   }
 };
 
-export const axiosGetFilteredCitiesRu = async ({
+export const getFilteredCities = async ({
   pageSize = 10,
   page = 1,
   sort = true,
@@ -93,7 +92,7 @@ export const axiosGetFilteredCitiesRu = async ({
         canceled,
         search,
       },
-      { ...getConfig(), signal: controllerGetFilteredCitiesRu.signal }
+      { signal: controllerGetFilteredCitiesRu.signal }
     );
     return data;
   } catch (e) {
@@ -105,28 +104,18 @@ export const axiosGetFilteredCitiesRu = async ({
   }
 };
 
-export const axiosGetOneCityRu = async (id_for_base: number) => {
+export const getOneCity = async (id_for_base: number) => {
   try {
-    const { data } = await axios.post("api/city/getOne", { id_for_base }, getConfig());
+    const { data } = await axios.post("api/city/getOne", { id_for_base });
     return data;
   } catch (e) {
     console.error(e);
   }
 };
 
-export const axiosChangeCheckRu = async (id_for_base?: number, id?: number, check_base?: boolean, check_speaker?: boolean, check_scenario?: boolean) => {
+export const changeCheck = async (id_for_base?: number, id?: number, check_base?: boolean, check_speaker?: boolean, check_scenario?: boolean) => {
   try {
-    const { data } = await axios.post("api/city/changeCheck", { id_for_base, id, check_base, check_speaker, check_scenario }, getConfig());
-
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const axiosChangeStatusRu = async (status: number, id_for_base?: number, id?: number) => {
-  try {
-    const { data } = await axios.post("api/city/changeStatus", { id_for_base, id, status }, getConfig());
+    const { data } = await axios.post("api/city/changeCheck", { id_for_base, id, check_base, check_speaker, check_scenario });
 
     return data;
   } catch (e) {
@@ -134,9 +123,9 @@ export const axiosChangeStatusRu = async (status: number, id_for_base?: number, 
   }
 };
 
-export const axiosDeleteCityRu = async (id_for_base: number) => {
+export const changeStatus = async (status: number, id_for_base?: number, id?: number) => {
   try {
-    const { data } = await axios.post("api/city/deleteOne", { id_for_base }, getConfig());
+    const { data } = await axios.post("api/city/changeStatus", { id_for_base, id, status });
 
     return data;
   } catch (e) {
@@ -144,9 +133,9 @@ export const axiosDeleteCityRu = async (id_for_base: number) => {
   }
 };
 
-export const axiosDeleteTimeRu = async (id: number) => {
+export const deleteCity = async (id_for_base: number) => {
   try {
-    const { data } = await axios.post("api/city/deleteTime", { id }, getConfig());
+    const { data } = await axios.post("api/city/deleteOne", { id_for_base });
 
     return data;
   } catch (e) {
@@ -154,9 +143,9 @@ export const axiosDeleteTimeRu = async (id: number) => {
   }
 };
 
-export const axiosCreateBaseRu = async (bases: IBaseRu[]) => {
+export const deleteTime = async (id: number) => {
   try {
-    const { data } = await axios.post("api/base/create", { data: bases }, getConfig());
+    const { data } = await axios.post("api/city/deleteTime", { id });
 
     return data;
   } catch (e) {
@@ -164,13 +153,23 @@ export const axiosCreateBaseRu = async (bases: IBaseRu[]) => {
   }
 };
 
-export const axiosGetAllBasesRu = async () => {
+export const createBase = async (bases: IBase[]) => {
+  try {
+    const { data } = await axios.post("api/base/create", { data: bases });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getAllBases = async () => {
   try {
     if (controllerGetAllBasesRu !== null) {
       controllerGetAllBasesRu.abort();
     }
     controllerGetAllBasesRu = new AbortController();
-    const { data } = await axios.get("api/base/get", { ...getConfig(), signal: controllerGetAllBasesRu.signal });
+    const { data } = await axios.get("api/base/get", { signal: controllerGetAllBasesRu.signal });
 
     return data;
   } catch (e) {
@@ -182,9 +181,9 @@ export const axiosGetAllBasesRu = async () => {
   }
 };
 
-export const axiosGetBasesForCityRu = async (id_for_base: number) => {
+export const getBasesForCity = async (id_for_base: number) => {
   try {
-    const { data } = await axios.post("api/base/getForCity", { id_for_base }, getConfig());
+    const { data } = await axios.post("api/base/getForCity", { id_for_base });
 
     return data;
   } catch (e) {
@@ -192,9 +191,9 @@ export const axiosGetBasesForCityRu = async (id_for_base: number) => {
   }
 };
 
-export const axiosGetFilteredBasesRu = async (search: string) => {
+export const getFilteredBases = async (search: string) => {
   try {
-    const { data } = await axios.post("api/base/search", { search }, getConfig());
+    const { data } = await axios.post("api/base/search", { search });
 
     return data;
   } catch (e) {
@@ -202,12 +201,28 @@ export const axiosGetFilteredBasesRu = async (search: string) => {
   }
 };
 
-export const axiosDeleteBaseRu = async (id?: number, base_id?: number) => {
+export const deleteBase = async (id?: number, base_id?: number) => {
   try {
-    const { data } = await axios.post("api/base/deleteOne", { id, base_id }, getConfig());
+    const { data } = await axios.post("api/base/deleteOne", { id, base_id });
 
     return data;
   } catch (e) {
     console.error(e);
   }
+};
+
+export default {
+  createCities,
+  createBase,
+  getAllCities,
+  getFilteredCities,
+  getFilteredBases,
+  getBasesForCity,
+  getAllBases,
+  getOneCity,
+  changeCheck,
+  changeStatus,
+  deleteCity,
+  deleteTime,
+  deleteBase,
 };

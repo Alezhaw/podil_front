@@ -1,4 +1,4 @@
-export interface IBaseRu {
+export interface IBase {
     id_for_base: number | null;
     id: number;
     base_id: string | null;

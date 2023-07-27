@@ -2,15 +2,11 @@ import * as React from "react";
 import { useState } from "react";
 import AllUsers from "./Users/AllUsers";
 import { useNavigate } from "react-router-dom";
-import AllCitiesRu from "./PodzialRu/AllCitiesRu";
-import AllCitiesKz from "./PodzialKz/AllCitiesKz";
+import AllCities from "./Podzial/AllCities";
 import { Menu, MenuItem } from "@mui/material";
-import CheckBasesRu from "./CheckBases/CheckBasesRu";
-import CheckBasesKz from "./CheckBases/CheckBasesKz";
-import CheckSpeakerRu from "./CheckSpeaker/CheckSpeakerRu";
-import CheckSpeakerKz from "./CheckSpeaker/CheckSpeakerKz";
-import CheckScenarioRu from "./CheckScenario/CheckScenarioRu";
-import CheckScenarioKz from "./CheckScenario/CheckScenarioKz";
+import CheckBases from "./CheckBases/CheckBases";
+import CheckSpeaker from "./CheckSpeaker/CheckSpeaker";
+import CheckScenario from "./CheckScenario/CheckScenario";
 import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 
@@ -184,7 +180,7 @@ function AdminPanel() {
               localStorage.setItem("backroundImg", !statebackground ? " " : "");
               setStatebackground((prev) => !prev);
             }}
-            className={statebackground ? "block_user_panel activ-block-admin" : "block_user_panel"}
+            className={statebackground ? "block_user_panel" : "block_user_panel"}
           >
             <h4>СМЕНА ФОНА </h4>
           </button>
@@ -199,56 +195,56 @@ function AdminPanel() {
           )}
           {item === 7 ? (
             <div style={{ display: "block", width: "100%" }}>
-              <AllCitiesRu />
+              <AllCities country="RU"/>
             </div>
           ) : (
             ""
           )}
           {item === 8 ? (
             <div style={{ display: "block" }}>
-              <AllCitiesKz />
+              <AllCities country="KZ"/>
             </div>
           ) : (
             ""
           )}
           {item === 9 ? (
             <div style={{ display: "block" }}>
-              <CheckBasesRu />
+              <CheckBases country="RU"/>
             </div>
           ) : (
             ""
           )}
           {item === 10 ? (
             <div style={{ display: "block" }}>
-              <CheckBasesKz />
+              <CheckBases country="KZ"/>
             </div>
           ) : (
             ""
           )}
           {item === 11 ? (
             <div style={{ display: "block" }}>
-              <CheckSpeakerRu />
+              <CheckSpeaker />
             </div>
           ) : (
             ""
           )}
           {item === 12 ? (
             <div style={{ display: "block" }}>
-              <CheckSpeakerKz />
+              <CheckSpeaker />
             </div>
           ) : (
             ""
           )}
           {item === 13 ? (
             <div style={{ display: "block" }}>
-              <CheckScenarioRu />
+              <CheckScenario />
             </div>
           ) : (
             ""
           )}
           {item === 14 ? (
             <div style={{ display: "block" }}>
-              <CheckScenarioKz />
+              <CheckScenario />
             </div>
           ) : (
             ""

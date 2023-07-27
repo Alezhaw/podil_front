@@ -56,7 +56,7 @@ function CheckSpeakerRu() {
   async function changeCheckRu(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheckRu(Number(id_for_base), null, null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, null, checked);
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
@@ -77,15 +77,15 @@ function CheckSpeakerRu() {
     localStorage.setItem("filterSpeaker", String(filterSpeaker));
   }, [filterSpeaker]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!storedCities[0]) {
-      await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
 
-  useEffect(async () => {
-    await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+  useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 

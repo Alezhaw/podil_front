@@ -69,15 +69,15 @@ function CheckBases({ country }) {
     );
   }, [storedCities]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!storedCities[0]) {
-      await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
 
-  useEffect(async () => {
-    await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+  useEffect(() => {
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 
@@ -97,7 +97,7 @@ function CheckBases({ country }) {
             setSearch(e.target.value?.toLowerCase()?.trim());
           }}
           onKeyUp={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               setPage(0);
               setSearch(e.target.value?.toLowerCase()?.trim());
             }
@@ -204,7 +204,7 @@ function CheckBases({ country }) {
           onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               setPage(0);
               setItemsPerPage(Number(e.target.value));
             }

@@ -14,7 +14,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-function CheckScenario() {
+function CheckScenario({country}) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -41,6 +41,7 @@ function CheckScenario() {
       scenarioInProgress: filterInProgress,
       scenarioZamkniete: filterComplete,
       scenarioCanceled: filterCanceled,
+      country
     });
     if (data) {
       setLoadingSpinner(true);
@@ -55,7 +56,7 @@ function CheckScenario() {
   async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheck(Number(id_for_base), null, null, null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, null, null, checked, country);
     if (data) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {

@@ -2,7 +2,7 @@ import { Container, Button } from "@material-ui/core";
 import { MenuItem, FormControl, Select } from "@mui/material";
 import { citiesStatus } from "../../../components/mock/OutputMock";
 
-function CityTableID({ setCity, currentCities, deleteTime }) {
+function CityTableID({ setCity, currentCities, deleteTime, country }) {
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
@@ -191,7 +191,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                   onClick={async () => {
                     let checkConfirm = window.confirm("Вы уверены?");
                     if (checkConfirm) {
-                      await deleteTime(Number(item.id));
+                      await deleteTime(Number(item.id), country);
                     }
                   }}
                 >

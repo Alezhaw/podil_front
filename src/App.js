@@ -18,7 +18,7 @@ export const socket = io.connect(defaultUrl);
 
 function App() {
   const dispatch = useDispatch();
-  const { user, storedCities, citiesRu, citiesKz, bases, basesRu, basesKz } = useAppSelector((store) => store.user);
+  const { user, storedCities, citiesKz, bases, basesRu, basesKz } = useAppSelector((store) => store.user);
 
   useEffect(() => {
     if (user?.email) {
@@ -27,26 +27,8 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    socket.on("updateCitiesRu", ({ data }) => {
-      let updatedCities = citiesRu?.map((city) => {
-        const updatedCity = data.cities.filter((el) => Number(el.id) === city.id)[0];
-        return updatedCity ? updatedCity : city;
-      });
-      const newTimes = data.cities.filter((el) => {
-        return !citiesRu?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
-      });
-      updatedCities = [...updatedCities, ...newTimes];
-      dispatch({
-        type: reducerTypes.GET_CITIES_RU,
-        payload: updatedCities,
-      });
-    });
-    // eslint-disable-next-line
-  }, [citiesRu]);
-
-  useEffect(() => {
     socket.on("updateCities", ({ data }) => {
-      let updatedCities = citiesRu?.map((city) => {
+      let updatedCities = storedCities?.map((city) => {
         const updatedCity = data.cities.filter((el) => Number(el.id) === city.id)[0];
         return updatedCity ? updatedCity : city;
       });
@@ -55,49 +37,12 @@ function App() {
       });
       updatedCities = [...updatedCities, ...newTimes];
       dispatch({
-        type: reducerTypes.GET_CITIES_RU,
+        type: reducerTypes.GET_CITIES,
         payload: updatedCities,
       });
     });
     // eslint-disable-next-line
   }, [storedCities]);
-
-  useEffect(() => {
-    socket.on("updateCitiesKz", ({ data }) => {
-      let updatedCities = citiesKz?.map((city) => {
-        const updatedCity = data.cities.filter((el) => Number(el.id) === city.id)[0];
-        return updatedCity ? updatedCity : city;
-      });
-      const newTimes = data.cities.filter((el) => {
-        return !citiesKz?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
-      });
-      updatedCities = [...updatedCities, ...newTimes];
-      dispatch({
-        type: reducerTypes.GET_CITIES_KZ,
-        payload: updatedCities,
-      });
-    });
-    // eslint-disable-next-line
-  }, [citiesKz]);
-
-  useEffect(() => {
-    socket.on("deleteCityRu", ({ data }) => {
-      if (data.deleteTime ?? false) {
-        const filteredCities = citiesRu?.filter((el) => Number(el.id) !== Number(data.deleteTime));
-        dispatch({
-          type: reducerTypes.GET_CITIES_RU,
-          payload: filteredCities,
-        });
-      } else {
-        const filteredCities = citiesRu?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
-        dispatch({
-          type: reducerTypes.GET_CITIES_RU,
-          payload: filteredCities,
-        });
-      }
-    });
-    // eslint-disable-next-line
-  }, [citiesRu]);
 
   useEffect(() => {
     socket.on("deleteCity", ({ data }) => {
@@ -108,7 +53,7 @@ function App() {
           payload: filteredCities,
         });
       } else {
-        const filteredCities = citiesRu?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
+        const filteredCities = storedCities?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
         dispatch({
           type: reducerTypes.GET_CITIES,
           payload: filteredCities,
@@ -118,42 +63,7 @@ function App() {
     // eslint-disable-next-line
   }, [storedCities]);
 
-  useEffect(() => {
-    socket.on("deleteCityKz", ({ data }) => {
-      if (data.deleteTime ?? false) {
-        const filteredCities = citiesKz?.filter((el) => Number(el.id) !== Number(data.deleteTime));
-        dispatch({
-          type: reducerTypes.GET_CITIES_KZ,
-          payload: filteredCities,
-        });
-      } else {
-        const filteredCities = citiesKz?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
-        dispatch({
-          type: reducerTypes.GET_CITIES_KZ,
-          payload: filteredCities,
-        });
-      }
-    });
-    // eslint-disable-next-line
-  }, [citiesKz]);
 
-  useEffect(() => {
-    socket.on("updateBasesRu", ({ data }) => {
-      let updatedBases = basesRu?.map((city) => {
-        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
-        return updatedBase ? updatedBase : city;
-      });
-      const newBases = data.bases.filter((el) => {
-        return !basesRu?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
-      });
-      updatedBases = [...updatedBases, ...newBases];
-      dispatch({
-        type: reducerTypes.GET_BASES_RU,
-        payload: updatedBases,
-      });
-    });
-    // eslint-disable-next-line
-  }, [basesRu]);
 
   useEffect(() => {
     socket.on("updateBases", ({ data }) => {
@@ -174,35 +84,6 @@ function App() {
   }, [basesRu]);
 
   useEffect(() => {
-    socket.on("updateBasesKz", ({ data }) => {
-      let updatedBases = basesKz?.map((city) => {
-        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
-        return updatedBase ? updatedBase : city;
-      });
-      const newBases = data.bases.filter((el) => {
-        return !basesKz?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
-      });
-      updatedBases = [...updatedBases, ...newBases];
-      dispatch({
-        type: reducerTypes.GET_BASES_KZ,
-        payload: updatedBases,
-      });
-    });
-    // eslint-disable-next-line
-  }, [basesKz]);
-
-  useEffect(() => {
-    socket.on("deleteBaseRu", ({ data }) => {
-      const filteredBases = basesRu?.filter((el) => Number(el.id) !== Number(data.deleteBase));
-      dispatch({
-        type: reducerTypes.GET_BASES_RU,
-        payload: filteredBases,
-      });
-    });
-    // eslint-disable-next-line
-  }, [basesRu]);
-
-  useEffect(() => {
     socket.on("deleteBase", ({ data }) => {
       const filteredBases = basesRu?.filter((el) => Number(el.id) !== Number(data.deleteBase));
       dispatch({
@@ -212,17 +93,6 @@ function App() {
     });
     // eslint-disable-next-line
   }, [basesRu]);
-
-  useEffect(() => {
-    socket.on("deleteBaseKz", ({ data }) => {
-      const filteredBases = basesKz?.filter((el) => Number(el.id) !== Number(data.deleteBase));
-      dispatch({
-        type: reducerTypes.GET_BASES_KZ,
-        payload: filteredBases,
-      });
-    });
-    // eslint-disable-next-line
-  }, [basesKz]);
 
   return (
     <>

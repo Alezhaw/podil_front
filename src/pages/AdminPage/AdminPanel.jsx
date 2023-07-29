@@ -223,28 +223,28 @@ function AdminPanel() {
           )}
           {item === 11 ? (
             <div style={{ display: "block" }}>
-              <CheckSpeaker />
+              <CheckSpeaker country="RU" />
             </div>
           ) : (
             ""
           )}
           {item === 12 ? (
             <div style={{ display: "block" }}>
-              <CheckSpeaker />
+              <CheckSpeaker country="KZ" />
             </div>
           ) : (
             ""
           )}
           {item === 13 ? (
             <div style={{ display: "block" }}>
-              <CheckScenario />
+              <CheckScenario country="RU" />
             </div>
           ) : (
             ""
           )}
           {item === 14 ? (
             <div style={{ display: "block" }}>
-              <CheckScenario />
+              <CheckScenario country="KZ" />
             </div>
           ) : (
             ""

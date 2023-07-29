@@ -16,7 +16,7 @@ import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-function AllCities() {
+function AllCities({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -40,7 +40,7 @@ function AllCities() {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
-    const data = await Podzial.getFilteredCities({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled });
+    const data = await Podzial.getFilteredCities({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled, country });
     setLoadingSpinner(true);
     if (data) {
       setCount(data.count);
@@ -83,7 +83,7 @@ function AllCities() {
 
   async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
     setChangeStatus(true);
-    const result = await Podzial.changeStatus(status, id_for_base);
+    const result = await Podzial.changeStatus(status, country, id_for_base);
     setChangeStatus(false);
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
@@ -252,7 +252,7 @@ function AllCities() {
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable key={item.id} currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} />
+                  <AllCityTable key={`${item.id}-${index}`} currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} />
                 ))}
               </tbody>
             </table>
@@ -269,7 +269,7 @@ function AllCities() {
           className="tabl-flex-admin-button"
           onClick={async () => {
             try {
-              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base))));
+              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), "RU")));
               setDeleteCities([]);
               await Podzial.getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
               alert("Success");

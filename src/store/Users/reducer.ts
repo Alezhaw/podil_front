@@ -38,12 +38,8 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
             return { ...state, user: payload };
         case reducerTypes.GET_ALL_USERS:
             return { ...state, allUsers: payload };
-        case reducerTypes.GET_CITIES_RU:
-            return { ...state, citiesRu: payload };
         case reducerTypes.GET_CITIES:
             return { ...state, storedCities: payload };
-        case reducerTypes.GET_CITIES_KZ:
-            return { ...state, citiesKz: payload };
         case reducerTypes.GET_BASES_RU:
             return { ...state, basesRu: payload };
         case reducerTypes.GET_BASES:

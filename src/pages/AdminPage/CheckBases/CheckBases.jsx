@@ -38,6 +38,7 @@ function CheckBases({ country }) {
       baseInProgress: filterInProgress,
       baseZamkniete: filterComplete,
       baseCanceled: filterCanceled,
+      country
     });
     if (data) {
       setLoadingSpinner(true);
@@ -52,7 +53,7 @@ function CheckBases({ country }) {
   async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheck(Number(id_for_base), null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, checked, country);
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
@@ -168,8 +169,8 @@ function CheckBases({ country }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" checkKey={"check_base"} changeCheck={Podzial.changeCheck} key={item.id} />
+                  {cities?.map((item, index) => (
+                    <CheckBaseTable key={`CheckBaseTable-${item.id}`} currentCities={item} country={country} checkKey={"check_base"} changeCheck={Podzial.changeCheck} />
                   ))}
                 </tbody>
               </table>

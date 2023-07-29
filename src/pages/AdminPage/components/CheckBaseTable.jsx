@@ -13,7 +13,7 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterS
       {currentCities?.map((item, index) => {
         return (
           <>
-            <tr className="row-borders" key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id} onClick={() => setOpen((prev) => !prev)}>
+            <tr className="row-borders"  key={`CheckBaseTableRow-${index}-${item.id}`} onClick={() => setOpen((prev) => !prev)}>
               {index === 0 ? (
                 <th
                   rowSpan={`${currentCities.length}`}

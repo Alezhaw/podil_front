@@ -9,11 +9,11 @@ import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
 import CreateBase from "../components/CreateBase";
 
-function CityID() {
+function CityID({ country }) {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
-  const { user, citiesRu, basesRu } = useAppSelector((store) => store.user);
+  const { user, storedCities, basesRu } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -26,10 +26,10 @@ function CityID() {
   const [isOpen, setIsOpen] = useState(false);
 
   async function getCity(id_for_base) {
-    const data = await Podzial.getOneCity(Number(id_for_base) || 0);
+    const data = await Podzial.getOneCity(Number(id_for_base) || 0, country);
     if (data) {
       dispatch({
-        type: reducerTypes.GET_CITIES_RU,
+        type: reducerTypes.GET_CITIES,
         payload: data,
       });
     }
@@ -55,8 +55,8 @@ function CityID() {
     alert("Что-то пошло не так");
   }
 
-  async function deleteTime(id) {
-    const result = await Podzial.deleteTime(id);
+  async function deleteTime(id, country) {
+    const result = await Podzial.deleteTime(id, country);
     if (result) {
       await getCity(id_for_base);
       alert("Удалено");
@@ -104,14 +104,14 @@ function CityID() {
   }
 
   useEffect(() => {
-    const temporaryCities = citiesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       setCity.map((set) => set({}));
       temporaryCities?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line
-  }, [citiesRu]);
+  }, [storedCities]);
 
   useEffect(() => {
     const temporaryBases = basesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
@@ -130,7 +130,7 @@ function CityID() {
   }, [user?.role, navigate, user]);
 
   useEffect(() => {
-    const checkCurrentCity = citiesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    const checkCurrentCity = storedCities?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
     const checkCurrentBases = basesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
     if (!checkCurrentCity) {
       getCity(id_for_base);
@@ -174,7 +174,7 @@ function CityID() {
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} />
+              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country}/>
             </div>
             <div
               style={{
@@ -233,7 +233,7 @@ function CityID() {
                   newBase={newBase}
                   setNewBase={setNewBase}
                   createBase={createBase}
-                  cities={citiesRu}
+                  cities={storedCities}
                   bases={basesRu}
                   currentBases={currentBases}
                   getFilteredBases={Podzial.getFilteredBases}

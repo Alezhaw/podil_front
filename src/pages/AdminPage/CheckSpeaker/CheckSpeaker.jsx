@@ -15,7 +15,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { store } from "../../../store/store";
 
-function CheckSpeakerRu() {
+function CheckSpeakerRu( { country } ) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -42,6 +42,7 @@ function CheckSpeakerRu() {
       speakerInProgress: filterInProgress,
       speakerZamkniete: filterComplete,
       speakerCanceled: filterCanceled,
+      country
     });
     if (data) {
       setLoadingSpinner(true);
@@ -53,10 +54,10 @@ function CheckSpeakerRu() {
     }
   }
 
-  async function changeCheckRu(checked, id_for_base) {
+  async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheck(Number(id_for_base), null, null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, null, checked, country);
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
@@ -183,7 +184,7 @@ function CheckSpeakerRu() {
                 </thead>
                 <tbody>
                   {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_speaker" changeCheck={changeCheckRu} key={item.id} filterSpeaker={filterSpeaker} />
+                    <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_speaker" changeCheck={changeCheck} key={item.id} filterSpeaker={filterSpeaker} />
                   ))}
                 </tbody>
               </table>

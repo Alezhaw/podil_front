@@ -43,7 +43,7 @@ function DropdownBaseTable({ item, country }) {
   }
 
   async function getBasesForCity(item) {
-    const data = await Podzial.getBases(Number(item.id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(item.id_for_base) || 0);
     if (data) {
       setCurrentBases(data);
     }

@@ -2,7 +2,7 @@ import { Container, Button } from "@material-ui/core";
 import { MenuItem, FormControl, Select } from "@mui/material";
 import { citiesStatus } from "../../../components/mock/OutputMock";
 
-function CityTableID({ setCity, currentCities, deleteTime }) {
+function CityTableID({ setCity, currentCities, deleteTime, country }) {
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
@@ -71,18 +71,18 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">Ilość Zaproszeń</th>
             <th className="basesTableCell">Zgody inne miasto</th>
-            <th colspan="2" style={{ border: "1px solid black" }}>
+            <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
                 <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
+                <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   1 dzień
                 </th>
               </tr>
               <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
+                <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_1_data: e.target.value })))}
@@ -96,18 +96,18 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid black" }}>
+            <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
                 <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
+                <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   2 dzień
                 </th>
               </tr>
               <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
+                <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_2_data: e.target.value })))}
@@ -121,18 +121,18 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid black" }}>
+            <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
                 <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
                 <th>Aktualna ilość zaproszeń</th>
               </tr>
               <tr>
-                <th colspan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
+                <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
                   3 dzień
                 </th>
               </tr>
               <tr>
-                <th colspan="2" style={{ position: "relative", top: "6px" }}>
+                <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
                       onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_3_data: e.target.value })))}
@@ -146,8 +146,8 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </th>
               </tr>
             </th>
-            <th colspan="6" style={{ border: "1px solid black" }}>
-              <th colspan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
+            <th colSpan="6" style={{ border: "1px solid black" }}>
+              <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
                 VIP
               </th>
               <tr style={{ height: "55px" }}>
@@ -160,8 +160,8 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
               </tr>
             </th>
             <th className="basesTableCell">ЗАМЕТКА</th>
-            <th colspan="3" style={{ border: "1px solid black" }}>
-              <th colspan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
+            <th colSpan="3" style={{ border: "1px solid black" }}>
+              <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                 WYNIKI POTWIERDZEŃ
               </th>
               <tr>
@@ -170,8 +170,8 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 <th style={{ width: "70.89px" }}>Kropki</th>
               </tr>
             </th>
-            <th colspan="2" style={{ border: "1px solid black", minWidth: "220px" }}>
-              <th colspan="2" style={{ borderBottom: "1px solid black", height: "75px", width: "220px" }}>
+            <th colSpan="2" style={{ border: "1px solid black", minWidth: "220px" }}>
+              <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px", width: "220px" }}>
                 SMS
               </th>
               <tr>
@@ -191,7 +191,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                   onClick={async () => {
                     let checkConfirm = window.confirm("Вы уверены?");
                     if (checkConfirm) {
-                      await deleteTime(Number(item.id));
+                      await deleteTime(Number(item.id), country);
                     }
                   }}
                 >
@@ -199,7 +199,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 </Button>
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p: e.target.value })))}
                     className="tableInput"
@@ -243,7 +243,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
                     className="tableInput"
@@ -257,7 +257,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, projekt: e.target.value })))}
                     className="tableInput"
@@ -271,7 +271,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <textarea
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, miasto_lokal: e.target.value })))}
                     className="tableInput"
@@ -285,7 +285,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, timezone: e.target.value })))}
                     className="tableInput"
@@ -328,7 +328,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, w_toku: e.target.checked })))}
                     className="tableInput"
@@ -342,7 +342,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, zamkniete: e.target.checked })))}
                     className="tableInput"
@@ -356,7 +356,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dodawanie_rekordow: e.target.value })))}
                     className="tableInput"
@@ -370,7 +370,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, scenariusze: e.target.value })))}
                     className="tableInput"
@@ -384,7 +384,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, weryfikacja_dkj: e.target.value })))}
                     className="tableInput"
@@ -398,7 +398,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, podpinanie_scenariuszy: e.target.value })))}
                     className="tableInput"
@@ -412,7 +412,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, present: e.target.value })))}
                     className="tableInput"
@@ -426,7 +426,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, rekodow_na_1_zgode: e.target.value })))}
                     className="tableInput"
@@ -440,7 +440,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_1: e.target.value })))}
                     className="tableInput"
@@ -454,7 +454,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_2: e.target.value })))}
                     className="tableInput"
@@ -488,7 +488,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_1_rekodow_na_1_zgode: e.target.value })))}
                     className="tableInput"
@@ -512,7 +512,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_2_rekodow_na_1_zgode: e.target.value })))}
                     className="tableInput"
@@ -536,7 +536,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dzien_3_rekodow_na_1_zgode: e.target.value })))}
                     className="tableInput"
@@ -560,7 +560,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_id: e.target.value })))}
                     className="tableInput"
@@ -574,7 +574,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_format: e.target.value })))}
                     className="tableInput"
@@ -629,7 +629,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, system: e.target.value })))}
                     className="tableInput"
@@ -673,7 +673,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_umawianie: e.target.checked })))}
                     className="tableInput"
@@ -687,7 +687,7 @@ function CityTableID({ setCity, currentCities, deleteTime }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowspan={`${currentCities.length}`} className="basesTableCell">
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                   <input
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_potwierdzen: e.target.checked })))}
                     className="tableInput"

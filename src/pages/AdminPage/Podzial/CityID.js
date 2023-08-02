@@ -3,17 +3,17 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTypes } from "../../../store/Users/types";
-import { axiosCreateCitiesRu, axiosDeleteTimeRu, axiosGetBasesForCityRu, axiosCreateBaseRu, axiosDeleteBaseRu, axiosGetOneCityRu, axiosGetFilteredBasesRu } from "../../../api/podzialRu";
+import Podzial from "../../../api/podzial";
 import { Container } from "@material-ui/core";
 import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
 import CreateBase from "../components/CreateBase";
 
-function CityIDRu() {
+function CityID({ country }) {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
-  const { user, citiesRu, basesRu } = useAppSelector((store) => store.user);
+  const { user, storedCities, basesRu } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -26,17 +26,17 @@ function CityIDRu() {
   const [isOpen, setIsOpen] = useState(false);
 
   async function getCity(id_for_base) {
-    const data = await axiosGetOneCityRu(Number(id_for_base) || 0);
+    const data = await Podzial.getOneCity(Number(id_for_base) || 0, country);
     if (data) {
       dispatch({
-        type: reducerTypes.GET_CITIES_RU,
+        type: reducerTypes.GET_CITIES,
         payload: data,
       });
     }
   }
 
   async function getBasesForCity(id_for_base) {
-    const data = await axiosGetBasesForCityRu(Number(id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(id_for_base) || 0);
     if (data) {
       dispatch({
         type: reducerTypes.GET_BASES_RU,
@@ -47,7 +47,7 @@ function CityIDRu() {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
-    const result = await axiosCreateCitiesRu(city);
+    const result = await Podzial.createCities(city);
     await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
     if (result.not_id_for_base) return alert("Не указан id_for_base");
@@ -55,8 +55,8 @@ function CityIDRu() {
     alert("Что-то пошло не так");
   }
 
-  async function deleteTime(id) {
-    const result = await axiosDeleteTimeRu(id);
+  async function deleteTime(id, country) {
+    const result = await Podzial.deleteTime(id, country);
     if (result) {
       await getCity(id_for_base);
       alert("Удалено");
@@ -66,7 +66,7 @@ function CityIDRu() {
   }
 
   async function createBase(currentBases) {
-    const result = await axiosCreateBaseRu(currentBases);
+    const result = await Podzial.CreateBase(currentBases);
     if (result.update) {
       await getBasesForCity(id_for_base);
       alert("Обновлено");
@@ -86,7 +86,7 @@ function CityIDRu() {
 
   async function deleteBase(deleteBases) {
     try {
-      await Promise.all(deleteBases?.map(async (id) => await axiosDeleteBaseRu(Number(id))));
+      await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBaseRu(Number(id))));
       setDeleteBases([]);
       await getBasesForCity(id_for_base);
       alert("Success");
@@ -104,14 +104,14 @@ function CityIDRu() {
   }
 
   useEffect(() => {
-    const temporaryCities = citiesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       setCity.map((set) => set({}));
       temporaryCities?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line
-  }, [citiesRu]);
+  }, [storedCities]);
 
   useEffect(() => {
     const temporaryBases = basesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
@@ -130,7 +130,7 @@ function CityIDRu() {
   }, [user?.role, navigate, user]);
 
   useEffect(() => {
-    const checkCurrentCity = citiesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    const checkCurrentCity = storedCities?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
     const checkCurrentBases = basesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
     if (!checkCurrentCity) {
       getCity(id_for_base);
@@ -174,7 +174,7 @@ function CityIDRu() {
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} />
+              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country}/>
             </div>
             <div
               style={{
@@ -233,10 +233,10 @@ function CityIDRu() {
                   newBase={newBase}
                   setNewBase={setNewBase}
                   createBase={createBase}
-                  cities={citiesRu}
+                  cities={storedCities}
                   bases={basesRu}
                   currentBases={currentBases}
-                  getFilteredBases={axiosGetFilteredBasesRu}
+                  getFilteredBases={Podzial.getFilteredBases}
                 />
               ) : (
                 ""
@@ -249,4 +249,4 @@ function CityIDRu() {
   );
 }
 
-export default CityIDRu;
+export default CityID;

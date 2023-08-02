@@ -1,22 +1,17 @@
 import { useState, useEffect } from "react";
 import Base from "./Base";
 import { Button } from "@material-ui/core";
-import { axiosCreateBaseRu, axiosDeleteBaseRu, axiosGetBasesForCityRu } from "../../../api/podzialRu";
-import { axiosCreateBaseKz, axiosDeleteBaseKz, axiosGetBasesForCityKz } from "../../../api/podzialKz";
+import Podzial from "../../../api/podzial";
 import { socket } from "../../../App";
 
 function DropdownBaseTable({ item, country }) {
   const [newBases, setNewBases] = useState([{ id: 1, id_for_base: item.id_for_base }]);
   const [currentBases, setCurrentBases] = useState([]);
   const [deleteBases, setDeleteBases] = useState([]);
-  const axiosFunctions =
-    country === "cityRu"
-      ? { getBases: axiosGetBasesForCityRu, createBase: axiosCreateBaseRu, deleteBase: axiosDeleteBaseRu, updateBasesSocket: "updateBasesRu", deleteBaseSocket: "deleteBaseRu" }
-      : { getBases: axiosGetBasesForCityKz, createBase: axiosCreateBaseKz, deleteBase: axiosDeleteBaseKz, updateBasesSocket: "updateBasesKz", deleteBaseSocket: "deleteBaseKz" };
 
   async function createBase(currentBases, newBases, item) {
     try {
-      const result = await axiosFunctions.createBase([...currentBases, ...newBases.filter((el) => !!el.base_id)]);
+      const result = await createBase([...currentBases, ...newBases.filter((el) => !!el.base_id)]);
       setNewBases([{ id: 1, id_for_base: item.id_for_base }]);
       if (result.update) {
         await getBasesForCity(item);
@@ -38,7 +33,7 @@ function DropdownBaseTable({ item, country }) {
 
   async function deleteBase(deleteBases, item) {
     try {
-      await Promise.all(deleteBases?.map(async (id) => await axiosFunctions.deleteBase(Number(id))));
+      await Promise.all(deleteBases?.map(async (id) => await deleteBase(Number(id))));
       setDeleteBases([]);
       await getBasesForCity(item);
       alert("Success");
@@ -48,7 +43,7 @@ function DropdownBaseTable({ item, country }) {
   }
 
   async function getBasesForCity(item) {
-    const data = await axiosFunctions.getBases(Number(item.id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(item.id_for_base) || 0);
     if (data) {
       setCurrentBases(data);
     }
@@ -68,7 +63,7 @@ function DropdownBaseTable({ item, country }) {
   }
 
   useEffect(() => {
-    socket.on(axiosFunctions.updateBasesSocket, ({ data }) => {
+    socket.on("updateBases", ({ data }) => {
       let updatedBases = currentBases?.map((city) => {
         const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
         return updatedBase ? updatedBase : city;
@@ -80,15 +75,15 @@ function DropdownBaseTable({ item, country }) {
       setCurrentBases(updatedBases);
     });
     // eslint-disable-next-line
-  }, [currentBases, axiosFunctions, setCurrentBases]);
+  }, [currentBases, setCurrentBases]);
 
   useEffect(() => {
-    socket.on(axiosFunctions.deleteBaseSocket, ({ data }) => {
+    socket.on("deleteBase", ({ data }) => {
       const filteredBases = currentBases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
       setCurrentBases(filteredBases);
     });
     // eslint-disable-next-line
-  }, [currentBases, axiosFunctions, setCurrentBases]);
+  }, [currentBases, setCurrentBases]);
 
   useEffect(() => {
     getBasesForCity(item);

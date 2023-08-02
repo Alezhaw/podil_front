@@ -13,7 +13,7 @@ function ChangeUserProps({
     changeCompleted,
     setBlockUser,
     blockUser,
-    changeCheckRu,
+    changeCheck,
     setMinScore,
     minScore,
     changeTransferAmount,
@@ -112,7 +112,7 @@ function ChangeUserProps({
                         <option value="true">Разблокировать</option>
                         <option value="false">Заблокировать</option>
                     </select>
-                    <div className="tabl-flex-admin-button" onClick={changeCheckRu}>
+                    <div className="tabl-flex-admin-button" onClick={changeCheck}>
                         Изменить
                     </div>
                 </div>

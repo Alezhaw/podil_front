@@ -1,4 +1,4 @@
-export interface ICitiesKz {
+export interface ICities {
   id: number;
   l_p: number | null;
   godzina: string | null;
@@ -52,7 +52,7 @@ export interface ICitiesKz {
   base_stat_6: string | null;
   createdAt: string | null;
   updatedAt: string | null;
-  zgody_inne_miasto: string | null;
+  zgody_inne_miasto: number | null;
   check_base: boolean | null;
   check_speaker: boolean | null;
   check_scenario: boolean | null;

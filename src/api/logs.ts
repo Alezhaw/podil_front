@@ -1,5 +1,4 @@
 import axios from "./axios";
-import { getConfig } from "./axios";
 import { ILogsCity } from "../interfaces/logsCity";
 let controllerGetAllLogsCity: AbortController | null = null;
 let controllerGetFilteredLogsCity: AbortController | null = null;
@@ -12,7 +11,7 @@ export const axiosGetAllLogsCity = async () => {
       controllerGetAllLogsCity.abort();
     }
     controllerGetAllLogsCity = new AbortController();
-    const { data } = await axios.get("api/log/getCities", { ...getConfig(), signal: controllerGetAllLogsCity.signal });
+    const { data } = await axios.get("api/log/getCities", { signal: controllerGetAllLogsCity.signal });
     return data.map((item: any) => {
       const differences = JSON.parse(item?.differences)?.filter((el: any) => !!el[0] && (el[1] != null || el[2] != null)) || [];
       return { ...item, differences: differences, differencesLength: differences.length };
@@ -51,7 +50,7 @@ export const axiosGetFilteredLogsCity = async ({
     const { data } = await axios.post(
       "api/log/searchCity",
       { pageSize, page, search, country, updateFilter, createFilter, deleteFilter },
-      { ...getConfig(), signal: controllerGetFilteredLogsCity.signal }
+      { signal: controllerGetFilteredLogsCity.signal }
     );
     return {
       ...data,
@@ -75,7 +74,7 @@ export const axiosGetAllLogsBase = async () => {
       controllerGetAllLogsBase.abort();
     }
     controllerGetAllLogsBase = new AbortController();
-    const { data } = await axios.get("api/log/getBases", { ...getConfig(), signal: controllerGetAllLogsBase.signal });
+    const { data } = await axios.get("api/log/getBases", { signal: controllerGetAllLogsBase.signal });
     return data.map((item: any) => {
       const differences = JSON.parse(item?.differences)?.filter((el: any) => !!el[0] && (el[1] != null || el[2] != null)) || [];
       return { ...item, differences: differences, differencesLength: differences.length };
@@ -114,7 +113,7 @@ export const axiosGetFilteredLogsBases = async ({
     const { data } = await axios.post(
       "api/log/searchBase",
       { pageSize, page, search, country, updateFilter, createFilter, deleteFilter },
-      { ...getConfig(), signal: controllerGetFilteredLogsBase.signal }
+      { signal: controllerGetFilteredLogsBase.signal }
     );
     return {
       ...data,

@@ -2,7 +2,7 @@ import { Checkbox } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { axiosDeleteUser, axiosGetAllUsers, axiosChangeRole, axiosChangeScore, axiosChangeSystemMessage, axiosChangeCompleted, axiosChangeCheckRu, axiosChangeTransferAmount } from '../../../api/user';
+import { axiosDeleteUser, axiosGetAllUsers, axiosChangeRole, axiosChangeScore, axiosChangeSystemMessage, axiosChangeCompleted, axiosChangeCheck, axiosChangeTransferAmount } from '../../../api/user';
 import { useAppSelector } from '../../../store/reduxHooks';
 import { reducerTypes } from '../../../store/Users/types';
 import ChangeUserProps from './component/ChangeUserProps';
@@ -81,8 +81,8 @@ function AllUsersID() {
         alert('Что-то пошло не так');
     }
 
-    async function changeCheckRu() {
-        const result = await axiosChangeCheckRu(blockUser, currentUser?.id, user?.email, user?.password);
+    async function changeCheck() {
+        const result = await axiosChangeCheck(blockUser, currentUser?.id, user?.email, user?.password);
         if (result) {
             getAllUsers();
             return alert('Успешно');
@@ -184,7 +184,7 @@ function AllUsersID() {
                                 <StyledDiv size="130px">{minScore ?? 0}p</StyledDiv>
                                 <StyledDiv size="130px">{minRefil ?? 0}p</StyledDiv>
                                 <StyledDiv size="80px" onChange={(e) => changeDeleteUsers(e.target.checked, currentUser?.id)}>
-                                    <Checkbox color="error" />
+                                    <Checkbox color="error" readOnly/>
                                 </StyledDiv>
                             </div>
                         }
@@ -217,7 +217,7 @@ function AllUsersID() {
                         changeCompleted={changeCompleted}
                         setBlockUser={setBlockUser}
                         blockUser={blockUser}
-                        changeCheckRu={changeCheckRu}
+                        changeCheck={changeCheck}
                         setMinScore={setMinScore}
                         minScore={minScore}
                         changeTransferAmount={changeTransferAmount}

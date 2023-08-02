@@ -5,21 +5,21 @@ import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import { axiosChangeCheckKz, axiosGetFilteredCitiesKz } from "../../../api/podzialKz";
+import Podzial from "../../../api/podzial";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 
-function CheckBasesKz() {
+function CheckBases({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
-  const { citiesKz, user } = useAppSelector((store) => store.user);
+  const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -29,23 +29,32 @@ function CheckBasesKz() {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, baseInProgress: filterInProgress, baseZamkniete: filterComplete });
+    const data = await Podzial.getFilteredCities({
+      page: page + 1,
+      pageSize: itemsPerPage,
+      sort: !sortId,
+      search,
+      baseInProgress: filterInProgress,
+      baseZamkniete: filterComplete,
+      baseCanceled: filterCanceled,
+      country,
+    });
     if (data) {
       setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
-        type: reducerTypes.GET_CITIES_KZ,
+        type: reducerTypes.GET_CITIES,
         payload: data.cities,
       });
     }
   }
 
-  async function changeCheckKz(checked, id_for_base) {
+  async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await axiosChangeCheckKz(Number(id_for_base), null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, checked, country);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+      await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
@@ -53,16 +62,16 @@ function CheckBasesKz() {
 
   useEffect(() => {
     setCities(
-      citiesKz
+      storedCities
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
-        ?.map((el) => citiesKz?.filter((time) => time.id_for_base === el.id_for_base))
+        ?.map((el) => storedCities?.filter((time) => time.id_for_base === el.id_for_base))
         ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
     );
-  }, [citiesKz]);
+  }, [storedCities]);
 
   useEffect(() => {
-    if (!citiesKz[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+    if (!storedCities[0]) {
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
@@ -88,7 +97,7 @@ function CheckBasesKz() {
             setSearch(e.target.value?.toLowerCase()?.trim());
           }}
           onKeyUp={(e) => {
-            if (e.keyCode === 13) {
+            if (e.key === "Enter") {
               setPage(0);
               setSearch(e.target.value?.toLowerCase()?.trim());
             }
@@ -132,8 +141,8 @@ function CheckBasesKz() {
                   </tr>
                 </thead>
                 <tbody>
-                  {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityKz" checkKey={"check_base"} changeCheck={changeCheckKz} key={item.id} />
+                  {cities?.map((item, index) => (
+                    <CheckBaseTable key={`CheckBaseTable-${item.id}`} currentCities={item} country={country} checkKey={"check_base"} changeCheck={Podzial.changeCheck} />
                   ))}
                 </tbody>
               </table>
@@ -168,7 +177,8 @@ function CheckBasesKz() {
           onChange={(e) => setItemsPerPageForInput(Number(e.target.value))}
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
-            if (e.keyCode === 13) {
+            if (e.key === "Enter") {
+              setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
           }}
@@ -180,4 +190,4 @@ function CheckBasesKz() {
   );
 }
 
-export default CheckBasesKz;
+export default CheckBases;

@@ -20,7 +20,6 @@ function CheckBasesRu() {
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filterColumns, setFilterColumns] = useState([]);
-  const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -32,17 +31,9 @@ function CheckBasesRu() {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesRu({
-      page: page + 1,
-      pageSize: itemsPerPage,
-      sort: !sortId,
-      search,
-      baseInProgress: filterInProgress,
-      baseZamkniete: filterComplete,
-      baseCanceled: filterCanceled,
-    });
+    const data = await axiosGetFilteredCitiesRu({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, baseInProgress: filterInProgress, baseZamkniete: filterComplete });
     if (data) {
       setLoadingSpinner(true);
       setCount(data.count);
@@ -58,7 +49,7 @@ function CheckBasesRu() {
     if (!checkConfirm) return;
     const data = await axiosChangeCheckRu(Number(id_for_base), null, checked);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
@@ -86,15 +77,15 @@ function CheckBasesRu() {
 
   useEffect(() => {
     if (!citiesRu[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -135,35 +126,8 @@ function CheckBasesRu() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
-          <Checkbox
-            value={filterCanceled}
-            onChange={() => {
-              setPage(0);
-              setFilterCanceled((prev) => !prev);
-            }}
-            color="error"
-          />
-          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
-          <Checkbox
-            value={filterInProgress}
-            defaultChecked
-            onChange={() => {
-              setPage(0);
-              setFilterInProgress((prev) => !prev);
-            }}
-            color="error"
-          />
-          <h5 style={{ margin: "0" }}>Complete</h5>{" "}
-          <Checkbox
-            value={filterComplete}
-            defaultChecked
-            onChange={() => {
-              setPage(0);
-              setFilterComplete((prev) => !prev);
-            }}
-            color="error"
-          />
+          <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
@@ -251,7 +215,6 @@ function CheckBasesRu() {
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
-              setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
           }}

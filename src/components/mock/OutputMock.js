@@ -39,8 +39,6 @@ export const userPathForAdmin = {
 };
 export const outputMock = ["История пополнений", "Перевод по реквизитам", "Перевод пользователю"];
 
-export const citiesStatusColor = ["#8B00FF", "#00FF00", "#FF2400", "#FFFFFF"];
-
 export const citiesStatus = ["Отменен", "В процессе", "Закрыт", "Ожидает"];
 
 export const allCitiesTableMock = [
@@ -169,9 +167,9 @@ export const allCitiesTableMock = [
       </th>
     ),
     firstRow: () => <th></th>,
-    content: ({ index, currentCities, item, citiesStatusColor }) =>
+    content: ({ index, currentCities, item }) =>
       index === 0 ? (
-        <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
+        <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
           <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
             {item.miasto_lokal || ""}
           </div>

@@ -21,7 +21,6 @@ function AllCitiesKz() {
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filterColumns, setFilterColumns] = useState([]);
-  const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [sortId, setSortId] = useState(true);
@@ -38,11 +37,11 @@ function AllCitiesKz() {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
     setLoadingSpinner(false);
-    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled });
-    setLoadingSpinner(true);
+    const data = await axiosGetFilteredCitiesKz({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete });
     if (data) {
+      setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES_KZ,
@@ -68,7 +67,7 @@ function AllCitiesKz() {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await axiosCreateCitiesKz(city);
     if (result.cities[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
@@ -103,15 +102,15 @@ function AllCitiesKz() {
 
   useEffect(() => {
     if (!citiesKz[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -152,15 +151,6 @@ function AllCitiesKz() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
-          <Checkbox
-            value={filterCanceled}
-            onChange={() => {
-              setPage(0);
-              setFilterCanceled((prev) => !prev);
-            }}
-            color="error"
-          />
           <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
           <Checkbox
             value={filterInProgress}
@@ -271,7 +261,7 @@ function AllCitiesKz() {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await axiosDeleteCityKz(Number(id_for_base))));
               setDeleteCities([]);
-              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+              await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");
@@ -305,7 +295,6 @@ function AllCitiesKz() {
           onBlur={(e) => setItemsPerPage(Number(e.target.value))}
           onKeyUp={(e) => {
             if (e.keyCode === 13) {
-              setPage(0);
               setItemsPerPage(Number(e.target.value));
             }
           }}

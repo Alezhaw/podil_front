@@ -214,15 +214,7 @@ function CheckBasesKz() {
                 </thead>
                 <tbody>
                   {cities?.map((item, index) => (
-                    <CheckBaseTable
-                      currentCities={item}
-                      country="cityKz"
-                      checkKey={"check_base"}
-                      filterColumns={filterColumns}
-                      changeCitiesStatus={changeCitiesStatus}
-                      changeCheck={changeCheckKz}
-                      key={item.id}
-                    />
+                    <CheckBaseTable currentCities={item} country="cityKz" filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} changeCheck={changeCheckKz} key={item.id} />
                   ))}
                 </tbody>
               </table>

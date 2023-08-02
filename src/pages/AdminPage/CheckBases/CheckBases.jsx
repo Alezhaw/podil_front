@@ -38,7 +38,7 @@ function CheckBases({ country }) {
       baseInProgress: filterInProgress,
       baseZamkniete: filterComplete,
       baseCanceled: filterCanceled,
-      country
+      country,
     });
     if (data) {
       setLoadingSpinner(true);

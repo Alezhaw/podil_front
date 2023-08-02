@@ -14,7 +14,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-function CheckScenario({country}) {
+function CheckScenario({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -41,7 +41,7 @@ function CheckScenario({country}) {
       scenarioInProgress: filterInProgress,
       scenarioZamkniete: filterComplete,
       scenarioCanceled: filterCanceled,
-      country
+      country,
     });
     if (data) {
       setLoadingSpinner(true);

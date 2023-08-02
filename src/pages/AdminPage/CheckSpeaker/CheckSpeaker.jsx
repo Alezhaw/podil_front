@@ -15,7 +15,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { store } from "../../../store/store";
 
-function CheckSpeakerRu( { country } ) {
+function CheckSpeakerRu({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -42,7 +42,7 @@ function CheckSpeakerRu( { country } ) {
       speakerInProgress: filterInProgress,
       speakerZamkniete: filterComplete,
       speakerCanceled: filterCanceled,
-      country
+      country,
     });
     if (data) {
       setLoadingSpinner(true);

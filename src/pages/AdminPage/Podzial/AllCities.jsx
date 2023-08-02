@@ -40,7 +40,16 @@ function AllCities({ country }) {
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
-    const data = await Podzial.getFilteredCities({ page: page + 1, pageSize: itemsPerPage, sort: !sortId, search, inProgress: filterInProgress, zamkniete: filterZamkniete, canceled: filterCanceled, country });
+    const data = await Podzial.getFilteredCities({
+      page: page + 1,
+      pageSize: itemsPerPage,
+      sort: !sortId,
+      search,
+      inProgress: filterInProgress,
+      zamkniete: filterZamkniete,
+      canceled: filterCanceled,
+      country,
+    });
     setLoadingSpinner(true);
     if (data) {
       setCount(data.count);
@@ -252,7 +261,14 @@ function AllCities({ country }) {
               <tbody>
                 {/* {cities?.slice(page * itemsPerPage, (page + 1) * itemsPerPage)?.map((item, index) => ( */}
                 {cities?.map((item, index) => (
-                  <AllCityTable key={`${item.id}-${index}`} currentCities={item} country="cityRu" changeDeleteCities={changeDeleteCities} filterColumns={filterColumns} changeCitiesStatus={changeCitiesStatus} />
+                  <AllCityTable
+                    key={`${item.id}-${index}`}
+                    currentCities={item}
+                    country="cityRu"
+                    changeDeleteCities={changeDeleteCities}
+                    filterColumns={filterColumns}
+                    changeCitiesStatus={changeCitiesStatus}
+                  />
                 ))}
               </tbody>
             </table>

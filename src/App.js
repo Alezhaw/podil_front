@@ -63,8 +63,6 @@ function App() {
     // eslint-disable-next-line
   }, [storedCities]);
 
-
-
   useEffect(() => {
     socket.on("updateBases", ({ data }) => {
       let updatedBases = basesRu?.map((city) => {
@@ -101,7 +99,7 @@ function App() {
         <Route path="/" element={<UserInput />} />
         <Route path="/adminPanel/user/:id" element={<UserID />} />
         <Route path="/adminPanel/city/:id_for_base" element={<CityID />} />
-        <Route path="/adminPanel/cityRu/:id_for_base" element={<CityID country="RU"/>} />
+        <Route path="/adminPanel/cityRu/:id_for_base" element={<CityID country="RU" />} />
         <Route path="/adminPanel/cityKz/:id_for_base" element={<CityID country="KZ" />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />

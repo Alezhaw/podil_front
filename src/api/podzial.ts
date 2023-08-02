@@ -34,7 +34,7 @@ export const getAllCities = async () => {
 
 export const getFilteredCities = async ({
   pageSize = 10,
-  page = 1,
+  page = 0,
   sort = true,
   speakerZamkniete = true,
   speakerInProgress = true,

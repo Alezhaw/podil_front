@@ -21,6 +21,7 @@ function CheckScenario({ country }) {
   const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
+  const [filterCanceled, setFilterCanceled] = useState(false);
   const [sortId, setSortId] = useState(true);
   const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
@@ -30,7 +31,7 @@ function CheckScenario({ country }) {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
       page: page + 1,
@@ -57,7 +58,7 @@ function CheckScenario({ country }) {
     if (!checkConfirm) return;
     const data = await Podzial.changeCheck(Number(id_for_base), null, null, null, checked, country);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
       alert(`Что-то пошло не так ${id_for_base}`);
     }
@@ -84,9 +85,9 @@ function CheckScenario({ country }) {
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 
   return (
     <>
@@ -115,8 +116,35 @@ function CheckScenario({ country }) {
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <Checkbox
+            value={filterCanceled}
+            onChange={() => {
+              setPage(0);
+              setFilterCanceled((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
+          <Checkbox
+            value={filterInProgress}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterInProgress((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Complete</h5>{" "}
+          <Checkbox
+            value={filterComplete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterComplete((prev) => !prev);
+            }}
+            color="error"
+          />
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
             <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>

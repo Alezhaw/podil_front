@@ -23,6 +23,7 @@ function AllCities({ country }) {
   const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
+  const [filterCanceled, setFilterCanceled] = useState(false);
   const [sortId, setSortId] = useState(true);
   const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
@@ -37,7 +38,7 @@ function AllCities({ country }) {
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
       page: page + 1,
@@ -77,7 +78,7 @@ function AllCities({ country }) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
     const result = await Podzial.createCities(city);
     if (result.cities[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
@@ -112,15 +113,15 @@ function AllCities({ country }) {
 
   useEffect(() => {
     if (!storedCities[0]) {
-      Podzial.getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -161,6 +162,15 @@ function AllCities({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
+          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <Checkbox
+            value={filterCanceled}
+            onChange={() => {
+              setPage(0);
+              setFilterCanceled((prev) => !prev);
+            }}
+            color="error"
+          />
           <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
           <Checkbox
             value={filterInProgress}
@@ -278,7 +288,7 @@ function AllCities({ country }) {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), "RU")));
               setDeleteCities([]);
-              await Podzial.getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+              await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country });
               alert("Success");
             } catch (e) {
               alert("Что-то пошло не так");

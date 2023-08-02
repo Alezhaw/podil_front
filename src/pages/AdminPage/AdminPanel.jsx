@@ -14,10 +14,10 @@ function AdminPanel() {
   const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) || null);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
   const navigate = useNavigate();
-  const [basePage, setBasePage] = useState("БАЗЫ");
-  const [speakerPage, setSpeakerPage] = useState("ДИКТОР");
-  const [scenarioPage, setScenarioPage] = useState("СЦЕНАРИЙ");
-  const [logsPage, setLogsPage] = useState("ЛОГИ");
+  const [basePage, setBasePage] = useState(item === 9 ? "БАЗЫ РУ" : item === 10 ? "БАЗЫ КЗ" : "БАЗЫ");
+  const [speakerPage, setSpeakerPage] = useState(item === 11 ? "ДИКТОР РУ" : item === 12 ? "ДИКТОР КЗ" : "ДИКТОР");
+  const [scenarioPage, setScenarioPage] = useState(item === 13 ? "СЦЕНАРИЙ РУ" : item === 14 ? "СЦЕНАРИЙ КЗ" : "ДИКТОР");
+  const [logsPage, setLogsPage] = useState(item === 15 ? "ЛОГИ ГОРОДА" : item === 16 ? "ЛОГИ БАЗЫ" : "ЛОГИ");
   const [anchorElBase, setAnchorElBase] = useState(null);
   const [anchorElSpeaker, setAnchorElSpeaker] = useState(null);
   const [anchorElScenario, setAnchorElScenario] = useState(null);
@@ -33,6 +33,7 @@ function AdminPanel() {
     setScenarioPage(" СЦЕНАРИЙ ");
     setLogsPage(" ЛОГИ ");
     setItem(Number(name));
+    // navigate(`/adminPanel/${name}`)
     localStorage.setItem("adminPage", String(name));
   }
 
@@ -195,28 +196,28 @@ function AdminPanel() {
           )}
           {item === 7 ? (
             <div style={{ display: "block", width: "100%" }}>
-              <AllCities country="RU"/>
+              <AllCities country="RU" />
             </div>
           ) : (
             ""
           )}
           {item === 8 ? (
             <div style={{ display: "block" }}>
-              <AllCities country="KZ"/>
+              <AllCities country="KZ" />
             </div>
           ) : (
             ""
           )}
           {item === 9 ? (
             <div style={{ display: "block" }}>
-              <CheckBases country="RU"/>
+              <CheckBases country="RU" />
             </div>
           ) : (
             ""
           )}
           {item === 10 ? (
             <div style={{ display: "block" }}>
-              <CheckBases country="KZ"/>
+              <CheckBases country="KZ" />
             </div>
           ) : (
             ""

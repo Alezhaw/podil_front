@@ -18,6 +18,7 @@ function CheckBases({ country }) {
   const [searchForInput, setSearchForInput] = useState("");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
+  const [filterCanceled, setFilterCanceled] = useState(false);
   const [sortId, setSortId] = useState(true);
   const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
@@ -77,9 +78,9 @@ function CheckBases({ country }) {
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
 
   return (
     <>
@@ -107,8 +108,35 @@ function CheckBases({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
-          <h5 style={{ margin: "0" }}>In progress</h5> <Checkbox value={filterInProgress} defaultChecked onChange={() => setFilterInProgress((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Complete</h5> <Checkbox value={filterComplete} defaultChecked onChange={() => setFilterComplete((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <Checkbox
+            value={filterCanceled}
+            onChange={() => {
+              setPage(0);
+              setFilterCanceled((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
+          <Checkbox
+            value={filterInProgress}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterInProgress((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Complete</h5>{" "}
+          <Checkbox
+            value={filterComplete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterComplete((prev) => !prev);
+            }}
+            color="error"
+          />
         </div>
       </div>
 

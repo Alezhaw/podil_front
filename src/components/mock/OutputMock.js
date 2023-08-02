@@ -41,6 +41,8 @@ export const outputMock = ["История пополнений", "Перево�
 
 export const citiesStatus = ["Отменен", "В процессе", "Закрыт", "Ожидает"];
 
+export const citiesStatusColor = ["#8B00FF", "#00FF00", "#FF2400", "#FFFFFF"];
+
 export const allCitiesTableMock = [
   {
     column: "lp",
@@ -168,7 +170,7 @@ export const allCitiesTableMock = [
       </th>
     ),
     firstRow: () => <th></th>,
-    content: ({ index, currentCities, item }) =>
+    content: ({ index, currentCities, item, citiesStatusColor }) =>
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
           <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>

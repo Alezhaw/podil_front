@@ -13,12 +13,13 @@ import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { allCitiesTableMock } from "../../../components/mock/OutputMock";
+import { allCitiesTableMock, forSpeakerMock } from "../../../components/mock/OutputMock";
 
 function CheckSpeakerKz() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterSpeaker, setFilterSpeaker] = useState([]);
   const [filterColumns, setFilterColumns] = useState([]);
   const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterInProgress, setFilterInProgress] = useState(true);
@@ -109,9 +110,18 @@ function CheckSpeakerKz() {
     }
   }, [allCitiesTableMock]);
 
+  useEffect(() => {
+    const savedFilterSpeaker = JSON.parse(localStorage.getItem("filterSpeaker") || "[]");
+    if (savedFilterSpeaker.length > 0) {
+      setFilterSpeaker(savedFilterSpeaker);
+    } else {
+      setFilterColumns(forSpeakerMock);
+    }
+  }, [forSpeakerMock]);
+
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
         <StyledInput
           className="tabl-flex-admin-search"
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
@@ -164,6 +174,35 @@ function CheckSpeakerKz() {
             }}
             color="error"
           />
+          <DropdownButton id="dropdown-basic-button" title="For Speaker" style={{ background: "transparent", border: "none" }} variant="secondary">
+            <Dropdown.Item
+              onClick={(e) => {
+                let updatedFilterSpeaker = forSpeakerMock.filter((el) => el.id === "1");
+                setFilterSpeaker(updatedFilterSpeaker);
+                localStorage.setItem("filterSpeaker", JSON.stringify(updatedFilterSpeaker));
+              }}
+            >
+              1{" "}
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={(e) => {
+                let updatedFilterSpeaker = forSpeakerMock.filter((el) => el.id === "2");
+                setFilterSpeaker(updatedFilterSpeaker);
+                localStorage.setItem("filterSpeaker", JSON.stringify(updatedFilterSpeaker));
+              }}
+            >
+              2{" "}
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={(e) => {
+                const updatedFilterSpeaker = forSpeakerMock.filter((el) => el.id === "3");
+                setFilterSpeaker(updatedFilterSpeaker);
+                localStorage.setItem("filterSpeaker", JSON.stringify(updatedFilterSpeaker));
+              }}
+            >
+              3{" "}
+            </Dropdown.Item>
+          </DropdownButton>
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
@@ -217,6 +256,7 @@ function CheckSpeakerKz() {
                       currentCities={item}
                       country="cityKz"
                       checkKey={"check_speaker"}
+                      filterSpeaker={filterSpeaker}
                       filterColumns={filterColumns}
                       changeCitiesStatus={changeCitiesStatus}
                       changeCheck={changeCheckKz}

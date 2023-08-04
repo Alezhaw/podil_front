@@ -111,7 +111,7 @@ function CheckBasesKz() {
 
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
         <StyledInput
           className="tabl-flex-admin-search"
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}

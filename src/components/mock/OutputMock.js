@@ -21,6 +21,21 @@ export const validateWebmoney = (item) => {
   return checkItem1 && checkItem2;
 };
 
+export const forSpeakerMock = [
+  {
+    id: "1",
+    text: "zalupa1",
+  },
+  {
+    id: "2",
+    text: "zalupa2",
+  },
+  {
+    id: "3",
+    text: "zalupa3",
+  },
+];
+
 export const adminChatStatusMock = ["Виден пользователю", "Удалён для пользователя"];
 export const adminChatNewMessageMock = ["Новое сообщение", "Новых сообщений нет"];
 export const userPath = ["/", "/deal", "/systemmessages", "/payments", "/output", "/howitwork", "/deals", "/sertificates", "/makedeal", "/rules", "/disputes"];
@@ -171,7 +186,7 @@ export const allCitiesTableMock = [
     firstRow: () => <th></th>,
     content: ({ index, currentCities, item, citiesStatusColor }) =>
       index === 0 ? (
-        <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
+        <th rowspan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "5px", background: citiesStatusColor[item.status] }} className="basesTableCell">
           <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
             {item.miasto_lokal || ""}
           </div>

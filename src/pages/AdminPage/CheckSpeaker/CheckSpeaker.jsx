@@ -57,7 +57,7 @@ function CheckSpeakerRu({ country }) {
   async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Вы уверены?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheck(Number(id_for_base), null, null, checked, country);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, country, null, checked);
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {

@@ -112,7 +112,7 @@ function CheckBases({ country }) {
 
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
         <StyledInput
           className="tabl-flex-admin-search"
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
@@ -135,7 +135,7 @@ function CheckBases({ country }) {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
           <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
           <Checkbox
             value={filterCanceled}

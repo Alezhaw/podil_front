@@ -21,6 +21,21 @@ export const validateWebmoney = (item) => {
   return checkItem1 && checkItem2;
 };
 
+export const forSpeakerMock = [
+  {
+    id: "1",
+    text: "zalupa1",
+  },
+  {
+    id: "2",
+    text: "zalupa2",
+  },
+  {
+    id: "3",
+    text: "zalupa3",
+  },
+];
+
 export const adminChatStatusMock = ["Виден пользователю", "Удалён для пользователя"];
 export const adminChatNewMessageMock = ["Новое сообщение", "Новых сообщений нет"];
 export const userPath = ["/", "/deal", "/systemmessages", "/payments", "/output", "/howitwork", "/deals", "/sertificates", "/makedeal", "/rules", "/disputes"];

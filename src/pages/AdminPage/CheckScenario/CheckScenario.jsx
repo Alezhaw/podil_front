@@ -91,7 +91,7 @@ function CheckScenario({ country }) {
 
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
         <StyledInput
           className="tabl-flex-admin-search"
           style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
@@ -114,7 +114,7 @@ function CheckScenario({ country }) {
           required
         />
 
-        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
+        <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
           <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
           <Checkbox

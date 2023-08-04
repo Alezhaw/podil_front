@@ -56,13 +56,10 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
               open ? (
                 index === currentCities.length - 1 ? (
                   <tr>
-                    <th colSpan={11} style={{ overflow: "auto" }}>
-                      <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
-                        <table style={{ textAlign: "center" }}>
-                          <tbody>
-                            <DropdownBaseTable item={item} country={country} id_for_base={item.id_for_base} />
-                          </tbody>
-                        </table>
+                    <th></th>
+                    <th colSpan={12} style={{ overflow: "auto" }}>
+                      <Container style={{ padding: "30px 0px", margin: "0" }}>
+                        <DropdownBaseTable item={item} country={country} id_for_base={item.id_for_base} />
                       </Container>
                     </th>
                   </tr>
@@ -73,7 +70,8 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
               open ? (
                 index === currentCities.length - 1 ? (
                   <tr>
-                    <th colSpan={11} style={{ overflow: "auto" }}>
+                    <th></th>
+                    <th colSpan={12} style={{ overflow: "auto" }}>
                       <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
                         <table style={{ textAlign: "center" }}>
                           <tbody>

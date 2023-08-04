@@ -7,7 +7,7 @@ import DropdownBaseTable from "./DropdownBaseTable";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DropdownSpeakerTable from "./DropdownSpeakerTable";
 
-function CheckBaseTable({ currentCities, country, checkKey, filterColumns, changeCitiesStatus, filterSpeaker }) {
+function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterColumns, filterSpeaker, changeCitiesStatus }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);

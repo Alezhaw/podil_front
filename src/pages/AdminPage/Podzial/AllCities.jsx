@@ -265,7 +265,7 @@ function AllCities({ country }) {
                   <AllCityTable
                     key={`${item.id}-${index}`}
                     currentCities={item}
-                    country="cityRu"
+                    country={country}
                     changeDeleteCities={changeDeleteCities}
                     filterColumns={filterColumns}
                     changeCitiesStatus={changeCitiesStatus}

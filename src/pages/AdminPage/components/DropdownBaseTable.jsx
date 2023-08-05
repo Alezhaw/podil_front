@@ -64,15 +64,17 @@ function DropdownBaseTable({ item, country }) {
 
   useEffect(() => {
     socket.on("updateBases", ({ data }) => {
-      let updatedBases = currentBases?.map((city) => {
-        const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
-        return updatedBase ? updatedBase : city;
-      });
-      const newBases = data.bases.filter((el) => {
-        return !currentBases?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
-      });
-      updatedBases = [...updatedBases, ...newBases];
-      setCurrentBases(updatedBases);
+      if (data.country === country) {
+        let updatedBases = currentBases?.map((city) => {
+          const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
+          return updatedBase ? updatedBase : city;
+        });
+        const newBases = data.bases.filter((el) => {
+          return !currentBases?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+        });
+        updatedBases = [...updatedBases, ...newBases];
+        setCurrentBases(updatedBases);
+      }
     });
     // eslint-disable-next-line
   }, [currentBases, setCurrentBases]);

@@ -13,7 +13,7 @@ function CityID({ country }) {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
-  const { user, storedCities, basesRu } = useAppSelector((store) => store.user);
+  const { user, storedCities, basesRu, basesKz } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -24,6 +24,11 @@ function CityID({ country }) {
   const [newBase, setNewBase] = useState({});
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  const baseModels = {
+    RU: { bases: basesRu, type: reducerTypes.GET_BASES_RU },
+    KZ: { bases: basesKz, type: reducerTypes.GET_BASES_KZ },
+  };
 
   async function getCity(id_for_base) {
     const data = await Podzial.getOneCity(Number(id_for_base) || 0, country);
@@ -39,7 +44,7 @@ function CityID({ country }) {
     const data = await Podzial.getBasesForCity(Number(id_for_base) || 0);
     if (data) {
       dispatch({
-        type: reducerTypes.GET_BASES_RU,
+        type: baseModels[country].type,
         payload: data.sort((a, b) => a.id - b.id),
       });
     }
@@ -174,7 +179,7 @@ function CityID({ country }) {
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country}/>
+              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} />
             </div>
             <div
               style={{

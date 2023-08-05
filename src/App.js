@@ -18,7 +18,11 @@ export const socket = io.connect(defaultUrl);
 
 function App() {
   const dispatch = useDispatch();
-  const { user, storedCities, citiesKz, bases, basesRu, basesKz } = useAppSelector((store) => store.user);
+  const { user, storedCities, citiesRu, citiesKz, bases, basesRu, basesKz } = useAppSelector((store) => store.user);
+  const baseModels = {
+    RU: { bases: basesRu, type: reducerTypes.GET_BASES_RU },
+    KZ: { bases: basesKz, type: reducerTypes.GET_BASES_KZ },
+  };
 
   useEffect(() => {
     if (user?.email) {
@@ -65,32 +69,36 @@ function App() {
 
   useEffect(() => {
     socket.on("updateBases", ({ data }) => {
-      let updatedBases = basesRu?.map((city) => {
+      const country = data.country;
+
+      let updatedBases = baseModels[country].bases?.map((city) => {
         const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
         return updatedBase ? updatedBase : city;
       });
       const newBases = data.bases.filter((el) => {
-        return !basesRu?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
+        return !baseModels[country].bases?.filter((item) => item.id_for_base === el.id_for_base)?.filter((item) => item.id === el.id)[0];
       });
       updatedBases = [...updatedBases, ...newBases];
       dispatch({
-        type: reducerTypes.GET_BASES_RU,
+        type: baseModels[country].type,
         payload: updatedBases,
       });
     });
     // eslint-disable-next-line
-  }, [basesRu]);
+  }, [basesRu, basesKz]);
 
   useEffect(() => {
     socket.on("deleteBase", ({ data }) => {
-      const filteredBases = basesRu?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+      const country = data.country;
+
+      const filteredBases = baseModels[country].bases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
       dispatch({
-        type: reducerTypes.GET_BASES,
+        type: baseModels[country].type,
         payload: filteredBases,
       });
     });
     // eslint-disable-next-line
-  }, [basesRu]);
+  }, [basesRu, basesKz]);
 
   return (
     <>

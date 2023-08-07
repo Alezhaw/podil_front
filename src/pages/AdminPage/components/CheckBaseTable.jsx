@@ -58,9 +58,11 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
                   <tr>
                     <th></th>
                     <th colSpan={12} style={{ overflow: "auto" }}>
-                      <Container style={{ padding: "30px 0px", margin: "0" }}>
-                        <DropdownBaseTable item={item} country={country} id_for_base={item.id_for_base} />
-                      </Container>
+                      <div>
+                        <Container style={{ padding: "30px 0px", margin: "0" }}>
+                          <DropdownBaseTable item={item} country={country} id_for_base={item.id_for_base} />
+                        </Container>
+                      </div>
                     </th>
                   </tr>
                 ) : null

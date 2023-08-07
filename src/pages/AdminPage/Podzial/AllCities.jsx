@@ -56,7 +56,7 @@ function AllCities({ country }) {
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: data.cities,
+        payload: { cities: data.cities, country },
       });
     }
   }
@@ -76,7 +76,7 @@ function AllCities({ country }) {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
-    const result = await Podzial.createCities(city);
+    const result = await Podzial.createCities(city, country);
     if (result.cities[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       alert("Sucess");

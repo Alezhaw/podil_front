@@ -49,7 +49,7 @@ function CheckBases({ country }) {
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: data.cities,
+        payload: { cities: data.cities, country },
       });
     }
   }

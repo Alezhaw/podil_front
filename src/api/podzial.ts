@@ -1,13 +1,14 @@
 import axios from "./axios";
 import { ICities } from "../interfaces/cities";
 import { IBase } from "../interfaces/base";
+
 let controllerGetAllCities: AbortController | null = null;
 let controllerGetFilteredCities: AbortController | null = null;
 let controllerGetAllBases: AbortController | null = null;
 
-export const createCities = async (cities: ICities[]) => {
+export const createCities = async (cities: ICities[], country: string) => {
   try {
-    const { data } = await axios.post("api/city/create", { data: cities });
+    const { data } = await axios.post("api/city/create", { data: cities, country });
 
     return data;
   } catch (e) {
@@ -158,9 +159,9 @@ export const deleteTime = async (id: number, country: string) => {
   }
 };
 
-export const createBase = async (bases: IBase[]) => {
+export const createBase = async (bases: IBase[], country: string) => {
   try {
-    const { data } = await axios.post("api/base/create", { data: bases });
+    const { data } = await axios.post("api/base/create", { data: bases, country });
 
     return data;
   } catch (e) {
@@ -168,13 +169,13 @@ export const createBase = async (bases: IBase[]) => {
   }
 };
 
-export const getAllBases = async () => {
+export const getAllBases = async (country: string) => {
   try {
     if (controllerGetAllBases !== null) {
       controllerGetAllBases.abort();
     }
     controllerGetAllBases = new AbortController();
-    const { data } = await axios.get("api/base/get", { signal: controllerGetAllBases.signal });
+    const { data } = await axios.post("api/base/get", { country }, { signal: controllerGetAllBases.signal });
 
     return data;
   } catch (e) {
@@ -186,9 +187,9 @@ export const getAllBases = async () => {
   }
 };
 
-export const getBasesForCity = async (id_for_base: number) => {
+export const getBasesForCity = async (id_for_base: number, country: string) => {
   try {
-    const { data } = await axios.post("api/base/getForCity", { id_for_base });
+    const { data } = await axios.post("api/base/getForCity", { id_for_base, country });
 
     return data;
   } catch (e) {
@@ -196,9 +197,9 @@ export const getBasesForCity = async (id_for_base: number) => {
   }
 };
 
-export const getFilteredBases = async (search: string) => {
+export const getFilteredBases = async (search: string, country: string) => {
   try {
-    const { data } = await axios.post("api/base/search", { search });
+    const { data } = await axios.post("api/base/search", { search, country });
 
     return data;
   } catch (e) {
@@ -206,9 +207,9 @@ export const getFilteredBases = async (search: string) => {
   }
 };
 
-export const deleteBase = async (id?: number, base_id?: number) => {
+export const deleteBase = async (country: string, id?: number, base_id?: number) => {
   try {
-    const { data } = await axios.post("api/base/deleteOne", { id, base_id });
+    const { data } = await axios.post("api/base/deleteOne", { id, base_id, country });
 
     return data;
   } catch (e) {

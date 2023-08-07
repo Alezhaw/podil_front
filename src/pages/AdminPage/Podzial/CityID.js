@@ -13,7 +13,7 @@ function CityID({ country }) {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
-  const { user, storedCities, basesRu, basesKz } = useAppSelector((store) => store.user);
+  const { user, storedCities, bases } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -25,34 +25,29 @@ function CityID({ country }) {
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const baseModels = {
-    RU: { bases: basesRu, type: reducerTypes.GET_BASES_RU },
-    KZ: { bases: basesKz, type: reducerTypes.GET_BASES_KZ },
-  };
-
   async function getCity(id_for_base) {
     const data = await Podzial.getOneCity(Number(id_for_base) || 0, country);
     if (data) {
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: data,
+        payload: { cities: data, country },
       });
     }
   }
 
   async function getBasesForCity(id_for_base) {
-    const data = await Podzial.getBasesForCity(Number(id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(id_for_base) || 0, country);
     if (data) {
       dispatch({
-        type: baseModels[country].type,
-        payload: data.sort((a, b) => a.id - b.id),
+        type: reducerTypes.GET_BASES,
+        payload: { bases: data.sort((a, b) => a.id - b.id), country },
       });
     }
   }
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
-    const result = await Podzial.createCities(city);
+    const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
     if (result.not_id_for_base) return alert("Не указан id_for_base");
@@ -71,7 +66,7 @@ function CityID({ country }) {
   }
 
   async function createBase(currentBases) {
-    const result = await Podzial.CreateBase(currentBases);
+    const result = await Podzial.createBase(currentBases, country);
     if (result.update) {
       await getBasesForCity(id_for_base);
       alert("Обновлено");
@@ -91,7 +86,7 @@ function CityID({ country }) {
 
   async function deleteBase(deleteBases) {
     try {
-      await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBaseRu(Number(id))));
+      await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBase(country, Number(id))));
       setDeleteBases([]);
       await getBasesForCity(id_for_base);
       alert("Success");
@@ -119,13 +114,13 @@ function CityID({ country }) {
   }, [storedCities]);
 
   useEffect(() => {
-    const temporaryBases = basesRu?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    const temporaryBases = bases?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryBases) {
       // setCurrentBases([...temporaryBases, ...temporaryBases])
       setCurrentBases(temporaryBases);
     }
     // eslint-disable-next-line
-  }, [basesRu]);
+  }, [bases]);
 
   useEffect(() => {
     if (user?.role === "USER") {
@@ -136,7 +131,7 @@ function CityID({ country }) {
 
   useEffect(() => {
     const checkCurrentCity = storedCities?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
-    const checkCurrentBases = basesRu?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
+    const checkCurrentBases = bases?.filter((el) => Number(el.id_for_base) === Number(id_for_base))[0];
     if (!checkCurrentCity) {
       getCity(id_for_base);
     }
@@ -239,9 +234,10 @@ function CityID({ country }) {
                   setNewBase={setNewBase}
                   createBase={createBase}
                   cities={storedCities}
-                  bases={basesRu}
+                  bases={bases}
                   currentBases={currentBases}
                   getFilteredBases={Podzial.getFilteredBases}
+                  country={country}
                 />
               ) : (
                 ""

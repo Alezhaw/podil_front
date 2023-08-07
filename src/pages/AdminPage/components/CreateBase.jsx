@@ -4,13 +4,13 @@ import { Container } from "@material-ui/core";
 import { StyledInput } from "../../../style/styles";
 import { useEffect, useState } from "react";
 
-function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBases }) {
+function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBases, country }) {
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [filteredBases, setFilteredBases] = useState([]);
 
   async function getBases(search) {
-    const data = await getFilteredBases(String(search));
+    const data = await getFilteredBases(String(search), country);
     if (data[0]) {
       setFilteredBases(data);
     }

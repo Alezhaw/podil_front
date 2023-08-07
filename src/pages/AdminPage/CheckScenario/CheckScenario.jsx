@@ -11,6 +11,7 @@ import { StyledDivHeader } from "../Users/style";
 import CheckBaseTable from "../components/CheckBaseTable";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
+import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
@@ -18,10 +19,10 @@ function CheckScenario({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
-  const [filterSpeaker, setFilterSpeaker] = useState(localStorage.getItem("filterSpeaker") === "true");
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [filterCanceled, setFilterCanceled] = useState(false);
+  const [filterColumns, setFilterColumns] = useState([]);
   const [sortId, setSortId] = useState(true);
   const { storedCities, user } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
@@ -48,7 +49,7 @@ function CheckScenario({ country }) {
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: data.cities,
+        payload: { cities: data.cities, country },
       });
     }
   }
@@ -64,9 +65,29 @@ function CheckScenario({ country }) {
     }
   }
 
+  async function changeCitiesStatus(setChangeStatus, status, id_for_base) {
+    setChangeStatus(true);
+    const result = await Podzial.changeStatus(status, country, id_for_base);
+    setChangeStatus(false);
+    if (result) {
+      //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
+    } else {
+      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+    }
+  }
+
   useEffect(() => {
-    localStorage.setItem("filterSpeaker", String(filterSpeaker));
-  }, [filterSpeaker]);
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheck") || "[]");
+    if (savedFilterColumns.length > 0) {
+      const updatedFilterColumns = [...allCitiesTableMock?.slice(0, 10)].map((el) => {
+        const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
+        return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
+      });
+      setFilterColumns(updatedFilterColumns);
+    } else {
+      setFilterColumns(allCitiesTableMock?.slice(0, 10));
+    }
+  }, [allCitiesTableMock]);
 
   useEffect(() => {
     setCities(
@@ -115,7 +136,6 @@ function CheckScenario({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
-          <h5 style={{ margin: "0" }}>For DICKtor</h5> <Checkbox value={filterSpeaker} checked={filterSpeaker} onChange={() => setFilterSpeaker((prev) => !prev)} color="error" />
           <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
           <Checkbox
             value={filterCanceled}
@@ -146,9 +166,28 @@ function CheckScenario({ country }) {
             color="error"
           />
           <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
-            <Dropdown.Item href="#/action-1">Действие</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Еще одно действие</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Что-то еще</Dropdown.Item>
+            {filterColumns.map((el, index) => (
+              <Dropdown.Item
+                onClick={(e) => {
+                  const updatedFilterColumns = filterColumns.map((fc) => {
+                    if (fc.column === e.target.id) {
+                      return { ...fc, value: !fc.value };
+                    }
+                    return fc;
+                  });
+                  setFilterColumns(updatedFilterColumns);
+                  localStorage.setItem("filterColumnsCheck", JSON.stringify(updatedFilterColumns));
+                  e.stopPropagation();
+                }}
+                href=""
+                key={index}
+              >
+                <div id={el.column}>
+                  <Checkbox checked={el.value} id={el.column} />
+                  {el.column}
+                </div>
+              </Dropdown.Item>
+            ))}
           </DropdownButton>
         </div>
       </div>
@@ -168,22 +207,26 @@ function CheckScenario({ country }) {
               <table>
                 <thead>
                   <tr>
-                    <th className="default-col"> ID</th>
-                    {!filterSpeaker && <th className="default-col">L.p</th>}
-                    <th className="default-col">Godzina</th>
-                    {!filterSpeaker && <th className="default-col">Приход всего</th>}
-                    {!filterSpeaker && <th className="default-col">Пар всего</th>}
-                    {!filterSpeaker && <th className="coming-col">Проверка прихода</th>}
-                    <th className="default-col">КР</th>
-                    <th className="miasto-col">Miasto / Lokal</th>
-                    <th className="timezone-col">Часовой Пояс</th>
-                    {!filterSpeaker && <th className="default-col">Лимит</th>}
+                    <th style={{ minWidth: "70.8px" }}></th>
+                    <th className="scenarioTableCell" style={{ minWidth: "70.8px" }}>
+                      ID
+                    </th>
+
+                    {filterColumns?.filter((el) => el.value).map((el) => el.header())}
                     <th className="default-col">Готово</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {cities?.map((item) => (
-                    <CheckBaseTable currentCities={item} country="cityRu" checkKey="check_scenario" changeCheck={changeCheck} key={item.id} filterSpeaker={filterSpeaker} />
+                  {cities?.map((item, index) => (
+                    <CheckBaseTable
+                      key={`CheckBaseTable-${item.id}`}
+                      currentCities={item}
+                      country={country}
+                      checkKey={"check_scenario"}
+                      changeCheck={changeCheck}
+                      changeCitiesStatus={changeCitiesStatus}
+                      filterColumns={filterColumns}
+                    />
                   ))}
                 </tbody>
               </table>

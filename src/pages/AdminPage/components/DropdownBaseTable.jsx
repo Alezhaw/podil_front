@@ -11,7 +11,7 @@ function DropdownBaseTable({ item, country }) {
 
   async function createBase(currentBases, newBases, item) {
     try {
-      const result = await createBase([...currentBases, ...newBases.filter((el) => !!el.base_id)]);
+      const result = await createBase([...currentBases, ...newBases.filter((el) => !!el.base_id)], country);
       setNewBases([{ id: 1, id_for_base: item.id_for_base }]);
       if (result.update) {
         await getBasesForCity(item);
@@ -33,7 +33,7 @@ function DropdownBaseTable({ item, country }) {
 
   async function deleteBase(deleteBases, item) {
     try {
-      await Promise.all(deleteBases?.map(async (id) => await deleteBase(Number(id))));
+      await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBase(country, Number(id))));
       setDeleteBases([]);
       await getBasesForCity(item);
       alert("Success");
@@ -43,7 +43,7 @@ function DropdownBaseTable({ item, country }) {
   }
 
   async function getBasesForCity(item) {
-    const data = await Podzial.getBasesForCity(Number(item.id_for_base) || 0);
+    const data = await Podzial.getBasesForCity(Number(item.id_for_base) || 0, country);
     if (data) {
       setCurrentBases(data);
     }
@@ -81,8 +81,10 @@ function DropdownBaseTable({ item, country }) {
 
   useEffect(() => {
     socket.on("deleteBase", ({ data }) => {
-      const filteredBases = currentBases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
-      setCurrentBases(filteredBases);
+      if (data.country === country) {
+        const filteredBases = currentBases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
+        setCurrentBases(filteredBases);
+      }
     });
     // eslint-disable-next-line
   }, [currentBases, setCurrentBases]);

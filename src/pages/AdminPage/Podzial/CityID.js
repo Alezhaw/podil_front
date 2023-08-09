@@ -8,6 +8,7 @@ import { Container } from "@material-ui/core";
 import CityTableID from "../components/CityTableID";
 import Base from "../components/Base";
 import CreateBase from "../components/CreateBase";
+import { getFormatTime } from "../../../utils/utils";
 
 function CityID({ country }) {
   const { id_for_base } = useParams();
@@ -47,6 +48,8 @@ function CityID({ country }) {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
+    const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    const dae = new Date();
     const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
     if (result.updated[0]) return alert("Город обновлен");
@@ -107,7 +110,12 @@ function CityID({ country }) {
     const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     if (temporaryCities) {
       setCity.map((set) => set({}));
-      temporaryCities?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))?.map((item, index) => setCity[index](item));
+      temporaryCities
+        ?.sort((a, b) => getFormatTime(a) - getFormatTime(b))
+        ?.slice(0, 3)
+        .map((item, index) => {
+          setCity[index](item);
+        });
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line

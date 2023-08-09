@@ -8,7 +8,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
   }
 
   function addTime(setCity, currentCities) {
-    const time = prompt("Какое время вы хотите добавить?", "10:00");
+    const time = prompt("Какое время вы хотите добавить?", "10:00:00");
     if (!time) return;
     setCity[currentCities.length]({
       ...currentCities[0],
@@ -219,7 +219,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                   style={{ width: "50px" }}
                   type="text"
                   autoComplete="off"
-                  value={item.godzina || ""}
+                  value={item.godzina}
                 />
               </td>
               <td className="basesTableCell">

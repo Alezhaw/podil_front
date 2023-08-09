@@ -14,6 +14,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { getFormatTime } from "../../../utils/utils";
 
 function CheckScenario({ country }) {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ function CheckScenario({ country }) {
       storedCities
         .filter((item, i, ar) => ar.map((el) => el.id_for_base).indexOf(item.id_for_base) === i)
         ?.map((el) => storedCities?.filter((time) => time.id_for_base === el.id_for_base))
-        ?.map((item) => item?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0])))
+        ?.map((item) => item?.sort((a, b) => getFormatTime(a) - getFormatTime(b)))
     );
   }, [storedCities]);
 

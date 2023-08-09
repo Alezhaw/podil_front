@@ -163,7 +163,7 @@ export const createBase = async (bases: IBase[], country: string) => {
   try {
     const { data } = await axios.post("api/base/create", { data: bases, country });
 
-    return data;
+    return data.result;
   } catch (e) {
     console.error(e);
   }
@@ -207,9 +207,9 @@ export const getFilteredBases = async (search: string, country: string) => {
   }
 };
 
-export const deleteBase = async (country: string, id?: number, base_id?: number) => {
+export const deleteBase = async (country: string, id?: number, podzial_id?: number) => {
   try {
-    const { data } = await axios.post("api/base/deleteOne", { id, base_id, country });
+    const { data } = await axios.post("api/base/deleteOne", { id, podzial_id, country });
 
     return data;
   } catch (e) {

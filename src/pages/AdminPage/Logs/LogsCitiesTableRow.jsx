@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getFormatTime } from "../../../utils/utils";
 
 function LogsCitiesTableRow({ items, getCorrectTime }) {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ function LogsCitiesTableRow({ items, getCorrectTime }) {
 
       {open
         ? items
-            ?.sort((a, b) => Number(a?.godzina?.split(":")[0]) - Number(b?.godzina?.split(":")[0]))
+            ?.sort((a, b) => getFormatTime(a) - getFormatTime(b))
             ?.map((item) =>
               item.differences?.map((el, index) => (
                 <tr key={`${index} ${generalItem.id}`}>

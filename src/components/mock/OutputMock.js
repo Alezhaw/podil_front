@@ -91,7 +91,7 @@ export const allCitiesTableMock = [
     content: ({ item }) => (
       <th className="basesTableCell">
         <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-          {item.godzina || ""}
+          {item.godzina}
         </div>
       </th>
     ),

@@ -32,107 +32,107 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
           <tr>
             <td colSpan="3" className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_id: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, podzial_id: e.target.value }))}
                 className="tableInput"
                 //style={{ width: '50px' }}
                 type="text"
                 autoComplete="off"
                 placeholder="ID"
-                value={newBase.base_id || ""}
+                value={newBase.podzial_id || ""}
               />
             </td>
           </tr>
           <tr>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_stat_1: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, stat_1: e.target.value }))}
                 className="tableInput"
                 style={{ width: "50px" }}
                 type="text"
                 autoComplete="off"
                 placeholder="стат 1"
-                value={newBase.base_stat_1 || ""}
+                value={newBase.stat_1 || ""}
               />
             </td>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_stat_2: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, stat_2: e.target.value }))}
                 className="tableInput"
                 style={{ width: "120px" }}
                 type="text"
                 autoComplete="off"
                 placeholder="стат 2"
-                value={newBase.base_stat_2 || ""}
+                value={newBase.stat_2 || ""}
               />
             </td>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_stat_3: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, stat_3: e.target.value }))}
                 className="tableInput"
                 style={{ width: "50px" }}
                 type="text"
                 autoComplete="off"
                 placeholder="стат 3"
-                value={newBase.base_stat_3 || ""}
+                value={newBase.stat_3 || ""}
               />
             </td>
           </tr>
           <tr>
             <td colSpan="2" className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_type: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, type: e.target.value }))}
                 className="tableInput"
                 // style={{ width: '120px' }}
                 type="text"
                 autoComplete="off"
                 placeholder="Тип"
-                value={newBase.base_type || ""}
+                value={newBase.type || ""}
               />
             </td>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_sort: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, sort: e.target.value }))}
                 className="tableInput"
                 style={{ maxWidth: "120px" }} //140 сделать
                 type="text"
                 autoComplete="off"
                 placeholder="сорт из"
-                value={newBase.base_sort || ""}
+                value={newBase.sort || ""}
               />
             </td>
           </tr>
           <tr>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_sogl_1: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, sogl_1: e.target.value }))}
                 className="tableInput"
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
                 placeholder="согл 1"
-                value={newBase.base_sogl_1 || ""}
+                value={newBase.sogl_1 || ""}
               />
             </td>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_sogl_2: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, sogl_2: e.target.value }))}
                 className="tableInput"
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
                 placeholder="согл 2"
-                value={newBase.base_sogl_2 || ""}
+                value={newBase.sogl_2 || ""}
               />
             </td>
             <td className="basesTableCell">
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_sogl_3: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, sogl_3: e.target.value }))}
                 className="tableInput"
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
                 placeholder="согл 3"
-                value={newBase.base_sogl_3 || ""}
+                value={newBase.sogl_3 || ""}
               />
             </td>
           </tr>
@@ -141,13 +141,13 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
               {" "}
               Ком:{" "}
               <input
-                onChange={(e) => setNewBase((prev) => ({ ...prev, base_comment: e.target.value }))}
+                onChange={(e) => setNewBase((prev) => ({ ...prev, comment: e.target.value }))}
                 className="tableInput"
                 //style={{ width: '50px' }}
                 type="text"
                 autoComplete="off"
                 placeholder="комментарий"
-                value={newBase.base_comment || ""}
+                value={newBase.comment || ""}
               />
             </td>
           </tr>

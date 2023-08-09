@@ -7,99 +7,99 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch, forCheckTab
         <tr>
           <td colSpan="3" className="basesTableCell" style={{ background: "", minWidth: "250px" }}>
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_id: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, podzial_id: e.target.value } : el)))}
               className="tableInput"
               //style={{ width: '50px' }}
               type="text"
               autoComplete="off"
-              value={item.base_id || ""}
+              value={item.podzial_id || ""}
             />
           </td>
         </tr>
         <tr>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_stat_1: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, stat_1: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "50px" }}
               type="text"
               autoComplete="off"
-              value={item.base_stat_1 || ""}
+              value={item.stat_1 || ""}
             />
           </td>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_stat_2: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, stat_2: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "120px", maxWidth: "70px" }}
               type="text"
               autoComplete="off"
-              value={item.base_stat_2 || ""}
+              value={item.stat_2 || ""}
             />
           </td>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_stat_3: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, stat_3: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "50px" }}
               type="text"
               autoComplete="off"
-              value={item.base_stat_3 || ""}
+              value={item.stat_3 || ""}
             />
           </td>
         </tr>
         <tr>
           <td colSpan="2" className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_type: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, type: e.target.value } : el)))}
               className="tableInput"
               // style={{ width: '120px' }}
               type="text"
               style={{ maxWidth: "120px" }}
               autoComplete="off"
-              value={item.base_type || ""}
+              value={item.type || ""}
             />
           </td>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_sort: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, sort: e.target.value } : el)))}
               className="tableInput"
               style={{ maxWidth: "70px" }} //140 сделать
               type="text"
               autoComplete="off"
-              value={item.base_sort || ""}
+              value={item.sort || ""}
             />
           </td>
         </tr>
         <tr>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_sogl_1: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, sogl_1: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "50px" }}
               type="number"
               autoComplete="off"
-              value={item.base_sogl_1 || ""}
+              value={item.sogl_1 || ""}
             />
           </td>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_sogl_2: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, sogl_2: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "50px" }}
               type="number"
               autoComplete="off"
-              value={item.base_sogl_2 || ""}
+              value={item.sogl_2 || ""}
             />
           </td>
           <td className="basesTableCell">
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_sogl_3: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, sogl_3: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "50px" }}
               type="number"
               autoComplete="off"
-              value={item.base_sogl_3 || ""}
+              value={item.sogl_3 || ""}
             />
           </td>
         </tr>
@@ -107,12 +107,12 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch, forCheckTab
           <td colSpan="3" className="basesTableCell">
             Ком:
             <input
-              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, base_comment: e.target.value } : el)))}
+              onChange={(e) => setCurrentBases((prev) => prev.map((el) => (el.id === item.id ? { ...el, comment: e.target.value } : el)))}
               className="tableInput"
               style={{ width: "190px" }}
               type="text"
               autoComplete="off"
-              value={item.base_comment || ""}
+              value={item.comment || ""}
             />
           </td>
         </tr>

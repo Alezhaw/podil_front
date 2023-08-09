@@ -1,7 +1,7 @@
 export interface ICities {
   id: number;
   l_p: number | null;
-  godzina: string | null;
+  godzina: Date | null;
   os_poj: string | null;
   pary: string | null;
   wyjasnienia: boolean | null;

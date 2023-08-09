@@ -11,7 +11,7 @@ function DropdownBaseTable({ item, country }) {
 
   async function createBase(currentBases, newBases, item) {
     try {
-      const result = await createBase([...currentBases, ...newBases.filter((el) => !!el.base_id)], country);
+      const result = await Podzial.createBase([...currentBases, ...newBases.filter((el) => !!el.podzial_id)], country);
       setNewBases([{ id: 1, id_for_base: item.id_for_base }]);
       if (result.update) {
         await getBasesForCity(item);
@@ -24,7 +24,7 @@ function DropdownBaseTable({ item, country }) {
           await getBasesForCity(item);
           return alert("Успешно создано");
         }
-        alert("Что-то пошло не так");
+        alert("Нет изменений");
       }
     } catch (e) {
       alert("Что-то пошло не так");

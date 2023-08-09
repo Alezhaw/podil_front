@@ -19,7 +19,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 placeholder=""
                 autoComplete="off"
                 required
-                value={firstTime?.godzina || ""}
+                value={firstTime?.godzina || "00:00:00"}
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
@@ -32,7 +32,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 placeholder=""
                 autoComplete="off"
                 required
-                value={secondTime?.godzina || ""}
+                value={secondTime?.godzina || "00:00:00"}
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
@@ -46,7 +46,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 autoComplete="off"
                 s
                 required
-                value={thirdTime?.godzina || ""}
+                value={thirdTime?.godzina || "00:00:00"}
               />
             </div>
           </div>

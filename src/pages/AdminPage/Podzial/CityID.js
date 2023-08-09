@@ -20,7 +20,7 @@ function CityID({ country }) {
   const [secondTime, setSecondTime] = useState({});
   const [thirdTime, setThirdTime] = useState({});
   const setCity = [setFirstTime, setSecondTime, setThirdTime];
-  const currentCities = [firstTime, secondTime, thirdTime]?.filter((el) => !!el?.godzina);
+  const currentCities = [firstTime, secondTime, thirdTime]?.filter((el) => !!el?.time);
   const [currentBases, setCurrentBases] = useState([]);
   const [newBase, setNewBase] = useState({});
   const [deleteBases, setDeleteBases] = useState([]);
@@ -47,7 +47,7 @@ function CityID({ country }) {
   }
 
   async function createCity(firstTime, secondTime, thirdTime) {
-    const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
+    const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
     const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     const dae = new Date();
     const result = await Podzial.createCities(city, country);

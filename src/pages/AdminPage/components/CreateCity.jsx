@@ -12,33 +12,33 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>Первое время</h6>
               <input
-                onChange={(e) => setFirstTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                onChange={(e) => setFirstTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
                 style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
                 type="text"
                 placeholder=""
                 autoComplete="off"
                 required
-                value={firstTime?.godzina || "00:00:00"}
+                value={firstTime?.time || "00:00:00"}
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>Второе время</h6>
               <input
-                onChange={(e) => setSecondTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                onChange={(e) => setSecondTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
                 style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
                 type="text"
                 placeholder=""
                 autoComplete="off"
                 required
-                value={secondTime?.godzina || "00:00:00"}
+                value={secondTime?.time || "00:00:00"}
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Третье время</h6>
               <input
-                onChange={(e) => setThirdTime((prev) => ({ ...prev, godzina: e.target.value }))}
+                onChange={(e) => setThirdTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
                 style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
                 type="text"
@@ -46,7 +46,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 autoComplete="off"
                 s
                 required
-                value={thirdTime?.godzina || "00:00:00"}
+                value={thirdTime?.time || "00:00:00"}
               />
             </div>
           </div>
@@ -54,14 +54,14 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
             <div style={{ flexDirection: "column", width: "300px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>Город</h6>
               <input
-                onChange={(e) => changeCityValues("miasto_lokal", e.target.value)}
+                onChange={(e) => changeCityValues("city_lokal", e.target.value)}
                 className="tabl-flex-admin-user-scores "
                 style={{ color: "white", borderRadius: "5px", minWidth: "0px", height: "269px" }}
                 type="text"
                 placeholder=""
                 autoComplete="off"
                 required
-                value={firstTime?.miasto_lokal || ""}
+                value={firstTime?.city_lokal || ""}
               />
             </div>
           </div>
@@ -163,22 +163,22 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                             />
                         </div>
                         <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center' }}>Scenariusze</h6>
+                            <h6 style={{ margin: '0', textAlign: 'center' }}>scenario</h6>
                             <input
-                                onChange={(e) => changeCityValues('scenariusze', e.target.value)}
+                                onChange={(e) => changeCityValues('scenario', e.target.value)}
                                 className="tabl-flex-admin-user-scores "
                                 style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
                                 type="text"
                                 placeholder=""
                                 autoComplete="off"
                                 required
-                                value={firstTime?.scenariusze || ''}
+                                value={firstTime?.scenario || ''}
                             />
                         </div>
                         <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
                             <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Weryfikacja DKJ</h6>
                             <input
-                                onChange={(e) => changeCityValues('weryfikacja_dkj', e.target.value)}
+                                onChange={(e) => changeCityValues('varification_dkj', e.target.value)}
                                 className="tabl-flex-admin-user-scores "
                                 style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
                                 type="text"
@@ -186,7 +186,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                                 autoComplete="off"
                                 s
                                 required
-                                value={firstTime?.weryfikacja_dkj || ''}
+                                value={firstTime?.varification_dkj || ''}
                             />
                         </div>
                     </div>

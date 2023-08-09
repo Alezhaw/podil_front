@@ -21,7 +21,7 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
       {currentCities?.map((item, index) => {
         return (
           <>
-            <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
+            <tr key={item.id === "create" ? `${item.id_for_base + item.time + index}` : item.id}>
               {index === 0 ? (
                 <th rowSpan={`${currentCities.length}`} style={{ cursor: "pointer" }}>
                   <IconButton onClick={() => setOpen((prev) => !prev)}>
@@ -77,7 +77,7 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
                       <Container style={{ padding: "0px", margin: "20px 0px 0px" }}>
                         <table style={{ textAlign: "center" }}>
                           <tbody>
-                            <DropdownSpeakerTable item={item} country={country} id_for_base={item.id_for_base} filterSpeaker={filterSpeaker} godzina={item.godzina} present={item.present} />
+                            <DropdownSpeakerTable item={item} country={country} id_for_base={item.id_for_base} filterSpeaker={filterSpeaker} time={item.time} present={item.present} />
                           </tbody>
                         </table>
                       </Container>

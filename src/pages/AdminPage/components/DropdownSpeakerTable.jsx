@@ -1,10 +1,10 @@
 import { Button } from "@material-ui/core";
 
-function DropdownSpeakerTable({ filterSpeaker, godzina, present }) {
+function DropdownSpeakerTable({ filterSpeaker, time, present }) {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {godzina}
+        {time}
         {filterSpeaker.map((el) => el.text)}
         {present}
       </div>

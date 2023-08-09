@@ -13,7 +13,7 @@ function LogsCitiesTableRow({ items, getCorrectTime }) {
         <th className="default-col not-bold">{generalItem.country}</th>
         <th className="default-col not-bold">{generalItem.action}</th>
         <th className="default-col not-bold">{generalItem.differencesLength}</th>
-        <th className="miasto-col not-bold col-padding">{generalItem.miasto_lokal}</th>
+        <th className="miasto-col not-bold col-padding">{generalItem.city_lokal}</th>
         <th className="default-col not-bold">{getCorrectTime(generalItem)}</th>
         <th className="default-col not-bold">{generalItem.user_email}</th>
       </tr>

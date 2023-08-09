@@ -61,6 +61,7 @@ function AllCities({ country }) {
       });
     }
   }
+  console.log("zalupa", storedCities);
 
   function changeDeleteCities(checked, id_for_base) {
     if (checked) {
@@ -76,7 +77,7 @@ function AllCities({ country }) {
   }
 
   async function createCity(firstTime, secondTime, thirdTime) {
-    const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.godzina);
+    const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
     const result = await Podzial.createCities(city, country);
     if (result.cities[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });

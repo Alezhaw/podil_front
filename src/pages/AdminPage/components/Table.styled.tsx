@@ -80,9 +80,9 @@ export const ContainerForTable = styled.div`
     padding: 7.5px 0;
   }
 
-.row-borders {
-  border: 1px solid #cdcdcd;
-}
+  .row-borders {
+    border: 1px solid #cdcdcd;
+  }
 
   .footer-buttons {
     display: flex;
@@ -121,7 +121,7 @@ export const ContainerForTable = styled.div`
     min-width: 87px;
     max-width: 87px;
   }
-  
+
   .weryfikacja-col {
     min-width: 94px;
     max-width: 94px;
@@ -132,7 +132,7 @@ export const ContainerForTable = styled.div`
     max-width: 96px;
   }
 
-  .scenariusze-col {
+  .scenario-col {
     min-width: 97.5px;
     max-width: 97.5px;
   }
@@ -221,13 +221,12 @@ export const ContainerForTable = styled.div`
   }
 
   .differences-col {
-    background: rgba(177, 177, 177, .3);
+    background: rgba(177, 177, 177, 0.3);
     height: 48px;
     font-weight: 600;
   }
 
   .MuiSelect-select {
-
   }
 
   .paging {

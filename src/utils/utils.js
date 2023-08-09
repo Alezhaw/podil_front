@@ -1,3 +1,3 @@
 export const getFormatTime = (item) => {
-  return Number(item?.godzina?.split(":")[0]);
+  return Number(item?.time?.split(":")[0]);
 };

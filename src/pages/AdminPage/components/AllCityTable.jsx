@@ -9,6 +9,8 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
 
+  console.log("cities", currentCities);
+
   return (
     <>
       <tr style={{ height: "26.8px", background: "#f37dea" }}>
@@ -16,7 +18,7 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
         {filterColumns?.filter((el) => el.value).map((el) => el.firstRow({ formatDate, currentCities }))}
       </tr>
       {currentCities?.map((item, index) => (
-        <tr key={item.id === "create" ? `${item.id_for_base + item.godzina + index}` : item.id}>
+        <tr key={item.id === "create" ? `${item.id_for_base + item.time + index}` : item.id}>
           {index === 0 ? (
             <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/${country}/${item?.id_for_base}`)}>
               <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>

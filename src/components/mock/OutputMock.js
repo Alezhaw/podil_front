@@ -80,18 +80,18 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "godzina",
+    column: "time",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        Godzina
+        Time
       </th>
     ),
     firstRow: () => <th></th>,
     content: ({ item }) => (
       <th className="basesTableCell">
         <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-          {item.godzina}
+          {item.time}
         </div>
       </th>
     ),
@@ -189,7 +189,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
           <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
-            {item.miasto_lokal || ""}
+            {item.city_lokal || ""}
           </div>
         </th>
       ) : (
@@ -296,7 +296,7 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Zamkniete",
+    column: "closed",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
@@ -313,7 +313,7 @@ export const allCitiesTableMock = [
             style={{ width: "25px", height: "25px" }}
             type="checkbox"
             autoComplete="off"
-            checked={!!item.zamkniete}
+            checked={!!item.closed}
             readOnly
           />
         </th>
@@ -334,7 +334,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", minWidth: "119px" }}>
-            {item.dodawanie_rekordow || ""}
+            {item.add_scenario || ""}
           </div>
         </th>
       ) : (
@@ -342,11 +342,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Scenariusze",
+    column: "scenario",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
-        Scenariusze
+        scenario
       </th>
     ),
     firstRow: () => <th></th>,
@@ -354,7 +354,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "97.5px" }} className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center" }}>
-            {item.scenariusze || ""}
+            {item.scenario || ""}
           </div>
         </th>
       ) : (
@@ -362,11 +362,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Weryfikacja DKJ",
+    column: "verification dkj",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "94px" }}>
-        Weryfikacja DKJ
+        Verification dkj
       </th>
     ),
     firstRow: () => <th></th>,
@@ -374,7 +374,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "94px" }} className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center" }}>
-            {item.weryfikacja_dkj || ""}
+            {item.varification_dkj || ""}
           </div>
         </th>
       ) : (
@@ -382,7 +382,7 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Podpinanie scenariuszy",
+    column: "undermining_scenariuszy",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "96px" }}>
@@ -394,7 +394,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "96px" }} className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center" }}>
-            {item.podpinanie_scenariuszy || ""}
+            {item.undermining_scenariuszy || ""}
           </div>
         </th>
       ) : (
@@ -434,7 +434,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", minWidth: "78.4px" }} className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center" }}>
-            {Number(item.rekodow_na_1_zgode).toFixed() || ""}
+            {Number(item.numbers_for_1_consent).toFixed() || ""}
           </div>
         </th>
       ) : (
@@ -493,7 +493,7 @@ export const allCitiesTableMock = [
     content: ({ item }) => (
       <th className="basesTableCell" style={{ minWidth: "87px" }}>
         <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-          {item.ilosc_zaproszen || ""}
+          {item.quantity_invites || ""}
         </div>
       </th>
     ),
@@ -510,7 +510,7 @@ export const allCitiesTableMock = [
     content: ({ item }) => (
       <th className="basesTableCell" style={{ minWidth: "65px" }}>
         <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-          {item.zgody_inne_miasto || ""}
+          {item.consent_another_city || ""}
         </div>
       </th>
     ),
@@ -573,7 +573,7 @@ export const allCitiesTableMock = [
         {index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.dzien_1_rekodow_na_1_zgode).toFixed() || ""}
+              {Number(item.day_1_numbers_for_1_consent).toFixed() || ""}
             </div>
           </th>
         ) : (
@@ -581,13 +581,13 @@ export const allCitiesTableMock = [
         )}
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.dzien_1_aktualna_ilosc_zaproszen).toFixed() === 0 ? "" : Number(item.dzien_1_aktualna_ilosc_zaproszen).toFixed()}
+            {Number(item.day_1_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_1_topical_quantity_invites).toFixed()}
           </div>
         </th>
         {index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.dzien_2_rekodow_na_1_zgode).toFixed() || ""}
+              {Number(item.day_2_numbers_for_1_consent).toFixed() || ""}
             </div>
           </th>
         ) : (
@@ -595,13 +595,13 @@ export const allCitiesTableMock = [
         )}
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.dzien_2_aktualna_ilosc_zaproszen).toFixed() === 0 ? "" : Number(item.dzien_2_aktualna_ilosc_zaproszen).toFixed()}
+            {Number(item.day_2_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_2_topical_quantity_invites).toFixed()}
           </div>
         </th>
         {index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.dzien_3_rekodow_na_1_zgode).toFixed() || ""}
+              {Number(item.day_3_numbers_for_1_consent).toFixed() || ""}
             </div>
           </th>
         ) : (
@@ -609,7 +609,7 @@ export const allCitiesTableMock = [
         )}
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.dzien_3_aktualna_ilosc_zaproszen).toFixed() === 0 ? "" : Number(item.dzien_3_aktualna_ilosc_zaproszen).toFixed()}
+            {Number(item.day_3_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_3_topical_quantity_invites).toFixed()}
           </div>
         </th>
       </>
@@ -733,17 +733,17 @@ export const allCitiesTableMock = [
       <>
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
-            {item.zgoda_wyniki_potwierdzen || ""}
+            {item.consent_results_confirmation || ""}
           </div>
         </th>
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
-            {item.odmowy_wyniki_potwierdzen || ""}
+            {item.refusal_results_confirmation || ""}
           </div>
         </th>
         <th className="basesTableCell">
           <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
-            {item.kropki_wyniki_potwierdzen || ""}
+            {item.dots_results_confirmation || ""}
           </div>
         </th>
       </>
@@ -773,14 +773,14 @@ export const allCitiesTableMock = [
       <>
         {index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
-            <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_umawianie} readOnly />
+            <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_consent} readOnly />
           </th>
         ) : (
           ""
         )}
         {index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "95px" }}>
-            <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_potwierdzen} readOnly />
+            <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_confirmation} readOnly />
           </th>
         ) : (
           ""

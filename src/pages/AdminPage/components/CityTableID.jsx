@@ -18,9 +18,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
       couples: null,
       limit: null,
       quantity_invites: null,
-      day_1_topical_quantity_invites: null,
-      day_2_topical_quantity_invites: null,
-      day_3_topical_quantity_invites: null,
+      days_topical_quantity_invites: [],
       vip_limit: null,
       vip_coming: null,
       vip_total_steam: null,
@@ -71,26 +69,32 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">quantity invites</th>
             <th className="basesTableCell">Consents another city</th>
+            <th className="basesTableCell" onClick={() => console.log(123, currentCities)}>
+              СЮДА
+            </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Numbers_for_1_consent</th>
+                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
                 <th>Topical quantity consent</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
-                  1 вфн
+                  1 dzień
                 </th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dat_1_date: e.target.value })))}
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({ ...prev, days_date: [e.target.value, prev.days_date ? prev.days_date[1] : null, prev.days_date ? prev.days_date[2] : null].filter((el) => !!el) }))
+                        )
+                      }
                       className="tableInput"
                       style={{ color: "white" }}
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dat_1_date || "") || ""}
+                      type="date"
+                      value={currentCities[0]?.days_date[0] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -98,8 +102,8 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
-                <th>Aktualna ilość zaproszeń</th>
+                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
+                <th>Topical quantity consent</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
@@ -110,12 +114,15 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dat_2_date: e.target.value })))}
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({ ...prev, days_date: [prev.days_date ? prev.days_date[0] : null, e.target.value, prev.days_date ? prev.days_date[2] : null].filter((el) => !!el) }))
+                        )
+                      }
                       className="tableInput"
                       style={{ color: "white" }}
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dat_2_date || "") || ""}
+                      type="date"
+                      value={currentCities[0]?.days_date[1] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -123,8 +130,8 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Rekodow na 1 zgode</th>
-                <th>Aktualna ilość zaproszeń</th>
+                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
+                <th>Topical quantity consent</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
@@ -135,12 +142,15 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 <th colSpan="2" style={{ position: "relative", top: "6px" }}>
                   {
                     <input
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, dat_3_date: e.target.value })))}
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({ ...prev, days_date: [prev.days_date ? prev.days_date[0] : null, prev.days_date ? prev.days_date[1] : null, e.target.value].filter((el) => !!el) }))
+                        )
+                      }
                       className="tableInput"
                       style={{ color: "white" }}
-                      type="text"
-                      autoComplete="off"
-                      value={formatDate(currentCities[0]?.dat_3_date || "") || ""}
+                      type="date"
+                      value={currentCities[0]?.days_date[2] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -490,12 +500,23 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
               {index === 0 ? (
                 <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, day_1_numbers_for_1_consent: e.target.value })))}
+                    onChange={(e) =>
+                      setCity?.map((item) =>
+                        item((prev) => ({
+                          ...prev,
+                          days_numbers_for_consent: [
+                            e.target.value,
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                          ].filter((el) => !!el),
+                        }))
+                      )
+                    }
                     className="tableInput"
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.day_1_numbers_for_1_consent).toFixed() || ""}
+                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[0] || 0 : 0).toFixed() || ""}
                   />
                 </td>
               ) : (
@@ -503,23 +524,45 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
               )}
               <td className="basesTableCell">
                 <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, day_1_topical_quantity_invites: e.target.value }))}
+                  onChange={(e) =>
+                    setCity?.map((item) =>
+                      item((prev) => ({
+                        ...prev,
+                        days_topical_quantity_invites: [
+                          e.target.value,
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
+                        ].filter((el) => !!el),
+                      }))
+                    )
+                  }
                   className="tableInput"
                   style={{ width: "50px" }}
                   type="number"
                   autoComplete="off"
-                  value={item.day_1_topical_quantity_invites || ""}
+                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[0] || 0 : 0).toFixed() || ""}
                 />
               </td>
               {index === 0 ? (
                 <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, day_2_numbers_for_1_consent: e.target.value })))}
+                    onChange={(e) =>
+                      setCity?.map((item) =>
+                        item((prev) => ({
+                          ...prev,
+                          days_numbers_for_consent: [
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
+                            e.target.value,
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                          ].filter((el) => !!el),
+                        }))
+                      )
+                    }
                     className="tableInput"
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.day_2_numbers_for_1_consent).toFixed() || ""}
+                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[1] || 0 : 0).toFixed() || ""}
                   />
                 </td>
               ) : (
@@ -527,23 +570,45 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
               )}
               <td className="basesTableCell">
                 <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, day_2_topical_quantity_invites: e.target.value }))}
+                  onChange={(e) =>
+                    setCity?.map((item) =>
+                      item((prev) => ({
+                        ...prev,
+                        days_topical_quantity_invites: [
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
+                          e.target.value,
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
+                        ].filter((el) => !!el),
+                      }))
+                    )
+                  }
                   className="tableInput"
                   style={{ width: "50px" }}
                   type="number"
                   autoComplete="off"
-                  value={item.day_2_topical_quantity_invites || ""}
+                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[1] || 0 : 0).toFixed() || ""}
                 />
               </td>
               {index === 0 ? (
                 <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, day_3_numbers_for_1_consent: e.target.value })))}
+                    onChange={(e) =>
+                      setCity?.map((item) =>
+                        item((prev) => ({
+                          ...prev,
+                          days_numbers_for_consent: [
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
+                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
+                            e.target.value,
+                          ].filter((el) => !!el),
+                        }))
+                      )
+                    }
                     className="tableInput"
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.day_3_numbers_for_1_consent).toFixed() || ""}
+                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[2] || 0 : 0).toFixed() || ""}
                   />
                 </td>
               ) : (
@@ -551,12 +616,23 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
               )}
               <td className="basesTableCell">
                 <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, day_3_topical_quantity_invites: e.target.value }))}
+                  onChange={(e) =>
+                    setCity?.map((item) =>
+                      item((prev) => ({
+                        ...prev,
+                        days_topical_quantity_invites: [
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
+                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
+                          e.target.value,
+                        ].filter((el) => !!el),
+                      }))
+                    )
+                  }
                   className="tableInput"
                   style={{ width: "50px" }}
                   type="number"
                   autoComplete="off"
-                  value={item.day_3_topical_quantity_invites || ""}
+                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[2] || 0 : 0).toFixed() || ""}
                 />
               </td>
               {index === 0 ? (

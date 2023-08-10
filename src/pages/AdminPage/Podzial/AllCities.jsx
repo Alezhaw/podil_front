@@ -61,7 +61,6 @@ function AllCities({ country }) {
       });
     }
   }
-  console.log("zalupa", storedCities);
 
   function changeDeleteCities(checked, id_for_base) {
     if (checked) {

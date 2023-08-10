@@ -18,15 +18,9 @@ export interface ICities {
   wb_1: string | null;
   wb_2: number | null;
   quantity_invites: number | null;
-  day_1_date: string | null;
-  day_1_numbers_for_1_consent: number | null;
-  day_1_topical_quantity_invites: number | null;
-  day_2_date: string | null;
-  day_2_numbers_for_1_consent: number | null;
-  day_2_topical_quantity_invites: number | null;
-  day_3_date: string | null;
-  day_3_numbers_for_1_consent: number | null;
-  day_3_topical_quantity_invites: number | null;
+  days_date: Date[] | null;
+  days_numbers_for_consent: number[] | null;
+  days_topical_quantity_invites: number[] | null;
   vip_id: string | null;
   vip_format: string | null;
   vip_limit: string | null;

@@ -555,65 +555,72 @@ export const allCitiesTableMock = [
         </th>
       </>
     ),
-    firstRow: ({ formatDate, currentCities }) => (
-      <>
-        <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
-          <div className="tableInput">{formatDate(currentCities[0]?.dzien_1_data || "") || ""}</div>
-        </th>
-        <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
-          <div className="tableInput">{formatDate(currentCities[0]?.dzien_2_data || "") || ""}</div>
-        </th>
-        <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
-          <div className="tableInput">{formatDate(currentCities[0]?.dzien_3_data || "") || ""}</div>
-        </th>
-      </>
-    ),
-    content: ({ index, currentCities, item }) => (
-      <>
-        {index === 0 ? (
-          <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+    firstRow: ({ formatDate, currentCities }) => {
+      const daysDate = currentCities[0]?.days_date;
+      return (
+        <>
+          <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+            <div className="tableInput">{formatDate(daysDate && daysDate[0])}</div>
+          </th>
+          <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+            <div className="tableInput">{formatDate(daysDate && daysDate[1])}</div>
+          </th>
+          <th colSpan="2" style={{ minWidth: "130px", background: "#c3ffc3", color: "black", border: "solid black 1px" }}>
+            <div className="tableInput">{formatDate(daysDate && daysDate[2])}</div>
+          </th>
+        </>
+      );
+    },
+    content: ({ index, currentCities, item }) => {
+      const days_numbers_for_consent = item?.days_numbers_for_consent;
+      const days_topical_quantity_invites = item?.days_topical_quantity_invites;
+      return (
+        <>
+          {index === 0 ? (
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+              <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
+                {Number(days_numbers_for_consent ? days_numbers_for_consent[0] || 0 : 0).toFixed() || ""}
+              </div>
+            </th>
+          ) : (
+            ""
+          )}
+          <th className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.day_1_numbers_for_1_consent).toFixed() || ""}
+              {Number(days_topical_quantity_invites ? days_topical_quantity_invites[0] || 0 : 0).toFixed() || ""}
             </div>
           </th>
-        ) : (
-          ""
-        )}
-        <th className="basesTableCell">
-          <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.day_1_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_1_topical_quantity_invites).toFixed()}
-          </div>
-        </th>
-        {index === 0 ? (
-          <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+          {index === 0 ? (
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+              <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
+                {Number(days_numbers_for_consent ? days_numbers_for_consent[1] || 0 : 0).toFixed() || ""}
+              </div>
+            </th>
+          ) : (
+            ""
+          )}
+          <th className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.day_2_numbers_for_1_consent).toFixed() || ""}
+              {Number(days_topical_quantity_invites ? days_topical_quantity_invites[1] || 0 : 0).toFixed() || ""}
             </div>
           </th>
-        ) : (
-          ""
-        )}
-        <th className="basesTableCell">
-          <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.day_2_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_2_topical_quantity_invites).toFixed()}
-          </div>
-        </th>
-        {index === 0 ? (
-          <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+          {index === 0 ? (
+            <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+              <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
+                {Number(days_numbers_for_consent ? days_numbers_for_consent[2] || 0 : 0).toFixed() || ""}
+              </div>
+            </th>
+          ) : (
+            ""
+          )}
+          <th className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-              {Number(item.day_3_numbers_for_1_consent).toFixed() || ""}
+              {Number(days_topical_quantity_invites ? days_topical_quantity_invites[2] || 0 : 0).toFixed() || ""}
             </div>
           </th>
-        ) : (
-          ""
-        )}
-        <th className="basesTableCell">
-          <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
-            {Number(item.day_3_topical_quantity_invites).toFixed() === 0 ? "" : Number(item.day_3_topical_quantity_invites).toFixed()}
-          </div>
-        </th>
-      </>
-    ),
+        </>
+      );
+    },
   },
   {
     column: "vip",

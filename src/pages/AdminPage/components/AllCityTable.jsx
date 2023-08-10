@@ -6,10 +6,11 @@ function AllCityTable({ currentCities, country, changeDeleteCities, filterColumn
   const navigate = useNavigate();
   const [changeStatus, setChangeStatus] = useState(false);
   function formatDate(date) {
+    if (!date) {
+      return;
+    }
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
-
-  console.log("cities", currentCities);
 
   return (
     <>

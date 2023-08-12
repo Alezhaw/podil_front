@@ -213,7 +213,7 @@ export const allCitiesTableMock = [
             {item.timezone ?? ""}{" "}
             {itemArray?.map((el) => (
               <>
-                {[el].flat()?.reduce((sum, acc) => sum + " " + acc, "") || ""}
+                {[el].flat()?.reduce((sum, acc) => (sum || "") + " " + (acc || ""), "") || ""}
                 {el ? <br /> : null}
               </>
             ))}

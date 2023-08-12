@@ -7,6 +7,13 @@ export interface ICities {
   explains: boolean | null;
   projekt: string | null;
   city_lokal: string | null;
+  region: string | null;
+  adress: string | null;
+  institution: string | null;
+  hall: string | null;
+  date: Date | null;
+  population: number | null;
+  city_note: string | null;
   timezone: number | null;
   limit: number | null;
   add_scenario: string | null;

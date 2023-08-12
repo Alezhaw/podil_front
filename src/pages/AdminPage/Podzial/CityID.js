@@ -20,7 +20,7 @@ function CityID({ country }) {
   const [secondTime, setSecondTime] = useState({});
   const [thirdTime, setThirdTime] = useState({});
   const setCity = [setFirstTime, setSecondTime, setThirdTime];
-  const currentCities = [firstTime, secondTime, thirdTime]?.filter((el) => !!el?.time);
+  const currentCities = [firstTime, secondTime, thirdTime].filter((el) => !!el?.id);
   const [currentBases, setCurrentBases] = useState([]);
   const [newBase, setNewBase] = useState({});
   const [deleteBases, setDeleteBases] = useState([]);
@@ -47,15 +47,14 @@ function CityID({ country }) {
   }
 
   async function createCity(firstTime, secondTime, thirdTime) {
-    const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
+    const city = [firstTime, secondTime, thirdTime]?.filter((el) => !!el.time);
     const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
-    const dae = new Date();
     const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
-    if (result.updated[0]) return alert("Город обновлен");
-    if (result.not_id_for_base) return alert("Не указан id_for_base");
-    if (result.cities[0]) return alert("Сохранено");
-    alert("Что-то пошло не так");
+    if (result[0]?.error) {
+      return alert("Ошибка");
+    }
+    alert("Успешно");
   }
 
   async function deleteTime(id, country) {

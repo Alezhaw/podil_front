@@ -177,26 +177,6 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Miasto / Lokal",
-    value: true,
-    header: () => (
-      <th className="basesTableCell" style={{ minWidth: "250px" }}>
-        Miasto / Lokal
-      </th>
-    ),
-    firstRow: () => <th></th>,
-    content: ({ index, currentCities, item, citiesStatusColor }) =>
-      index === 0 ? (
-        <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
-          <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
-            {item.city_lokal || ""}
-          </div>
-        </th>
-      ) : (
-        ""
-      ),
-  },
-  {
     column: "Часовой Пояс",
     value: true,
     header: () => (
@@ -215,6 +195,34 @@ export const allCitiesTableMock = [
       ) : (
         ""
       ),
+  },
+  {
+    column: "Miasto / Lokal",
+    value: true,
+    header: () => (
+      <th className="basesTableCell" style={{ minWidth: "250px" }}>
+        Miasto / Lokal
+      </th>
+    ),
+    firstRow: () => <th></th>,
+    content: ({ index, currentCities, item, citiesStatusColor }) => {
+      const itemArray = [item.region, item.city_lokal, item.adress, [item.institution, item.hall], item.date, item.population, item.city_note];
+      return index === 0 ? (
+        <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
+          <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
+            {item.timezone ?? ""}{" "}
+            {itemArray?.map((el) => (
+              <>
+                {[el].flat()?.reduce((sum, acc) => sum + " " + acc, "") || ""}
+                {el ? <br /> : null}
+              </>
+            ))}
+          </div>
+        </th>
+      ) : (
+        ""
+      );
+    },
   },
   {
     column: "Лимит",

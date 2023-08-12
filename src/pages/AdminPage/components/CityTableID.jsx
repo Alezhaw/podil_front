@@ -49,8 +49,15 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">Пар всего</th>
             <th className="basesTableCell">Проверка прихода</th>
             <th className="basesTableCell">КР</th>
-            <th className="basesTableCell">City / Lokal</th>
             <th className="basesTableCell">Часовой Пояс</th>
+            <th className="basesTableCell">Область</th>
+            <th className="basesTableCell">City / Lokal</th>
+            <th className="basesTableCell">Адрес</th>
+            <th className="basesTableCell">Заведение</th>
+            <th className="basesTableCell">Зал</th>
+            <th className="basesTableCell">Дата</th>
+            <th className="basesTableCell">Население</th>
+            <th className="basesTableCell">Заметка</th>
             <th className="basesTableCell">Лимит</th>
             <th className="basesTableCell" style={{ minWidth: "160px" }}>
               Статус
@@ -69,9 +76,6 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">quantity invites</th>
             <th className="basesTableCell">Consents another city</th>
-            <th className="basesTableCell" onClick={() => console.log(123, currentCities)}>
-              СЮДА
-            </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
                 <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
@@ -94,7 +98,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={currentCities[0]?.days_date[0] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[0] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -122,7 +126,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={currentCities[0]?.days_date[1] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[1] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -150,7 +154,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={currentCities[0]?.days_date[2] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[2] || "0000-00-00"}
                     />
                   }
                 </th>
@@ -281,11 +285,39 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 ""
               )}
               {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, timezone: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="number"
+                    autoComplete="off"
+                    value={item.timezone || 0}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, region: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.region || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
                 <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
                   <textarea
                     onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_lokal: e.target.value })))}
                     className="tableInput"
-                    style={{ width: "260px", height: "125px" }}
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
                     type="text"
                     autoComplete="off"
                     value={item.city_lokal || ""}
@@ -295,14 +327,84 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 ""
               )}
               {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, timezone: e.target.value })))}
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, adress: e.target.value })))}
                     className="tableInput"
-                    style={{ width: "50px" }}
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.adress || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, institution: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.institution || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, hall: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.hall || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, date: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="date"
+                    autoComplete="off"
+                    value={item.date || "0000-00-00"}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, population: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
                     type="number"
                     autoComplete="off"
-                    value={item.timezone || 0}
+                    value={item.population || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_note: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.city_note || ""}
                   />
                 </td>
               ) : (

@@ -51,17 +51,112 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column", width: "300px" }} className="pages-user-block">
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Область</h6>
+              <input
+                onChange={(e) => changeCityValues("region", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.region || ""}
+              />
+            </div>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>Город</h6>
               <input
                 onChange={(e) => changeCityValues("city_lokal", e.target.value)}
                 className="tabl-flex-admin-user-scores "
-                style={{ color: "white", borderRadius: "5px", minWidth: "0px", height: "269px" }}
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
                 type="text"
                 placeholder=""
                 autoComplete="off"
                 required
                 value={firstTime?.city_lokal || ""}
+              />
+            </div>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Адрес</h6>
+              <input
+                onChange={(e) => changeCityValues("adress", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.adress || ""}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Заведение</h6>
+              <input
+                onChange={(e) => changeCityValues("institution", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.institution || ""}
+              />
+            </div>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Зал</h6>
+              <input
+                onChange={(e) => changeCityValues("hall", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.hall || ""}
+              />
+            </div>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Дата</h6>
+              <input
+                onChange={(e) => changeCityValues("date", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="date"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.date || "0000-00-00"}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Население</h6>
+              <input
+                onChange={(e) => changeCityValues("population", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="number"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.population || ""}
+              />
+            </div>
+            <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>Заметка</h6>
+              <input
+                onChange={(e) => changeCityValues("city_note", e.target.value)}
+                className="tabl-flex-admin-user-scores "
+                style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={firstTime?.city_note || ""}
               />
             </div>
           </div>
@@ -148,76 +243,6 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
           </div>
-          {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center' }}>Dodawanie rekordów</h6>
-                            <input
-                                onChange={(e) => changeCityValues('dodawanie_rekordow', e.target.value)}
-                                className="tabl-flex-admin-user-scores "
-                                style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
-                                type="text"
-                                placeholder=""
-                                autoComplete="off"
-                                required
-                                value={firstTime?.dodawanie_rekordow || ''}
-                            />
-                        </div>
-                        <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center' }}>scenario</h6>
-                            <input
-                                onChange={(e) => changeCityValues('scenario', e.target.value)}
-                                className="tabl-flex-admin-user-scores "
-                                style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
-                                type="text"
-                                placeholder=""
-                                autoComplete="off"
-                                required
-                                value={firstTime?.scenario || ''}
-                            />
-                        </div>
-                        <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center', overflowWrap: 'anywhere' }}>Weryfikacja DKJ</h6>
-                            <input
-                                onChange={(e) => changeCityValues('varification_dkj', e.target.value)}
-                                className="tabl-flex-admin-user-scores "
-                                style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
-                                type="text"
-                                placeholder=""
-                                autoComplete="off"
-                                s
-                                required
-                                value={firstTime?.varification_dkj || ''}
-                            />
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center' }}>Podpinanie scenari.</h6>
-                            <input
-                                onChange={(e) => changeCityValues('podpinanie_scenariuszy', e.target.value)}
-                                className="tabl-flex-admin-user-scores "
-                                style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
-                                type="text"
-                                placeholder=""
-                                autoComplete="off"
-                                required
-                                value={firstTime?.podpinanie_scenariuszy || ''}
-                            />
-                        </div>
-                        <div style={{ flexDirection: 'column', maxWidth: '150px' }} className="pages-user-block">
-                            <h6 style={{ margin: '0', textAlign: 'center' }}>VIP формат</h6>
-                            <input
-                                onChange={(e) => changeCityValues('vip_format', e.target.value)}
-                                className="tabl-flex-admin-user-scores "
-                                style={{ color: 'white', borderRadius: '5px', minWidth: '0px' }}
-                                type="text"
-                                placeholder=""
-                                autoComplete="off"
-                                required
-                                value={firstTime?.vip_format || ''}
-                            />
-                        </div> 
-                    </div>*/}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>Limit regalo 1</h6>

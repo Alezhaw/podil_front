@@ -59,7 +59,7 @@ function LogsCities() {
       getCitiesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
     }
     // eslint-disable-next-line
-  }, [user, logsCity]);
+  }, [user]);
 
   useEffect(() => {
     getCitiesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });

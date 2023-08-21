@@ -53,7 +53,7 @@ function LogsBases() {
       getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
     }
     // eslint-disable-next-line
-  }, [user, logsBase]);
+  }, [user]);
 
   useEffect(() => {
     getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });

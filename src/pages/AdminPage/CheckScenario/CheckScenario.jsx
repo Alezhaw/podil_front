@@ -109,7 +109,7 @@ function CheckScenario({ country }) {
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, country]);
 
   return (
     <>

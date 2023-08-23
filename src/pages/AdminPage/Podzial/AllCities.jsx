@@ -78,7 +78,7 @@ function AllCities({ country }) {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
     const result = await Podzial.createCities(city, country);
-    if (result.cities[0]) {
+    if (result[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       alert("Sucess");
       setFirstTime({});
@@ -86,6 +86,7 @@ function AllCities({ country }) {
       setThirdTime({});
       setIsOpen(false);
     } else {
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       if (result.updated[0]) return alert("Город обновлен");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
       alert("Что-то пошло не так");
@@ -122,7 +123,7 @@ function AllCities({ country }) {
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -287,7 +288,7 @@ function AllCities({ country }) {
           className="tabl-flex-admin-button"
           onClick={async () => {
             try {
-              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), "RU")));
+              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), country)));
               setDeleteCities([]);
               await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country });
               alert("Success");

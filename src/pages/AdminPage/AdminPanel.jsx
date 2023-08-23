@@ -12,7 +12,7 @@ import LogsBases from "./Logs/LogsBases";
 import MenuItemForPanel from "./components/MenuItemForPanel";
 
 function AdminPanel() {
-  const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) || 7);
+  const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) ?? 7);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
   const navigate = useNavigate();
   const countries = ["RU", "KZ", "PL"];
@@ -281,104 +281,6 @@ function AdminPanel() {
         </div>
         <div style={{ paddingLeft: "10px" }} className="panel_user">
           {getPage(item)}
-          {/* {item === 0 ? (
-            <div style={{ display: "block", width: "100%" }}>
-              <AllUsers />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 7 ? (
-            <div style={{ display: "block", width: "100%" }}>
-              <AllCities country="RU" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 8 ? (
-            <div style={{ display: "block" }}>
-              <AllCities country="KZ" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 9 ? (
-            <div style={{ display: "block" }}>
-              <CheckBases country="RU" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 10 ? (
-            <div style={{ display: "block" }}>
-              <CheckBases country="KZ" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 17 ? (
-            <div style={{ display: "block" }}>
-              <CheckBases country="PL" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 11 ? (
-            <div style={{ display: "block" }}>
-              <CheckSpeaker country="RU" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 12 ? (
-            <div style={{ display: "block" }}>
-              <CheckSpeaker country="KZ" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 18 ? (
-            <div style={{ display: "block" }}>
-              <CheckSpeaker country="PL" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 13 ? (
-            <div style={{ display: "block" }}>
-              <CheckScenario country="RU" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 14 ? (
-            <div style={{ display: "block" }}>
-              <CheckScenario country="KZ" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 19 ? (
-            <div style={{ display: "block" }}>
-              <CheckScenario country="PL" />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 15 ? (
-            <div style={{ display: "block" }}>
-              <LogsCities />
-            </div>
-          ) : (
-            ""
-          )}
-          {item === 16 ? (
-            <div style={{ display: "block" }}>
-              <LogsBases />
-            </div>
-          ) : (
-            ""
-          )} */}
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
             <div onClick={() => navigate("/login/true")} className="tabl-flex-admin-button-global2">
               Вернуться назад

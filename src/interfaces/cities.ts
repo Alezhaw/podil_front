@@ -60,4 +60,6 @@ export interface ICities {
   check_speaker: boolean | null;
   check_scenario: boolean | null;
   status: number | null;
+  l_p_for_pl: string | null;
+  explains_for_pl: string | null;
 }

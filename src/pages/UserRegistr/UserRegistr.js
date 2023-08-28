@@ -19,10 +19,10 @@ function UserRegistr() {
   const [passwordV2, setPasswordV2] = useState("");
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailError, setEmailError] = useState("Email не может быть пустым");
-  const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
-  const [passwordNoChect, setpasswordNoChect] = useState("Пароль не может быть пустым");
-  const [checked, setChecked] = useState(true);
+  const [emailError, setEmailError] = useState("Email is empty");
+  const [passwordError, setPasswordError] = useState("Password is empty");
+  const [passwordNoChect, setpasswordNoChect] = useState("Password is empty");
+  const [checked, setChecked] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [errorLogin, setErrorLogin] = useState("");
   const [errorLoginLength, setEerrorLoginLength] = useState("");
@@ -62,7 +62,7 @@ function UserRegistr() {
     setLogin(e.currentTarget.value);
     setErrorEmail("");
     if (!validator.isEmail(e.currentTarget.value)) {
-      setEmailError("Некоректный email");
+      setEmailError("Email is incorrect");
     } else {
       setEmailError("");
     }
@@ -71,9 +71,9 @@ function UserRegistr() {
   function passwordUser(e) {
     setPassword(e.currentTarget.value);
     if (!validator.isStrongPassword(e.currentTarget.value, { minSymbols: 0, minUppercase: 0 })) {
-      setPasswordError("Минимальная длина 8 и минимум 1 цифра");
+      setPasswordError("Minimum length 8 and minimum 1 number");
       if (!e.currentTarget.value) {
-        setPasswordError("Пароль не может быть пустым");
+        setPasswordError("Password is empty");
       }
     } else {
       setPasswordError("");
@@ -83,9 +83,9 @@ function UserRegistr() {
   function passwordV2User(a) {
     setPasswordV2(a.currentTarget.value);
     if (!validator.isStrongPassword(a.currentTarget.value, { minSymbols: 0, minUppercase: 0 })) {
-      setpasswordNoChect("Некоректный пароль");
+      setpasswordNoChect("Password is incorrect");
       if (!a.currentTarget.value) {
-        setpasswordNoChect("Пароль не может быть пустым");
+        setpasswordNoChect("Password is empty");
       }
     } else {
       setpasswordNoChect("");
@@ -141,11 +141,11 @@ function UserRegistr() {
   return (
     <div className="bg-img">
       <div style={{ paddingTop: "30px", paddingBottom: "30px", minHeight: "75vh" }} className="container">
-        <h3 className="header-inner_title login-inner_title">Регистрация</h3>
+        <h3 className="header-inner_title login-inner_title">Registration</h3>
         <hr className="hr-viss" />
         <Form className="width-form">
           <Form.Group className="mb-3" controlId="formBasicEmailV1">
-            <Form.Label className="color-input-name">Имя пользователя</Form.Label>
+            <Form.Label className="color-input-name">Username</Form.Label>
             <Form.Control
               name="nickname"
               value={nickname}
@@ -158,32 +158,26 @@ function UserRegistr() {
             />
             {errorLogin ? <div style={{ color: "red" }}>{errorLogin}</div> : ""}
             {errorLoginLength ? <div style={{ color: "red" }}>{errorLoginLength}</div> : ""}
-            <Form.Text className="text-muted">Пожалуйста, используйте только латинские буквы.</Form.Text>
+            <Form.Text className="text-muted">Use only latin symbols</Form.Text>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmailV2">
-            <Form.Label className="color-input-name">Действующий e-mail:</Form.Label>
+            <Form.Label className="color-input-name">Email:</Form.Label>
             <Form.Control onBlur={(e) => blurHandler(e)} name="login" value={login} onChange={loginUser} type="email" placeholder="" />
             {errorEmail ? <div style={{ color: "red" }}>{errorEmail}</div> : ""}
             {emailDirty && emailError && <div style={{ color: "red" }}>{emailError}</div>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPasswordV1">
-            <Form.Label className="color-input-name">Пароль:</Form.Label>
+            <Form.Label className="color-input-name">Password:</Form.Label>
             <Form.Control onBlur={(e) => blurHandler(e)} name="password" value={password} onChange={passwordUser} type="password" placeholder="" />
             {passwordDirty && passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPasswordV2">
-            <Form.Label className="color-input-name">Подтвердить пароль:</Form.Label>
+            <Form.Label className="color-input-name">Condirm password:</Form.Label>
             <Form.Control value={passwordV2} onChange={passwordV2User} type="password" placeholder="" />
             {passwordNoChect && <div style={{ color: "red" }}>{passwordNoChect}</div>}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <div style={{ display: "flex" }}>
-              <Form.Check checked={!checked} onChange={() => setChecked(!checked)} style={{ marginRight: "5px" }} type="checkbox" />
-              <span style={{ color: "white" }}>Принять</span>
-            </div>
-          </Form.Group>
           <button disabled={!formValid} onClick={(e) => getUsers(e)} className="btn-class-v2">
-            Отправить
+            Submit
           </button>
         </Form>
       </div>

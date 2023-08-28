@@ -48,9 +48,9 @@ function LogsCities() {
     setLogs(
       logsCity
         ?.filter((item, i, ar) => {
-          return ar.map((el) => `${el.city_lokal} ${getCorrectTime(el)}`).indexOf(`${item.city_lokal} ${getCorrectTime(item)}`) === i;
+          return ar.map((el) => `${el.miasto_lokal} ${getCorrectTime(el)}`).indexOf(`${item.miasto_lokal} ${getCorrectTime(item)}`) === i;
         })
-        ?.map((el) => logsCity?.filter((log) => log.city_lokal === el.city_lokal && getCorrectTime(log) === getCorrectTime(el)))
+        ?.map((el) => logsCity?.filter((log) => log.miasto_lokal === el.miasto_lokal && getCorrectTime(log) === getCorrectTime(el)))
     );
   }, [logsCity]);
 

@@ -14,6 +14,7 @@ export interface ICities {
   date: Date | null;
   population: number | null;
   city_note: string | null;
+  calling_scheme: string | null;
   timezone: number | null;
   limit: number | null;
   time_unlocking_the_city: string | null;

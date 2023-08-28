@@ -48,7 +48,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">Сoming</th>
             <th className="basesTableCell">Pair</th>
             <th className="basesTableCell">Wyjasnienia</th>
-            <th className="basesTableCell">Project</th>
+            <th className="basesTableCell">Projekt spzedazowy</th>
             <th className="basesTableCell">Timezone</th>
             <th className="basesTableCell">Region</th>
             <th className="basesTableCell">City / Lokal</th>
@@ -58,6 +58,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">Date</th>
             <th className="basesTableCell">Population</th>
             <th className="basesTableCell">System</th>
+            <th className="basesTableCell">Schemat dzwonienia</th>
             <th className="basesTableCell">Limit</th>
             <th className="basesTableCell" style={{ minWidth: "160px" }}>
               Status
@@ -68,14 +69,14 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             <th className="basesTableCell">Scenario</th>
             <th className="basesTableCell">Werefication DKJ</th>
             <th className="basesTableCell">Podpinanie scenariuszy</th>
-            <th className="basesTableCell">Limit regalo</th>
-            <th className="basesTableCell" style={{ background: "#c8ff03", color: "black" }}>
-              Numbers_for_1_consent
-            </th>
+            <th className="basesTableCell">Projekt umowieniowy</th>
+            <th className="basesTableCell">Numbers_for_1_consent</th>
             <th className="basesTableCell">WB 1</th>
             <th className="basesTableCell">WB 2</th>
             <th className="basesTableCell">quantity invites</th>
-            <th className="basesTableCell">Consents another city</th>
+            <th className="basesTableCell" style={{ background: "#c8ff03", color: "black" }}>
+              Consents another city
+            </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
                 <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
@@ -431,6 +432,20 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                     type="text"
                     autoComplete="off"
                     value={item.city_note || ""}
+                  />
+                </td>
+              ) : (
+                ""
+              )}
+              {index === 0 ? (
+                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                  <textarea
+                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, calling_scheme: e.target.value })))}
+                    className="tableInput"
+                    style={{ width: "120px", height: "125px", padding: "10px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.calling_scheme || ""}
                   />
                 </td>
               ) : (

@@ -147,11 +147,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Project",
+    column: "Projekt umowieniowy",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        Project
+        Projekt spzedazowy
       </th>
     ),
     firstRow: () => <th></th>,
@@ -215,6 +215,26 @@ export const allCitiesTableMock = [
     },
   },
   {
+    column: "Schemat dzwonienia",
+    value: true,
+    header: () => (
+      <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        Schemat dzwonienia
+      </th>
+    ),
+    firstRow: () => <th></th>,
+    content: ({ index, currentCities, item }) =>
+      index === 0 ? (
+        <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
+          <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
+            {item.calling_scheme || ""}
+          </div>
+        </th>
+      ) : (
+        ""
+      ),
+  },
+  {
     column: "Limit",
     value: true,
     header: () => (
@@ -231,6 +251,7 @@ export const allCitiesTableMock = [
       </th>
     ),
   },
+
   {
     column: "Status",
     value: true,
@@ -400,11 +421,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Limit regalo",
+    column: "Projekt umowieniowy",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-        Limit regalo
+        Projekt umowieniowy
       </th>
     ),
     firstRow: () => <th></th>,

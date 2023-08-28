@@ -245,7 +245,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Limit regalo 1</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Projekt umowieniowy 1</h6>
               <input
                 onChange={(e) => setFirstTime((prev) => ({ ...prev, present: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
@@ -258,7 +258,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Limit regalo 2</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Projekt umowieniowy 2</h6>
               <input
                 onChange={(e) => setSecondTime((prev) => ({ ...prev, present: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
@@ -271,7 +271,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Limit regalo 3</h6>
+              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Projekt umowieniowy 3</h6>
               <input
                 onChange={(e) => setThirdTime((prev) => ({ ...prev, present: e.target.value }))}
                 className="tabl-flex-admin-user-scores "

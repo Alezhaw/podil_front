@@ -203,7 +203,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 <Button
                   style={{ background: "lightgreen", color: "black" }}
                   onClick={async () => {
-                    let checkConfirm = window.confirm("Вы уверены?");
+                    let checkConfirm = window.confirm("Are you sure?");
                     if (checkConfirm) {
                       await deleteTime(Number(item.id), country);
                     }

@@ -87,9 +87,9 @@ function AllCities({ country }) {
       setIsOpen(false);
     } else {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
-      if (result.updated[0]) return alert("Город обновлен");
+      if (result.updated[0]) return alert("Updated");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -293,7 +293,7 @@ function AllCities({ country }) {
               await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country });
               alert("Success");
             } catch (e) {
-              alert("Что-то пошло не так");
+              alert("Something went wrong");
             }
           }}
         >

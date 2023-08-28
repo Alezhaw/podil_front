@@ -56,13 +56,13 @@ function CheckBases({ country }) {
   }
 
   async function changeCheck(checked, id_for_base) {
-    const checkConfirm = window.confirm("Вы уверены?");
+    const checkConfirm = window.confirm("Are you sure?");
     if (!checkConfirm) return;
     const data = await Podzial.changeCheck(Number(id_for_base), null, country, checked);
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {
-      alert(`Что-то пошло не так ${id_for_base}`);
+      alert(`Something went wrong ${id_for_base}`);
     }
   }
 

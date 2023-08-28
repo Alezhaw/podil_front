@@ -37,15 +37,15 @@ function AllUsersID() {
   async function changeRole() {
     const result = await axiosChangeRole(roleUser, currentUser?.id, user?.email, user?.password);
     console.log(result?.response?.data?.message);
-    if (result?.response?.data?.message === "Нет доступа") {
+    if (result?.response?.data?.message === "No access") {
       setRoleUser(currentUser?.role);
-      return alert("Нет доступа");
+      return alert("No access");
     }
     if (result?.response?.data?.message) {
       setRoleUser(currentUser?.role);
-      return alert("Что-то пошло не так");
+      return alert("Something went wrong");
     }
-    alert("Успешно");
+    alert("Sucess");
   }
 
   useEffect(() => {

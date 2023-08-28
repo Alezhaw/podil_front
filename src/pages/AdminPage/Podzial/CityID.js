@@ -63,7 +63,7 @@ function CityID({ country }) {
       await getCity(id_for_base);
       alert("Deleted");
     } else {
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -82,7 +82,7 @@ function CityID({ country }) {
         setIsOpen(false);
         return alert("Created");
       }
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -93,7 +93,7 @@ function CityID({ country }) {
       await getBasesForCity(id_for_base);
       alert("Success");
     } catch (e) {
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 

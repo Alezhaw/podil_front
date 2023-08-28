@@ -72,7 +72,7 @@ function AllUsers() {
           type="search"
           id="Search"
           value={search}
-          placeholder="Поиск"
+          placeholder="Search"
           onChange={(e) => setSearch(e.target.value?.toLowerCase())}
           autoComplete="off"
           required
@@ -88,15 +88,15 @@ function AllUsers() {
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {" "}
-        <h2>ПОЛЬЗОВАТЕЛИ</h2>
+        <h2>USERS</h2>
       </div>
 
       <div style={{ borderRadius: "5px" }} className="tabl-flex-admin">
         <StyledDivHeader size="50px">ID</StyledDivHeader>
-        <StyledDivHeader size="155px">Имя пользователя</StyledDivHeader>
-        <StyledDivHeader size="155px">Роль пользователя</StyledDivHeader>
-        <StyledDivHeader size="210px">Почта Пользователя</StyledDivHeader>
-        <StyledDivHeader size="80px">Удалить</StyledDivHeader>
+        <StyledDivHeader size="155px">Username</StyledDivHeader>
+        <StyledDivHeader size="155px">Role</StyledDivHeader>
+        <StyledDivHeader size="210px">Email</StyledDivHeader>
+        <StyledDivHeader size="80px">Delete</StyledDivHeader>
       </div>
 
       {users
@@ -132,7 +132,7 @@ function AllUsers() {
             alert("Success");
           }}
         >
-          Удалить
+          Delete
         </div>
       </div>
 
@@ -145,7 +145,7 @@ function AllUsers() {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

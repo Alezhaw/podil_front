@@ -69,7 +69,7 @@ function LogsBases() {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder="Search"
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -111,11 +111,11 @@ function LogsBases() {
                   <tr>
                     <th className="default-col">ID</th>
                     <th className="default-col">ID City</th>
-                    <th className="default-col">Страна</th>
-                    <th className="default-col">Действие</th>
-                    <th className="default-col">Изменений</th>
-                    <th className="default-col">Время</th>
-                    <th className="default-col">Кто</th>
+                    <th className="default-col">Country</th>
+                    <th className="default-col">Action</th>
+                    <th className="default-col">Changes amount</th>
+                    <th className="default-col">Time</th>
+                    <th className="default-col">User</th>
                   </tr>
                 </thead>
                 <tbody style={{}}>
@@ -144,7 +144,7 @@ function LogsBases() {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

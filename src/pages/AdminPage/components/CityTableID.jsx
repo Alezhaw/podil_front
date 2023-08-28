@@ -8,7 +8,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
   }
 
   function addTime(setCity, currentCities) {
-    const time = prompt("Какое время вы хотите добавить?", "10:00:00");
+    const time = prompt("What time do you want to add?", "10:00:00");
     if (!time) return;
     setCity[currentCities.length]({
       ...currentCities[0],
@@ -45,22 +45,22 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th className="basesTableCell">L.p</th>
             <th className="basesTableCell">Time</th>
-            <th className="basesTableCell">Приход всего</th>
-            <th className="basesTableCell">Пар всего</th>
-            <th className="basesTableCell">Проверка прихода</th>
-            <th className="basesTableCell">КР</th>
-            <th className="basesTableCell">Часовой Пояс</th>
-            <th className="basesTableCell">Область</th>
+            <th className="basesTableCell">Сoming</th>
+            <th className="basesTableCell">Pair</th>
+            <th className="basesTableCell">Wyjasnienia</th>
+            <th className="basesTableCell">Project</th>
+            <th className="basesTableCell">Timezone</th>
+            <th className="basesTableCell">Region</th>
             <th className="basesTableCell">City / Lokal</th>
-            <th className="basesTableCell">Адрес</th>
-            <th className="basesTableCell">Заведение</th>
-            <th className="basesTableCell">Зал</th>
-            <th className="basesTableCell">Дата</th>
-            <th className="basesTableCell">Население</th>
-            <th className="basesTableCell">Заметка</th>
-            <th className="basesTableCell">Лимит</th>
+            <th className="basesTableCell">Address</th>
+            <th className="basesTableCell">Institution</th>
+            <th className="basesTableCell">Hall</th>
+            <th className="basesTableCell">Date</th>
+            <th className="basesTableCell">Population</th>
+            <th className="basesTableCell">System</th>
+            <th className="basesTableCell">Limit</th>
             <th className="basesTableCell" style={{ minWidth: "160px" }}>
-              Статус
+              Status
             </th>
             <th className="basesTableCell">During</th>
             <th className="basesTableCell">Closed</th>
@@ -166,14 +166,14 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
               </th>
               <tr style={{ height: "55px" }}>
                 <th style={{ borderRight: "1px solid black", width: "100px" }}>ID</th>
-                <th style={{ borderRight: "1px solid black", width: "100px" }}>Формат</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Лимит</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Приход</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Пар всего</th>
-                <th style={{ width: "70.89px" }}>%, прихода</th>
+                <th style={{ borderRight: "1px solid black", width: "100px" }}>Format</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Limit</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Coming</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Pair</th>
+                <th style={{ width: "70.89px" }}>%, coming</th>
               </tr>
             </th>
-            <th className="basesTableCell">ЗАМЕТКА</th>
+            <th className="basesTableCell">System</th>
             <th colSpan="3" style={{ border: "1px solid black" }}>
               <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
                 WYNIKI POTWIERDZEŃ
@@ -209,20 +209,33 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                     }
                   }}
                 >
-                  Удалить
+                  Delete
                 </Button>
               </td>
               {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "50px" }}
-                    type="number"
-                    autoComplete="off"
-                    value={item.l_p || ""}
-                  />
-                </td>
+                country === "PL" ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p_for_pl: e.target.value })))}
+                      className="tableInput"
+                      type="text"
+                      style={{ width: "100px", minHeight: "100px" }}
+                      autoComplete="off"
+                      value={item.l_p_for_pl || ""}
+                    />
+                  </td>
+                ) : (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "50px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={item.l_p || ""}
+                    />
+                  </td>
+                )
               ) : (
                 ""
               )}
@@ -257,16 +270,29 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 />
               </td>
               {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains: !!e.target.checked })))}
-                    className="tableInput"
-                    style={{ width: "25px", height: "25px" }}
-                    type="checkbox"
-                    autoComplete="off"
-                    checked={!!item.explains}
-                  />
-                </td>
+                country === "PL" ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains_for_pl: !!e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px", minHeight: "50px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.explains_for_pl || ""}
+                    />
+                  </td>
+                ) : (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains: !!e.target.checked })))}
+                      className="tableInput"
+                      style={{ width: "25px", height: "25px" }}
+                      type="checkbox"
+                      autoComplete="off"
+                      checked={!!item.explains}
+                    />
+                  </td>
+                )
               ) : (
                 ""
               )}

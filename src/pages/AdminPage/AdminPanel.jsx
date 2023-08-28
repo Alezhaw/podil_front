@@ -276,14 +276,14 @@ function AdminPanel() {
             }}
             className={statebackground ? "block_user_panel" : "block_user_panel"}
           >
-            <h4>СМЕНА ФОНА </h4>
+            <h4>CHANGE BACKGROUND </h4>
           </button>
         </div>
         <div style={{ paddingLeft: "10px" }} className="panel_user">
           {getPage(item)}
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
             <div onClick={() => navigate("/login/true")} className="tabl-flex-admin-button-global2">
-              Вернуться назад
+              Return
             </div>
           </div>
         </div>

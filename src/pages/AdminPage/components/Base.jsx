@@ -121,7 +121,7 @@ function Base({ item, setCurrentBases, changeDeleteBases, forSearch, forCheckTab
           !forCheckTable ? (
             <tr colSpan="3" className="basesTableCell">
               <td style={{ display: "flex", flexDirection: "row", alignItems: "center", minWidth: "100px" }} onChange={(e) => null}>
-                <span style={{ position: "relative", left: "15px" }}>Удалить: </span>
+                <span style={{ position: "relative", left: "15px" }}>Delete: </span>
                 <input
                   onChange={(e) => changeDeleteBases(e.target.checked, item.id)}
                   className="tableInput"

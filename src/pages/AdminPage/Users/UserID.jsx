@@ -74,16 +74,16 @@ function AllUsersID() {
         <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", background: "rgba(17, 17, 18, 0.65)" }}>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
             <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
-              Вернуться назад
+              Return
             </div>
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ borderRadius: "5px" }} className="tabl-flex-admin">
               <StyledDivHeader size="50px">ID</StyledDivHeader>
-              <StyledDivHeader size="155px">Имя пользователя</StyledDivHeader>
-              <StyledDivHeader size="155px">Роль пользователя</StyledDivHeader>
-              <StyledDivHeader size="210px">Почта Пользователя</StyledDivHeader>
-              <StyledDivHeader size="80px">Удалить</StyledDivHeader>
+              <StyledDivHeader size="155px">Username</StyledDivHeader>
+              <StyledDivHeader size="155px">Role</StyledDivHeader>
+              <StyledDivHeader size="210px">Email</StyledDivHeader>
+              <StyledDivHeader size="80px">Delete</StyledDivHeader>
             </div>
 
             {
@@ -107,7 +107,7 @@ function AllUsersID() {
                   alert("Success");
                 }}
               >
-                Удалить
+                Delete
               </div>
             </div>
           </div>

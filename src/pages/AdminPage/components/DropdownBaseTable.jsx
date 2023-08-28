@@ -116,10 +116,10 @@ function DropdownBaseTable({ item, country }) {
           onClick={async () => createBase(currentBases, newBases, item)}
           style={{ color: "black", fontSize: "30px", position: "absolute", top: "-35px", left: "200px", transform: "translate(-50%, -50%)" }}
         >
-          Внести изменения
+          Apply changes
         </Button>
         <Button onClick={async () => deleteBase(deleteBases, item)} style={{ color: "black", fontSize: "30px", position: "absolute", top: "-35px", left: "450px", transform: "translate(-50%, -50%)" }}>
-          Удалить
+          Delete
         </Button>
       </>
     </div>

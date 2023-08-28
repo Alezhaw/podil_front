@@ -2,7 +2,7 @@ function ChangeUserProps({ setRoleUser, roleUser, changeRole }) {
   return (
     <div className="pages-user-box">
       <div className="pages-user-block">
-        <h6 style={{ margin: "0", textAlign: "center" }}>Изменение роли пользователя</h6>
+        <h6 style={{ margin: "0", textAlign: "center" }}>Change user role</h6>
         <div style={{ display: "flex", gap: " 5px" }}>
           <select
             onChange={(e) => setRoleUser(e.currentTarget.value)}
@@ -16,7 +16,7 @@ function ChangeUserProps({ setRoleUser, roleUser, changeRole }) {
             <option value="USER">USER</option>
           </select>
           <div className="tabl-flex-admin-button" onClick={changeRole}>
-            Изменить
+            Change
           </div>
         </div>
       </div>

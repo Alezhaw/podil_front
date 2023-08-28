@@ -52,16 +52,16 @@ function CityID({ country }) {
     const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
     if (result[0]?.error) {
-      return alert("Ошибка");
+      return alert("Error");
     }
-    alert("Успешно");
+    alert("Success");
   }
 
   async function deleteTime(id, country) {
     const result = await Podzial.deleteTime(id, country);
     if (result) {
       await getCity(id_for_base);
-      alert("Удалено");
+      alert("Deleted");
     } else {
       alert("Что-то пошло не так");
     }
@@ -71,7 +71,7 @@ function CityID({ country }) {
     const result = await Podzial.createBase(currentBases, country);
     if (result.update) {
       await getBasesForCity(id_for_base);
-      alert("Обновлено");
+      alert("Updated");
     } else {
       if (result.notIdForBase) {
         return alert("Не указан id_for_base");
@@ -80,7 +80,7 @@ function CityID({ country }) {
         await getBasesForCity(id_for_base);
         setNewBase({ id_for_base: currentCities[0]?.id_for_base });
         setIsOpen(false);
-        return alert("Успешно создано");
+        return alert("Created");
       }
       alert("Что-то пошло не так");
     }
@@ -176,7 +176,7 @@ function CityID({ country }) {
             }}
           >
             <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
-              Вернуться назад
+              Return
             </div>
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
@@ -192,7 +192,7 @@ function CityID({ country }) {
               }}
             >
               <div className="tabl-flex-admin-button-global" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
-                Внести изменения
+                Apply changes
               </div>
             </div>
             <div>
@@ -220,18 +220,18 @@ function CityID({ country }) {
               >
                 <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
                   <div className="tabl-flex-admin-button-global" onClick={() => createBase(currentBases)}>
-                    Внести изменения
+                    Apply changes for bases
                   </div>
                 </div>
                 <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
                   <div className="tabl-flex-admin-button-global" onClick={() => deleteBase(deleteBases)}>
-                    Удалить
+                    Delete
                   </div>
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "40px" }}>
                 <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-                  Новая База
+                  New Base
                 </div>
               </div>
               {isOpen ? (

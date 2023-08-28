@@ -10,7 +10,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Первое время</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>First time</h6>
               <input
                 onChange={(e) => setFirstTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
@@ -23,7 +23,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Второе время</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Second time</h6>
               <input
                 onChange={(e) => setSecondTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
@@ -36,7 +36,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Третье время</h6>
+              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Third time</h6>
               <input
                 onChange={(e) => setThirdTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
@@ -52,7 +52,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Область</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Region</h6>
               <input
                 onChange={(e) => changeCityValues("region", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -78,7 +78,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Адрес</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Address</h6>
               <input
                 onChange={(e) => changeCityValues("adress", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -93,7 +93,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Заведение</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Institution</h6>
               <input
                 onChange={(e) => changeCityValues("institution", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -106,7 +106,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Зал</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Hall</h6>
               <input
                 onChange={(e) => changeCityValues("hall", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -119,7 +119,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Дата</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Date</h6>
               <input
                 onChange={(e) => changeCityValues("date", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -134,7 +134,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Население</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Population</h6>
               <input
                 onChange={(e) => changeCityValues("population", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -147,7 +147,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Заметка</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>System</h6>
               <input
                 onChange={(e) => changeCityValues("city_note", e.target.value)}
                 className="tabl-flex-admin-user-scores "
@@ -175,7 +175,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", width: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Часовой пояс</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Timezoneс</h6>
               <input
                 onChange={(e) => changeCityValues("timezone", Number(e.target.value) || null)}
                 className="tabl-flex-admin-user-scores "
@@ -203,7 +203,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Лимит 1</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Limit 1</h6>
               <input
                 onChange={(e) => setFirstTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
                 className="tabl-flex-admin-user-scores "
@@ -216,7 +216,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Лимит 2</h6>
+              <h6 style={{ margin: "0", textAlign: "center" }}>Limit 2</h6>
               <input
                 onChange={(e) => setSecondTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
                 className="tabl-flex-admin-user-scores "
@@ -229,7 +229,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
               />
             </div>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Лимит 3</h6>
+              <h6 style={{ margin: "0", textAlign: "center", overflowWrap: "anywhere" }}>Limit 3</h6>
               <input
                 onChange={(e) => setThirdTime((prev) => ({ ...prev, limit: Number(e.target.value) || null }))}
                 className="tabl-flex-admin-user-scores "
@@ -287,7 +287,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
           </div>
         </div>
         <div className="tabl-flex-admin-button-global2" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
-          Создать зал
+          Create presentation
         </div>
       </div>
     </div>

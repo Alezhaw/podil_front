@@ -100,7 +100,7 @@ function AllCities({ country }) {
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     } else {
-      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+      alert(`Change status error, id: ${id_for_base}`);
     }
   }
 
@@ -147,7 +147,7 @@ function AllCities({ country }) {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder="Search"
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -164,7 +164,7 @@ function AllCities({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <h5 style={{ margin: "0" }}>Canceled</h5>{" "}
           <Checkbox
             value={filterCanceled}
             onChange={() => {
@@ -173,7 +173,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
+          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
           <Checkbox
             value={filterInProgress}
             defaultChecked
@@ -183,7 +183,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Закрыт</h5>{" "}
+          <h5 style={{ margin: "0" }}>Closed</h5>{" "}
           <Checkbox
             value={filterZamkniete}
             defaultChecked
@@ -222,7 +222,7 @@ function AllCities({ country }) {
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-          Новый зал
+          New presentation
         </div>
       </div>
       {isOpen ? (
@@ -241,11 +241,11 @@ function AllCities({ country }) {
         ""
       )}
 
-      <h3 style={{ textAlign: "center" }}>Города</h3>
+      <h3 style={{ textAlign: "center" }}>Cities</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          СОРТ
+          SORT
         </StyledDivHeader>
       </div>
 
@@ -297,7 +297,7 @@ function AllCities({ country }) {
             }
           }}
         >
-          Удалить
+          Delete
         </div>
       </div>
 
@@ -311,7 +311,7 @@ function AllCities({ country }) {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

@@ -74,7 +74,7 @@ function CheckScenario({ country }) {
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     } else {
-      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+      alert(`Change status error, id: ${id_for_base}`);
     }
   }
 
@@ -130,7 +130,7 @@ function CheckScenario({ country }) {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder="Search"
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -147,7 +147,7 @@ function CheckScenario({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <h5 style={{ margin: "0" }}>Canceled</h5>{" "}
           <Checkbox
             value={filterCanceled}
             onChange={() => {
@@ -232,11 +232,11 @@ function CheckScenario({ country }) {
         </div>
       </div>
 
-      <h3 style={{ textAlign: "center" }}>Города</h3>
+      <h3 style={{ textAlign: "center" }}>Cities</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          СОРТ
+          SORT
         </StyledDivHeader>
       </div>
 
@@ -290,7 +290,7 @@ function CheckScenario({ country }) {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

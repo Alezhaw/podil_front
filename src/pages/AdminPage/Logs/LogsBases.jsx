@@ -86,7 +86,16 @@ function LogsBases() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
-          <select onChange={(e) => setCountry(e.currentTarget.value)} style={{ color: "white", borderRadius: "5px" }} className="tabl-flex-admin-user-scores " name="select" value={country}>
+          <select
+            onChange={(e) => {
+              setPage(0);
+              setCountry(e.currentTarget.value);
+            }}
+            style={{ color: "white", borderRadius: "5px" }}
+            className="tabl-flex-admin-user-scores "
+            name="select"
+            value={country}
+          >
             <option value="">Все</option>
             {countrySelectOptions.map((el, index) => (
               <option value={el} key={index}>
@@ -94,9 +103,36 @@ function LogsBases() {
               </option>
             ))}
           </select>
-          <h5 style={{ margin: "0" }}>Update</h5> <Checkbox value={filterUpdate} defaultChecked onChange={() => setFilterUpdate((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Create</h5> <Checkbox value={filterCreate} defaultChecked onChange={() => setFilterCreate((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Delete</h5> <Checkbox value={filterDelete} defaultChecked onChange={() => setFilterDelete((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>Update</h5>{" "}
+          <Checkbox
+            value={filterUpdate}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterUpdate((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Create</h5>{" "}
+          <Checkbox
+            value={filterCreate}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterCreate((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>Delete</h5>{" "}
+          <Checkbox
+            value={filterDelete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterDelete((prev) => !prev);
+            }}
+            color="error"
+          />
         </div>
       </div>
 

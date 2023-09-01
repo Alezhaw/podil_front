@@ -59,7 +59,7 @@ function CheckScenario({ country }) {
   async function changeCheck(checked, id_for_base) {
     const checkConfirm = window.confirm("Are you sure?");
     if (!checkConfirm) return;
-    const data = await Podzial.changeCheck(Number(id_for_base), null, country, null, null, checked);
+    const data = await Podzial.changeCheck(Number(id_for_base), null, country, null, checked);
     if (data) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
     } else {

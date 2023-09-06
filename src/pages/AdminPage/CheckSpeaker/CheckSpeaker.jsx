@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
@@ -26,13 +26,26 @@ function CheckScenario({ country }) {
   const [filterSpeaker, setFilterSpeaker] = useState([]);
   const [filterColumns, setFilterColumns] = useState([]);
   const [sortId, setSortId] = useState(true);
-  const { storedCities, user } = useAppSelector((store) => store.user);
+  const { storedCities, user, locale } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+  const messages = useMemo(() => {
+    return {
+      search: locale["search"],
+      title: locale["all_cities_title"],
+      canceled: locale["canceled"],
+      in_progress: locale["in_progress"],
+      complete: locale["complete"],
+      columns: locale["columns"],
+      sort: locale["sort"],
+      items_per_page: locale["items_per_page"],
+    };
+  }, [locale]);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
     setLoadingSpinner(false);
@@ -130,7 +143,7 @@ function CheckScenario({ country }) {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Search"
+          placeholder={messages.search}
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -147,7 +160,7 @@ function CheckScenario({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
-          <h5 style={{ margin: "0" }}>Canceled</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.canceled}</h5>{" "}
           <Checkbox
             value={filterCanceled}
             onChange={() => {
@@ -156,7 +169,7 @@ function CheckScenario({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.in_progress}</h5>{" "}
           <Checkbox
             value={filterInProgress}
             defaultChecked
@@ -166,7 +179,7 @@ function CheckScenario({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Complete</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.complete}</h5>{" "}
           <Checkbox
             value={filterComplete}
             defaultChecked
@@ -205,7 +218,7 @@ function CheckScenario({ country }) {
               3{" "}
             </Dropdown.Item>
           </DropdownButton>
-          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+          <DropdownButton id="dropdown-basic-button" title={messages.columns} style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
                 onClick={(e) => {
@@ -232,11 +245,11 @@ function CheckScenario({ country }) {
         </div>
       </div>
 
-      <h3 style={{ textAlign: "center" }}>Cities</h3>
+      <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          SORT
+          {messages.sort}
         </StyledDivHeader>
       </div>
 
@@ -253,7 +266,7 @@ function CheckScenario({ country }) {
                     </th>
 
                     {filterColumns?.filter((el) => el.value).map((el) => el.header())}
-                    <th className="default-col">Готово</th>
+                    <th className="default-col">{messages.complete}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -290,7 +303,7 @@ function CheckScenario({ country }) {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>{messages.items_per_page}</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

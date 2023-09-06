@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
@@ -12,7 +12,7 @@ import { StyledDiv, StyledDivHeader } from "./style";
 
 function AllUsers() {
   const dispatch = useDispatch();
-  const { user, allUsers } = useAppSelector((store) => store.user);
+  const { user, allUsers, locale } = useAppSelector((store) => store.user);
   const [search, setSearch] = useState("");
   const [filterAdmin, setFilterAdmin] = useState(true);
   const [filterModerator, setFilterModerator] = useState(true);
@@ -24,6 +24,20 @@ function AllUsers() {
   const [deleteUsers, setDeleteUsers] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
+
+  const messages = useMemo(() => {
+    return {
+      search: locale["search"],
+      items_per_page: locale["items_per_page"],
+      return: locale["return"],
+      title: locale["all_users_title"],
+      id: locale["all_users_id"],
+      username: locale["all_users_username"],
+      role: locale["all_users_role"],
+      email: locale["all_users_email"],
+      delete: locale["delete"],
+    };
+  }, [locale]);
 
   async function getAllUsers() {
     const data = await axiosGetAllUsers();
@@ -72,7 +86,7 @@ function AllUsers() {
           type="search"
           id="Search"
           value={search}
-          placeholder="Search"
+          placeholder={messages.search}
           onChange={(e) => setSearch(e.target.value?.toLowerCase())}
           autoComplete="off"
           required
@@ -88,15 +102,15 @@ function AllUsers() {
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {" "}
-        <h2>USERS</h2>
+        <h2>{messages.title}</h2>
       </div>
 
       <div style={{ borderRadius: "5px" }} className="tabl-flex-admin">
-        <StyledDivHeader size="50px">ID</StyledDivHeader>
-        <StyledDivHeader size="155px">Username</StyledDivHeader>
-        <StyledDivHeader size="155px">Role</StyledDivHeader>
-        <StyledDivHeader size="210px">Email</StyledDivHeader>
-        <StyledDivHeader size="80px">Delete</StyledDivHeader>
+        <StyledDivHeader size="50px">{messages.id}</StyledDivHeader>
+        <StyledDivHeader size="155px">{messages.username}</StyledDivHeader>
+        <StyledDivHeader size="155px">{messages.role}</StyledDivHeader>
+        <StyledDivHeader size="210px">{messages.email}</StyledDivHeader>
+        <StyledDivHeader size="80px">{messages.delete}</StyledDivHeader>
       </div>
 
       {users
@@ -132,7 +146,7 @@ function AllUsers() {
             alert("Success");
           }}
         >
-          Delete
+          {messages.delete}
         </div>
       </div>
 
@@ -145,7 +159,7 @@ function AllUsers() {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>{messages.items_per_page}</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

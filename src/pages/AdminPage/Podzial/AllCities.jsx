@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
@@ -26,7 +26,7 @@ function AllCities({ country }) {
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [filterCanceled, setFilterCanceled] = useState(false);
   const [sortId, setSortId] = useState(true);
-  const { storedCities, user } = useAppSelector((store) => store.user);
+  const { storedCities, user, locale } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
@@ -38,6 +38,21 @@ function AllCities({ country }) {
   const [thirdTime, setThirdTime] = useState({});
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+  const messages = useMemo(() => {
+    return {
+      search: locale["search"],
+      title: locale["all_cities_title"],
+      canceled: locale["canceled"],
+      in_progress: locale["in_progress"],
+      closed: locale["closed"],
+      columns: locale["columns"],
+      new_presentation: locale["all_cities_new_presentation"],
+      sort: locale["sort"],
+      delete: locale["delete"],
+      items_per_page: locale["items_per_page"],
+    };
+  }, [locale]);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
@@ -147,7 +162,7 @@ function AllCities({ country }) {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Search"
+          placeholder={messages.search}
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -164,7 +179,7 @@ function AllCities({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Canceled</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.canceled}</h5>{" "}
           <Checkbox
             value={filterCanceled}
             onChange={() => {
@@ -173,7 +188,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>In progress</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.in_progress}</h5>{" "}
           <Checkbox
             value={filterInProgress}
             defaultChecked
@@ -183,7 +198,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Closed</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.closed}</h5>{" "}
           <Checkbox
             value={filterZamkniete}
             defaultChecked
@@ -193,7 +208,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+          <DropdownButton id="dropdown-basic-button" title={messages.columns} style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
                 onClick={(e) => {
@@ -222,7 +237,7 @@ function AllCities({ country }) {
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-          New presentation
+          {messages.new_presentation}
         </div>
       </div>
       {isOpen ? (
@@ -241,11 +256,11 @@ function AllCities({ country }) {
         ""
       )}
 
-      <h3 style={{ textAlign: "center" }}>Cities</h3>
+      <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          SORT
+          {messages.sort}
         </StyledDivHeader>
       </div>
 
@@ -297,7 +312,7 @@ function AllCities({ country }) {
             }
           }}
         >
-          Delete
+          {messages.delete}
         </div>
       </div>
 
@@ -311,7 +326,7 @@ function AllCities({ country }) {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Items per page</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>{messages.items_per_page}</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

@@ -1,5 +1,5 @@
 import { Checkbox } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { axiosDeleteUser, axiosGetAllUsers, axiosChangeRole } from "../../../api/user";
@@ -9,7 +9,7 @@ import ChangeUserProps from "./component/ChangeUserProps";
 import { StyledDiv, StyledDivHeader } from "./style";
 
 function AllUsersID() {
-  const { allUsers, user } = useAppSelector((store) => store.user);
+  const { allUsers, user, locale } = useAppSelector((store) => store.user);
   const statebackground = !!localStorage.getItem("backroundImg");
   const { id } = useParams();
   const [currentUser, setCurrentUser] = useState(null);
@@ -17,6 +17,19 @@ function AllUsersID() {
   const [deleteUsers, setDeleteUsers] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const messages = useMemo(() => {
+    return {
+      return: locale["return"],
+      id: locale["all_users_id"],
+      username: locale["all_users_username"],
+      role: locale["all_users_role"],
+      email: locale["all_users_email"],
+      delete: locale["delete"],
+      change_role: locale["city_id_change_user_role"],
+      change: locale["city_id_change"],
+    };
+  }, [locale]);
 
   function changeDeleteUsers(checked, id) {
     if (checked) {
@@ -74,16 +87,16 @@ function AllUsersID() {
         <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", background: "rgba(17, 17, 18, 0.65)" }}>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
             <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
-              Return
+              {messages.return}
             </div>
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ borderRadius: "5px" }} className="tabl-flex-admin">
-              <StyledDivHeader size="50px">ID</StyledDivHeader>
-              <StyledDivHeader size="155px">Username</StyledDivHeader>
-              <StyledDivHeader size="155px">Role</StyledDivHeader>
-              <StyledDivHeader size="210px">Email</StyledDivHeader>
-              <StyledDivHeader size="80px">Delete</StyledDivHeader>
+              <StyledDivHeader size="50px">{messages.id}</StyledDivHeader>
+              <StyledDivHeader size="155px">{messages.username}</StyledDivHeader>
+              <StyledDivHeader size="155px">{messages.role}</StyledDivHeader>
+              <StyledDivHeader size="210px">{messages.email}</StyledDivHeader>
+              <StyledDivHeader size="80px">{messages.delete}</StyledDivHeader>
             </div>
 
             {
@@ -107,11 +120,11 @@ function AllUsersID() {
                   alert("Success");
                 }}
               >
-                Delete
+                {messages.delete}
               </div>
             </div>
           </div>
-          <ChangeUserProps setRoleUser={setRoleUser} roleUser={roleUser} changeRole={changeRole} />
+          <ChangeUserProps setRoleUser={setRoleUser} roleUser={roleUser} changeRole={changeRole} {...messages} />
         </div>
       </div>
     </>

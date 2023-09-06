@@ -1,5 +1,7 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { reducerTypes } from "../../store/Users/types";
 import AllUsers from "./Users/AllUsers";
 import { useNavigate } from "react-router-dom";
 import AllCities from "./Podzial/AllCities";
@@ -10,8 +12,11 @@ import CheckScenario from "./CheckScenario/CheckScenario";
 import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 import MenuItemForPanel from "./components/MenuItemForPanel";
+import { useAppSelector } from "../../store/reduxHooks";
 
 function AdminPanel() {
+  const dispatch = useDispatch();
+  const { locale } = useAppSelector((store) => store.user);
   const [item, setItem] = useState(Number(localStorage.getItem("adminPage")) ?? 7);
   const [statebackground, setStatebackground] = useState(!!localStorage.getItem("backroundImg"));
   const navigate = useNavigate();
@@ -21,21 +26,39 @@ function AdminPanel() {
   const [anchorElSpeaker, setAnchorElSpeaker] = useState(null);
   const [anchorElScenario, setAnchorElScenario] = useState(null);
   const [anchorElLogs, setAnchorElLogs] = useState(null);
+  const [anchorElLanguages, setAnchorElLanguages] = useState(null);
   const divisionMenuOpen = Boolean(anchorElDivision);
   const baseMenuOpen = Boolean(anchorElBase);
   const speakerMenuOpen = Boolean(anchorElSpeaker);
   const scenarioMenuOpen = Boolean(anchorElScenario);
   const logsMenuOpen = Boolean(anchorElLogs);
+  const languagesMenuOpen = Boolean(anchorElLanguages);
   const divisionItems = [7, 8, 20];
   const baseItems = [9, 10, 17];
   const speakerItems = [11, 12, 18];
   const scenarioItems = [13, 14, 19];
+  const languages = ["EN", "PL", "RU"];
+  const [divisionPage, setDivisionPage] = useState();
+  const [basePage, setBasePage] = useState();
+  const [speakerPage, setSpeakerPage] = useState();
+  const [scenarioPage, setScenarioPage] = useState();
+  const [logsPage, setLogsPage] = useState();
 
-  const [divisionPage, setDivisionPage] = useState(getTitleWithCountry("PODZIAL", countries, item, divisionItems));
-  const [basePage, setBasePage] = useState(getTitleWithCountry("BASES", countries, item, baseItems));
-  const [speakerPage, setSpeakerPage] = useState(getTitleWithCountry("SPEAKER", countries, item, speakerItems));
-  const [scenarioPage, setScenarioPage] = useState(getTitleWithCountry("SCENARIO", countries, item, scenarioItems));
-  const [logsPage, setLogsPage] = useState(item === 15 ? "LOGS CITIES" : item === 16 ? "LOGS BASES" : "LOGS");
+  const messages = useMemo(() => {
+    return {
+      return: locale["return"],
+      users: locale["admin_panel_users"],
+      podil: locale["admin_panel_podil"],
+      bases: locale["admin_panel_bases"],
+      speaker: locale["admin_panel_speaker"],
+      scenario: locale["admin_panel_scenario"],
+      logs: locale["admin_panel_logs"],
+      logs_cities: locale["admin_panel_logs_cities"],
+      logs_bases: locale["admin_panel_logs_bases"],
+      background: locale["admin_panel_background"],
+      language: locale["admin_panel_language"],
+    };
+  }, [locale]);
 
   function getTitleWithCountry(title, countries, item, itemCount) {
     countries = itemCount.map((el, index) => ({
@@ -46,14 +69,22 @@ function AdminPanel() {
   }
 
   function visibleItem(name) {
-    setDivisionPage(" PODZIAL ");
-    setBasePage(" BASES ");
-    setSpeakerPage(" SPEAKER ");
-    setScenarioPage(" SCENARIO ");
-    setLogsPage(" LOGS ");
+    setDivisionPage(` ${messages.podil} `);
+    setBasePage(` ${messages.bases} `);
+    setSpeakerPage(` ${messages.speaker} `);
+    setScenarioPage(` ${messages.scenario} `);
+    setLogsPage(` ${messages.logs} `);
     setItem(Number(name));
     // navigate(`/adminPanel/${name}`)
     localStorage.setItem("adminPage", String(name));
+  }
+
+  function setLanguage(language) {
+    localStorage.setItem("selected-lang", language);
+    dispatch({
+      type: reducerTypes.GET_SELECTED_LANG,
+      payload: language,
+    });
   }
 
   function getPage(item) {
@@ -153,12 +184,21 @@ function AdminPanel() {
     }
   }
 
+  useEffect(() => {
+    setDivisionPage(getTitleWithCountry(messages.podil, countries, item, divisionItems));
+    setBasePage(getTitleWithCountry(messages.bases, countries, item, baseItems));
+    setSpeakerPage(getTitleWithCountry(messages.speaker, countries, item, speakerItems));
+    setScenarioPage(getTitleWithCountry(messages.scenario, countries, item, scenarioItems));
+    setLogsPage(item === 15 ? `${messages.logs} ${messages.logs_cities}` : item === 16 ? `${messages.logs} ${messages.logs_bases}` : messages.logs);
+    // eslint-disable-next-line
+  }, [messages]);
+
   return (
     <div style={{ minHeight: "100vh" }}>
       <div style={{ display: "flex", minHeight: "100vh" }} className={!statebackground ? "styleAdminPanel" : "styleAdminPanel2"}>
-        <div style={{ display: "flex", flexDirection: "column", width: "11%" }} className="panel_user">
+        <div style={{ display: "flex", flexDirection: "column", width: "13%" }} className="panel_user">
           <button onClick={(e) => visibleItem(e.currentTarget.name)} name="0" className={item === 0 ? "block_user_panel activ-block-admin" : "block_user_panel"}>
-            <h4>ALL USERS</h4>
+            <h4>{messages.users}</h4>
           </button>
           <button
             onClick={(e) => setAnchorElDivision((prev) => (!!prev ? null : e.currentTarget))}
@@ -176,7 +216,7 @@ function AdminPanel() {
             }}
           >
             {divisionItems.map((el, index) => (
-              <MenuItemForPanel title="PODZIAL" el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setDivisionPage} setAnchorEl={setAnchorElDivision} />
+              <MenuItemForPanel title={messages.podil} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setDivisionPage} setAnchorEl={setAnchorElDivision} />
             ))}
           </Menu>
           <button
@@ -195,7 +235,7 @@ function AdminPanel() {
             }}
           >
             {baseItems.map((el, index) => (
-              <MenuItemForPanel title="BASES" el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setBasePage} setAnchorEl={setAnchorElBase} />
+              <MenuItemForPanel title={messages.bases} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setBasePage} setAnchorEl={setAnchorElBase} />
             ))}
           </Menu>
           <button
@@ -214,7 +254,7 @@ function AdminPanel() {
             }}
           >
             {speakerItems.map((el, index) => (
-              <MenuItemForPanel title="SPEAKER" el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setSpeakerPage} setAnchorEl={setAnchorElSpeaker} />
+              <MenuItemForPanel title={messages.speaker} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setSpeakerPage} setAnchorEl={setAnchorElSpeaker} />
             ))}
           </Menu>
 
@@ -234,7 +274,7 @@ function AdminPanel() {
             }}
           >
             {scenarioItems.map((el, index) => (
-              <MenuItemForPanel title="SCENARIO" el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setScenarioPage} setAnchorEl={setAnchorElScenario} />
+              <MenuItemForPanel title={messages.scenario} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setScenarioPage} setAnchorEl={setAnchorElScenario} />
             ))}
           </Menu>
 
@@ -253,20 +293,20 @@ function AdminPanel() {
             <MenuItem
               onClick={() => {
                 visibleItem("15");
-                setLogsPage(" LOGS CITIES");
+                setLogsPage(` ${messages.logs} ${messages.logs_cities}`);
                 setAnchorElLogs(null);
               }}
             >
-              CITIES
+              {messages.logs_cities}
             </MenuItem>
             <MenuItem
               onClick={() => {
                 visibleItem("16");
-                setLogsPage(" LOGS BASES");
+                setLogsPage(` ${messages.logs} ${messages.logs_bases}`);
                 setAnchorElLogs(null);
               }}
             >
-              BASES
+              {messages.logs_bases}
             </MenuItem>
           </Menu>
           <button
@@ -276,14 +316,38 @@ function AdminPanel() {
             }}
             className={statebackground ? "block_user_panel" : "block_user_panel"}
           >
-            <h4>CHANGE BACKGROUND </h4>
+            <h4>{messages.background} </h4>
           </button>
+          <button onClick={(e) => setAnchorElLanguages((prev) => (!!prev ? null : e.currentTarget))} className={"block_user_panel"}>
+            <h4> {messages.language} </h4>
+          </button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorElLanguages}
+            open={languagesMenuOpen}
+            onClose={() => setAnchorElLanguages(null)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {languages?.map((el, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => {
+                  setLanguage(el);
+                  setAnchorElLanguages(null);
+                }}
+              >
+                {el}
+              </MenuItem>
+            ))}
+          </Menu>
         </div>
         <div style={{ paddingLeft: "10px" }} className="panel_user">
           {getPage(item)}
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", marginTop: "10px", color: "white" }}>
             <div onClick={() => navigate("/login/true")} className="tabl-flex-admin-button-global2">
-              Return
+              {messages.return}
             </div>
           </div>
         </div>

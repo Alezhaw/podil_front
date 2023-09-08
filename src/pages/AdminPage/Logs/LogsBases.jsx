@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { Checkbox, Pagination, PaginationItem } from "@mui/material";
@@ -16,7 +16,7 @@ function LogsBases() {
   const [filterUpdate, setFilterUpdate] = useState(true);
   const [filterCreate, setFilterCreate] = useState(true);
   const [filterDelete, setFilterDelete] = useState(true);
-  const { user, logsBase } = useAppSelector((store) => store.user);
+  const { user, logsBase, locale } = useAppSelector((store) => store.user);
   const [logs, setLogs] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -25,6 +25,26 @@ function LogsBases() {
   const [country, setCountry] = useState("");
   const [countrySelectOptions, setCountrySelectOptions] = useState([]);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+  const messages = useMemo(() => {
+    return {
+      search: locale["search"],
+      title: locale["logs_title"],
+      sort: locale["sort"],
+      items_per_page: locale["items_per_page"],
+      update: locale["logs_update"],
+      create: locale["logs_create"],
+      delete: locale["logs_delete"],
+      all_country: locale["logs_all_country"],
+      id: locale["logs_id"],
+      id_city: locale["logs_id_city"],
+      country: locale["logs_country"],
+      action: locale["logs_action"],
+      changes_amount: locale["logs_changes_amount"],
+      time: locale["logs_time"],
+      user: locale["logs_user"],
+    };
+  }, [locale]);
 
   async function getBasesLogs({ pageSize, page, search, country, updateFilter, createFilter, deleteFilter }) {
     setLoadingSpinner(false);
@@ -53,7 +73,7 @@ function LogsBases() {
       getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
     }
     // eslint-disable-next-line
-  }, [user, logsBase]);
+  }, [user]);
 
   useEffect(() => {
     getBasesLogs({ pageSize: itemsPerPage, page, search, country, updateFilter: filterUpdate, createFilter: filterCreate, deleteFilter: filterDelete });
@@ -69,7 +89,7 @@ function LogsBases() {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder={messages.search}
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -86,21 +106,57 @@ function LogsBases() {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px" }}>
-          <select onChange={(e) => setCountry(e.currentTarget.value)} style={{ color: "white", borderRadius: "5px" }} className="tabl-flex-admin-user-scores " name="select" value={country}>
-            <option value="">Все</option>
+          <select
+            onChange={(e) => {
+              setPage(0);
+              setCountry(e.currentTarget.value);
+            }}
+            style={{ color: "white", borderRadius: "5px" }}
+            className="tabl-flex-admin-user-scores "
+            name="select"
+            value={country}
+          >
+            <option value="">{messages.all_country}</option>
             {countrySelectOptions.map((el, index) => (
               <option value={el} key={index}>
                 {el?.toUpperCase()}
               </option>
             ))}
           </select>
-          <h5 style={{ margin: "0" }}>Update</h5> <Checkbox value={filterUpdate} defaultChecked onChange={() => setFilterUpdate((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Create</h5> <Checkbox value={filterCreate} defaultChecked onChange={() => setFilterCreate((prev) => !prev)} color="error" />
-          <h5 style={{ margin: "0" }}>Delete</h5> <Checkbox value={filterDelete} defaultChecked onChange={() => setFilterDelete((prev) => !prev)} color="error" />
+          <h5 style={{ margin: "0" }}>{messages.update}</h5>{" "}
+          <Checkbox
+            value={filterUpdate}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterUpdate((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>{messages.create}</h5>{" "}
+          <Checkbox
+            value={filterCreate}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterCreate((prev) => !prev);
+            }}
+            color="error"
+          />
+          <h5 style={{ margin: "0" }}>{messages.delete}</h5>{" "}
+          <Checkbox
+            value={filterDelete}
+            defaultChecked
+            onChange={() => {
+              setPage(0);
+              setFilterDelete((prev) => !prev);
+            }}
+            color="error"
+          />
         </div>
       </div>
 
-      <h3 style={{ textAlign: "center" }}>Логи</h3>
+      <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       {loadingSpinner ? (
         <div style={{ overflowX: "auto", textAlign: "center" }}>
@@ -109,13 +165,13 @@ function LogsBases() {
               <table>
                 <thead>
                   <tr>
-                    <th className="default-col">ID</th>
-                    <th className="default-col">ID City</th>
-                    <th className="default-col">Страна</th>
-                    <th className="default-col">Действие</th>
-                    <th className="default-col">Изменений</th>
-                    <th className="default-col">Время</th>
-                    <th className="default-col">Кто</th>
+                    <th className="default-col">{messages.id}</th>
+                    <th className="default-col">{messages.id_city}</th>
+                    <th className="default-col">{messages.country}</th>
+                    <th className="default-col">{messages.action}</th>
+                    <th className="default-col">{messages.changes_amount}</th>
+                    <th className="default-col">{messages.time}</th>
+                    <th className="default-col">{messages.user}</th>
                   </tr>
                 </thead>
                 <tbody style={{}}>
@@ -144,7 +200,7 @@ function LogsBases() {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>{messages.items_per_page}</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

@@ -18,6 +18,8 @@ export interface IUsersReducer {
   logsCity: ILogsCity[] | [];
   logsBase: ILogsBase[] | [];
   countryForCheck: string;
+  selectedLang: string;
+  locale: { [key: string]: string };
 }
 
 export const INITIAL: IUsersReducer = {
@@ -32,6 +34,8 @@ export const INITIAL: IUsersReducer = {
   logsCity: [],
   logsBase: [],
   countryForCheck: "",
+  selectedLang: localStorage.getItem("selected-lang") || "EN",
+  locale: {},
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -54,6 +58,10 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, logsBase: payload };
     case reducerTypes.GET_COUNTRY_FOR_CHECK:
       return { ...state, countryForCheck: payload };
+    case reducerTypes.GET_SELECTED_LANG:
+      return { ...state, selectedLang: payload };
+    case reducerTypes.GET_SELECTED_LOCALE:
+      return { ...state, locale: payload };
     default:
       return state;
   }

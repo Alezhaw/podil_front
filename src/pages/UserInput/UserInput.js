@@ -16,8 +16,8 @@ function UserInput() {
   const [errorLogin, setErrorLogin] = useState("");
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailError, setEmailError] = useState("Логин не может быть пустым");
-  const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+  const [emailError, setEmailError] = useState("Login is empty");
+  const [passwordError, setPasswordError] = useState("Password is empty");
   const [formValid, setFormValid] = useState(false);
   const navigate = useNavigate();
   const { logout } = useParams();
@@ -54,9 +54,9 @@ function UserInput() {
   function passwordUser(e) {
     setPassword(e.currentTarget.value);
     if (e.target.value.length < 4) {
-      setPasswordError("Некоректный пароль");
+      setPasswordError("Incorrect password");
       if (!e.target.value) {
-        setPasswordError("Пароль не может быть пустым");
+        setPasswordError("Password is empty");
       }
     } else {
       setPasswordError("");
@@ -95,11 +95,11 @@ function UserInput() {
   return (
     <div className="bg-img">
       <div style={{ paddingBottom: "30px", paddingTop: "30px", minHeight: "calc(75vh + 103px)" }} className="container">
-        <h3 className="header-inner_title login-inner_title">Авторизация</h3>
+        <h3 className="header-inner_title login-inner_title">Login</h3>
         <hr className="hr-viss" />
         <Form className="width-form">
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label className="color-input-name">Логин:</Form.Label>
+            <Form.Label className="color-input-name">Username:</Form.Label>
             <Form.Control
               onBlur={(e) => blurHandler(e)}
               name="login"
@@ -115,17 +115,17 @@ function UserInput() {
             {errorLogin ? <div style={{ color: "red" }}>{errorLogin}</div> : ""}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label className="color-input-name">Пароль:</Form.Label>
+            <Form.Label className="color-input-name">Password:</Form.Label>
             <Form.Control onBlur={(e) => blurHandler(e)} name="password" value={password} onChange={passwordUser} type="password" placeholder="" />
             {passwordDirty && passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Link className="link-hover-effects" to="/registr">
-              Нет учетной записи? Зарегистрируйте!
+              Registration
             </Link>
           </Form.Group>
           <button disabled={!formValid} onClick={(e) => getUsers(e)} className="btn-class-v2">
-            Войти
+            Sign in
           </button>
         </Form>
       </div>

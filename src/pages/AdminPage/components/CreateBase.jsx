@@ -30,7 +30,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
       <div onClick={(e) => e.stopPropagation()} className="modalContentStyles">
         <div style={{ minWidth: "100px", margin: "0px 5px", textAlign: "center", background: "white", color: "black" }}>
           <tr>
-            <td colSpan="3" className="basesTableCell">
+            <td colSpan="4" className="basesTableCell">
               <input
                 onChange={(e) => setNewBase((prev) => ({ ...prev, podzial_id: e.target.value }))}
                 className="tableInput"
@@ -50,7 +50,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "50px" }}
                 type="text"
                 autoComplete="off"
-                placeholder="стат 1"
+                placeholder=""
                 value={newBase.stat_1 || ""}
               />
             </td>
@@ -61,7 +61,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "120px" }}
                 type="text"
                 autoComplete="off"
-                placeholder="стат 2"
+                placeholder=""
                 value={newBase.stat_2 || ""}
               />
             </td>
@@ -72,20 +72,31 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "50px" }}
                 type="text"
                 autoComplete="off"
-                placeholder="стат 3"
+                placeholder=""
                 value={newBase.stat_3 || ""}
+              />
+            </td>
+            <td className="basesTableCell">
+              <input
+                onChange={(e) => setNewBase((prev) => ({ ...prev, stat_4: e.target.value }))}
+                className="tableInput"
+                style={{ width: "50px" }}
+                type="text"
+                autoComplete="off"
+                placeholder=""
+                value={newBase.stat_4 || ""}
               />
             </td>
           </tr>
           <tr>
-            <td colSpan="2" className="basesTableCell">
+            <td colSpan="3" className="basesTableCell">
               <input
                 onChange={(e) => setNewBase((prev) => ({ ...prev, type: e.target.value }))}
                 className="tableInput"
                 // style={{ width: '120px' }}
                 type="text"
                 autoComplete="off"
-                placeholder="Тип"
+                placeholder="type"
                 value={newBase.type || ""}
               />
             </td>
@@ -96,7 +107,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ maxWidth: "120px" }} //140 сделать
                 type="text"
                 autoComplete="off"
-                placeholder="сорт из"
+                placeholder="sort from"
                 value={newBase.sort || ""}
               />
             </td>
@@ -109,7 +120,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
-                placeholder="согл 1"
+                placeholder=""
                 value={newBase.sogl_1 || ""}
               />
             </td>
@@ -120,7 +131,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
-                placeholder="согл 2"
+                placeholder=""
                 value={newBase.sogl_2 || ""}
               />
             </td>
@@ -131,29 +142,40 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
                 style={{ width: "50px" }}
                 type="number"
                 autoComplete="off"
-                placeholder="согл 3"
+                placeholder=""
                 value={newBase.sogl_3 || ""}
+              />
+            </td>
+            <td className="basesTableCell">
+              <input
+                onChange={(e) => setNewBase((prev) => ({ ...prev, sogl_4: e.target.value }))}
+                className="tableInput"
+                style={{ width: "50px" }}
+                type="number"
+                autoComplete="off"
+                placeholder=""
+                value={newBase.sogl_4 || ""}
               />
             </td>
           </tr>
           <tr>
-            <td colSpan="3" className="basesTableCell">
+            <td colSpan="4" className="basesTableCell">
               {" "}
-              Ком:{" "}
+              Сomment:{" "}
               <input
                 onChange={(e) => setNewBase((prev) => ({ ...prev, comment: e.target.value }))}
                 className="tableInput"
                 //style={{ width: '50px' }}
                 type="text"
                 autoComplete="off"
-                placeholder="комментарий"
+                placeholder="comment"
                 value={newBase.comment || ""}
               />
             </td>
           </tr>
         </div>
         <div className="tabl-flex-admin-button-global2" onClick={() => createBase([newBase])}>
-          Создать Базу
+          Create base
         </div>
         <StyledInput
           className="tabl-flex-admin-search"
@@ -161,7 +183,7 @@ function CreateBase({ setIsOpen, newBase, setNewBase, createBase, getFilteredBas
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder="Search"
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setSearch(e.target.value?.toLowerCase()?.trim());

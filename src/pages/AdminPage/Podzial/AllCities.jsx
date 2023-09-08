@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import Checkbox from "@mui/material/Checkbox";
@@ -27,7 +27,7 @@ function AllCities({ country }) {
   const [filterZamkniete, setFilterZamkniete] = useState(true);
   const [filterCanceled, setFilterCanceled] = useState(false);
   const [sortId, setSortId] = useState(true);
-  const { storedCities, user } = useAppSelector((store) => store.user);
+  const { storedCities, user, locale } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteCities, setDeleteCities] = useState([]);
@@ -39,6 +39,21 @@ function AllCities({ country }) {
   const [thirdTime, setThirdTime] = useState({});
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+
+  const messages = useMemo(() => {
+    return {
+      search: locale["search"],
+      title: locale["all_cities_title"],
+      canceled: locale["canceled"],
+      in_progress: locale["in_progress"],
+      closed: locale["closed"],
+      columns: locale["columns"],
+      new_presentation: locale["all_cities_new_presentation"],
+      sort: locale["sort"],
+      delete: locale["delete"],
+      items_per_page: locale["items_per_page"],
+    };
+  }, [locale]);
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
     setLoadingSpinner(false);
@@ -79,7 +94,7 @@ function AllCities({ country }) {
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
     const result = await Podzial.createCities(city, country);
-    if (result.cities[0]) {
+    if (result[0]) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
       alert("Sucess");
       setFirstTime({});
@@ -87,9 +102,10 @@ function AllCities({ country }) {
       setThirdTime({});
       setIsOpen(false);
     } else {
-      if (result.updated[0]) return alert("Город обновлен");
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      if (result.updated[0]) return alert("Updated");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -100,7 +116,7 @@ function AllCities({ country }) {
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     } else {
-      alert(`Ошибка смены статуса, id: ${id_for_base}`);
+      alert(`Change status error, id: ${id_for_base}`);
     }
   }
 
@@ -123,7 +139,7 @@ function AllCities({ country }) {
   useEffect(() => {
     getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -147,7 +163,7 @@ function AllCities({ country }) {
           type="search"
           id="Search"
           value={searchForInput}
-          placeholder="Поиск"
+          placeholder={messages.search}
           onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
           onBlur={(e) => {
             setPage(0);
@@ -164,7 +180,7 @@ function AllCities({ country }) {
         />
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
-          <h5 style={{ margin: "0" }}>Отменен</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.canceled}</h5>{" "}
           <Checkbox
             value={filterCanceled}
             onChange={() => {
@@ -173,7 +189,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Не закрыт</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.in_progress}</h5>{" "}
           <Checkbox
             value={filterInProgress}
             defaultChecked
@@ -183,7 +199,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <h5 style={{ margin: "0" }}>Закрыт</h5>{" "}
+          <h5 style={{ margin: "0" }}>{messages.closed}</h5>{" "}
           <Checkbox
             value={filterZamkniete}
             defaultChecked
@@ -193,7 +209,7 @@ function AllCities({ country }) {
             }}
             color="error"
           />
-          <DropdownButton id="dropdown-basic-button" title="Dropdown button" style={{ background: "transparent", border: "none" }} variant="secondary">
+          <DropdownButton id="dropdown-basic-button" title={messages.columns} style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
                 onClick={(e) => {
@@ -222,7 +238,7 @@ function AllCities({ country }) {
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-          Новый зал
+          {messages.new_presentation}
         </div>
       </div>
       {isOpen ? (
@@ -241,11 +257,11 @@ function AllCities({ country }) {
         ""
       )}
 
-      <h3 style={{ textAlign: "center" }}>Города</h3>
+      <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
         <StyledDivHeader size="80px" style={{ cursor: "pointer" }} onClick={() => setSortId((prev) => !prev)}>
-          СОРТ
+          {messages.sort}
         </StyledDivHeader>
       </div>
 
@@ -288,16 +304,16 @@ function AllCities({ country }) {
           className="tabl-flex-admin-button"
           onClick={async () => {
             try {
-              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), "RU")));
+              await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), country)));
               setDeleteCities([]);
               await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country });
               alert("Success");
             } catch (e) {
-              alert("Что-то пошло не так");
+              alert("Something went wrong");
             }
           }}
         >
-          Удалить
+          {messages.delete}
         </div>
       </div>
 
@@ -311,7 +327,7 @@ function AllCities({ country }) {
       />
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "20px" }}>
-        <h6 style={{ margin: "0px", paddingRight: "10px" }}>Кол-во</h6>
+        <h6 style={{ margin: "0px", paddingRight: "10px" }}>{messages.items_per_page}</h6>
         <input
           className="tabl-flex-admin-pages"
           style={{ color: "white", borderRadius: "5px" }}

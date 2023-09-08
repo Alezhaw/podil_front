@@ -8,6 +8,8 @@ export const reducerTypes = {
   GET_LOGS_CITIES: "reducer/GET_LOGS_CITIES",
   GET_LOGS_BASES: "reducer/GET_LOGS_BASES",
   GET_COUNTRY_FOR_CHECK: "reducer/GET_COUNTRY_FOR_CHECK",
+  GET_SELECTED_LANG: "reducer/GET_SELECTED_LANG",
+  GET_SELECTED_LOCALE: "reducer/GET_SELECTED_LOCALE",
 };
 
 export const sagaTypes = {

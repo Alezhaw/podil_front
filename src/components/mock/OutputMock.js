@@ -24,37 +24,19 @@ export const validateWebmoney = (item) => {
 export const forSpeakerMock = [
   {
     id: "1",
-    text: "zalupa1",
+    text: "text1",
   },
   {
     id: "2",
-    text: "zalupa2",
+    text: "text2",
   },
   {
     id: "3",
-    text: "zalupa3",
+    text: "text3",
   },
 ];
 
-export const adminChatStatusMock = ["Виден пользователю", "Удалён для пользователя"];
-export const adminChatNewMessageMock = ["Новое сообщение", "Новых сообщений нет"];
-export const userPath = ["/", "/deal", "/systemmessages", "/payments", "/output", "/howitwork", "/deals", "/sertificates", "/makedeal", "/rules", "/disputes"];
-export const userPathForAdmin = {
-  "/": "Домашняя страница",
-  "/deal": "Сделка",
-  "/systemmessages": "Системное сообщение",
-  "/payments": "Пополнения",
-  "/output": "Мой счет",
-  "/howitwork": "Помощь",
-  "/deals": "Мои сделки",
-  "/sertificates": "Сертификаты",
-  "/makedeal": "Создание сделки",
-  "/rules": "Правила",
-  "/disputes": "Решение споров",
-};
-export const outputMock = ["История пополнений", "Перевод по реквизитам", "Перевод пользователю"];
-
-export const citiesStatus = ["Отменен", "В процессе", "Закрыт", "Ожидает"];
+export const citiesStatus = ["Canceled", "In progress", "Closed", "Waiting"];
 
 export const citiesStatusColor = ["#8B00FF", "#00FF00", "#FF2400", "#FFFFFF"];
 
@@ -72,7 +54,7 @@ export const allCitiesTableMock = [
       index === 0 ? (
         <th rowSpan={`${currentCities.length}`} className="basesTableCell">
           <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-            {item.l_p || ""}
+            {item.l_p_for_pl || item.l_p || ""}
           </div>
         </th>
       ) : (
@@ -97,11 +79,11 @@ export const allCitiesTableMock = [
     ),
   },
   {
-    column: "Приход всего",
+    column: "Сoming",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        Приход всего
+        Сoming
       </th>
     ),
     firstRow: () => <th></th>,
@@ -114,11 +96,11 @@ export const allCitiesTableMock = [
     ),
   },
   {
-    column: "Пар всего",
+    column: "Pair",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        Пар всего
+        Pair
       </th>
     ),
     firstRow: () => <th></th>,
@@ -131,37 +113,45 @@ export const allCitiesTableMock = [
     ),
   },
   {
-    column: "Проверка прихода",
+    column: "Wyjasnienia",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "86px" }}>
-        Проверка прихода
+        Wyjasnienia
       </th>
     ),
     firstRow: () => <th></th>,
     content: ({ index, currentCities, item }) =>
       index === 0 ? (
-        <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
-          <input
-            // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
-            className="tableInput"
-            style={{ width: "25px", height: "25px" }}
-            type="checkbox"
-            autoComplete="off"
-            checked={!!item.wyjasnienia}
-            readOnly
-          />
-        </th>
+        item.explains !== null ? (
+          <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
+            <input
+              // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
+              className="tableInput"
+              style={{ width: "25px", height: "25px" }}
+              type="checkbox"
+              autoComplete="off"
+              checked={!!item.explains}
+              readOnly
+            />
+          </th>
+        ) : (
+          <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
+            <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+              {item.explains_for_pl || ""}
+            </div>
+          </th>
+        )
       ) : (
         ""
       ),
   },
   {
-    column: "КР",
+    column: "Projekt umowieniowy",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        КР
+        Projekt spzedazowy
       </th>
     ),
     firstRow: () => <th></th>,
@@ -177,11 +167,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Часовой Пояс",
+    column: "Timezone",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "78px" }}>
-        Часовой Пояс
+        Timezone
       </th>
     ),
     firstRow: () => <th></th>,
@@ -225,11 +215,31 @@ export const allCitiesTableMock = [
     },
   },
   {
-    column: "Лимит",
+    column: "Schemat dzwonienia",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-        Лимит
+        Schemat dzwonienia
+      </th>
+    ),
+    firstRow: () => <th></th>,
+    content: ({ index, currentCities, item }) =>
+      index === 0 ? (
+        <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
+          <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
+            {item.calling_scheme || ""}
+          </div>
+        </th>
+      ) : (
+        ""
+      ),
+  },
+  {
+    column: "Limit",
+    value: true,
+    header: () => (
+      <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        Limit
       </th>
     ),
     firstRow: () => <th></th>,
@@ -241,12 +251,13 @@ export const allCitiesTableMock = [
       </th>
     ),
   },
+
   {
-    column: "Статус",
+    column: "Status",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "160px" }}>
-        Статус
+        Status
       </th>
     ),
     firstRow: () => <th></th>,
@@ -410,11 +421,11 @@ export const allCitiesTableMock = [
       ),
   },
   {
-    column: "Limit regalo",
+    column: "Projekt umowieniowy",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-        Limit regalo
+        Projekt umowieniowy
       </th>
     ),
     firstRow: () => <th></th>,
@@ -640,11 +651,11 @@ export const allCitiesTableMock = [
         </th>
         <tr style={{ height: "55px", background: "none" }}>
           <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>ID</th>
-          <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>Формат</th>
-          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Лимит</th>
-          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Приход</th>
-          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Пар всего</th>
-          <th style={{ minWidth: "70.8px" }}>%, прихода</th>
+          <th style={{ borderRight: "1px solid black", minWidth: "100.8px" }}>Format</th>
+          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Limit</th>
+          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Coming</th>
+          <th style={{ borderRight: "1px solid black", minWidth: "70.8px" }}>Pair</th>
+          <th style={{ minWidth: "70.8px" }}>%, coming</th>
         </tr>
       </th>
     ),
@@ -703,11 +714,11 @@ export const allCitiesTableMock = [
     ),
   },
   {
-    column: "ЗАМЕТКА",
+    column: "System",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-        ЗАМЕТКА
+        System
       </th>
     ),
     firstRow: () => <th></th>,
@@ -804,11 +815,11 @@ export const allCitiesTableMock = [
     ),
   },
   {
-    column: "Удалить",
+    column: "Delete",
     value: true,
     header: () => (
       <th className="basesTableCell" style={{ maxWidth: "75px" }}>
-        Удалить
+        Delete
       </th>
     ),
     firstRow: () => <th></th>,

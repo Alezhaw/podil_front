@@ -18,13 +18,33 @@ export const socket = io.connect(defaultUrl);
 
 function App() {
   const dispatch = useDispatch();
-  const { user, storedCities, bases, countryForCheck } = useAppSelector((store) => store.user);
+  const { user, storedCities, bases, countryForCheck, selectedLang } = useAppSelector((store) => store.user);
 
   useEffect(() => {
     if (user?.email) {
       socket.emit("join", { name: "1", room: "1" });
     }
   }, [user]);
+
+  useEffect(() => {
+    selectLocale();
+    // eslint-disable-next-line
+  }, [selectedLang]);
+
+  async function selectLocale() {
+    let texts = {};
+    try {
+      const module = await import(`./localeTexts/${selectedLang?.toLowerCase() || "en"}`);
+      texts = module?.texts;
+    } catch (e) {
+      const module = await import(`./localeTexts/en`);
+      texts = module?.texts;
+    }
+    dispatch({
+      type: reducerTypes.GET_SELECTED_LOCALE,
+      payload: texts,
+    });
+  }
 
   useEffect(() => {
     socket.on("updateCities", ({ data }) => {
@@ -113,6 +133,7 @@ function App() {
         <Route path="/adminPanel/city/:id_for_base" element={<CityID />} />
         <Route path="/adminPanel/RU/:id_for_base" element={<CityID country="RU" />} />
         <Route path="/adminPanel/KZ/:id_for_base" element={<CityID country="KZ" />} />
+        <Route path="/adminPanel/PL/:id_for_base" element={<CityID country="PL" />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />
         <Route path="/login/" element={<UserInput />} />

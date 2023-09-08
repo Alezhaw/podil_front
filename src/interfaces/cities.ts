@@ -14,8 +14,11 @@ export interface ICities {
   date: Date | null;
   population: number | null;
   city_note: string | null;
+  calling_scheme: string | null;
   timezone: number | null;
   limit: number | null;
+  time_unlocking_the_city: string | null;
+  start_time_ringing: Date | null;
   add_scenario: string | null;
   scenario: string | null;
   verification_dkj: string | null;
@@ -58,4 +61,6 @@ export interface ICities {
   check_speaker: boolean | null;
   check_scenario: boolean | null;
   status: number | null;
+  l_p_for_pl: string | null;
+  explains_for_pl: string | null;
 }

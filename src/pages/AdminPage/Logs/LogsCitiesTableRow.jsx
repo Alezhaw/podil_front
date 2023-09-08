@@ -13,7 +13,7 @@ function LogsCitiesTableRow({ items, getCorrectTime }) {
         <th className="default-col not-bold">{generalItem.country}</th>
         <th className="default-col not-bold">{generalItem.action}</th>
         <th className="default-col not-bold">{generalItem.differencesLength}</th>
-        <th className="miasto-col not-bold col-padding">{generalItem.city_lokal}</th>
+        <th className="miasto-col not-bold col-padding">{generalItem.miasto_lokal}</th>
         <th className="default-col not-bold">{getCorrectTime(generalItem)}</th>
         <th className="default-col not-bold">{generalItem.user_email}</th>
       </tr>
@@ -25,7 +25,7 @@ function LogsCitiesTableRow({ items, getCorrectTime }) {
               item.differences?.map((el, index) => (
                 <tr key={`${index} ${generalItem.id}`}>
                   <th className="not-bold differences-col" colSpan="8">
-                    {item.godzina && `время: ${item.godzina} | `} {el[0]}: {el[1]} {"=>"} {el[2]}
+                    {item.godzina && `time: ${item.godzina} | `} {el[0]}: {el[1]} {"=>"} {el[2]}
                   </th>
                 </tr>
               ))

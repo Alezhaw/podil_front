@@ -5,6 +5,7 @@ export interface IBase {
   stat_1: string | null;
   stat_2: string | null;
   stat_3: string | null;
+  stat_4: string | null;
   type: string | null;
   sort: string | null;
   sogl_1: number | null;

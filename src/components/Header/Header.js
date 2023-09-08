@@ -78,13 +78,13 @@ function Header() {
                 ) : (
                   <li className="nav-detail_item">
                     <Link className="nav-detail_link" to="/adminPanel">
-                      Админ панель
+                      Podil
                     </Link>
                   </li>
                 )}
                 <li className="nav-detail_item border-exit">
                   <Link onClick={logOut} className="nav-detail_link" to="/">
-                    Выход
+                    Log out
                   </Link>
                 </li>
               </ul>
@@ -93,10 +93,10 @@ function Header() {
         ) : (
           <div className="flex-nav-link-registr ">
             <Link className="color-nav-link color" to="/login" style={{ display: "flex", flexDirection: "row" }}>
-              Войти <div style={{ width: "1px", height: "12px", border: "0.5px solid rgb(170, 170, 171)", position: "relative", left: "12.5px", top: "6px" }}></div>
+              Sign in <div style={{ width: "1px", height: "12px", border: "0.5px solid rgb(170, 170, 171)", position: "relative", left: "12.5px", top: "6px" }}></div>
             </Link>
             <Link className="color-nav-link color" to="/registr">
-              Регистрация
+              Registration
             </Link>
           </div>
         )}

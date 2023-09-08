@@ -15,19 +15,19 @@ function DropdownBaseTable({ item, country }) {
       setNewBases([{ id: 1, id_for_base: item.id_for_base }]);
       if (result.update) {
         await getBasesForCity(item);
-        alert("Обновлено");
+        alert("Updated");
       } else {
         if (result.notIdForBase) {
           return alert("Не указан id_for_base");
         }
         if (result.bases[0]) {
           await getBasesForCity(item);
-          return alert("Успешно создано");
+          return alert("Created");
         }
-        alert("Нет изменений");
+        alert("Not changes");
       }
     } catch (e) {
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -38,7 +38,7 @@ function DropdownBaseTable({ item, country }) {
       await getBasesForCity(item);
       alert("Success");
     } catch (e) {
-      alert("Что-то пошло не так");
+      alert("Something went wrong");
     }
   }
 
@@ -116,10 +116,10 @@ function DropdownBaseTable({ item, country }) {
           onClick={async () => createBase(currentBases, newBases, item)}
           style={{ color: "black", fontSize: "30px", position: "absolute", top: "-35px", left: "200px", transform: "translate(-50%, -50%)" }}
         >
-          Внести изменения
+          Apply changes
         </Button>
         <Button onClick={async () => deleteBase(deleteBases, item)} style={{ color: "black", fontSize: "30px", position: "absolute", top: "-35px", left: "450px", transform: "translate(-50%, -50%)" }}>
-          Удалить
+          Delete
         </Button>
       </>
     </div>

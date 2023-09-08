@@ -834,7 +834,7 @@ export const allCitiesTableMock = (locale) => {
           </th>
           <tr style={{ background: "none" }}>
             <th style={{ borderRight: "1px solid black", maxWidth: "70.8px", height: "55px" }}>{messages.sms_consent}</th>
-            <th style={{ maxWidth: "95px" }}>{messages.confirmation}</th>
+            <th style={{ maxWidth: "95px" }}>{messages.sms_confirmation}</th>
           </tr>
         </th>
       ),

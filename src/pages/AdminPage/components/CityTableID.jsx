@@ -2,7 +2,7 @@ import { Container, Button } from "@material-ui/core";
 import { MenuItem, FormControl, Select } from "@mui/material";
 import { citiesStatus } from "../../../components/mock/OutputMock";
 
-function CityTableID({ setCity, currentCities, deleteTime, country }) {
+function CityTableID({ setCity, currentCities, deleteTime, country, messages }) {
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }
@@ -43,48 +43,48 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                 ""
               )}
             </th>
-            <th className="basesTableCell">L.p</th>
-            <th className="basesTableCell">Time</th>
-            <th className="basesTableCell">Сoming</th>
-            <th className="basesTableCell">Pair</th>
-            <th className="basesTableCell">Wyjasnienia</th>
-            <th className="basesTableCell">Projekt spzedazowy</th>
-            <th className="basesTableCell">Timezone</th>
-            <th className="basesTableCell">Region</th>
-            <th className="basesTableCell">City / Lokal</th>
-            <th className="basesTableCell">Address</th>
-            <th className="basesTableCell">Institution</th>
-            <th className="basesTableCell">Hall</th>
-            <th className="basesTableCell">Date</th>
-            <th className="basesTableCell">Population</th>
-            <th className="basesTableCell">System</th>
-            <th className="basesTableCell">Schemat dzwonienia</th>
-            <th className="basesTableCell">Limit</th>
+            <th className="basesTableCell">{messages.lp}</th>
+            <th className="basesTableCell">{messages.time}</th>
+            <th className="basesTableCell">{messages.coming}</th>
+            <th className="basesTableCell">{messages.couples}</th>
+            <th className="basesTableCell">{messages.explains}</th>
+            <th className="basesTableCell">{messages.project}</th>
+            <th className="basesTableCell">{messages.timezone}</th>
+            <th className="basesTableCell">{messages.region}</th>
+            <th className="basesTableCell">{messages.city_lokal}</th>
+            <th className="basesTableCell">{messages.address}</th>
+            <th className="basesTableCell">{messages.institution}</th>
+            <th className="basesTableCell">{messages.hall}</th>
+            <th className="basesTableCell">{messages.date}</th>
+            <th className="basesTableCell">{messages.population}</th>
+            <th className="basesTableCell">{messages.note}</th>
+            <th className="basesTableCell">{messages.city_id_system}</th>
+            <th className="basesTableCell">{messages.limit}</th>
             <th className="basesTableCell" style={{ minWidth: "160px" }}>
-              Status
+              {messages.status}
             </th>
-            <th className="basesTableCell">During</th>
-            <th className="basesTableCell">Closed</th>
-            <th className="basesTableCell">Add numbers</th>
-            <th className="basesTableCell">Scenario</th>
-            <th className="basesTableCell">Werefication DKJ</th>
-            <th className="basesTableCell">Podpinanie scenariuszy</th>
-            <th className="basesTableCell">Projekt umowieniowy</th>
-            <th className="basesTableCell">Numbers_for_1_consent</th>
-            <th className="basesTableCell">WB 1</th>
-            <th className="basesTableCell">WB 2</th>
-            <th className="basesTableCell">quantity invites</th>
+            <th className="basesTableCell">{messages.during}</th>
+            <th className="basesTableCell">{messages.closed_mock}</th>
+            <th className="basesTableCell">{messages.add_scenario}</th>
+            <th className="basesTableCell">{messages.scenario}</th>
+            <th className="basesTableCell">{messages.verification_dkj}</th>
+            <th className="basesTableCell">{messages.undermining_scenariuszy}</th>
+            <th className="basesTableCell">{messages.present}</th>
+            <th className="basesTableCell">{messages.numbers_for_1_consent}</th>
+            <th className="basesTableCell">{messages.wb_1}</th>
+            <th className="basesTableCell">{messages.wb_2}</th>
+            <th className="basesTableCell">{messages.quantity_invites}</th>
             <th className="basesTableCell" style={{ background: "#c8ff03", color: "black" }}>
-              Consents another city
+              {messages.consent_another_city}
             </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
-                <th>Topical quantity consent</th>
+                <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
+                <th>{messages.topical_quantity_invites}</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
-                  1 dzień
+                  {messages.day_1}
                 </th>
               </tr>
               <tr>
@@ -107,12 +107,12 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
-                <th>Topical quantity consent</th>
+                <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
+                <th>{messages.topical_quantity_invites}</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
-                  2 dzień
+                  {messages.day_2}
                 </th>
               </tr>
               <tr>
@@ -135,12 +135,12 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th colSpan="2" style={{ border: "1px solid black" }}>
               <tr>
-                <th style={{ borderRight: "1px solid black" }}>Numbers for 1 consent</th>
-                <th>Topical quantity consent</th>
+                <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
+                <th>{messages.topical_quantity_invites}</th>
               </tr>
               <tr>
                 <th colSpan="2" style={{ borderTop: "1px solid black", borderBottom: "1px solid black" }}>
-                  3 dzień
+                  {messages.day_3}
                 </th>
               </tr>
               <tr>
@@ -163,35 +163,35 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
             </th>
             <th colSpan="6" style={{ border: "1px solid black" }}>
               <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
-                VIP
+                {messages.vip}
               </th>
               <tr style={{ height: "55px" }}>
-                <th style={{ borderRight: "1px solid black", width: "100px" }}>ID</th>
-                <th style={{ borderRight: "1px solid black", width: "100px" }}>Format</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Limit</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Coming</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Pair</th>
-                <th style={{ width: "70.89px" }}>%, coming</th>
+                <th style={{ borderRight: "1px solid black", width: "100px" }}>{messages.vip_id}</th>
+                <th style={{ borderRight: "1px solid black", width: "100px" }}>{messages.vip_format}</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>{messages.vip_limit}</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>{messages.vip_coming}</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>{messages.vip_total_steam}</th>
+                <th style={{ width: "70.89px" }}>{messages.vip_percent_coming}</th>
               </tr>
             </th>
-            <th className="basesTableCell">System</th>
+            <th className="basesTableCell">{messages.system}</th>
             <th colSpan="3" style={{ border: "1px solid black" }}>
               <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
-                WYNIKI POTWIERDZEŃ
+                {messages.confirmation}
               </th>
               <tr>
-                <th style={{ borderRight: "1px solid black", width: "70.89px", height: "55px" }}>Zgoda</th>
-                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>Odmowy</th>
-                <th style={{ width: "70.89px" }}>Kropki</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px", height: "55px" }}>{messages.consent_results_confirmation}</th>
+                <th style={{ borderRight: "1px solid black", width: "70.89px" }}>{messages.refusal_results_confirmation}</th>
+                <th style={{ width: "70.89px" }}>{messages.dots_results_confirmation}</th>
               </tr>
             </th>
             <th colSpan="2" style={{ border: "1px solid black", minWidth: "220px" }}>
               <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px", width: "220px" }}>
-                SMS
+                {messages.sms}
               </th>
               <tr>
-                <th style={{ borderRight: "1px solid black", width: "110px", height: "55px" }}>Umawianie</th>
-                <th>Potwierdzanie</th>
+                <th style={{ borderRight: "1px solid black", width: "110px", height: "55px" }}>{messages.sms_consent}</th>
+                <th>{messages.sms_confirmation}</th>
               </tr>
             </th>
           </tr>
@@ -210,7 +210,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country }) {
                     }
                   }}
                 >
-                  Delete
+                  {messages.delete}
                 </Button>
               </td>
               {index === 0 ? (

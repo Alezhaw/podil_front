@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
@@ -14,7 +14,7 @@ function CityID({ country }) {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
   const statebackground = !!localStorage.getItem("backroundImg");
-  const { user, storedCities, bases } = useAppSelector((store) => store.user);
+  const { user, storedCities, bases, locale } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -25,6 +25,70 @@ function CityID({ country }) {
   const [newBase, setNewBase] = useState({});
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  const messages = useMemo(() => {
+    return {
+      return: locale["return"],
+      delete: locale["delete"],
+      apply: locale["city_id_apply"],
+      apply_for_bases: locale["city_id_apply_for_bases"],
+      new_base: locale["city_id_new_base"],
+      headers: {
+        delete: locale["delete"],
+        lp: locale["l_p"],
+        time: locale["time"],
+        coming: locale["coming"],
+        couples: locale["couples"],
+        explains: locale["explains"],
+        project: locale["project"],
+        timezone: locale["timezone"],
+        region: locale["region"],
+        address: locale["address"],
+        institution: locale["institution"],
+        hall: locale["hall"],
+        date: locale["date"],
+        population: locale["population"],
+        city_lokal: locale["city_lokal"],
+        city_id_system: locale["city_id_system"],
+        note: locale["note"],
+        limit: locale["limit"],
+        status: locale["status"],
+        during: locale["during"],
+        closed_mock: locale["closed_mock"],
+        add_scenario: locale["add_scenario"],
+        scenario: locale["scenario"],
+        verification_dkj: locale["verification_dkj"],
+        undermining_scenariuszy: locale["undermining_scenariuszy"],
+        present: locale["present"],
+        numbers_for_1_consent: locale["numbers_for_1_consent"],
+        wb_1: locale["wb_1"],
+        wb_2: locale["wb_2"],
+        quantity_invites: locale["quantity_invites"],
+        consent_another_city: locale["consent_another_city"],
+        numbers_for_consent: locale["numbers_for_consent"],
+        topical_quantity_invites: locale["topical_quantity_invites"],
+        days_statictic: locale["days_statictic"],
+        day_1: locale["day_1"],
+        day_2: locale["day_2"],
+        day_3: locale["day_3"],
+        vip: locale["vip"],
+        vip_id: locale["vip_id"],
+        vip_format: locale["vip_format"],
+        vip_limit: locale["vip_limit"],
+        vip_coming: locale["vip_coming"],
+        vip_total_steam: locale["vip_total_steam"],
+        vip_percent_coming: locale["vip_percent_coming"],
+        system: locale["system"],
+        confirmation: locale["confirmation"],
+        consent_results_confirmation: locale["consent_results_confirmation"],
+        refusal_results_confirmation: locale["refusal_results_confirmation"],
+        dots_results_confirmation: locale["dots_results_confirmation"],
+        sms: locale["sms"],
+        sms_consent: locale["sms_consent"],
+        sms_confirmation: locale["sms_confirmation"],
+      },
+    };
+  }, [locale]);
 
   async function getCity(id_for_base) {
     const data = await Podzial.getOneCity(Number(id_for_base) || 0, country);
@@ -176,12 +240,12 @@ function CityID({ country }) {
             }}
           >
             <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
-              Return
+              {messages.return}
             </div>
           </div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} />
+              <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} messages={messages.headers} />
             </div>
             <div
               style={{
@@ -192,7 +256,7 @@ function CityID({ country }) {
               }}
             >
               <div className="tabl-flex-admin-button-global" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
-                Apply changes
+                {messages.apply}
               </div>
             </div>
             <div>
@@ -220,18 +284,18 @@ function CityID({ country }) {
               >
                 <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
                   <div className="tabl-flex-admin-button-global" onClick={() => createBase(currentBases)}>
-                    Apply changes for bases
+                    {messages.apply_for_bases}
                   </div>
                 </div>
                 <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
                   <div className="tabl-flex-admin-button-global" onClick={() => deleteBase(deleteBases)}>
-                    Delete
+                    {messages.delete}
                   </div>
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: "40px" }}>
                 <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-                  New Base
+                  {messages.new_base}
                 </div>
               </div>
               {isOpen ? (

@@ -103,15 +103,15 @@ function CheckScenario({ country }) {
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheck") || "[]");
     if (savedFilterColumns.length > 0) {
-      const updatedFilterColumns = [...allCitiesTableMock?.slice(0, 10)].map((el) => {
+      const updatedFilterColumns = [...allCitiesTableMock(locale)?.slice(0, 10)].map((el) => {
         const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
         return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
       });
       setFilterColumns(updatedFilterColumns);
     } else {
-      setFilterColumns(allCitiesTableMock?.slice(0, 10));
+      setFilterColumns(allCitiesTableMock(locale)?.slice(0, 10));
     }
-  }, [allCitiesTableMock]);
+  }, [locale]);
 
   useEffect(() => {
     setCities(

@@ -144,15 +144,15 @@ function AllCities({ country }) {
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
     if (savedFilterColumns.length > 0) {
-      const updatedFilterColumns = allCitiesTableMock.map((el) => {
+      const updatedFilterColumns = allCitiesTableMock(locale).map((el) => {
         const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
         return existingCheckValue ? { ...el, value: existingCheckValue.value } : el;
       });
       setFilterColumns(updatedFilterColumns);
     } else {
-      setFilterColumns(allCitiesTableMock);
+      setFilterColumns(allCitiesTableMock(locale));
     }
-  }, [allCitiesTableMock]);
+  }, [locale]);
 
   return (
     <>

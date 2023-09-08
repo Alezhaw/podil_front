@@ -78,7 +78,7 @@ function CheckScenario({ country }) {
   }
 
   useEffect(() => {
-    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheck") || "[]");
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheckScenario") || "[]");
     if (savedFilterColumns.length > 0) {
       const updatedFilterColumns = [...allCitiesTableMock?.slice(0, 10)].map((el) => {
         const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
@@ -177,7 +177,7 @@ function CheckScenario({ country }) {
                     return fc;
                   });
                   setFilterColumns(updatedFilterColumns);
-                  localStorage.setItem("filterColumnsCheck", JSON.stringify(updatedFilterColumns));
+                  localStorage.setItem("filterColumnsCheckScenario", JSON.stringify(updatedFilterColumns));
                   e.stopPropagation();
                 }}
                 href=""

@@ -21,6 +21,7 @@ function AllCities({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterDate, setFilterDate] = useState({});
   const [filterColumns, setFilterColumns] = useState([]);
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterZamkniete, setFilterZamkniete] = useState(true);
@@ -51,10 +52,12 @@ function AllCities({ country }) {
       sort: locale["sort"],
       delete: locale["delete"],
       items_per_page: locale["items_per_page"],
+      from: locale["from"],
+      to: locale["to"],
     };
   }, [locale]);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
       page: page + 1,
@@ -65,6 +68,7 @@ function AllCities({ country }) {
       zamkniete: filterZamkniete,
       canceled: filterCanceled,
       country,
+      filterDate,
     });
     setLoadingSpinner(true);
     if (data) {
@@ -94,14 +98,14 @@ function AllCities({ country }) {
     const city = [firstTime, secondTime, thirdTime].filter((el) => !!el.time);
     const result = await Podzial.createCities(city, country);
     if (result[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate });
       alert("Sucess");
       setFirstTime({});
       setSecondTime({});
       setThirdTime({});
       setIsOpen(false);
     } else {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate });
       if (result.updated[0]) return alert("Updated");
       if (result.not_id_for_base) return alert("Не указан id_for_base");
       alert("Something went wrong");
@@ -130,15 +134,15 @@ function AllCities({ country }) {
 
   useEffect(() => {
     if (!storedCities[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country, filterDate]);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumns") || "[]");
@@ -156,27 +160,52 @@ function AllCities({ country }) {
   return (
     <>
       <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
-        <StyledInput
-          className="tabl-flex-admin-search"
-          style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
-          type="search"
-          id="Search"
-          value={searchForInput}
-          placeholder={messages.search}
-          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
-          onBlur={(e) => {
-            setPage(0);
-            setSearch(e.target.value?.toLowerCase()?.trim());
-          }}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
+        <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+          <StyledInput
+            className="tabl-flex-admin-search"
+            style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
+            type="search"
+            id="Search"
+            value={searchForInput}
+            placeholder={messages.search}
+            onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+            onBlur={(e) => {
               setPage(0);
               setSearch(e.target.value?.toLowerCase()?.trim());
-            }
-          }}
-          autoComplete="off"
-          required
-        />
+            }}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                setPage(0);
+                setSearch(e.target.value?.toLowerCase()?.trim());
+              }
+            }}
+            autoComplete="off"
+            required
+          />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>
+              {messages.from}{" "}
+              <input
+                onChange={(e) => setFilterDate((prev) => ({ ...prev, dateFrom: e.target.value }))}
+                className="tableInput"
+                style={{ color: "white", colorScheme: "dark" }}
+                type="date"
+                value={filterDate.dateFrom || "0000-00-00"}
+              />
+            </span>
+
+            <span>
+              {messages.to}{" "}
+              <input
+                onChange={(e) => setFilterDate((prev) => ({ ...prev, dateTo: e.target.value }))}
+                className="tableInput"
+                style={{ color: "white", colorScheme: "dark" }}
+                type="date"
+                value={filterDate.dateTo || "0000-00-00"}
+              />
+            </span>
+          </div>
+        </div>
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", zIndex: 10 }}>
           <h5 style={{ margin: "0" }}>{messages.canceled}</h5>{" "}
@@ -305,7 +334,7 @@ function AllCities({ country }) {
             try {
               await Promise.all(deleteCities?.map(async (id_for_base) => await Podzial.deleteCity(Number(id_for_base), country)));
               setDeleteCities([]);
-              await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country });
+              await Podzial.getFilteredCities({ page: page + 1, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, country, filterDate });
               alert("Success");
             } catch (e) {
               alert("Something went wrong");

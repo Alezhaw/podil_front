@@ -63,6 +63,8 @@ export const texts = {
   hall: "Зал",
   date: "Дата",
   population: "Население",
+  to: "ДО",
+  from: "ОТ",
   admin_panel_users: "ВСЕ ПОЛЬЗОВАТЕЛИ",
   admin_panel_podil: "ПОДИЛ",
   admin_panel_bases: "БАЗЫ",

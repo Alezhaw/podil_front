@@ -63,6 +63,8 @@ export const texts = {
   hall: "Hall",
   date: "Sala",
   population: "Populacja",
+  to: "DO",
+  from: "Z",
   all_users_title: "UŻYTKOWNICY",
   all_users_id: "ID",
   all_users_username: "Nazwa użytkownika",

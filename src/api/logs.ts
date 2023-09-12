@@ -47,11 +47,7 @@ export const axiosGetFilteredLogsCity = async ({
       controllerGetFilteredLogsCity.abort();
     }
     controllerGetFilteredLogsCity = new AbortController();
-    const { data } = await axios.post(
-      "api/log/searchCity",
-      { pageSize, page, search, country, updateFilter, createFilter, deleteFilter },
-      { signal: controllerGetFilteredLogsCity.signal }
-    );
+    const { data } = await axios.post("api/log/searchCity", { pageSize, page, search, country, updateFilter, createFilter, deleteFilter }, { signal: controllerGetFilteredLogsCity.signal });
     return {
       ...data,
       logs: data.logs?.map((item: any) => {
@@ -110,11 +106,7 @@ export const axiosGetFilteredLogsBases = async ({
       controllerGetFilteredLogsBase.abort();
     }
     controllerGetFilteredLogsBase = new AbortController();
-    const { data } = await axios.post(
-      "api/log/searchBase",
-      { pageSize, page, search, country, updateFilter, createFilter, deleteFilter },
-      { signal: controllerGetFilteredLogsBase.signal }
-    );
+    const { data } = await axios.post("api/log/searchBase", { pageSize, page, search, country, updateFilter, createFilter, deleteFilter }, { signal: controllerGetFilteredLogsBase.signal });
     return {
       ...data,
       logs: data.logs.map((item: any) => {

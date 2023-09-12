@@ -139,7 +139,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ item }) => (
         <th className="basesTableCell">
           <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
-            {item.os_poj || ""}
+            {item.coming || ""}
           </div>
         </th>
       ),

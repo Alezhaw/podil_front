@@ -51,6 +51,7 @@ export const getFilteredCities = async ({
   canceled,
   search = "",
   country = "",
+  filterDate,
 }: {
   pageSize: number;
   page: number;
@@ -69,6 +70,7 @@ export const getFilteredCities = async ({
   speakerCanceled: boolean;
   sort: boolean;
   country: string;
+  filterDate: { dateFrom: string; dateTo: string } | {};
 }) => {
   try {
     if (controllerGetFilteredCities !== null) {
@@ -94,6 +96,7 @@ export const getFilteredCities = async ({
           zamkniete,
           inProgress,
           canceled,
+          ...filterDate,
         },
         search,
         country,

@@ -20,6 +20,7 @@ function CheckScenario({ country }) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
+  const [filterDate, setFilterDate] = useState({});
   const [filterInProgress, setFilterInProgress] = useState(true);
   const [filterComplete, setFilterComplete] = useState(true);
   const [filterCanceled, setFilterCanceled] = useState(false);
@@ -44,10 +45,12 @@ function CheckScenario({ country }) {
       columns: locale["columns"],
       sort: locale["sort"],
       items_per_page: locale["items_per_page"],
+      from: locale["from"],
+      to: locale["to"],
     };
   }, [locale]);
 
-  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled }) {
+  async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
       page: page + 1,
@@ -58,6 +61,7 @@ function CheckScenario({ country }) {
       scenarioZamkniete: filterComplete,
       scenarioCanceled: filterCanceled,
       country,
+      filterDate,
     });
     if (data) {
       setLoadingSpinner(true);
@@ -74,7 +78,7 @@ function CheckScenario({ country }) {
     if (!checkConfirm) return;
     const data = await Podzial.changeCheck(Number(id_for_base), null, country, null, checked);
     if (data) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate });
     } else {
       alert(`Something went wrong ${id_for_base}`);
     }
@@ -124,40 +128,65 @@ function CheckScenario({ country }) {
 
   useEffect(() => {
     if (!storedCities[0]) {
-      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+      getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate });
     }
     // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled });
+    getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate });
     // eslint-disable-next-line
-  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, country]);
+  }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, country, filterDate]);
 
   return (
     <>
       <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
-        <StyledInput
-          className="tabl-flex-admin-search"
-          style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
-          type="search"
-          id="Search"
-          value={searchForInput}
-          placeholder={messages.search}
-          onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
-          onBlur={(e) => {
-            setPage(0);
-            setSearch(e.target.value?.toLowerCase()?.trim());
-          }}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
+        <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+          <StyledInput
+            className="tabl-flex-admin-search"
+            style={{ color: "white", borderRadius: "5px", paddingLeft: "10px" }}
+            type="search"
+            id="Search"
+            value={searchForInput}
+            placeholder={messages.search}
+            onChange={(e) => setSearchForInput(e.target.value?.toLowerCase())}
+            onBlur={(e) => {
               setPage(0);
               setSearch(e.target.value?.toLowerCase()?.trim());
-            }
-          }}
-          autoComplete="off"
-          required
-        />
+            }}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                setPage(0);
+                setSearch(e.target.value?.toLowerCase()?.trim());
+              }
+            }}
+            autoComplete="off"
+            required
+          />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>
+              {messages.from}{" "}
+              <input
+                onChange={(e) => setFilterDate((prev) => ({ ...prev, dateFrom: e.target.value }))}
+                className="tableInput"
+                style={{ color: "white", colorScheme: "dark" }}
+                type="date"
+                value={filterDate.dateFrom || "0000-00-00"}
+              />
+            </span>
+
+            <span>
+              {messages.to}{" "}
+              <input
+                onChange={(e) => setFilterDate((prev) => ({ ...prev, dateTo: e.target.value }))}
+                className="tableInput"
+                style={{ color: "white", colorScheme: "dark" }}
+                type="date"
+                value={filterDate.dateTo || "0000-00-00"}
+              />
+            </span>
+          </div>
+        </div>
 
         <div className="tabl-flex-admin-filtr" style={{ borderRadius: "5px", position: "relative", zIndex: 1000 }}>
           <h5 style={{ margin: "0" }}>{messages.canceled}</h5>{" "}

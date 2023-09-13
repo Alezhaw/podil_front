@@ -112,7 +112,7 @@ function CityID({ country }) {
 
   async function createCity(firstTime, secondTime, thirdTime) {
     const city = [firstTime, secondTime, thirdTime]?.filter((el) => !!el.time);
-    const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    // const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
     const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
     if (result[0]?.error) {
@@ -176,9 +176,7 @@ function CityID({ country }) {
       temporaryCities
         ?.sort((a, b) => getFormatTime(a) - getFormatTime(b))
         ?.slice(0, 3)
-        .map((item, index) => {
-          setCity[index](item);
-        });
+        .map((item, index) => setCity[index](item));
       setNewBase((prev) => ({ ...prev, id_for_base: temporaryCities[0]?.id_for_base }));
     }
     // eslint-disable-next-line
@@ -238,11 +236,7 @@ function CityID({ country }) {
               marginTop: "10px",
               color: "white",
             }}
-          >
-            <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2">
-              {messages.return}
-            </div>
-          </div>
+          ></div>
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
               <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} messages={messages.headers} />
@@ -255,8 +249,13 @@ function CityID({ country }) {
                 justifyContent: "center",
               }}
             >
-              <div className="tabl-flex-admin-button-global" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
-                {messages.apply}
+              <div style={{ display: "flex", flexDirection: "row", gap: "30px" }}>
+                <div className="tabl-flex-admin-button-global" onClick={() => createCity(firstTime, secondTime, thirdTime)}>
+                  {messages.apply}
+                </div>
+                <div onClick={() => navigate("/adminPanel")} className="tabl-flex-admin-button-global2" style={{ textAlign: "center", padding: "0px 50px" }}>
+                  {messages.return}
+                </div>
               </div>
             </div>
             <div>

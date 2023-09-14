@@ -8,7 +8,7 @@ import { ILogsBase } from "../../interfaces/logsBase";
 
 export interface IUsersReducer {
   user: IUser | {};
-  allUsers: any | [];
+  allUsers: IUser[] | [];
   citiesRu: ICities[] | [];
   storedCities: ICities[] | [];
   citiesKz: ICities[] | [];

@@ -14,6 +14,7 @@ import LogsBases from "./Logs/LogsBases";
 import MenuItemForPanel from "./components/MenuItemForPanel";
 import { useAppSelector } from "../../store/reduxHooks";
 import AllTrails from "./Trails/AllTrails";
+import AllTrailsDictionary from "./Trails/AllTrailsDictionary";
 
 function AdminPanel() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function AdminPanel() {
   const countries = ["RU", "KZ", "PL"];
   const [anchorElDivision, setAnchorElDivision] = useState(null);
   const [anchorElTrails, setAnchorElTrails] = useState(null); //for trails
+  const [anchorElTrailsDictionary, setAnchorElTrailsDictionary] = useState(null); //for trails
   const [anchorElBase, setAnchorElBase] = useState(null);
   const [anchorElSpeaker, setAnchorElSpeaker] = useState(null);
   const [anchorElScenario, setAnchorElScenario] = useState(null);
@@ -31,6 +33,7 @@ function AdminPanel() {
   const [anchorElLanguages, setAnchorElLanguages] = useState(null);
   const divisionMenuOpen = Boolean(anchorElDivision);
   const trailsMenuOpen = Boolean(anchorElTrails); //for trails
+  const trailsDictionaryMenuOpen = Boolean(anchorElTrailsDictionary); //for trails
   const baseMenuOpen = Boolean(anchorElBase);
   const speakerMenuOpen = Boolean(anchorElSpeaker);
   const scenarioMenuOpen = Boolean(anchorElScenario);
@@ -41,9 +44,11 @@ function AdminPanel() {
   const speakerItems = [11, 12, 18];
   const scenarioItems = [13, 14, 19];
   const trailsItems = [4, 5, 6]; //for trails
+  const trailsDictionaryItems = [21, 22, 23]; //for trails
   const languages = ["EN", "PL", "RU"];
   const [divisionPage, setDivisionPage] = useState();
   const [trailsPage, setTrailsPage] = useState();
+  const [trailsDictionaryPage, setTrailsDictionaryPage] = useState();
   const [basePage, setBasePage] = useState();
   const [speakerPage, setSpeakerPage] = useState();
   const [scenarioPage, setScenarioPage] = useState();
@@ -55,6 +60,7 @@ function AdminPanel() {
       users: locale["admin_panel_users"],
       podil: locale["admin_panel_podil"],
       trails: locale["admin_panel_trails"],
+      trailsDictionary: locale["admin_panel_trails_dictionary"],
       bases: locale["admin_panel_bases"],
       speaker: locale["admin_panel_speaker"],
       scenario: locale["admin_panel_scenario"],
@@ -77,6 +83,7 @@ function AdminPanel() {
   function visibleItem(name) {
     setDivisionPage(` ${messages.podil} `);
     setTrailsPage(`${messages.trails}`);
+    setTrailsDictionaryPage(`${messages.trailsDictionary}`);
     setBasePage(` ${messages.bases} `);
     setSpeakerPage(` ${messages.speaker} `);
     setScenarioPage(` ${messages.scenario} `);
@@ -136,6 +143,24 @@ function AdminPanel() {
         return (
           <div style={{ display: "block" }}>
             <AllTrails country="PL" />
+          </div>
+        );
+      case 21:
+        return (
+          <div style={{ display: "block", width: "100%" }}>
+            <AllTrailsDictionary country="RU" />
+          </div>
+        );
+      case 22:
+        return (
+          <div style={{ display: "block" }}>
+            <AllTrailsDictionary country="KZ" />
+          </div>
+        );
+      case 23:
+        return (
+          <div style={{ display: "block" }}>
+            <AllTrailsDictionary country="PL" />
           </div>
         );
       case 9:
@@ -212,6 +237,7 @@ function AdminPanel() {
   useEffect(() => {
     setDivisionPage(getTitleWithCountry(messages.podil, countries, item, divisionItems));
     setTrailsPage(getTitleWithCountry(messages.trails, countries, item, trailsItems));
+    setTrailsDictionaryPage(getTitleWithCountry(messages.trailsDictionary, countries, item, trailsDictionaryItems));
     setBasePage(getTitleWithCountry(messages.bases, countries, item, baseItems));
     setSpeakerPage(getTitleWithCountry(messages.speaker, countries, item, speakerItems));
     setScenarioPage(getTitleWithCountry(messages.scenario, countries, item, scenarioItems));
@@ -264,6 +290,35 @@ function AdminPanel() {
               <MenuItemForPanel title={messages.trails} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setTrailsPage} setAnchorEl={setAnchorElTrails} />
             ))}
           </Menu>
+
+          <button
+            onClick={(e) => setAnchorElTrailsDictionary((prev) => (!!prev ? null : e.currentTarget))}
+            className={trailsDictionaryItems.filter((el) => item === el)[0] ? "block_user_panel activ-block-admin" : "block_user_panel"}
+          >
+            <h4> {trailsDictionaryPage} </h4>
+          </button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorElTrailsDictionary}
+            open={trailsDictionaryMenuOpen}
+            onClose={() => setAnchorElTrailsDictionary(null)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {trailsDictionaryItems.map((el, index) => (
+              <MenuItemForPanel
+                title={messages.trailsDictionary}
+                el={el}
+                index={index}
+                countries={countries}
+                visibleItem={visibleItem}
+                setPage={setTrailsDictionaryPage}
+                setAnchorEl={setAnchorElTrailsDictionary}
+              />
+            ))}
+          </Menu>
+
           <button
             onClick={(e) => setAnchorElBase((prev) => (!!prev ? null : e.currentTarget))}
             className={baseItems.filter((el) => item === el)[0] ? "block_user_panel activ-block-admin" : "block_user_panel"}

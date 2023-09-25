@@ -13,7 +13,7 @@ import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 import MenuItemForPanel from "./components/MenuItemForPanel";
 import { useAppSelector } from "../../store/reduxHooks";
-import TrailsPage from "./Trails/TrailsPage";
+import AllTrails from "./Trails/AllTrails";
 
 function AdminPanel() {
   const dispatch = useDispatch();
@@ -123,19 +123,19 @@ function AdminPanel() {
       case 4:
         return (
           <div style={{ display: "block", width: "100%" }}>
-            <TrailsPage country="RU" />
+            <AllTrails country="RU" />
           </div>
         );
       case 5:
         return (
           <div style={{ display: "block" }}>
-            <TrailsPage country="KZ" />
+            <AllTrails country="KZ" />
           </div>
         );
       case 6:
         return (
           <div style={{ display: "block" }}>
-            <TrailsPage country="PL" />
+            <AllTrails country="PL" />
           </div>
         );
       case 9:

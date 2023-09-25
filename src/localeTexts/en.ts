@@ -72,6 +72,7 @@ export const texts = {
   city_id_change: "Change",
   admin_panel_users: "ALL USERS",
   admin_panel_podil: "PODZIAL",
+  admin_panel_trails: "TRAILS",
   admin_panel_bases: "BASES",
   admin_panel_speaker: "SPEAKER",
   admin_panel_scenario: "SCENARIO",

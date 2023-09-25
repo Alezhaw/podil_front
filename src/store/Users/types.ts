@@ -10,6 +10,7 @@ export const reducerTypes = {
   GET_COUNTRY_FOR_CHECK: "reducer/GET_COUNTRY_FOR_CHECK",
   GET_SELECTED_LANG: "reducer/GET_SELECTED_LANG",
   GET_SELECTED_LOCALE: "reducer/GET_SELECTED_LOCALE",
+  GET_SPEAKER_TEMPLATES: "reducer/GET_SPEAKER_TEMPLATES",
 };
 
 export const sagaTypes = {

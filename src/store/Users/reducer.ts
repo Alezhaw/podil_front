@@ -5,6 +5,7 @@ import { ICities } from "../../interfaces/cities";
 import { IBase } from "../../interfaces/base";
 import { ILogsCity } from "../../interfaces/logsCity";
 import { ILogsBase } from "../../interfaces/logsBase";
+import { ISpeakerTemplates } from "../../interfaces/speakerTemplates";
 
 export interface IUsersReducer {
   user: IUser | {};
@@ -20,6 +21,7 @@ export interface IUsersReducer {
   countryForCheck: string;
   selectedLang: string;
   locale: { [key: string]: string };
+  speakerTemplates: ISpeakerTemplates[] | [];
 }
 
 export const INITIAL: IUsersReducer = {
@@ -36,6 +38,7 @@ export const INITIAL: IUsersReducer = {
   countryForCheck: "",
   selectedLang: localStorage.getItem("selected-lang") || "EN",
   locale: {},
+  speakerTemplates: [],
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -62,6 +65,8 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, selectedLang: payload };
     case reducerTypes.GET_SELECTED_LOCALE:
       return { ...state, locale: payload };
+    case reducerTypes.GET_SPEAKER_TEMPLATES:
+      return { ...state, speakerTemplates: payload };
     default:
       return state;
   }

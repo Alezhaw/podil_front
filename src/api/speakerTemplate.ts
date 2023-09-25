@@ -58,13 +58,13 @@ export const getTypeTemplates = async () => {
   }
 };
 
-export const getByTypeTemplates = async (type: number) => {
+export const getByTypeTemplates = async (type: number, country: string) => {
   try {
     if (controllerGetByTypeTemplates !== null) {
       controllerGetByTypeTemplates.abort();
     }
     controllerGetByTypeTemplates = new AbortController();
-    const { data } = await axios.post("api/speakerTemplate/getByType", { type }, { signal: controllerGetByTypeTemplates.signal });
+    const { data } = await axios.post("api/speakerTemplate/getByType", { type, country }, { signal: controllerGetByTypeTemplates.signal });
     return data;
   } catch (e) {
     if (axios.isCancel(e)) {

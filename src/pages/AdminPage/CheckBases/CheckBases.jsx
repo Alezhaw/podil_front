@@ -95,7 +95,7 @@ function CheckBases({ country }) {
   }
 
   useEffect(() => {
-    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheck") || "[]");
+    const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheckBase") || "[]");
     if (savedFilterColumns.length > 0) {
       const updatedFilterColumns = [...allCitiesTableMock(locale)?.slice(0, 10)].map((el) => {
         const existingCheckValue = savedFilterColumns.find((cv) => cv.column === el.column);
@@ -219,7 +219,7 @@ function CheckBases({ country }) {
                     return fc;
                   });
                   setFilterColumns(updatedFilterColumns);
-                  localStorage.setItem("filterColumnsCheck", JSON.stringify(updatedFilterColumns));
+                  localStorage.setItem("filterColumnsCheckBase", JSON.stringify(updatedFilterColumns));
                   e.stopPropagation();
                 }}
                 href=""

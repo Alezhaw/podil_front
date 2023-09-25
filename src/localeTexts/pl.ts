@@ -73,6 +73,7 @@ export const texts = {
   city_id_change_user_role: "Zmień rolę użytkownika",
   city_id_change: "Zmiana",
   admin_panel_users: "WSZYSCY UŻYTKOWNICY",
+  admin_panel_trails: "SZLAKI",
   admin_panel_podil: "PODZIAL",
   admin_panel_bases: "PODSTAWY",
   admin_panel_speaker: "MOWCA",

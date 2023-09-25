@@ -13,8 +13,7 @@ import LogsCities from "./Logs/LogsCities";
 import LogsBases from "./Logs/LogsBases";
 import MenuItemForPanel from "./components/MenuItemForPanel";
 import { useAppSelector } from "../../store/reduxHooks";
-import TrailsPage from "../Trails/TrailsPage";
-import { getTrailingCommentRanges } from "typescript";
+import TrailsPage from "./Trails/TrailsPage";
 
 function AdminPanel() {
   const dispatch = useDispatch();
@@ -262,7 +261,7 @@ function AdminPanel() {
             }}
           >
             {trailsItems.map((el, index) => (
-              <MenuItemForPanel title={messages.podil} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setTrailsPage} setAnchorEl={setAnchorElTrails} />
+              <MenuItemForPanel title={messages.trails} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setTrailsPage} setAnchorEl={setAnchorElTrails} />
             ))}
           </Menu>
           <button

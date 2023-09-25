@@ -101,4 +101,9 @@ export const texts = {
   logs_city: "City",
   logs_time: "Time",
   logs_user: "User",
+  trails_title: "Trails",
+  trails_new_trail: "New trail",
+  trails_city: "City",
+  trails_route: "№ Route",
+  trails_all: "All",
 };

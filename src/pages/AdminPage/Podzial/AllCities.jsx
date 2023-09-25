@@ -15,7 +15,6 @@ import Spinner from "react-bootstrap/Spinner";
 import { allCitiesTableMock } from "../../../components/mock/OutputMock";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import { getFormatTime } from "../../../utils/utils";
 
 function AllCities({ country }) {

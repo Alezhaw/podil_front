@@ -11,6 +11,8 @@ export const reducerTypes = {
   GET_SELECTED_LANG: "reducer/GET_SELECTED_LANG",
   GET_SELECTED_LOCALE: "reducer/GET_SELECTED_LOCALE",
   GET_SPEAKER_TEMPLATES: "reducer/GET_SPEAKER_TEMPLATES",
+  GET_TRAILS: "reducer/GET_TRAILS",
+  GET_PLANNING_PEOPLE: "reducer/GET_PLANNING_PEOPLE",
 };
 
 export const sagaTypes = {

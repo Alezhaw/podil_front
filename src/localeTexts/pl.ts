@@ -101,4 +101,9 @@ export const texts = {
   logs_city: "Miasto",
   logs_time: "Czas",
   logs_user: "Użytkownik",
+  trails_title: "Szlaki",
+  trails_new_trail: "Nowy szlak",
+  trails_city: "Miasto",
+  trails_route: "№ Trasy",
+  trails_all: "Wszystko",
 };

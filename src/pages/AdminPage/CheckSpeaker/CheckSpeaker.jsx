@@ -102,7 +102,7 @@ function CheckScenario({ country }) {
     } else {
       setFilterColumns(forSpeakerMock);
     }
-  }, [forSpeakerMock]);
+  }, []);
 
   useEffect(() => {
     const savedFilterColumns = JSON.parse(localStorage.getItem("filterColumnsCheckSpeaker") || "[]");

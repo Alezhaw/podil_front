@@ -68,6 +68,8 @@ export const texts = {
   admin_panel_users: "ВСЕ ПОЛЬЗОВАТЕЛИ",
   admin_panel_podil: "ПОДИЛ",
   admin_panel_trails: "ТРАССЫ",
+  admin_panel_trails_dictionary: "СЛОВАРИ ТРАСС",
+  admin_panel_edit_trails_dictionary: "Редактировать",
   admin_panel_bases: "БАЗЫ",
   admin_panel_speaker: "ДИКТОР",
   admin_panel_scenario: "СЦЕНАРИЙ",

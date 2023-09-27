@@ -106,4 +106,5 @@ export const texts = {
   trails_city: "Город",
   trails_route: "№ Трасы",
   trails_all: "Все",
+  days_of_the_week: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
 };

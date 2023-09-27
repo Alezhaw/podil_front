@@ -13,6 +13,7 @@ import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import AllTrailsTable from "../components/AllTrailsTable";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function AllTrails({ country }) {
       items_per_page: locale["items_per_page"],
       from: locale["from"],
       to: locale["to"],
+      days_of_the_week: locale["days_of_the_week"],
     };
   }, [locale]);
 
@@ -248,26 +250,41 @@ function AllTrails({ country }) {
             <table>
               <thead style={{ background: "#5a5959" }}>
                 <tr style={{ background: "none" }}>
-                  <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-                    ID
-                  </th>
+                  <th className="basesTableCell">ID</th>
+                  <th className="basesTableCell">Planning person</th>
+                  <th className="basesTableCell">Date scheduled</th>
+                  <th className="basesTableCell">Company</th>
+                  <th className="basesTableCell">City type</th>
+                  <th className="basesTableCell">Population</th>
+                  <th className="basesTableCell">Route №</th>
+                  <th className="basesTableCell">Departure dates</th>
+                  <th className="basesTableCell">Presentation date</th>
+                  <th className="basesTableCell">Presentation hours</th>
+                  <th className="basesTableCell">Rental hours</th>
+                  <th className="basesTableCell">Region</th>
+                  <th className="basesTableCell">City</th>
+                  <th className="basesTableCell">Institution</th>
+                  <th className="basesTableCell">Address</th>
+                  <th className="basesTableCell">Reservation status</th>
+                  <th className="basesTableCell">Alternative</th>
+                  <th className="basesTableCell">Telephone</th>
+                  <th className="basesTableCell">Cost</th>
+                  <th className="basesTableCell">Payment method</th>
+                  <th className="basesTableCell">Contract status</th>
+                  <th className="basesTableCell">Comment</th>
+                  <th className="basesTableCell">Send to Podil</th>
+                  <th className="basesTableCell">Send to Bases</th>
+                  <th className="basesTableCell">Send to speaker</th>
+                  <th className="basesTableCell">Send to Scenario</th>
+                  <th className="basesTableCell">Autozonning</th>
+                  <th className="basesTableCell">Date of the previous presentation</th>
+                  <th className="basesTableCell">Project sales</th>
+                  <th className="basesTableCell">Project concent</th>
+                  <th className="basesTableCell">Call template</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
-                  ХЕДЕР
                 </tr>
               </thead>
-              <tbody>
-                {/* {cities?.map((item, index) => (
-                  <AllCityTable
-                    key={`${item.id}-${index}`}
-                    currentCities={item}
-                    country={country}
-                    changeDeleteCities={changeDeleteCities}
-                    filterColumns={filterColumns}
-                    changeCitiesStatus={changeCitiesStatus}
-                  />
-                ))} */}
-                сама таблица
-              </tbody>
+              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} />
             </table>
           </ContainerForTable>
         </div>

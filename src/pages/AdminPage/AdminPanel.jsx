@@ -242,7 +242,7 @@ function AdminPanel() {
             }}
           >
             {divisionItems.map((el, index) => (
-              <MenuItemForPanel title={messages.podil} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setDivisionPage} setAnchorEl={setAnchorElDivision} />
+              <MenuItemForPanel key={index} title={messages.podil} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setDivisionPage} setAnchorEl={setAnchorElDivision} />
             ))}
           </Menu>
           <button
@@ -261,7 +261,7 @@ function AdminPanel() {
             }}
           >
             {trailsItems.map((el, index) => (
-              <MenuItemForPanel title={messages.trails} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setTrailsPage} setAnchorEl={setAnchorElTrails} />
+              <MenuItemForPanel key={index} title={messages.trails} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setTrailsPage} setAnchorEl={setAnchorElTrails} />
             ))}
           </Menu>
           <button
@@ -280,7 +280,7 @@ function AdminPanel() {
             }}
           >
             {baseItems.map((el, index) => (
-              <MenuItemForPanel title={messages.bases} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setBasePage} setAnchorEl={setAnchorElBase} />
+              <MenuItemForPanel key={index} title={messages.bases} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setBasePage} setAnchorEl={setAnchorElBase} />
             ))}
           </Menu>
           <button
@@ -299,7 +299,7 @@ function AdminPanel() {
             }}
           >
             {speakerItems.map((el, index) => (
-              <MenuItemForPanel title={messages.speaker} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setSpeakerPage} setAnchorEl={setAnchorElSpeaker} />
+              <MenuItemForPanel key={index} title={messages.speaker} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setSpeakerPage} setAnchorEl={setAnchorElSpeaker} />
             ))}
           </Menu>
 
@@ -319,7 +319,16 @@ function AdminPanel() {
             }}
           >
             {scenarioItems.map((el, index) => (
-              <MenuItemForPanel title={messages.scenario} el={el} index={index} countries={countries} visibleItem={visibleItem} setPage={setScenarioPage} setAnchorEl={setAnchorElScenario} />
+              <MenuItemForPanel
+                key={index}
+                title={messages.scenario}
+                el={el}
+                index={index}
+                countries={countries}
+                visibleItem={visibleItem}
+                setPage={setScenarioPage}
+                setAnchorEl={setAnchorElScenario}
+              />
             ))}
           </Menu>
 

@@ -81,6 +81,40 @@ function AllTrails({ country }) {
 
   async function getDictionary({ country, trails }) {
     const data = await Trail.getDictionary({ country, trails });
+    if (data) {
+      const dictionary = [
+        { reducer: reducerTrailsTypes.GET_CALL_TEMPLATES, key: "callTamplates" },
+        { reducer: reducerTrailsTypes.GET_PRESENTATION_TIMES, key: "presentationTimes" },
+        { reducer: reducerTrailsTypes.GET_FORMS, key: "forms" },
+        { reducer: reducerTrailsTypes.GET_CITIES_WITH_REGIONS, key: "citiesWithRegions" },
+        { reducer: reducerTrailsTypes.GET_PLANNING_PEOPLE, key: "planningPeople" },
+        { reducer: reducerTrailsTypes.GET_PROJECT_SALES, key: "projectSales" },
+        { reducer: reducerTrailsTypes.GET_PROJECT_CONCENT, key: "projectConcent" },
+        { reducer: reducerTrailsTypes.GET_REGIMENTS, key: "regiments" },
+        { reducer: reducerTrailsTypes.GET_REGIONS, key: "regions" },
+        { reducer: reducerTrailsTypes.GET_RESERVATION_STATUSES, key: "reservationStatuses" },
+      ];
+      dictionary.map((item) => {
+        let payload = {
+          country,
+        };
+        payload[item.key] = data[item.key] || [];
+        dispatch({
+          type: item.reducer,
+          payload: payload,
+        });
+      });
+      // dispatch({
+      //   type: reducerTrailsTypes.GET_TRAILS,
+      //   payload: { trails: data.trails, country },
+      // });
+      const keys = Object.keys(data);
+      console.log(1, data, keys);
+    }
+
+    //const reducerTrailsTypes
+
+    setAllTrails(trails);
   }
 
   async function getPlanningPeople({ country }) {
@@ -123,7 +157,9 @@ function AllTrails({ country }) {
   }
 
   useEffect(() => {
-    setAllTrails(trails);
+    if (!!trails[0]) {
+      getDictionary({ trails, country });
+    }
   }, [trails]);
 
   useEffect(() => {

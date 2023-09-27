@@ -103,9 +103,7 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getD
           <td className="basesTableCell">
             <div className="tableInput">{item.alternative || ""}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{getValueById(item.form_id, "telephone", forms)}</div>
-          </td>
+          <td className="basesTableCell">{getValueById(item.form_id, "telephone", forms)}</td>
           <td className="basesTableCell">
             <div className="tableInput">{getValueById(item.form_id, "cost", forms)}</div>
           </td>

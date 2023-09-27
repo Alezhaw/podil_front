@@ -2,6 +2,7 @@ import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
+import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
@@ -24,7 +25,8 @@ function AllTrails({ country }) {
   const [planningPersonIds, setPlanningPersonIds] = useState([]);
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
-  const { trails, planningPeople, user, locale } = useAppSelector((store) => store.user);
+  const { user, locale } = useAppSelector((store) => store.user);
+  const { trails, planningPeople } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
@@ -71,7 +73,7 @@ function AllTrails({ country }) {
       setLoadingSpinner(true);
       setCount(data.count);
       dispatch({
-        type: reducerTypes.GET_TRAILS,
+        type: reducerTrailsTypes.GET_TRAILS,
         payload: { trails: data.trails, country },
       });
     }
@@ -82,7 +84,7 @@ function AllTrails({ country }) {
     if (data) {
       setPlanningPersonSelectOptions(data);
       dispatch({
-        type: reducerTypes.GET_PLANNING_PEOPLE,
+        type: reducerTrailsTypes.GET_PLANNING_PEOPLE,
         payload: { planningPeople: data, country },
       });
     }
@@ -189,7 +191,7 @@ function AllTrails({ country }) {
                 className="tableInput"
                 style={{ color: "white", colorScheme: "dark" }}
                 type="date"
-                value={filterDate.dateFrom || "0000-00-00"}
+                value={filterDate.dateFrom || undefined}
               />
             </span>
 
@@ -200,7 +202,7 @@ function AllTrails({ country }) {
                 className="tableInput"
                 style={{ color: "white", colorScheme: "dark" }}
                 type="date"
-                value={filterDate.dateTo || "0000-00-00"}
+                value={filterDate.dateTo || undefined}
               />
             </span>
           </div>

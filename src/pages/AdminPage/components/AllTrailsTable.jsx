@@ -41,7 +41,7 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
                 /> */}
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-            <input className="tableInput" type="date" autoComplete="off" value={item.date_scheduled} disabled />
+            <input className="tableInput" type="date" autoComplete="off" value={item.date_scheduled || undefined} disabled />
           </td>
           <td className="basesTableCell">
             <div className="tableInput">{item.company_id || ""}</div>
@@ -57,7 +57,7 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
           </td>
           <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
             {item.departure_dates?.map((date, index) => (
-              <input key={index} className="tableInput" type="date" autoComplete="off" value={date} disabled />
+              <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
             ))}
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
@@ -120,7 +120,7 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
             <div className="tableInput">{item.autozonning || ""}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-            <input className="tableInput" type="date" autoComplete="off" value={item.date_of_the_previous_presentation} disabled />
+            <input className="tableInput" type="date" autoComplete="off" value={item.date_of_the_previous_presentation || undefined} disabled />
           </td>
           <td className="basesTableCell">
             <div className="tableInput">{item.project_sales_id || ""}</div>

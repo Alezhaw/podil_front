@@ -6,8 +6,6 @@ import { IBase } from "../../interfaces/base";
 import { ILogsCity } from "../../interfaces/logsCity";
 import { ILogsBase } from "../../interfaces/logsBase";
 import { ISpeakerTemplates } from "../../interfaces/speakerTemplates";
-import { ITrails } from "../../interfaces/trails/trails";
-import { IPlanningPeople } from "../../interfaces/planningPeople";
 
 export interface IUsersReducer {
   user: IUser | {};
@@ -24,8 +22,6 @@ export interface IUsersReducer {
   selectedLang: string;
   locale: { [key: string]: string };
   speakerTemplates: ISpeakerTemplates[] | [];
-  trails: ITrails[] | [];
-  planningPeople: IPlanningPeople[] | [];
 }
 
 export const INITIAL: IUsersReducer = {
@@ -43,8 +39,6 @@ export const INITIAL: IUsersReducer = {
   selectedLang: localStorage.getItem("selected-lang") || "EN",
   locale: {},
   speakerTemplates: [],
-  trails: [],
-  planningPeople: [],
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -73,10 +67,6 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, locale: payload };
     case reducerTypes.GET_SPEAKER_TEMPLATES:
       return { ...state, speakerTemplates: payload };
-    case reducerTypes.GET_TRAILS:
-      return { ...state, trails: payload.trails, countryForCheck: payload.country };
-    case reducerTypes.GET_PLANNING_PEOPLE:
-      return { ...state, planningPeople: payload.planningPeople, countryForCheck: payload.country };
     default:
       return state;
   }

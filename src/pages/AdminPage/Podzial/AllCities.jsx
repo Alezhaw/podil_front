@@ -190,7 +190,7 @@ function AllCities({ country }) {
                 className="tableInput"
                 style={{ color: "white", colorScheme: "dark" }}
                 type="date"
-                value={filterDate.dateFrom || "0000-00-00"}
+                value={filterDate.dateFrom || undefined}
               />
             </span>
 
@@ -201,7 +201,7 @@ function AllCities({ country }) {
                 className="tableInput"
                 style={{ color: "white", colorScheme: "dark" }}
                 type="date"
-                value={filterDate.dateTo || "0000-00-00"}
+                value={filterDate.dateTo || undefined}
               />
             </span>
           </div>

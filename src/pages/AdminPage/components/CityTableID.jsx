@@ -99,7 +99,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={[currentCities[0]?.days_date].flat()[0] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[0] || undefined}
                     />
                   }
                 </th>
@@ -127,7 +127,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={[currentCities[0]?.days_date].flat()[1] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[1] || undefined}
                     />
                   }
                 </th>
@@ -155,7 +155,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                       className="tableInput"
                       style={{ color: "white" }}
                       type="date"
-                      value={[currentCities[0]?.days_date].flat()[2] || "0000-00-00"}
+                      value={[currentCities[0]?.days_date].flat()[2] || undefined}
                     />
                   }
                 </th>
@@ -403,7 +403,7 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                     style={{ width: "120px", height: "125px", padding: "10px" }}
                     type="date"
                     autoComplete="off"
-                    value={item.date || "0000-00-00"}
+                    value={item.date || undefined}
                   />
                 </td>
               ) : (

@@ -309,6 +309,7 @@ function AdminPanel() {
           >
             {trailsDictionaryItems.map((el, index) => (
               <MenuItemForPanel
+                key={index}
                 title={messages.trails_dictionary}
                 el={el}
                 index={index}

@@ -12,7 +12,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>First time</h6>
               <input
-                onChange={(e) => setFirstTime((prev) => ({ ...prev, time:  e.target.value }))}
+                onChange={(e) => setFirstTime((prev) => ({ ...prev, time: e.target.value }))}
                 className="tabl-flex-admin-user-scores "
                 style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
                 type="text"
@@ -128,7 +128,7 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 placeholder=""
                 autoComplete="off"
                 required
-                value={firstTime?.date || "0000-00-00"}
+                value={firstTime?.date || undefined}
               />
             </div>
           </div>

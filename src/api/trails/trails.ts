@@ -1,5 +1,5 @@
 import axios from "../axios";
-import { ITrails } from "../../interfaces/trails";
+import { ITrails } from "../../interfaces/trails/trails";
 
 let controllerGetFilteredTrails: AbortController | null = null;
 

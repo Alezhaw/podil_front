@@ -26,7 +26,7 @@ function AllTrails({ country }) {
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, planningPeople } = useAppSelector((store) => store.trails);
+  const { trails, allPlanningPeople } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
@@ -79,13 +79,17 @@ function AllTrails({ country }) {
     }
   }
 
+  async function getDictionary({ country, trails }) {
+    const data = await Trail.getDictionary({ country, trails });
+  }
+
   async function getPlanningPeople({ country }) {
     const data = await PlanningPeople.getAll({ country });
     if (data) {
       setPlanningPersonSelectOptions(data);
       dispatch({
-        type: reducerTrailsTypes.GET_PLANNING_PEOPLE,
-        payload: { planningPeople: data, country },
+        type: reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE,
+        payload: { allPlanningPeople: data, country },
       });
     }
   }
@@ -126,7 +130,7 @@ function AllTrails({ country }) {
     if (!trails[0]) {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     }
-    if (!planningPeople[0]) {
+    if (!allPlanningPeople[0]) {
       getPlanningPeople({ country });
     }
     // eslint-disable-next-line
@@ -286,7 +290,7 @@ function AllTrails({ country }) {
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>
-              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} />
+              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} getDictionary={getDictionary} />
             </table>
           </ContainerForTable>
         </div>

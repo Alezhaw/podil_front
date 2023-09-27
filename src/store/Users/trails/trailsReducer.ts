@@ -20,6 +20,7 @@ export interface ITrailsReducer {
   contractStatuses: IContactStatus[] | [];
   forms: IForm[] | [];
   planningPeople: IPlanningPeople[] | [];
+  allPlanningPeople: IPlanningPeople[] | [];
   presentationTimes: IPresentationTime[] | [];
   projectConcent: IProjectConcent[] | [];
   projectSales: IProjectSales[] | [];
@@ -36,6 +37,7 @@ export const INITIAL: ITrailsReducer = {
   contractStatuses: [],
   forms: [],
   planningPeople: [],
+  allPlanningPeople: [],
   presentationTimes: [],
   projectConcent: [],
   projectSales: [],
@@ -57,6 +59,8 @@ export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, forms: payload.forms, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_PLANNING_PEOPLE:
       return { ...state, planningPeople: payload.planningPeople, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE:
+      return { ...state, allPlanningPeople: payload.allPlanningPeople, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_PRESENTATION_TIMES:
       return { ...state, presentationTimes: payload.presentationTimes, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_PROJECT_CONCENT:

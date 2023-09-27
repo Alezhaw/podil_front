@@ -6,7 +6,7 @@ import { IBase } from "../../interfaces/base";
 import { ILogsCity } from "../../interfaces/logsCity";
 import { ILogsBase } from "../../interfaces/logsBase";
 import { ISpeakerTemplates } from "../../interfaces/speakerTemplates";
-import { ITrails } from "../../interfaces/trails";
+import { ITrails } from "../../interfaces/trails/trails";
 import { IPlanningPeople } from "../../interfaces/planningPeople";
 
 export interface IUsersReducer {

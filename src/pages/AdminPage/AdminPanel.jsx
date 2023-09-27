@@ -60,7 +60,8 @@ function AdminPanel() {
       users: locale["admin_panel_users"],
       podil: locale["admin_panel_podil"],
       trails: locale["admin_panel_trails"],
-      trailsDictionary: locale["admin_panel_trails_dictionary"],
+      trails_dictionary: locale["admin_panel_trails_dictionary"],
+      edit_trails_dictionary: locale["admin_panel_edit_trails_dictionary"],
       bases: locale["admin_panel_bases"],
       speaker: locale["admin_panel_speaker"],
       scenario: locale["admin_panel_scenario"],
@@ -83,7 +84,7 @@ function AdminPanel() {
   function visibleItem(name) {
     setDivisionPage(` ${messages.podil} `);
     setTrailsPage(`${messages.trails}`);
-    setTrailsDictionaryPage(`${messages.trailsDictionary}`);
+    setTrailsDictionaryPage(`${messages.trails_dictionary}`);
     setBasePage(` ${messages.bases} `);
     setSpeakerPage(` ${messages.speaker} `);
     setScenarioPage(` ${messages.scenario} `);
@@ -237,7 +238,7 @@ function AdminPanel() {
   useEffect(() => {
     setDivisionPage(getTitleWithCountry(messages.podil, countries, item, divisionItems));
     setTrailsPage(getTitleWithCountry(messages.trails, countries, item, trailsItems));
-    setTrailsDictionaryPage(getTitleWithCountry(messages.trailsDictionary, countries, item, trailsDictionaryItems));
+    setTrailsDictionaryPage(getTitleWithCountry(messages.trails_dictionary, countries, item, trailsDictionaryItems));
     setBasePage(getTitleWithCountry(messages.bases, countries, item, baseItems));
     setSpeakerPage(getTitleWithCountry(messages.speaker, countries, item, speakerItems));
     setScenarioPage(getTitleWithCountry(messages.scenario, countries, item, scenarioItems));
@@ -308,7 +309,7 @@ function AdminPanel() {
           >
             {trailsDictionaryItems.map((el, index) => (
               <MenuItemForPanel
-                title={messages.trailsDictionary}
+                title={messages.trails_dictionary}
                 el={el}
                 index={index}
                 countries={countries}

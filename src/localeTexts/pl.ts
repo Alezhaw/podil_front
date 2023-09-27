@@ -75,6 +75,7 @@ export const texts = {
   admin_panel_users: "WSZYSCY UŻYTKOWNICY",
   admin_panel_trails: "SZLAKI",
   admin_panel_trails_dictionary: "SŁOWNIK SZLAKÓW",
+  admin_panel_edit_trails_dictionary: "Edytować",
   admin_panel_podil: "PODZIAL",
   admin_panel_bases: "PODSTAWY",
   admin_panel_speaker: "MOWCA",

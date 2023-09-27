@@ -69,8 +69,10 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getD
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">
-              {(getValueById(item.presentation_time_id, "presentation_hour", presentationTimes) || []).map((date, index) => (
-                <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+              {(getValueById(item.presentation_time_id, "presentation_hour", presentationTimes) || []).map((time, index) => (
+                <div className="tableInput" key={index}>
+                  {time}
+                </div>
               ))}
             </div>
           </td>
@@ -96,8 +98,10 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getD
             <div className="tableInput">{item.alternative || ""}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            {(getValueById(item.form_id, "telephone", forms) || []).map((el) => (
-              <div className="tableInput">{el}</div>
+            {(getValueById(item.form_id, "telephone", forms) || []).map((el, index) => (
+              <div className="tableInput" key={index}>
+                {el}
+              </div>
             ))}
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>

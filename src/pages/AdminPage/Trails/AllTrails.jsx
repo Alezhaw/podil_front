@@ -69,13 +69,12 @@ function AllTrails({ country }) {
       country,
     });
     setLoadingSpinner(true);
+    dispatch({
+      type: reducerTrailsTypes.GET_TRAILS,
+      payload: { trails: data?.trails || [], country },
+    });
     if (data) {
-      setLoadingSpinner(true);
       setCount(data.count);
-      dispatch({
-        type: reducerTrailsTypes.GET_TRAILS,
-        payload: { trails: data.trails, country },
-      });
     }
   }
 

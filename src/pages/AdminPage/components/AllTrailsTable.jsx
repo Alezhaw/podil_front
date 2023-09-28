@@ -1,8 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAppSelector } from "../../../store/reduxHooks";
 
-function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
+function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getDictionary }) {
   const navigate = useNavigate();
+  const { callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } = useAppSelector(
+    (store) => store.trails
+  );
+
+  function getValueById(id, key, array) {
+    if (!id) {
+      return "";
+    }
+    const item = array?.filter((item) => item.id === Number(id))[0];
+    return item ? item[key] : "";
+  }
 
   function getDayName(date) {
     const d = new Date(date);
@@ -18,41 +30,31 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
           <td className="basesTableCell">
             <div className="tableInput">{item.id || ""}</div>
           </td>
-          <td className="basesTableCell">
-            <button
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            {/* <button
               onClick={() => {
-                console.log(123, allTrails);
-                var d = new Date(item.presentation_date);
-                var dayName = weekDays[d.getDay()];
-                // const date = new Date(item.presentation_date);
-                console.log(1, dayName);
+                getDictionary({ country, trails: allTrails });
+                // console.log(1, dayName);
               }}
             >
               {" "}
               123
-            </button>
-            {/* <div className="tableInput">{item.planning_person_id || ""}</div> */}
-            {/* <input
-                  className="tableInput"
-                  style={{ minWidth: "0px", width: "100px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.planning_person_id || ""} //подгрузить
-                /> */}
+            </button> */}
+            <div className="tableInput">{getValueById(item.planning_person_id, "name", planningPeople)}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
             <input className="tableInput" type="date" autoComplete="off" value={item.date_scheduled || undefined} disabled />
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.company_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.company_id, "name", regiments)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.city_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.city_id, "city_type", citiesWithRegions)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.city_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.city_id, "population", citiesWithRegions)}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.route_number || ""}</div>
           </td>
           <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
@@ -65,71 +67,81 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
               {item.presentation_date || ""} {getDayName(item.presentation_date)}
             </div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.presentation_time_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">
+              {(getValueById(item.presentation_time_id, "presentation_hour", presentationTimes) || []).map((time, index) => (
+                <div className="tableInput" key={index}>
+                  {time}
+                </div>
+              ))}
+            </div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.presentation_time_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.presentation_time_id, "rental_hours", presentationTimes)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.regionId || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.regionId, "region", regions)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.city_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.city_id, "city_name", citiesWithRegions)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.form_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "local", forms)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.form_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "address", forms)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.reservation_status_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.reservation_status_id, "name", reservationStatuses)}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.alternative || ""}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.form_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            {(getValueById(item.form_id, "telephone", forms) || []).map((el, index) => (
+              <div className="tableInput" key={index}>
+                {el}
+              </div>
+            ))}
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.form_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "cost", forms)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.form_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "payment_method", forms)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.contract_status_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.contract_status_id, "name", contractStatuses)}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.comment || ""}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.sent_to_podil || ""}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.sent_to_bases || ""}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.sent_to_speaker || ""}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.sent_to_scenario || ""}</div>
           </td>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.autozonning || ""}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
             <input className="tableInput" type="date" autoComplete="off" value={item.date_of_the_previous_presentation || undefined} disabled />
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.project_sales_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.project_sales_id, "name", projectSales)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.project_concent_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.project_concent_id, "name", projectConcent)}</div>
           </td>
-          <td className="basesTableCell">
-            <div className="tableInput">{item.call_template_id || ""}</div>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.call_template_id, "name", callTamplates)}</div>
           </td>
         </tr>
       ))}

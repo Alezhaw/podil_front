@@ -2,6 +2,7 @@ import axios from "../axios";
 import { ITrails } from "../../interfaces/trails/trails";
 
 let controllerGetFilteredTrails: AbortController | null = null;
+let controllerGetDictionaryByTrails: AbortController | null = null;
 
 export const getFilteredTrails = async ({
   search = "",
@@ -56,6 +57,35 @@ export const getFilteredTrails = async ({
   }
 };
 
+export const getDictionary = async ({ trails, country = "" }: { trails: ITrails[]; country: string }) => {
+  try {
+    if (!trails[0]) {
+      return;
+    }
+    if (controllerGetDictionaryByTrails !== null) {
+      controllerGetDictionaryByTrails.abort();
+    }
+    controllerGetDictionaryByTrails = new AbortController();
+    const { data } = await axios.post(
+      "api/trail/getDictionaries",
+      {
+        trails,
+        country,
+      },
+      { signal: controllerGetDictionaryByTrails.signal }
+    );
+    return data;
+  } catch (e) {
+    if (axios.isCancel(e)) {
+      console.log("Request canceled", e.message);
+      return null;
+    } else {
+      console.error(e);
+      return null;
+    }
+  }
+};
+
 export const createTrail = async (trail: ITrails, country: string) => {
   //отключить кнопку пока идет создание
   try {
@@ -89,6 +119,7 @@ export const removeTrail = async (id: number, country: string) => {
 
 export default {
   getFilteredTrails,
+  getDictionary,
   createTrail,
   updateTrail,
   removeTrail,

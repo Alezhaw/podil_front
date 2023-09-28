@@ -26,7 +26,7 @@ function AllTrails({ country }) {
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, planningPeople } = useAppSelector((store) => store.trails);
+  const { trails, allPlanningPeople } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
@@ -69,14 +69,44 @@ function AllTrails({ country }) {
       country,
     });
     setLoadingSpinner(true);
+    dispatch({
+      type: reducerTrailsTypes.GET_TRAILS,
+      payload: { trails: data?.trails || [], country },
+    });
     if (data) {
-      setLoadingSpinner(true);
       setCount(data.count);
-      dispatch({
-        type: reducerTrailsTypes.GET_TRAILS,
-        payload: { trails: data.trails, country },
-      });
     }
+  }
+
+  async function getDictionary({ country, trails }) {
+    if (!!trails[0]) {
+      const data = await Trail.getDictionary({ country, trails });
+      if (data) {
+        const dictionary = [
+          { reducer: reducerTrailsTypes.GET_CALL_TEMPLATES, key: "callTamplates" },
+          { reducer: reducerTrailsTypes.GET_PRESENTATION_TIMES, key: "presentationTimes" },
+          { reducer: reducerTrailsTypes.GET_FORMS, key: "forms" },
+          { reducer: reducerTrailsTypes.GET_CITIES_WITH_REGIONS, key: "citiesWithRegions" },
+          { reducer: reducerTrailsTypes.GET_PLANNING_PEOPLE, key: "planningPeople" },
+          { reducer: reducerTrailsTypes.GET_PROJECT_SALES, key: "projectSales" },
+          { reducer: reducerTrailsTypes.GET_PROJECT_CONCENT, key: "projectConcent" },
+          { reducer: reducerTrailsTypes.GET_REGIMENTS, key: "regiments" },
+          { reducer: reducerTrailsTypes.GET_REGIONS, key: "regions" },
+          { reducer: reducerTrailsTypes.GET_RESERVATION_STATUSES, key: "reservationStatuses" },
+        ];
+        dictionary.map((item) => {
+          let payload = {
+            country,
+          };
+          payload[item.key] = data[item.key] || [];
+          dispatch({
+            type: item.reducer,
+            payload: payload,
+          });
+        });
+      }
+    }
+    setAllTrails(trails);
   }
 
   async function getPlanningPeople({ country }) {
@@ -84,8 +114,8 @@ function AllTrails({ country }) {
     if (data) {
       setPlanningPersonSelectOptions(data);
       dispatch({
-        type: reducerTrailsTypes.GET_PLANNING_PEOPLE,
-        payload: { planningPeople: data, country },
+        type: reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE,
+        payload: { allPlanningPeople: data, country },
       });
     }
   }
@@ -119,14 +149,14 @@ function AllTrails({ country }) {
   }
 
   useEffect(() => {
-    setAllTrails(trails);
+    getDictionary({ trails, country });
   }, [trails]);
 
   useEffect(() => {
     if (!trails[0]) {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     }
-    if (!planningPeople[0]) {
+    if (!allPlanningPeople[0]) {
       getPlanningPeople({ country });
     }
     // eslint-disable-next-line
@@ -286,7 +316,7 @@ function AllTrails({ country }) {
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>
-              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} />
+              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} getDictionary={getDictionary} />
             </table>
           </ContainerForTable>
         </div>

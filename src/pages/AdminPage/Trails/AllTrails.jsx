@@ -313,6 +313,7 @@ function AllTrails({ country }) {
                   <th className="basesTableCell">Project sales</th>
                   <th className="basesTableCell">Project concent</th>
                   <th className="basesTableCell">Call template</th>
+                  <th className="basesTableCell">{messages.delete}</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>

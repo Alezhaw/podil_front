@@ -8,6 +8,7 @@ import UserID from "./pages/AdminPage/Users/UserID";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import CityID from "./pages/AdminPage/Podzial/CityID";
+import TrailID from "./pages/AdminPage/Trails/TrailID";
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
@@ -134,6 +135,9 @@ function App() {
         <Route path="/adminPanel/RU/:id_for_base" element={<CityID country="RU" />} />
         <Route path="/adminPanel/KZ/:id_for_base" element={<CityID country="KZ" />} />
         <Route path="/adminPanel/PL/:id_for_base" element={<CityID country="PL" />} />
+        <Route path="/adminPanel/trails/RU/:id" element={<TrailID country="RU" />} />
+        <Route path="/adminPanel/trails/KZ/:id" element={<TrailID country="KZ" />} />
+        <Route path="/adminPanel/trails/PL/:id" element={<TrailID country="PL" />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />
         <Route path="/login/" element={<UserInput />} />

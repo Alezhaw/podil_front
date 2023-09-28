@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../../store/reduxHooks";
 
-function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getDictionary }) {
+function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
   const navigate = useNavigate();
   const { callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } = useAppSelector(
     (store) => store.trails
@@ -27,19 +27,10 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getD
 
       {allTrails?.map((item) => (
         <tr key={item.id} style={{ textAlign: "center" }}>
-          <td className="basesTableCell">
+          <td className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/trails/${country}/${item?.id}`)}>
             <div className="tableInput">{item.id || ""}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            {/* <button
-              onClick={() => {
-                getDictionary({ country, trails: allTrails });
-                // console.log(1, dayName);
-              }}
-            >
-              {" "}
-              123
-            </button> */}
             <div className="tableInput">{getValueById(item.planning_person_id, "name", planningPeople)}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
@@ -142,6 +133,9 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays, getD
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{getValueById(item.call_template_id, "name", callTamplates)}</div>
+          </td>
+          <td className="basesTableCell" style={{ minWidth: "75px" }}>
+            <input onChange={(e) => changeDeleteTrails(e.target.checked, item?.id)} className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" />
           </td>
         </tr>
       ))}

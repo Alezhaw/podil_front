@@ -2,7 +2,6 @@ import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
-import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Trail from "../../../api/trails/trails";

@@ -8,12 +8,11 @@ import Trail from "../../../api/trails/trails";
 import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
 import Forms from "../../../api/trails/forms";
 import TrailSelect from "./TrailSelect";
-import { ContainerForTable } from "./Table.styled";
 
 function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail }) {
   const dispatch = useDispatch();
-  const { user, locale } = useAppSelector((store) => store.user);
-  const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms } = useAppSelector((store) => store.trails);
+  const { locale } = useAppSelector((store) => store.user);
+  const { allDictionary, allCitiesWithRegions } = useAppSelector((store) => store.trails);
 
   const messages = useMemo(() => {
     return {

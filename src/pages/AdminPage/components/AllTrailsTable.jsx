@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useAppSelector } from "../../../store/reduxHooks";
 
 function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {

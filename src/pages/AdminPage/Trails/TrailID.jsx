@@ -32,9 +32,8 @@ function TrailID({ country }) {
         type: reducerTrailsTypes.GET_TRAILS,
         payload: { trails: data.trails, country },
       });
+      getDictionary({ country, trails: data.trails });
     }
-    getDictionary({ country, trails: data.trails });
-    return data.trails;
   }
 
   async function getDictionary({ country, trails }) {

@@ -15,6 +15,9 @@ function TrailTableID({ country, messages, trail, weekDays }) {
   }
 
   function getDayName(date) {
+    if (!date) {
+      return "";
+    }
     const d = new Date(date);
     return weekDays[d.getDay()];
   }
@@ -60,10 +63,14 @@ function TrailTableID({ country, messages, trail, weekDays }) {
         <tbody>
           <tr style={{ textAlign: "center" }}>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <div className="tableInput">{trail.id}</div>
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.planning_person_id, "name", planningPeople)}</div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-              <input className="tableInput" type="date" autoComplete="off" value={trail.date_scheduled || undefined} disabled />
+              {/* <input className="tableInput" type="date" value={trail.date_scheduled || undefined} disabled /> */}
+              <div className="tableInput">{trail.date_scheduled}</div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.company_id, "name", regiments)}</div>
@@ -79,7 +86,9 @@ function TrailTableID({ country, messages, trail, weekDays }) {
             </td>
             <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
               {trail.departure_dates?.map((date, index) => (
-                <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+                <div key={index} className="tableInput">
+                  {date}
+                </div>
               ))}
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
@@ -152,7 +161,7 @@ function TrailTableID({ country, messages, trail, weekDays }) {
               <div className="tableInput">{trail.autozonning || ""}</div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-              <input className="tableInput" type="date" autoComplete="off" value={trail.date_of_the_previous_presentation || undefined} disabled />
+              <div className="tableInput">{trail.date_of_the_previous_presentation}</div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.project_sales_id, "name", projectSales)}</div>

@@ -1,7 +1,6 @@
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { reducerTypes } from "../../../store/Users/types";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
@@ -12,9 +11,8 @@ import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import AllTrailsTable from "../components/AllTrailsTable";
+import CreateTrail from "../components/CreateTrail";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
@@ -33,7 +31,7 @@ function AllTrails({ country }) {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [isOpen, setIsOpen] = useState(false);
-  const [newTrail, setNewTrail] = useState({});
+  const [newTrail, setNewTrail] = useState({ reservation_status_id: 1 });
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [planningPersonSelectOptions, setPlanningPersonSelectOptions] = useState([]);
@@ -132,7 +130,7 @@ function AllTrails({ country }) {
     setNewTrail((prev) => ({ ...prev, [key]: value }));
   }
 
-  async function createTrail(newTrail, setNewTrail) {
+  async function createTrail({ newTrail, setNewTrail }) {
     const trail = newTrail;
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {
@@ -274,7 +272,7 @@ function AllTrails({ country }) {
           {messages.new_trail}
         </div>
       </div>
-      {isOpen ? <div>Страница новой трассы</div> : ""}
+      {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} /> : null}
 
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 

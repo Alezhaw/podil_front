@@ -27,7 +27,6 @@ function TrailTableID({ country, messages, trail, weekDays }) {
       <table style={{ textAlign: "center" }}>
         <thead style={{ background: "#5a5959" }}>
           <tr style={{ background: "none" }}>
-            <th className="basesTableCell">ID</th>
             <th className="basesTableCell">Planning person</th>
             <th className="basesTableCell">Date scheduled</th>
             <th className="basesTableCell">Company</th>
@@ -58,13 +57,14 @@ function TrailTableID({ country, messages, trail, weekDays }) {
             <th className="basesTableCell">Project sales</th>
             <th className="basesTableCell">Project concent</th>
             <th className="basesTableCell">Call template</th>
+            <th className="basesTableCell">Hall</th>
+            <th className="basesTableCell">Payment notes</th>
+            <th className="basesTableCell">Free parking</th>
+            <th className="basesTableCell">Comments</th>
           </tr>
         </thead>
         <tbody>
           <tr style={{ textAlign: "center" }}>
-            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-              <div className="tableInput">{trail.id}</div>
-            </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.planning_person_id, "name", planningPeople)}</div>
             </td>
@@ -171,6 +171,18 @@ function TrailTableID({ country, messages, trail, weekDays }) {
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.call_template_id, "name", callTamplates)}</div>
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <div className="tableInput">{getValueById(trail.form_id, "local", forms)}</div>
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <div className="tableInput">{getValueById(trail.form_id, "confirm", forms)}</div>
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <div className="tableInput">{getValueById(trail.form_id, "parking", forms)}</div>
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <div className="tableInput">{getValueById(trail.form_id, "comments", forms)}</div>
             </td>
           </tr>
         </tbody>

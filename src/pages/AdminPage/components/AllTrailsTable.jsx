@@ -134,6 +134,20 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{getValueById(item.call_template_id, "name", callTamplates)}</div>
           </td>
+
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "local", forms)}</div>
+          </td>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "confirm", forms)}</div>
+          </td>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "parking", forms)}</div>
+          </td>
+          <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <div className="tableInput">{getValueById(item.form_id, "comments", forms)}</div>
+          </td>
+
           <td className="basesTableCell" style={{ minWidth: "75px" }}>
             <input onChange={(e) => changeDeleteTrails(e.target.checked, item?.id)} className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" />
           </td>

@@ -112,7 +112,6 @@ function AllTrails({ country }) {
   async function getPlanningPeople({ country }) {
     const data = await PlanningPeople.getAll({ country });
     if (data) {
-      setPlanningPersonSelectOptions(data);
       dispatch({
         type: reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE,
         payload: { allPlanningPeople: data, country },
@@ -151,6 +150,10 @@ function AllTrails({ country }) {
   useEffect(() => {
     getDictionary({ trails, country });
   }, [trails]);
+
+  useEffect(() => {
+    setPlanningPersonSelectOptions(allPlanningPeople);
+  }, [allPlanningPeople]);
 
   useEffect(() => {
     if (!trails[0]) {
@@ -313,6 +316,10 @@ function AllTrails({ country }) {
                   <th className="basesTableCell">Project sales</th>
                   <th className="basesTableCell">Project concent</th>
                   <th className="basesTableCell">Call template</th>
+                  <th className="basesTableCell">Hall</th>
+                  <th className="basesTableCell">Payment notes</th>
+                  <th className="basesTableCell">Free parking</th>
+                  <th className="basesTableCell">Comments</th>
                   <th className="basesTableCell">{messages.delete}</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>

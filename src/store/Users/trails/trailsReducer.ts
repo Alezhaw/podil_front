@@ -28,6 +28,17 @@ export interface ITrailsReducer {
   regions: IRegion[] | [];
   reservationStatuses: IReservationStatus[] | [];
   trails: ITrails[] | [];
+  allDictionary: {
+    callTamplates: ICallTemplate[] | [];
+    contractStatuses: IContactStatus[] | [];
+    planningPeople: IPlanningPeople[] | [];
+    presentationTimes: IPresentationTime[] | [];
+    projectConcent: IProjectConcent[] | [];
+    projectSales: IProjectSales[] | [];
+    regiments: IRegiment[] | [];
+    regions: IRegion[] | [];
+    reservationStatuses: IReservationStatus[] | [];
+  };
 }
 
 export const INITIAL: ITrailsReducer = {
@@ -45,6 +56,17 @@ export const INITIAL: ITrailsReducer = {
   regions: [],
   reservationStatuses: [],
   trails: [],
+  allDictionary: {
+    callTamplates: [],
+    contractStatuses: [],
+    planningPeople: [],
+    presentationTimes: [],
+    projectConcent: [],
+    projectSales: [],
+    regiments: [],
+    regions: [],
+    reservationStatuses: [],
+  },
 };
 
 export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -75,6 +97,8 @@ export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, reservationStatuses: payload.reservationStatuses, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_TRAILS:
       return { ...state, trails: payload.trails, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_DICTIONARY:
+      return { ...state, allDictionary: payload.allDictionary, trailsCountryForCheck: payload.country };
     default:
       return state;
   }

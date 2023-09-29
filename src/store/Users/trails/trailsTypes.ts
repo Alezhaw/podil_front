@@ -12,4 +12,5 @@ export const reducerTrailsTypes = {
   GET_REGIONS: "reducer/GET_REGIONS",
   GET_RESERVATION_STATUSES: "reducer/GET_RESERVATION_STATUSES",
   GET_TRAILS: "reducer/GET_TRAILS",
+  GET_ALL_DICTIONARY: "reducer/GET_ALL_DICTIONARY",
 };

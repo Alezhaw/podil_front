@@ -26,7 +26,7 @@ function AllTrails({ country }) {
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, allPlanningPeople } = useAppSelector((store) => store.trails);
+  const { trails, allPlanningPeople, allDictionary } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
@@ -113,8 +113,8 @@ function AllTrails({ country }) {
     const data = await PlanningPeople.getAll({ country });
     if (data) {
       dispatch({
-        type: reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE,
-        payload: { allPlanningPeople: data, country },
+        type: reducerTrailsTypes.GET_ALL_DICTIONARY,
+        payload: { allDictionary: { ...allDictionary, planningPeople: data }, country },
       });
     }
   }
@@ -152,18 +152,23 @@ function AllTrails({ country }) {
   }, [trails]);
 
   useEffect(() => {
-    setPlanningPersonSelectOptions(allPlanningPeople);
-  }, [allPlanningPeople]);
+    setPlanningPersonSelectOptions(allDictionary.planningPeople);
+  }, [allDictionary.planningPeople]);
 
   useEffect(() => {
     if (!trails[0]) {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     }
-    if (!allPlanningPeople[0]) {
+    if (!allDictionary.planningPeople[0]) {
       getPlanningPeople({ country });
     }
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    getPlanningPeople({ country });
+    // eslint-disable-next-line
+  }, [country]);
 
   useEffect(() => {
     getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });

@@ -132,7 +132,7 @@ function AllTrails({ country }) {
     setNewTrail((prev) => ({ ...prev, [key]: value }));
   }
 
-  async function createCity(newTrail, setNewTrail) {
+  async function createTrail(newTrail, setNewTrail) {
     const trail = newTrail;
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {

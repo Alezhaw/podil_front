@@ -39,6 +39,8 @@ export interface ITrailsReducer {
     regions: IRegion[] | [];
     reservationStatuses: IReservationStatus[] | [];
   };
+  allCitiesWithRegions: ICitiesWithReg[] | [];
+  allForms: IForm[] | [];
 }
 
 export const INITIAL: ITrailsReducer = {
@@ -67,6 +69,8 @@ export const INITIAL: ITrailsReducer = {
     regions: [],
     reservationStatuses: [],
   },
+  allCitiesWithRegions: [],
+  allForms: [],
 };
 
 export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -99,6 +103,10 @@ export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, trails: payload.trails, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_ALL_DICTIONARY:
       return { ...state, allDictionary: payload.allDictionary, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS:
+      return { ...state, allCitiesWithRegions: payload.allCitiesWithRegions, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_FORMS:
+      return { ...state, allForms: payload.allForms, trailsCountryForCheck: payload.country };
     default:
       return state;
   }

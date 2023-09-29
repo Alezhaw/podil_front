@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
+import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
+import Forms from "../../../api/trails/forms";
 import TrailTableID from "../components/TrailTableID";
 
 function TrailID({ country }) {
@@ -12,8 +14,7 @@ function TrailID({ country }) {
   const navigate = useNavigate();
   const statebackground = !!localStorage.getItem("backroundImg");
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } =
-    useAppSelector((store) => store.trails);
+  const { trails } = useAppSelector((store) => store.trails);
   const [trail, setTrail] = useState({});
 
   const messages = useMemo(() => {
@@ -67,8 +68,41 @@ function TrailID({ country }) {
     setTrail(trails[0]);
   }
 
+  async function getAllDictionary({ country }) {
+    const allDictionary = await Trail.getAllDictionary({ country });
+    if (allDictionary) {
+      dispatch({
+        type: reducerTrailsTypes.GET_ALL_DICTIONARY,
+        payload: { allDictionary, country },
+      });
+    }
+  }
+
+  async function getCitiesByRegion({ country, region_id }) {
+    const allCitiesWithRegions = await CitiesWithRegions.getByRegion({ country, region_id });
+    if (allCitiesWithRegions) {
+      dispatch({
+        type: reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS,
+        payload: { allCitiesWithRegions, country },
+      });
+    }
+  }
+
+  async function getFormsByCityAndName({ country, city_id, search }) {
+    const allForms = await Forms.getByName({ country, city_id, search });
+    if (allForms) {
+      dispatch({
+        type: reducerTrailsTypes.GET_ALL_FORMS,
+        payload: { allForms, country },
+      });
+    }
+  }
+
   async function updateTrail(trail) {
     // const temporaryCities = storedCities?.filter((item) => Number(item?.id_for_base) === Number(id_for_base));
+    if (!trail.autozonning) {
+      return alert("Заполните autozonning");
+    }
     const result = await Trail.updateTrail(trail, country);
     if (!result) {
       return alert("Error");
@@ -91,6 +125,23 @@ function TrailID({ country }) {
       navigate("/login");
     }
   }, [user?.role, navigate, user]);
+
+  useEffect(() => {
+    if (trail.regionId) {
+      getCitiesByRegion({ country, region_id: trail.regionId });
+    }
+    // eslint-disable-next-line
+  }, [trail.regionId, country]);
+
+  useEffect(() => {
+    getFormsByCityAndName({ country, city_id: trail.city_id, search: "" });
+    // eslint-disable-next-line
+  }, [trail.city_id, country]);
+
+  useEffect(() => {
+    getAllDictionary({ country });
+    // eslint-disable-next-line
+  }, [country]);
 
   useEffect(() => {
     const checkCurrentTrail = trails?.filter((el) => Number(el.id) === Number(id))[0];
@@ -118,20 +169,10 @@ function TrailID({ country }) {
             background: "rgba(17, 17, 18, 0.65)",
           }}
         >
-          {/* <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: "10px",
-              color: "white",
-            }}
-          ></div> */}
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
-              {/* <div onClick={() => getTrail(id)}>123</div> */}
-              <TrailTableID weekDays={messages.days_of_the_week} trail={trail} />
-              {/* <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} messages={messages.headers} /> */}
+              {/* <div onClick={() => console.log(1, trail)}>123</div> */}
+              <TrailTableID country={country} weekDays={messages.days_of_the_week} trail={trail} setTrail={setTrail} getFormsByCityAndName={getFormsByCityAndName} />
             </div>
             <div
               style={{

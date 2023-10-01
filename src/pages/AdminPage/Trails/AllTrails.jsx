@@ -1,9 +1,7 @@
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { reducerTypes } from "../../../store/Users/types";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
-import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Trail from "../../../api/trails/trails";
@@ -12,9 +10,8 @@ import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import AllTrailsTable from "../components/AllTrailsTable";
+import CreateTrail from "../components/CreateTrail";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
@@ -26,14 +23,14 @@ function AllTrails({ country }) {
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, allPlanningPeople } = useAppSelector((store) => store.trails);
+  const { trails, allPlanningPeople, allDictionary } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
   const [isOpen, setIsOpen] = useState(false);
-  const [newTrail, setNewTrail] = useState({});
+  const [newTrail, setNewTrail] = useState({ reservation_status_id: 1 });
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [planningPersonSelectOptions, setPlanningPersonSelectOptions] = useState([]);
@@ -112,10 +109,9 @@ function AllTrails({ country }) {
   async function getPlanningPeople({ country }) {
     const data = await PlanningPeople.getAll({ country });
     if (data) {
-      setPlanningPersonSelectOptions(data);
       dispatch({
-        type: reducerTrailsTypes.GET_ALL_PLANNING_PEOPLE,
-        payload: { allPlanningPeople: data, country },
+        type: reducerTrailsTypes.GET_ALL_DICTIONARY,
+        payload: { allDictionary: { ...allDictionary, planningPeople: data }, country },
       });
     }
   }
@@ -133,7 +129,7 @@ function AllTrails({ country }) {
     setNewTrail((prev) => ({ ...prev, [key]: value }));
   }
 
-  async function createCity(newTrail, setNewTrail) {
+  async function createTrail({ newTrail, setNewTrail }) {
     const trail = newTrail;
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {
@@ -153,14 +149,23 @@ function AllTrails({ country }) {
   }, [trails]);
 
   useEffect(() => {
+    setPlanningPersonSelectOptions(allDictionary.planningPeople);
+  }, [allDictionary.planningPeople]);
+
+  useEffect(() => {
     if (!trails[0]) {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     }
-    if (!allPlanningPeople[0]) {
+    if (!allDictionary.planningPeople[0]) {
       getPlanningPeople({ country });
     }
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    getPlanningPeople({ country });
+    // eslint-disable-next-line
+  }, [country]);
 
   useEffect(() => {
     getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
@@ -266,7 +271,7 @@ function AllTrails({ country }) {
           {messages.new_trail}
         </div>
       </div>
-      {isOpen ? <div>Страница новой трассы</div> : ""}
+      {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} /> : null}
 
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
@@ -313,6 +318,11 @@ function AllTrails({ country }) {
                   <th className="basesTableCell">Project sales</th>
                   <th className="basesTableCell">Project concent</th>
                   <th className="basesTableCell">Call template</th>
+                  <th className="basesTableCell">Hall</th>
+                  <th className="basesTableCell">Payment notes</th>
+                  <th className="basesTableCell">Free parking</th>
+                  <th className="basesTableCell">Comments</th>
+                  <th className="basesTableCell">{messages.delete}</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>

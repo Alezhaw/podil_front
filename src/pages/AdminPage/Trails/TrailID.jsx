@@ -4,9 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
+import Podzial from "../../../api/podzial";
 import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
 import Forms from "../../../api/trails/forms";
 import TrailTableID from "../components/TrailTableID";
+import { socket } from "../../../App";
 
 function TrailID({ country }) {
   const { id } = useParams();
@@ -14,7 +16,7 @@ function TrailID({ country }) {
   const navigate = useNavigate();
   const statebackground = !!localStorage.getItem("backroundImg");
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails } = useAppSelector((store) => store.trails);
+  const { trails, allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, trailsCountryForCheck } = useAppSelector((store) => store.trails);
   const [trail, setTrail] = useState({});
 
   const messages = useMemo(() => {
@@ -22,9 +24,57 @@ function TrailID({ country }) {
       return: locale["return"],
       apply: locale["city_id_apply"],
       days_of_the_week: locale["days_of_the_week"],
+      yes: locale["trails_yes"],
+      no: locale["trails_no"],
       headers: {},
     };
   }, [locale]);
+
+  async function createCity(trail, checked, key) {
+    const statuses = {
+      visible_in_podil: "sent_to_podil",
+      visible_in_bases: "sent_to_bases",
+      visible_in_speaker: "sent_to_speaker",
+      visible_in_scenario: "sent_to_scenario",
+    };
+    let status = {};
+    status[statuses[key]] = checked;
+    let cities = getValueById(trail.presentation_time_id, "presentation_hour", allDictionary.presentationTimes) || [];
+    cities = cities?.map((item) => {
+      let city = {
+        time: item,
+        region: getValueById(trail.regionId, "region", allDictionary?.regions),
+        city_lokal: getValueById(trail.city_id, "city_name", allCitiesWithRegions),
+        adress: getValueById(trail.form_id, "address", forms) || getValueById(trail.form_id, "address", allForms),
+        institution: getValueById(trail.form_id, "local", forms) || getValueById(trail.form_id, "local", allForms),
+        date: trail.presentation_date,
+        population: getValueById(trail.city_id, "population", citiesWithRegions) || getValueById(trail.city_id, "population", allCitiesWithRegions),
+        project: getValueById(trail.project_sales_id, "name", allDictionary?.projectSales),
+        present: getValueById(trail.project_concent_id, "name", allDictionary?.projectConcent),
+        trailId: trail.id,
+      };
+      city[key] = checked;
+      return city;
+    });
+
+    // console.log(1, status);
+    const result = await Podzial.createCitiesByTrails({ cities, country, status });
+    if (result[0]) {
+      alert("Sucess");
+    } else {
+      if (result.updated[0]) return alert("Updated");
+      if (result.not_id_for_base) return alert("Не указан id_for_base");
+      alert("Something went wrong");
+    }
+  }
+
+  function getValueById(id, key, array) {
+    if (!id) {
+      return "";
+    }
+    const item = array?.filter((item) => item.id === Number(id))[0];
+    return item ? item[key] : "";
+  }
 
   async function getTrail(id) {
     const data = await Trail.getTrailsById({ ids: [Number(id)], country });
@@ -112,6 +162,22 @@ function TrailID({ country }) {
   }
 
   useEffect(() => {
+    socket.on("updateTrails", ({ data }) => {
+      if (trailsCountryForCheck === data.country) {
+        let updatedTrails = trails?.map((trail) => {
+          const updatedTrail = data.trails.filter((el) => Number(el.id) === trail.id)[0];
+          return updatedTrail ? updatedTrail : trail;
+        });
+        dispatch({
+          type: reducerTrailsTypes.GET_TRAILS,
+          payload: { trails: updatedTrails, country: data.country },
+        });
+      }
+    });
+    // eslint-disable-next-line
+  }, [trails]);
+
+  useEffect(() => {
     const temporaryTrails = trails?.filter((item) => Number(item?.id) === Number(id))[0];
     if (temporaryTrails) {
       setTrail(temporaryTrails);
@@ -172,7 +238,7 @@ function TrailID({ country }) {
           <div style={{ marginTop: "20px", color: "white" }}>
             <div style={{ overflowX: "auto" }}>
               {/* <div onClick={() => console.log(1, trail)}>123</div> */}
-              <TrailTableID country={country} weekDays={messages.days_of_the_week} trail={trail} setTrail={setTrail} getFormsByCityAndName={getFormsByCityAndName} />
+              <TrailTableID messages={messages} country={country} trail={trail} setTrail={setTrail} getFormsByCityAndName={getFormsByCityAndName} getValueById={getValueById} createCity={createCity} />
             </div>
             <div
               style={{

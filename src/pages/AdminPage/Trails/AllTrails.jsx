@@ -50,6 +50,8 @@ function AllTrails({ country }) {
       from: locale["from"],
       to: locale["to"],
       days_of_the_week: locale["days_of_the_week"],
+      yes: locale["trails_yes"],
+      no: locale["trails_no"],
     };
   }, [locale]);
 
@@ -326,7 +328,7 @@ function AllTrails({ country }) {
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>
-              <AllTrailsTable allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} getDictionary={getDictionary} />
+              <AllTrailsTable messages={messages} allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} getDictionary={getDictionary} />
             </table>
           </ContainerForTable>
         </div>

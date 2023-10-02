@@ -4,26 +4,18 @@ import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/mat
 import { useAppSelector } from "../../../store/reduxHooks";
 import TrailSelect from "./TrailSelect";
 
-function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsByCityAndName }) {
+function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndName, getValueById, createCity }) {
   const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms } = useAppSelector((store) => store.trails);
-
-  function getValueById(id, key, array) {
-    if (!id) {
-      return "";
-    }
-    const item = array?.filter((item) => item.id === Number(id))[0];
-    return item ? item[key] : "";
-  }
 
   function getDayName(date) {
     if (!date) {
       return "";
     }
-    if (!weekDays) {
+    if (!messages.days_of_the_week) {
       return "";
     }
     const d = new Date(date);
-    return weekDays[d.getDay()];
+    return messages.days_of_the_week[d.getDay()];
   }
 
   return (
@@ -193,7 +185,6 @@ function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsBy
               <Autocomplete
                 disablePortal
                 id="movie-customized-option-demo"
-                disableClearable
                 options={allForms?.map((el) => ({ ...el, label: `${el.id} ${el.local} \n (${el.town})` }))}
                 sx={{ width: 300 }}
                 onChange={(e, values) => {
@@ -267,11 +258,12 @@ function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsBy
                   value={!!trail.sent_to_podil}
                   onChange={(e) => {
                     setTrail((prev) => ({ ...prev, sent_to_podil: e.target.value }));
+                    createCity(trail, e.target.value, "visible_in_podil");
                   }}
                   style={{ fontWeight: 700, fontSize: "16px", gap: "10px" }}
                 >
-                  <MenuItem value={false}>NET</MenuItem>
-                  <MenuItem value={true}>TAK</MenuItem>
+                  <MenuItem value={false}>{messages.no}</MenuItem>
+                  <MenuItem value={true}>{messages.yes}</MenuItem>
                 </Select>
               </FormControl>
             </td>
@@ -283,11 +275,12 @@ function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsBy
                   value={!!trail.sent_to_bases}
                   onChange={(e) => {
                     setTrail((prev) => ({ ...prev, sent_to_bases: e.target.value }));
+                    createCity(trail, e.target.value, "visible_in_bases");
                   }}
                   style={{ fontWeight: 700, fontSize: "16px", gap: "10px" }}
                 >
-                  <MenuItem value={false}>NET</MenuItem>
-                  <MenuItem value={true}>TAK</MenuItem>
+                  <MenuItem value={false}>{messages.no}</MenuItem>
+                  <MenuItem value={true}>{messages.yes}</MenuItem>
                 </Select>
               </FormControl>
             </td>
@@ -299,11 +292,12 @@ function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsBy
                   value={!!trail.sent_to_speaker}
                   onChange={(e) => {
                     setTrail((prev) => ({ ...prev, sent_to_speaker: e.target.value }));
+                    createCity(trail, e.target.value, "visible_in_speaker");
                   }}
                   style={{ fontWeight: 700, fontSize: "16px", gap: "10px" }}
                 >
-                  <MenuItem value={false}>NET</MenuItem>
-                  <MenuItem value={true}>TAK</MenuItem>
+                  <MenuItem value={false}>{messages.no}</MenuItem>
+                  <MenuItem value={true}>{messages.yes}</MenuItem>
                 </Select>
               </FormControl>
             </td>
@@ -315,11 +309,12 @@ function TrailTableID({ country, messages, trail, setTrail, weekDays, getFormsBy
                   value={!!trail.sent_to_scenario}
                   onChange={(e) => {
                     setTrail((prev) => ({ ...prev, sent_to_scenario: e.target.value }));
+                    createCity(trail, e.target.value, "visible_in_scenario");
                   }}
                   style={{ fontWeight: 700, fontSize: "16px", gap: "10px" }}
                 >
-                  <MenuItem value={false}>NET</MenuItem>
-                  <MenuItem value={true}>TAK</MenuItem>
+                  <MenuItem value={false}>{messages.no}</MenuItem>
+                  <MenuItem value={true}>{messages.yes}</MenuItem>
                 </Select>
               </FormControl>
             </td>

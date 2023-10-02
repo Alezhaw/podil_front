@@ -63,4 +63,9 @@ export interface ICities {
   status: number | null;
   l_p_for_pl: string | null;
   explains_for_pl: string | null;
+  trailId: number | null;
+  visible_in_podil: boolean;
+  visible_in_bases: boolean;
+  visible_in_speaker: boolean;
+  visible_in_scenario: boolean;
 }

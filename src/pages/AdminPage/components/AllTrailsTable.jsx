@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 
-function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
+function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, weekDays }) {
   const navigate = useNavigate();
   const { callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } = useAppSelector(
     (store) => store.trails
@@ -107,16 +107,16 @@ function AllTrailsTable({ allTrails, country, changeDeleteTrails, weekDays }) {
             <div className="tableInput">{item.comment || ""}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            <div className="tableInput">{item.sent_to_podil || ""}</div>
+            <div className="tableInput">{item.sent_to_podil ? messages.yes : messages.no}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            <div className="tableInput">{item.sent_to_bases || ""}</div>
+            <div className="tableInput">{item.sent_to_bases ? messages.yes : messages.no}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            <div className="tableInput">{item.sent_to_speaker || ""}</div>
+            <div className="tableInput">{item.sent_to_speaker ? messages.yes : messages.no}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            <div className="tableInput">{item.sent_to_scenario || ""}</div>
+            <div className="tableInput">{item.sent_to_scenario ? messages.yes : messages.no}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{item.autozonning || ""}</div>

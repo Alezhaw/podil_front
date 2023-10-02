@@ -12,6 +12,7 @@ import TrailID from "./pages/AdminPage/Trails/TrailID";
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
+import { reducerTrailsTypes } from "./store/Users/trails/trailsTypes";
 import io from "socket.io-client";
 import { defaultUrl } from "./api/axios";
 
@@ -20,6 +21,7 @@ export const socket = io.connect(defaultUrl);
 function App() {
   const dispatch = useDispatch();
   const { user, storedCities, bases, countryForCheck, selectedLang } = useAppSelector((store) => store.user);
+  const { trails, trailsCountryForCheck } = useAppSelector((store) => store.trails);
 
   useEffect(() => {
     if (user?.email) {
@@ -66,6 +68,22 @@ function App() {
     });
     // eslint-disable-next-line
   }, [storedCities]);
+
+  useEffect(() => {
+    socket.on("updateTrails", ({ data }) => {
+      if (trailsCountryForCheck === data.country) {
+        let updatedTrails = trails?.map((trail) => {
+          const updatedTrail = data.trails.filter((el) => Number(el.id) === trail.id)[0];
+          return updatedTrail ? updatedTrail : trail;
+        });
+        dispatch({
+          type: reducerTrailsTypes.GET_TRAILS,
+          payload: { trails: updatedTrails, country: data.country },
+        });
+      }
+    });
+    // eslint-disable-next-line
+  }, [trails]);
 
   useEffect(() => {
     socket.on("deleteCity", ({ data }) => {

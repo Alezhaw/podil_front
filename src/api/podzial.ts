@@ -16,6 +16,16 @@ export const createCities = async (cities: ICities[], country: string) => {
   }
 };
 
+export const createCitiesByTrails = async ({ cities, country, status }: { cities: ICities[]; country: string; status: any }) => {
+  try {
+    const { data } = await axios.post("api/city/createByTrail", { data: cities, country, status });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getAllCities = async () => {
   try {
     if (controllerGetAllCities !== null) {
@@ -49,6 +59,10 @@ export const getFilteredCities = async ({
   zamkniete,
   inProgress,
   canceled,
+  visibleInPodil,
+  visibleInBases,
+  visibleInSpeaker,
+  visibleInScenario,
   search = "",
   country = "",
   filterDate,
@@ -68,6 +82,10 @@ export const getFilteredCities = async ({
   speakerInProgress: boolean;
   speakerZamkniete: boolean;
   speakerCanceled: boolean;
+  visibleInPodil: boolean;
+  visibleInBases: boolean;
+  visibleInSpeaker: boolean;
+  visibleInScenario: boolean;
   sort: boolean;
   country: string;
   filterDate: { dateFrom: string; dateTo: string } | {};
@@ -96,6 +114,10 @@ export const getFilteredCities = async ({
           zamkniete,
           inProgress,
           canceled,
+          visibleInPodil,
+          visibleInBases,
+          visibleInSpeaker,
+          visibleInScenario,
           ...filterDate,
         },
         search,
@@ -224,6 +246,7 @@ export const deleteBase = async (country: string, id?: number, podzial_id?: numb
 
 export default {
   createCities,
+  createCitiesByTrails,
   createBase,
   getAllCities,
   getFilteredCities,
@@ -237,3 +260,9 @@ export default {
   deleteTime,
   deleteBase,
 };
+function async(
+  arg0: { cities: any; country: any; statuses: { sent_to_podil: number; sent_to_bases: number; sent_to_speaker: number; sent_to_scenario: number }[]; trailId: any },
+  arg1: { cities: any; country: any; statuses: { sent_to_podil: number; sent_to_bases: number; sent_to_speaker: number; sent_to_scenario: number }[]; trailId: any }
+) {
+  throw new Error("Function not implemented.");
+}

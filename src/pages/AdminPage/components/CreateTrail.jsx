@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Trail from "../../../api/trails/trails";

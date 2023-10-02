@@ -53,6 +53,7 @@ function CheckScenario({ country }) {
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
+      visibleInSpeaker: true,
       page: page + 1,
       pageSize: itemsPerPage,
       sort: !sortId,

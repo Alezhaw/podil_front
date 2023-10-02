@@ -60,6 +60,7 @@ function AllCities({ country }) {
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete, filterCanceled, filterDate }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
+      visibleInPodil: true,
       page: page + 1,
       pageSize: itemsPerPage,
       sort: !sortId,

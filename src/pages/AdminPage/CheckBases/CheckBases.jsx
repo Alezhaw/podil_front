@@ -52,6 +52,7 @@ function CheckBases({ country }) {
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterDate }) {
     setLoadingSpinner(false);
     const data = await Podzial.getFilteredCities({
+      visibleInBases: true,
       page: page + 1,
       pageSize: itemsPerPage,
       sort: !sortId,

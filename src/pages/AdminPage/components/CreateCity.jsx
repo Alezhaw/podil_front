@@ -2,11 +2,11 @@ import CloseIcon from "@mui/icons-material/Close";
 
 function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondTime, thirdTime, setThirdTime, changeCityValues, createCity }) {
   return (
-    <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.95)" }} className="modalStyles">
-      <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", width: "59%", flexDirection: "row-reverse" }}>
-        <CloseIcon style={{ cursor: "pointer" }} onClick={() => setIsOpen(false)}></CloseIcon>
-      </div>
-      <div onClick={(e) => e.stopPropagation()} className="modalContentStyles">
+    <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.90)" }} className="modalStyles">
+      <div onClick={(e) => e.stopPropagation()} className="modalContentStyles" style={{ position: "relative", background: "rgba(17, 17, 18, .9)" }}>
+        <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: "-50px", right: "0px" }}>
+          <CloseIcon style={{ cursor: "pointer", marginBottom: "20px" }} onClick={() => setIsOpen(false)}></CloseIcon>
+        </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column", maxWidth: "110px" }} className="pages-user-block">

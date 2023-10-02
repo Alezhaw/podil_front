@@ -88,10 +88,10 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
 
   return (
     <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.95)" }} className="modalStyles">
-      <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", width: "59%", flexDirection: "row-reverse" }}>
-        <CloseIcon style={{ cursor: "pointer" }} onClick={() => setIsOpen(false)}></CloseIcon>
-      </div>
-      <div onClick={(e) => e.stopPropagation()} className="modalContentStyles" style={{ background: "rgba(255, 255, 255, 0.95)", alignItems: "baseline" }}>
+      <div onClick={(e) => e.stopPropagation()} className="modalContentStyles" style={{ background: "rgba(255, 255, 255, 0.95)", alignItems: "baseline", position: "relative" }}>
+        <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: "-50px", right: "0px" }}>
+          <CloseIcon style={{ cursor: "pointer", marginBottom: "20px" }} onClick={() => setIsOpen(false)}></CloseIcon>
+        </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px", background: "rgba(255, 255, 255, 0.1)" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
@@ -160,7 +160,7 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
               {getDayName(newTrail.presentation_date)}
             </div>
 
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
+            <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Region</h6>
               <Autocomplete
                 disablePortal

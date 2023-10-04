@@ -78,7 +78,7 @@ function App() {
         });
         dispatch({
           type: reducerTrailsTypes.GET_TRAILS,
-          payload: { trails: updatedTrails, country: data.country },
+          payload: { trails: updatedTrails, trailsCountryForCheck: data.country },
         });
       }
     });
@@ -98,7 +98,7 @@ function App() {
           const filteredCities = storedCities?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
           dispatch({
             type: reducerTypes.GET_CITIES,
-            payload: { cities: filteredCities, country: data.country },
+            payload: { cities: filteredCities, trailsCountryForCheck: data.country },
           });
         }
       }
@@ -142,6 +142,17 @@ function App() {
     });
     // eslint-disable-next-line
   }, [bases]);
+
+  useEffect(() => {
+    socket.on("deleteTrails", ({ data }) => {
+      const filteredTrails = trails?.filter((el) => Number(el.id) !== Number(data.id));
+      dispatch({
+        type: reducerTrailsTypes.GET_TRAILS,
+        payload: { trails: filteredTrails, trailsCountryForCheck: data.country },
+      });
+    });
+    // eslint-disable-next-line
+  }, [trails]);
 
   return (
     <>

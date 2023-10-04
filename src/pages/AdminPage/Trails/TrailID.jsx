@@ -195,22 +195,6 @@ function TrailID({ country }) {
   }
 
   useEffect(() => {
-    socket.on("updateTrails", ({ data }) => {
-      if (trailsCountryForCheck === data.country) {
-        let updatedTrails = trails?.map((trail) => {
-          const updatedTrail = data.trails.filter((el) => Number(el.id) === trail.id)[0];
-          return updatedTrail ? updatedTrail : trail;
-        });
-        dispatch({
-          type: reducerTrailsTypes.GET_TRAILS,
-          payload: { trails: updatedTrails, country: data.country },
-        });
-      }
-    });
-    // eslint-disable-next-line
-  }, [trails]);
-
-  useEffect(() => {
     const temporaryTrails = trails?.filter((item) => Number(item?.id) === Number(id))[0];
     if (temporaryTrails) {
       setTrail(temporaryTrails);

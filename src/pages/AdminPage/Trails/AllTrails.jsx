@@ -40,6 +40,39 @@ function AllTrails({ country }) {
     return {
       city_search: locale["trails_city"],
       route_search: locale["trails_route"],
+      planning_person: locale["trails_planning_person"],
+      date_scheduled: locale["trails_date_scheduled"],
+      company: locale["trails_company"],
+      city_type: locale["trails_city_type"],
+      population: locale["trails_population"],
+      departure_dates: locale["trails_departure_dates"],
+      presentation_date: locale["trails_presentation_date"],
+      presentation_hours: locale["trails_presentation_hours"],
+      rental_hours: locale["trails_rental_hours"],
+      region: locale["trails_region"],
+      institution: locale["trails_institution"],
+      address: locale["trails_address"],
+      reservation_status: locale["trails_reservation_status"],
+      alternative: locale["trails_alternative"],
+      telephone: locale["trails_relephone"],
+      cost: locale["trails_cost"],
+      payment_method: locale["trails_payment_method"],
+      contract_status: locale["trails_contract_status"],
+      comment: locale["trails_comment"],
+      send_to_podil: locale["trails_send_to_podil"],
+      send_to_bases: locale["trails_send_to_bases"],
+      send_to_speaker: locale["trails_send_to_speaker"],
+      send_to_scenario: locale["trails_send_to_scenario"],
+      autozonning: locale["trails_autozonning"],
+      date_of_previous_presentation: locale["trails_date_previous_presentation"],
+      project_sales: locale["trails_project_sales"],
+      project_concent: locale["trails_project_concent"],
+      call_template: locale["trails_call_template"],
+      hall: locale["trails_hall"],
+      payment_notes: locale["trails_payment_notes"],
+      free_parking: locale["trails_free_parking"],
+      comments: locale["trails_comments"],
+      create_trail: locale["trails_create_trail"],
       title: locale["trails_title"],
       all: locale["trails_all"],
       columns: locale["columns"],
@@ -273,7 +306,7 @@ function AllTrails({ country }) {
           {messages.new_trail}
         </div>
       </div>
-      {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} /> : null}
+      {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} messages={messages} /> : null}
 
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
@@ -290,40 +323,40 @@ function AllTrails({ country }) {
               <thead style={{ background: "#5a5959" }}>
                 <tr style={{ background: "none" }}>
                   <th className="basesTableCell">ID</th>
-                  <th className="basesTableCell">Planning person</th>
-                  <th className="basesTableCell">Date scheduled</th>
-                  <th className="basesTableCell">Company</th>
-                  <th className="basesTableCell">City type</th>
-                  <th className="basesTableCell">Population</th>
-                  <th className="basesTableCell">Route №</th>
-                  <th className="basesTableCell">Departure dates</th>
-                  <th className="basesTableCell">Presentation date</th>
-                  <th className="basesTableCell">Presentation hours</th>
-                  <th className="basesTableCell">Rental hours</th>
-                  <th className="basesTableCell">Region</th>
-                  <th className="basesTableCell">City</th>
-                  <th className="basesTableCell">Institution</th>
-                  <th className="basesTableCell">Address</th>
-                  <th className="basesTableCell">Reservation status</th>
-                  <th className="basesTableCell">Alternative</th>
-                  <th className="basesTableCell">Telephone</th>
-                  <th className="basesTableCell">Cost</th>
-                  <th className="basesTableCell">Payment method</th>
-                  <th className="basesTableCell">Contract status</th>
-                  <th className="basesTableCell">Comment</th>
-                  <th className="basesTableCell">Send to Podil</th>
-                  <th className="basesTableCell">Send to Bases</th>
-                  <th className="basesTableCell">Send to speaker</th>
-                  <th className="basesTableCell">Send to Scenario</th>
-                  <th className="basesTableCell">Autozonning</th>
-                  <th className="basesTableCell">Date of the previous presentation</th>
-                  <th className="basesTableCell">Project sales</th>
-                  <th className="basesTableCell">Project concent</th>
-                  <th className="basesTableCell">Call template</th>
-                  <th className="basesTableCell">Hall</th>
-                  <th className="basesTableCell">Payment notes</th>
-                  <th className="basesTableCell">Free parking</th>
-                  <th className="basesTableCell">Comments</th>
+                  <th className="basesTableCell">{messages.planning_person}</th>
+                  <th className="basesTableCell">{messages.date_scheduled}</th>
+                  <th className="basesTableCell">{messages.company}</th>
+                  <th className="basesTableCell">{messages.city_type}</th>
+                  <th className="basesTableCell">{messages.population}</th>
+                  <th className="basesTableCell">{messages.route_search}</th>
+                  <th className="basesTableCell">{messages.departure_dates}</th>
+                  <th className="basesTableCell">{messages.presentation_date}</th>
+                  <th className="basesTableCell">{messages.presentation_hours}</th>
+                  <th className="basesTableCell">{messages.rental_hours}</th>
+                  <th className="basesTableCell">{messages.region}</th>
+                  <th className="basesTableCell">{messages.city_search}</th>
+                  <th className="basesTableCell">{messages.institution}</th>
+                  <th className="basesTableCell">{messages.address}</th>
+                  <th className="basesTableCell">{messages.reservation_status}</th>
+                  <th className="basesTableCell">{messages.alternative}</th>
+                  <th className="basesTableCell">{messages.telephone}</th>
+                  <th className="basesTableCell">{messages.cost}</th>
+                  <th className="basesTableCell">{messages.payment_method}</th>
+                  <th className="basesTableCell">{messages.contract_status}</th>
+                  <th className="basesTableCell">{messages.comment}</th>
+                  <th className="basesTableCell">{messages.send_to_podil}</th>
+                  <th className="basesTableCell">{messages.send_to_bases}</th>
+                  <th className="basesTableCell">{messages.send_to_speaker}</th>
+                  <th className="basesTableCell">{messages.send_to_scenario}</th>
+                  <th className="basesTableCell">{messages.autozonning}</th>
+                  <th className="basesTableCell">{messages.date_of_previous_presentation}</th>
+                  <th className="basesTableCell">{messages.project_sales}</th>
+                  <th className="basesTableCell">{messages.project_concent}</th>
+                  <th className="basesTableCell">{messages.call_template}</th>
+                  <th className="basesTableCell">{messages.hall}</th>
+                  <th className="basesTableCell">{messages.payment_notes}</th>
+                  <th className="basesTableCell">{messages.free_parking}</th>
+                  <th className="basesTableCell">{messages.comments}</th>
                   <th className="basesTableCell">{messages.delete}</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>

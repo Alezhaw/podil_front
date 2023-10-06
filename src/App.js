@@ -18,7 +18,7 @@ import { defaultUrl } from "./api/axios";
 
 export const socket = io.connect(defaultUrl, {
   reconnection: true,
-  reconnectionAttempts: 100, 
+  reconnectionAttempts: 100,
   reconnectionDelay: 1000,
 });
 
@@ -26,12 +26,6 @@ function App() {
   const dispatch = useDispatch();
   const { user, storedCities, bases, countryForCheck, selectedLang } = useAppSelector((store) => store.user);
   const { trails, trailsCountryForCheck } = useAppSelector((store) => store.trails);
-
-  useEffect(() => {
-    if (user?.email) {
-      socket.emit("join", { name: "1", room: "1" });
-    }
-  }, [user]);
 
   useEffect(() => {
     selectLocale();

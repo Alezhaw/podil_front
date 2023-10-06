@@ -16,7 +16,11 @@ import { reducerTrailsTypes } from "./store/Users/trails/trailsTypes";
 import io from "socket.io-client";
 import { defaultUrl } from "./api/axios";
 
-export const socket = io.connect(defaultUrl);
+export const socket = io.connect(defaultUrl, {
+  reconnection: true,
+  reconnectionAttempts: 100, 
+  reconnectionDelay: 1000,
+});
 
 function App() {
   const dispatch = useDispatch();

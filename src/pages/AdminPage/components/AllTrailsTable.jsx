@@ -3,9 +3,21 @@ import { useAppSelector } from "../../../store/reduxHooks";
 
 function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, weekDays }) {
   const navigate = useNavigate();
-  const { callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } = useAppSelector(
-    (store) => store.trails
-  );
+  const {
+    callTamplates,
+    citiesWithRegions,
+    contractStatuses,
+    forms,
+    planningPeople,
+    presentationTimes,
+    projectConcent,
+    projectSales,
+    regiments,
+    regions,
+    reservationStatuses,
+    departure,
+    departureDate,
+  } = useAppSelector((store) => store.trails);
 
   function getValueById(id, key, array) {
     if (!id) {
@@ -48,13 +60,13 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
             <div className="tableInput">{item.route_number || ""}</div>
           </td>
           <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
-            {item.departure_dates?.map((date, index) => (
+            {(getValueById(item.departure_id, "range", departure) || [])?.map((date, index) => (
               <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
             ))}
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
             <div className="tableInput">
-              {item.presentation_date || ""} {getDayName(item.presentation_date)}
+              {getValueById(item.departure_date_id, "data", departureDate) || ""} {getDayName(getValueById(item.departure_date_id, "data", departureDate))}
             </div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>

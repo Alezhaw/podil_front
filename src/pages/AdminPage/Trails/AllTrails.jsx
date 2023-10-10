@@ -5,6 +5,7 @@ import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Trail from "../../../api/trails/trails";
+import Departure from "../../../api/trails/departure";
 import PlanningPeople from "../../../api/trails/planningPerson";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
@@ -23,12 +24,12 @@ function AllTrails({ country }) {
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, allPlanningPeople, allDictionary } = useAppSelector((store) => store.trails);
+  const { trails, allDictionary, allDeparture, allDepartureDate } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(5);
   const [isOpen, setIsOpen] = useState(false);
   const [newTrail, setNewTrail] = useState({ reservation_status_id: 1 });
   const [count, setCount] = useState(1);
@@ -90,9 +91,8 @@ function AllTrails({ country }) {
 
   async function getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
     setLoadingSpinner(false);
-    const data = await Trail.getFilteredTrails({
+    const data = await Departure.getFiltered({
       search,
-      searchRoute,
       planningPersonIds,
       ...filterDate,
       sort: !sortId,
@@ -104,6 +104,14 @@ function AllTrails({ country }) {
     dispatch({
       type: reducerTrailsTypes.GET_TRAILS,
       payload: { trails: data?.trails || [], country },
+    });
+    dispatch({
+      type: reducerTrailsTypes.GET_DEPARTURE,
+      payload: { trails: data?.departure || [], country },
+    });
+    dispatch({
+      type: reducerTrailsTypes.GET_DEPARTURE_DATE,
+      payload: { trails: data?.departureDate || [], country },
     });
     if (data) {
       setCount(data.count);
@@ -181,10 +189,12 @@ function AllTrails({ country }) {
 
   useEffect(() => {
     getDictionary({ trails, country });
+    // eslint-disable-next-line
   }, [trails]);
 
   useEffect(() => {
     setPlanningPersonSelectOptions(allDictionary.planningPeople);
+    // eslint-disable-next-line
   }, [allDictionary.planningPeople]);
 
   useEffect(() => {
@@ -232,7 +242,7 @@ function AllTrails({ country }) {
             autoComplete="off"
             required
           />
-          <StyledInput
+          {/* <StyledInput
             className="tabl-flex-admin-search"
             style={{ color: "white", borderRadius: "5px", paddingLeft: "10px", width: "100px" }}
             type="number"
@@ -252,7 +262,7 @@ function AllTrails({ country }) {
             }}
             autoComplete="off"
             required
-          />
+          /> */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span>
               {messages.from}{" "}

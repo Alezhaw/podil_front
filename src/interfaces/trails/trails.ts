@@ -24,6 +24,8 @@ export interface ITrails {
   project_concent_id: number;
   call_template_id: number;
   relevanceStatus: boolean;
+  departure_id: number;
+  departure_date_id: number;
   createdAt: string | null;
   updatedAt: string | null;
 }

@@ -1,11 +1,10 @@
-import { Container, Button } from "@material-ui/core";
 import { ContainerForTable } from "./Table.styled";
 import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
 import TrailSelect from "./TrailSelect";
 
 function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndName, getValueById, createCity }) {
-  const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms } = useAppSelector((store) => store.trails);
+  const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, departure, departureDate } = useAppSelector((store) => store.trails);
 
   function getDayName(date) {
     if (!date) {
@@ -65,7 +64,7 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
               <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={trail} setTrail={setTrail} array={allDictionary?.planningPeople} arrayKey="name" />
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-              <div className="tableInput">{trail.date_scheduled}</div>
+              <input className="tableInput" type="date" autoComplete="off" value={trail.date_scheduled || undefined} disabled />
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <TrailSelect valueKey="company_id" trail={trail} setTrail={setTrail} array={allDictionary?.regiments} arrayKey="name" />
@@ -89,25 +88,9 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
             </td>
             <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
               <div>
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setTrail((prev) => ({ ...prev, departure_dates: [e.target.value, prev.departure_dates ? prev.departure_dates[1] : null].filter((el) => !!el) }))}
-                  className="tableInput"
-                  type="date"
-                  value={[trail.departure_dates].flat()[0] || "0000-00-00"}
-                />
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) =>
-                    setTrail((prev) => ({
-                      ...prev,
-                      departure_dates: [prev.departure_dates ? prev.departure_dates[0] : null, e.target.value].filter((el) => !!el),
-                    }))
-                  }
-                  className="tableInput"
-                  type="date"
-                  value={[trail.departure_dates].flat()[1] || "0000-00-00"}
-                />
+                {(getValueById(trail.departure_id, "range", departure) || [])?.map((date, index) => (
+                  <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+                ))}
               </div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">

@@ -87,10 +87,10 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px", background: "rgba(255, 255, 255, 0.1)" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
+            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.planning_person}</h6>
               <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
-            </div>
+            </div> */}
             {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Planning person</h6>
               <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
@@ -111,7 +111,23 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                 value={newTrail.route_number || 0}
               />
             </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
+            <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.region}</h6>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                disableClearable
+                options={allDictionary?.regions?.map((el) => ({ ...el, label: el.region }))}
+                sx={{ width: 300 }}
+                onChange={(e, values) => {
+                  setNewTrail((prev) => ({ ...prev, city_id: null }));
+                  setNewTrail((prev) => ({ ...prev, regionId: Number(values?.id) }));
+                }}
+                renderInput={(params) => <TextField {...params} label="Region" variant="standard" />}
+                value={getValueById(newTrail.regionId, "region", allDictionary?.regions)}
+              />
+            </div>
+            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.departure_dates}</h6>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <input
@@ -134,14 +150,14 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                   value={[newTrail.departure_dates].flat()[1] || "0000-00-00"}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
+            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.date_scheduled}</h6>
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{newTrail.date_scheduled}</h6>
-            </div>
-            <div style={{ flexDirection: "column", alignItems: "center", color: "black" }} className="pages-user-block">
+            </div> */}
+            {/* <div style={{ flexDirection: "column", alignItems: "center", color: "black" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center" }}>{messages?.presentation_date}</h6>
               <input
                 style={{ padding: "0px 5px" }}
@@ -151,27 +167,11 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                 value={newTrail.presentation_date || "0000-00-00"}
               />
               {getDayName(newTrail.presentation_date)}
-            </div>
+            </div> */}
 
             <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.region}</h6>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                disableClearable
-                options={allDictionary?.regions?.map((el) => ({ ...el, label: el.region }))}
-                sx={{ width: 300 }}
-                onChange={(e, values) => {
-                  setNewTrail((prev) => ({ ...prev, city_id: null }));
-                  setNewTrail((prev) => ({ ...prev, regionId: Number(values?.id) }));
-                }}
-                renderInput={(params) => <TextField {...params} label="Region" variant="standard" />}
-                value={getValueById(newTrail.regionId, "region", allDictionary?.regions)}
-              />
-            </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.city_search}</h6>
-              <city_search
+              <Autocomplete
                 disablePortal
                 id="movie-customized-option-demo"
                 disableClearable
@@ -185,8 +185,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                 value={getValueById(newTrail.city_id, "city_name", allCitiesWithRegions)}
               />
             </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.presentation_hours}</h6>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -213,6 +211,8 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.rental_hours}</h6>
               <div className="tableInput">{getValueById(newTrail.presentation_time_id, "rental_hours", allDictionary?.presentationTimes)}</div>
             </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.project_sales}</h6>
               <TrailSelect valueKey="project_sales_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectSales} arrayKey="name" />
@@ -220,6 +220,10 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.project_concent}</h6>
               <TrailSelect valueKey="project_concent_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectConcent} arrayKey="name" />
+            </div>
+            <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.reservation_status}</h6>
+              <TrailSelect valueKey="reservation_status_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.reservationStatuses} arrayKey="name" />
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -237,10 +241,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                 autoComplete="off"
                 value={newTrail.autozonning || ""}
               />
-            </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.reservation_status}</h6>
-              <TrailSelect valueKey="reservation_status_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.reservationStatuses} arrayKey="name" />
             </div>
           </div>
         </div>

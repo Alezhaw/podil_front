@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../store/reduxHooks";
 import TrailSelect from "./TrailSelect";
 
 function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndName, getValueById, createCity }) {
+  const { allUsers } = useAppSelector((store) => store.user);
   const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, departure, departureDate } = useAppSelector((store) => store.trails);
 
   function getDayName(date) {
@@ -61,7 +62,7 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
         <tbody>
           <tr style={{ textAlign: "center" }}>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-              <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={trail} setTrail={setTrail} array={allDictionary?.planningPeople} arrayKey="name" />
+              <div className="tableInput">{getValueById(trail.planning_person_id, "nickname", allUsers)}</div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
               <input className="tableInput" type="date" autoComplete="off" value={trail.date_scheduled || undefined} disabled />
@@ -95,14 +96,7 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
               <div className="tableInput">
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setTrail((prev) => ({ ...prev, presentation_date: e.target.value }))}
-                  className="tableInput"
-                  type="date"
-                  value={trail.presentation_date || "0000-00-00"}
-                />
-                {getDayName(trail.presentation_date)}
+                {getValueById(trail.departure_date_id, "data", departureDate) || ""} {getDayName(getValueById(trail.departure_date_id, "data", departureDate))}
               </div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>

@@ -1,4 +1,5 @@
 import axios from "../axios";
+import { IPlanningPeople } from "../../interfaces/trails/planningPeople";
 
 let controllerGetAllPlanningPeople: AbortController | null = null;
 
@@ -21,6 +22,38 @@ export const getAll = async ({ country = "" }: { country: string }) => {
   }
 };
 
+export const update = async (planningPeople: IPlanningPeople, country: string) => {
+  try {
+    const { data } = await axios.post("api/planningPerson/update", { country, planningPeople });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const remove = async (planningPeople: IPlanningPeople, country: string) => {
+  try {
+    const { data } = await axios.post("api/planningPerson/remove", { country, planningPeople: { ...planningPeople, relevance_status: false } });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const create = async (planningPeople: IPlanningPeople, country: string) => {
+  try {
+    const { data } = await axios.post("api/planningPeople/create", { country, planningPeople });
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export default {
   getAll,
+  update,
+  remove,
+  create,
 };

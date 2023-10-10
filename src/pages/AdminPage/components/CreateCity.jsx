@@ -44,7 +44,6 @@ function CreateCity({ setIsOpen, firstTime, setFirstTime, secondTime, setSecondT
                 type="text"
                 placeholder=""
                 autoComplete="off"
-                s
                 required
                 value={thirdTime?.time || "00:00:00"}
               />

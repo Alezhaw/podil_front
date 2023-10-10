@@ -72,7 +72,7 @@ export const texts = {
   admin_panel_edit_trails_dictionary: "Редактировать",
   admin_panel_trails_call_template: "CallTemplate",
   admin_panel_trails_cities_with_reg: "CitiesWithReg",
-  admin_panel_trails_contact_status: "ContactStatus",
+  admin_panel_trails_contact_status: "ContractStatus",
   admin_panel_trails_form: "Form",
   admin_panel_trails_planning_person: "PlanningPerson",
   admin_panel_trails_presentation_time: "PresentationTime",

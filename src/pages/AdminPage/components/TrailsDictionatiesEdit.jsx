@@ -123,11 +123,11 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           className="tabl-flex-admin-button-global2"
           onClick={async () => {
             const result = await update(dictionaryObject, country);
-            if (result) {
+            if (!result?.message) {
               await getAllDictionary({ country });
               alert("Sucess");
             } else {
-              alert("Something went wrong");
+              alert(result.message);
             }
           }}
         >

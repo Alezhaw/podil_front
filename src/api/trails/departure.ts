@@ -62,8 +62,8 @@ export const create = async (departure: IDeparture, country: string) => {
     const { data } = await axios.post("api/departure/create", { country, departure });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -72,8 +72,8 @@ export const update = async (departure: IDeparture, country: string) => {
     const { data } = await axios.post("api/departure/update", { country, departure });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -82,8 +82,8 @@ export const remove = async (id: number, country: string) => {
     const { data } = await axios.post("api/departure/remove", { id, country, relevance_status: false });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 

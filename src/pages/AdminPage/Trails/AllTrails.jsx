@@ -13,9 +13,11 @@ import { StyledDivHeader } from "../Users/style";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
 import DepartureTable from "../components/Departure";
+import CreateDeparture from "../components/CreateDeparture";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [searchRoute, setSearchRoute] = useState(null);
@@ -33,6 +35,7 @@ function AllTrails({ country }) {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [users, setUsersSelectOptions] = useState([]);
   const [planningPerson, setPlanningPerson] = useState("");
+  const [newDeparture, setNewDeparture] = useState({});
 
   const messages = useMemo(() => {
     return {
@@ -74,7 +77,7 @@ function AllTrails({ country }) {
       title: locale["trails_title"],
       all: locale["trails_all"],
       columns: locale["columns"],
-      new_trail: locale["trails_new_trail"],
+      new_departure: locale["trails_new_departure"],
       sort: locale["sort"],
       delete: locale["delete"],
       items_per_page: locale["items_per_page"],
@@ -83,10 +86,11 @@ function AllTrails({ country }) {
       days_of_the_week: locale["days_of_the_week"],
       yes: locale["trails_yes"],
       no: locale["trails_no"],
+      create: locale["trails_create"],
     };
   }, [locale]);
 
-  async function getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
+  async function getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
     setLoadingSpinner(false);
     const data = await Departure.getFiltered({
       search,
@@ -169,14 +173,31 @@ function AllTrails({ country }) {
     const trail = newTrail;
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {
-      getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
-
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
       alert("Sucess");
-      //  setNewTrail({});
       setIsOpen(false);
     } else {
-      getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }); // вывести ошибку
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }); // вывести ошибку
       alert("Something went wrong");
+    }
+  }
+
+  async function createDeparture({ newDeparture, setNewDeparture, setIsOpen }) {
+    const departure = newDeparture;
+    const checkDates = departure.dates ? departure.dates[0] : false;
+    console.log(1, departure);
+    if (!checkDates) {
+      return alert("Нет дат");
+    }
+    const result = await Departure.create(departure, country);
+    if (result && !result?.message) {
+      await getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      alert("Sucess");
+      setNewDeparture({});
+      setIsOpen(false);
+    } else {
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      alert(result.message);
     }
   }
 
@@ -190,29 +211,19 @@ function AllTrails({ country }) {
     // eslint-disable-next-line
   }, [allUsers]);
 
-  // useEffect(() => {
-  //   if (!trails[0]) {
-  //     getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
-  //   }
-  //   if (!allDictionary.planningPeople[0]) {
-  //     getPlanningPeople({ country });
-  //   }
-  //   // eslint-disable-next-line
-  // }, [user]);
-
   useEffect(() => {
     getUsers();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+    getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     // eslint-disable-next-line
   }, [search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country]);
 
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
           <StyledInput
             className="tabl-flex-admin-search"
@@ -235,27 +246,7 @@ function AllTrails({ country }) {
             autoComplete="off"
             required
           />
-          {/* <StyledInput
-            className="tabl-flex-admin-search"
-            style={{ color: "white", borderRadius: "5px", paddingLeft: "10px", width: "100px" }}
-            type="number"
-            id="Route search"
-            value={searchRouteForInput}
-            placeholder={messages.route_search}
-            onChange={(e) => setSearchRouteForInput(e.target.value?.toLowerCase())}
-            onBlur={(e) => {
-              setPage(0);
-              setSearchRoute(Number(e.target.value));
-            }}
-            onKeyUp={(e) => {
-              if (e.key === "Enter") {
-                setPage(0);
-                setSearchRoute(Number(e.target.value));
-              }
-            }}
-            autoComplete="off"
-            required
-          /> */}
+
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span>
               {messages.from}{" "}
@@ -304,12 +295,22 @@ function AllTrails({ country }) {
         </div>
       </div>
 
-      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-          {messages.new_trail}
+          {messages.new_departure}
         </div>
-      </div> */}
-
+      </div>
+      {isOpen ? (
+        <CreateDeparture
+          country={country}
+          setIsOpen={setIsOpen}
+          messages={messages}
+          newDeparture={newDeparture}
+          setNewDeparture={setNewDeparture}
+          weekDays={messages.days_of_the_week}
+          createDeparture={createDeparture}
+        />
+      ) : null}
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
@@ -381,7 +382,6 @@ function AllTrails({ country }) {
                     {...filterDate}
                   />
                 ))}
-                {/* <AllTrailsTable messages={messages} allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} /> */}
               </tbody>
             </table>
           </ContainerForTable>
@@ -402,7 +402,7 @@ function AllTrails({ country }) {
               }
               await Promise.all(deleteTrails?.map(async (id) => await Trail.removeTrail(Number(id), country)));
               setDeleteTrails([]);
-              await getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+              await getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
               alert("Success");
             } catch (e) {
               alert("Something went wrong");

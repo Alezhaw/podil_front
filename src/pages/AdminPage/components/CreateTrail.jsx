@@ -21,17 +21,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
     return item ? item[key] : "";
   }
 
-  function getDayName(date) {
-    if (!date) {
-      return "";
-    }
-    if (!messages.days_of_the_week) {
-      return "";
-    }
-    const d = new Date(date);
-    return messages.days_of_the_week[d.getDay()];
-  }
-
   async function getAllDictionary({ country }) {
     const allDictionary = await Trail.getAllDictionary({ country });
     if (allDictionary) {
@@ -127,30 +116,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
                 value={getValueById(newTrail.regionId, "region", allDictionary?.regions)}
               />
             </div>
-            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.departure_dates}</h6>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setNewTrail((prev) => ({ ...prev, departure_dates: [e.target.value, prev.departure_dates ? prev.departure_dates[1] : null].filter((el) => !!el) }))}
-                  className="tableInput"
-                  type="date"
-                  value={[newTrail.departure_dates].flat()[0] || "0000-00-00"}
-                />
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) =>
-                    setNewTrail((prev) => ({
-                      ...prev,
-                      departure_dates: [prev.departure_dates ? prev.departure_dates[0] : null, e.target.value].filter((el) => !!el),
-                    }))
-                  }
-                  className="tableInput"
-                  type="date"
-                  value={[newTrail.departure_dates].flat()[1] || "0000-00-00"}
-                />
-              </div>
-            </div> */}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {/* <div style={{ flexDirection: "column" }} className="pages-user-block">

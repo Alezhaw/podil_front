@@ -1,49 +1,83 @@
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
+import { reducerTypes } from "../../../store/Users/types";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Trail from "../../../api/trails/trails";
-import PlanningPeople from "../../../api/trails/planningPerson";
+import Departure from "../../../api/trails/departure";
+import { axiosGetAllUsers } from "../../../api/user";
 import { StyledInput } from "../../../style/styles";
 import { StyledDivHeader } from "../Users/style";
 import { ContainerForTable } from "../components/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
-import AllTrailsTable from "../components/AllTrailsTable";
-import CreateTrail from "../components/CreateTrail";
+import DepartureTable from "../components/Departure";
+import CreateDeparture from "../components/CreateDeparture";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
   const [searchRoute, setSearchRoute] = useState(null);
-  const [searchRouteForInput, setSearchRouteForInput] = useState("");
   const [planningPersonIds, setPlanningPersonIds] = useState([]);
   const [filterDate, setFilterDate] = useState({});
   const [sortId, setSortId] = useState(true);
-  const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, allPlanningPeople, allDictionary } = useAppSelector((store) => store.trails);
+  const { locale, allUsers } = useAppSelector((store) => store.user);
+  const { trails, departure, departureDate } = useAppSelector((store) => store.trails);
   const [allTrails, setAllTrails] = useState([]);
   const [page, setPage] = useState(0);
   const [deleteTrails, setDeleteTrails] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(10);
-  const [isOpen, setIsOpen] = useState(false);
-  const [newTrail, setNewTrail] = useState({ reservation_status_id: 1 });
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPageForInput, setItemsPerPageForInput] = useState(5);
   const [count, setCount] = useState(1);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
-  const [planningPersonSelectOptions, setPlanningPersonSelectOptions] = useState([]);
+  const [users, setUsersSelectOptions] = useState([]);
   const [planningPerson, setPlanningPerson] = useState("");
+  const [newDeparture, setNewDeparture] = useState({});
 
   const messages = useMemo(() => {
     return {
       city_search: locale["trails_city"],
       route_search: locale["trails_route"],
+      planning_person: locale["trails_planning_person"],
+      date_scheduled: locale["trails_date_scheduled"],
+      company: locale["trails_company"],
+      city_type: locale["trails_city_type"],
+      population: locale["trails_population"],
+      departure_dates: locale["trails_departure_dates"],
+      presentation_date: locale["trails_presentation_date"],
+      presentation_hours: locale["trails_presentation_hours"],
+      rental_hours: locale["trails_rental_hours"],
+      region: locale["trails_region"],
+      institution: locale["trails_institution"],
+      address: locale["trails_address"],
+      reservation_status: locale["trails_reservation_status"],
+      alternative: locale["trails_alternative"],
+      telephone: locale["trails_relephone"],
+      cost: locale["trails_cost"],
+      payment_method: locale["trails_payment_method"],
+      contract_status: locale["trails_contract_status"],
+      comment: locale["trails_comment"],
+      send_to_podil: locale["trails_send_to_podil"],
+      send_to_bases: locale["trails_send_to_bases"],
+      send_to_speaker: locale["trails_send_to_speaker"],
+      send_to_scenario: locale["trails_send_to_scenario"],
+      autozonning: locale["trails_autozonning"],
+      date_of_previous_presentation: locale["trails_date_previous_presentation"],
+      project_sales: locale["trails_project_sales"],
+      project_concent: locale["trails_project_concent"],
+      call_template: locale["trails_call_template"],
+      hall: locale["trails_hall"],
+      payment_notes: locale["trails_payment_notes"],
+      free_parking: locale["trails_free_parking"],
+      comments: locale["trails_comments"],
+      create_trail: locale["trails_create_trail"],
       title: locale["trails_title"],
       all: locale["trails_all"],
       columns: locale["columns"],
-      new_trail: locale["trails_new_trail"],
+      new_departure: locale["trails_new_departure"],
       sort: locale["sort"],
       delete: locale["delete"],
       items_per_page: locale["items_per_page"],
@@ -52,14 +86,14 @@ function AllTrails({ country }) {
       days_of_the_week: locale["days_of_the_week"],
       yes: locale["trails_yes"],
       no: locale["trails_no"],
+      create: locale["trails_create"],
     };
   }, [locale]);
 
-  async function getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
+  async function getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
     setLoadingSpinner(false);
-    const data = await Trail.getFilteredTrails({
+    const data = await Departure.getFiltered({
       search,
-      searchRoute,
       planningPersonIds,
       ...filterDate,
       sort: !sortId,
@@ -71,6 +105,14 @@ function AllTrails({ country }) {
     dispatch({
       type: reducerTrailsTypes.GET_TRAILS,
       payload: { trails: data?.trails || [], country },
+    });
+    dispatch({
+      type: reducerTrailsTypes.GET_DEPARTURE,
+      payload: { departure: data?.departure || [], country },
+    });
+    dispatch({
+      type: reducerTrailsTypes.GET_DEPARTURE_DATE,
+      payload: { departureDate: data?.departureDate || [], country },
     });
     if (data) {
       setCount(data.count);
@@ -108,12 +150,13 @@ function AllTrails({ country }) {
     setAllTrails(trails);
   }
 
-  async function getPlanningPeople({ country }) {
-    const data = await PlanningPeople.getAll({ country });
+  async function getUsers() {
+    const data = await axiosGetAllUsers();
+
     if (data) {
       dispatch({
-        type: reducerTrailsTypes.GET_ALL_DICTIONARY,
-        payload: { allDictionary: { ...allDictionary, planningPeople: data }, country },
+        type: reducerTypes.GET_ALL_USERS,
+        payload: data,
       });
     }
   }
@@ -126,57 +169,61 @@ function AllTrails({ country }) {
     }
   }
 
-  function changeTrailValues(key, value) {
-    //const setCity = [setFirstTime, setSecondTime, setThirdTime];
-    setNewTrail((prev) => ({ ...prev, [key]: value }));
-  }
-
-  async function createTrail({ newTrail, setNewTrail }) {
+  async function createTrail({ newTrail, setNewTrail, setIsOpen }) {
     const trail = newTrail;
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {
-      getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
       alert("Sucess");
-      setNewTrail({});
       setIsOpen(false);
     } else {
-      getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }); // вывести ошибку
-      //if (result.not_id_for_base) return alert("Не указан id_for_base");
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }); // вывести ошибку
       alert("Something went wrong");
+    }
+  }
+
+  async function createDeparture({ newDeparture, setNewDeparture, setIsOpen }) {
+    const departure = newDeparture;
+    const checkDates = departure.dates ? departure.dates[0] : false;
+    console.log(1, departure);
+    if (!checkDates) {
+      return alert("Нет дат");
+    }
+    const result = await Departure.create(departure, country);
+    if (result && !result?.message) {
+      await getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      alert("Sucess");
+      setNewDeparture({});
+      setIsOpen(false);
+    } else {
+      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      alert(result.message);
     }
   }
 
   useEffect(() => {
     getDictionary({ trails, country });
+    // eslint-disable-next-line
   }, [trails]);
 
   useEffect(() => {
-    setPlanningPersonSelectOptions(allDictionary.planningPeople);
-  }, [allDictionary.planningPeople]);
-
-  useEffect(() => {
-    if (!trails[0]) {
-      getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
-    }
-    if (!allDictionary.planningPeople[0]) {
-      getPlanningPeople({ country });
-    }
+    setUsersSelectOptions(allUsers);
     // eslint-disable-next-line
-  }, [user]);
+  }, [allUsers]);
 
   useEffect(() => {
-    getPlanningPeople({ country });
+    getUsers();
     // eslint-disable-next-line
-  }, [country]);
+  }, []);
 
   useEffect(() => {
-    getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+    getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
     // eslint-disable-next-line
   }, [search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country]);
 
   return (
     <>
-      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1000 }}>
+      <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
           <StyledInput
             className="tabl-flex-admin-search"
@@ -199,27 +246,7 @@ function AllTrails({ country }) {
             autoComplete="off"
             required
           />
-          <StyledInput
-            className="tabl-flex-admin-search"
-            style={{ color: "white", borderRadius: "5px", paddingLeft: "10px", width: "100px" }}
-            type="number"
-            id="Route search"
-            value={searchRouteForInput}
-            placeholder={messages.route_search}
-            onChange={(e) => setSearchRouteForInput(e.target.value?.toLowerCase())}
-            onBlur={(e) => {
-              setPage(0);
-              setSearchRoute(Number(e.target.value));
-            }}
-            onKeyUp={(e) => {
-              if (e.key === "Enter") {
-                setPage(0);
-                setSearchRoute(Number(e.target.value));
-              }
-            }}
-            autoComplete="off"
-            required
-          />
+
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span>
               {messages.from}{" "}
@@ -259,9 +286,9 @@ function AllTrails({ country }) {
             value={planningPerson}
           >
             <option value="">{messages.all}</option>
-            {planningPersonSelectOptions.map((el, index) => (
+            {users.map((el, index) => (
               <option value={el.id} key={index}>
-                {el.name?.toUpperCase()}
+                {el.nickname?.toUpperCase()}
               </option>
             ))}
           </select>
@@ -270,11 +297,20 @@ function AllTrails({ country }) {
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
-          {messages.new_trail}
+          {messages.new_departure}
         </div>
       </div>
-      {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} /> : null}
-
+      {isOpen ? (
+        <CreateDeparture
+          country={country}
+          setIsOpen={setIsOpen}
+          messages={messages}
+          newDeparture={newDeparture}
+          setNewDeparture={setNewDeparture}
+          weekDays={messages.days_of_the_week}
+          createDeparture={createDeparture}
+        />
+      ) : null}
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>
 
       <div className="tabl-flex-admin" style={{ borderRadius: "5px" }}>
@@ -290,45 +326,63 @@ function AllTrails({ country }) {
               <thead style={{ background: "#5a5959" }}>
                 <tr style={{ background: "none" }}>
                   <th className="basesTableCell">ID</th>
-                  <th className="basesTableCell">Planning person</th>
-                  <th className="basesTableCell">Date scheduled</th>
-                  <th className="basesTableCell">Company</th>
-                  <th className="basesTableCell">City type</th>
-                  <th className="basesTableCell">Population</th>
-                  <th className="basesTableCell">Route №</th>
-                  <th className="basesTableCell">Departure dates</th>
-                  <th className="basesTableCell">Presentation date</th>
-                  <th className="basesTableCell">Presentation hours</th>
-                  <th className="basesTableCell">Rental hours</th>
-                  <th className="basesTableCell">Region</th>
-                  <th className="basesTableCell">City</th>
-                  <th className="basesTableCell">Institution</th>
-                  <th className="basesTableCell">Address</th>
-                  <th className="basesTableCell">Reservation status</th>
-                  <th className="basesTableCell">Alternative</th>
-                  <th className="basesTableCell">Telephone</th>
-                  <th className="basesTableCell">Cost</th>
-                  <th className="basesTableCell">Payment method</th>
-                  <th className="basesTableCell">Contract status</th>
-                  <th className="basesTableCell">Comment</th>
-                  <th className="basesTableCell">Send to Podil</th>
-                  <th className="basesTableCell">Send to Bases</th>
-                  <th className="basesTableCell">Send to speaker</th>
-                  <th className="basesTableCell">Send to Scenario</th>
-                  <th className="basesTableCell">Autozonning</th>
-                  <th className="basesTableCell">Date of the previous presentation</th>
-                  <th className="basesTableCell">Project sales</th>
-                  <th className="basesTableCell">Project concent</th>
-                  <th className="basesTableCell">Call template</th>
-                  <th className="basesTableCell">Hall</th>
-                  <th className="basesTableCell">Payment notes</th>
-                  <th className="basesTableCell">Free parking</th>
-                  <th className="basesTableCell">Comments</th>
+                  <th className="basesTableCell">{messages.planning_person}</th>
+                  <th className="basesTableCell">{messages.date_scheduled}</th>
+                  <th className="basesTableCell">{messages.company}</th>
+                  <th className="basesTableCell">{messages.city_type}</th>
+                  <th className="basesTableCell">{messages.population}</th>
+                  <th className="basesTableCell">{messages.route_search}</th>
+                  <th className="basesTableCell">{messages.departure_dates}</th>
+                  <th className="basesTableCell">{messages.presentation_date}</th>
+                  <th className="basesTableCell">{messages.presentation_hours}</th>
+                  <th className="basesTableCell">{messages.rental_hours}</th>
+                  <th className="basesTableCell">{messages.region}</th>
+                  <th className="basesTableCell">{messages.city_search}</th>
+                  <th className="basesTableCell">{messages.institution}</th>
+                  <th className="basesTableCell">{messages.address}</th>
+                  <th className="basesTableCell">{messages.reservation_status}</th>
+                  <th className="basesTableCell">{messages.alternative}</th>
+                  <th className="basesTableCell">{messages.telephone}</th>
+                  <th className="basesTableCell">{messages.cost}</th>
+                  <th className="basesTableCell">{messages.payment_method}</th>
+                  <th className="basesTableCell">{messages.contract_status}</th>
+                  <th className="basesTableCell">{messages.comment}</th>
+                  <th className="basesTableCell">{messages.send_to_podil}</th>
+                  <th className="basesTableCell">{messages.send_to_bases}</th>
+                  <th className="basesTableCell">{messages.send_to_speaker}</th>
+                  <th className="basesTableCell">{messages.send_to_scenario}</th>
+                  <th className="basesTableCell">{messages.autozonning}</th>
+                  <th className="basesTableCell">{messages.date_of_previous_presentation}</th>
+                  <th className="basesTableCell">{messages.project_sales}</th>
+                  <th className="basesTableCell">{messages.project_concent}</th>
+                  <th className="basesTableCell">{messages.call_template}</th>
+                  <th className="basesTableCell">{messages.hall}</th>
+                  <th className="basesTableCell">{messages.payment_notes}</th>
+                  <th className="basesTableCell">{messages.free_parking}</th>
+                  <th className="basesTableCell">{messages.comments}</th>
                   <th className="basesTableCell">{messages.delete}</th>
                   {/* {filterColumns?.filter((el) => el.value).map((el) => el.header())} */}
                 </tr>
               </thead>
-              <AllTrailsTable messages={messages} allTrails={allTrails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={messages.days_of_the_week} getDictionary={getDictionary} />
+              <tbody>
+                {departure?.map((item) => (
+                  <DepartureTable
+                    key={item.id}
+                    item={item}
+                    departureDate={departureDate}
+                    messages={messages}
+                    allTrails={allTrails}
+                    country={country}
+                    changeDeleteTrails={changeDeleteTrails}
+                    weekDays={messages.days_of_the_week}
+                    sort={sortId}
+                    createTrail={createTrail}
+                    search={search}
+                    planningPersonIds={planningPersonIds}
+                    {...filterDate}
+                  />
+                ))}
+              </tbody>
             </table>
           </ContainerForTable>
         </div>
@@ -348,7 +402,7 @@ function AllTrails({ country }) {
               }
               await Promise.all(deleteTrails?.map(async (id) => await Trail.removeTrail(Number(id), country)));
               setDeleteTrails([]);
-              await getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+              await getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
               alert("Success");
             } catch (e) {
               alert("Something went wrong");

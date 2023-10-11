@@ -3,9 +3,9 @@ import { useAppSelector } from "../../../store/reduxHooks";
 
 function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, weekDays }) {
   const navigate = useNavigate();
-  const { callTamplates, citiesWithRegions, contractStatuses, forms, planningPeople, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses } = useAppSelector(
-    (store) => store.trails
-  );
+  const { allUsers } = useAppSelector((store) => store.user);
+  const { callTamplates, citiesWithRegions, contractStatuses, forms, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses, departure, departureDate } =
+    useAppSelector((store) => store.trails);
 
   function getValueById(id, key, array) {
     if (!id) {
@@ -21,19 +21,17 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
   }
 
   return (
-    <tbody>
-      {/* <button onClick={() => console.log(123, allTrails)}> 123</button> */}
-
+    <>
       {allTrails?.map((item) => (
         <tr key={item.id} style={{ textAlign: "center" }}>
           <td className="basesTableCell" style={{ cursor: "pointer" }} onClick={() => navigate(`/adminPanel/trails/${country}/${item?.id}`)}>
             <div className="tableInput">{item.id || ""}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-            <div className="tableInput">{getValueById(item.planning_person_id, "name", planningPeople)}</div>
+            <div className="tableInput">{getValueById(item.planning_person_id, "nickname", allUsers)}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-            <input className="tableInput" type="date" autoComplete="off" value={item.date_scheduled || undefined} disabled />
+            <div className="tableInput">{item.date_scheduled}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{getValueById(item.company_id, "name", regiments)}</div>
@@ -48,13 +46,16 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
             <div className="tableInput">{item.route_number || ""}</div>
           </td>
           <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
-            {item.departure_dates?.map((date, index) => (
-              <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+            {(getValueById(item.departure_id, "range", departure) || [])?.map((date, index) => (
+              // <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+              <div key={index} style={{ margin: "0 10px", width: "65px" }}>
+                {date}
+              </div>
             ))}
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
             <div className="tableInput">
-              {item.presentation_date || ""} {getDayName(item.presentation_date)}
+              {getValueById(item.departure_date_id, "data", departureDate) || ""} {getDayName(getValueById(item.departure_date_id, "data", departureDate))}
             </div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
@@ -152,7 +153,7 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
           </td>
         </tr>
       ))}
-    </tbody>
+    </>
   );
 }
 

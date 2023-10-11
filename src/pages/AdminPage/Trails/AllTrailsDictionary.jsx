@@ -76,14 +76,14 @@ function AllTrailsDictionary({ country }) {
     <>
       <div style={{ alignItems: "center", marginTop: "40px", display: "flex", flexDirection: "column" }}>
         {dictionary.map((item, index) => (
-          <>
+          <div key={index}>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
               <div onClick={() => setIsOpen(index)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
                 {item.title}
               </div>
             </div>
             {isOpen === index ? <TrailsDictionatiesEdit country={country} setIsOpen={setIsOpen} item={item} key={index} /> : null}
-          </>
+          </div>
         ))}
       </div>
     </>

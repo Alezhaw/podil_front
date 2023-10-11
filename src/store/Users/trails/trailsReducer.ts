@@ -12,6 +12,8 @@ import { IReservationStatus } from "../../../interfaces/trails/reservationStatus
 import { ITrails } from "../../../interfaces/trails/trails";
 import { IAction } from "../../utils";
 import { reducerTrailsTypes } from "./trailsTypes";
+import { IDeparture } from "../../../interfaces/trails/departure";
+import { IDepartureDate } from "../../../interfaces/trails/departureDate";
 
 export interface ITrailsReducer {
   trailsCountryForCheck: string;
@@ -28,6 +30,8 @@ export interface ITrailsReducer {
   regions: IRegion[] | [];
   reservationStatuses: IReservationStatus[] | [];
   trails: ITrails[] | [];
+  departure: IDeparture[] | [];
+  departureDate: IDepartureDate[] | [];
   allDictionary: {
     callTamplates: ICallTemplate[] | [];
     contractStatuses: IContactStatus[] | [];
@@ -41,6 +45,8 @@ export interface ITrailsReducer {
   };
   allCitiesWithRegions: ICitiesWithReg[] | [];
   allForms: IForm[] | [];
+  allDeparture: IDeparture[] | [];
+  allDepartureDate: IDepartureDate[] | [];
 }
 
 export const INITIAL: ITrailsReducer = {
@@ -58,6 +64,8 @@ export const INITIAL: ITrailsReducer = {
   regions: [],
   reservationStatuses: [],
   trails: [],
+  departure: [],
+  departureDate: [],
   allDictionary: {
     callTamplates: [],
     contractStatuses: [],
@@ -71,6 +79,8 @@ export const INITIAL: ITrailsReducer = {
   },
   allCitiesWithRegions: [],
   allForms: [],
+  allDeparture: [],
+  allDepartureDate: [],
 };
 
 export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -101,12 +111,20 @@ export const TrailsReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, reservationStatuses: payload.reservationStatuses, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_TRAILS:
       return { ...state, trails: payload.trails, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_DEPARTURE:
+      return { ...state, departure: payload.departure, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_DEPARTURE_DATE:
+      return { ...state, departureDate: payload.departureDate, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_ALL_DICTIONARY:
       return { ...state, allDictionary: payload.allDictionary, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS:
       return { ...state, allCitiesWithRegions: payload.allCitiesWithRegions, trailsCountryForCheck: payload.country };
     case reducerTrailsTypes.GET_ALL_FORMS:
       return { ...state, allForms: payload.allForms, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_DEPARTURE:
+      return { ...state, allDeparture: payload.allDeparture, trailsCountryForCheck: payload.country };
+    case reducerTrailsTypes.GET_ALL_DEPARTURE_DATE:
+      return { ...state, allDepartureDate: payload.allDepartureDate, trailsCountryForCheck: payload.country };
     default:
       return state;
   }

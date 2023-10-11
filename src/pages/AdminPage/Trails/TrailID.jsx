@@ -26,7 +26,40 @@ function TrailID({ country }) {
       days_of_the_week: locale["days_of_the_week"],
       yes: locale["trails_yes"],
       no: locale["trails_no"],
-      headers: {},
+      city: locale["trails_city"],
+      route: locale["trails_route"],
+      planning_person: locale["trails_planning_person"],
+      date_scheduled: locale["trails_date_scheduled"],
+      company: locale["trails_company"],
+      city_type: locale["trails_city_type"],
+      population: locale["trails_population"],
+      departure_dates: locale["trails_departure_dates"],
+      presentation_date: locale["trails_presentation_date"],
+      presentation_hours: locale["trails_presentation_hours"],
+      rental_hours: locale["trails_rental_hours"],
+      region: locale["trails_region"],
+      institution: locale["trails_institution"],
+      address: locale["trails_address"],
+      reservation_status: locale["trails_reservation_status"],
+      alternative: locale["trails_alternative"],
+      telephone: locale["trails_relephone"],
+      cost: locale["trails_cost"],
+      payment_method: locale["trails_payment_method"],
+      contract_status: locale["trails_contract_status"],
+      comment: locale["trails_comment"],
+      send_to_podil: locale["trails_send_to_podil"],
+      send_to_bases: locale["trails_send_to_bases"],
+      send_to_speaker: locale["trails_send_to_speaker"],
+      send_to_scenario: locale["trails_send_to_scenario"],
+      autozonning: locale["trails_autozonning"],
+      date_of_previous_presentation: locale["trails_date_previous_presentation"],
+      project_sales: locale["trails_project_sales"],
+      project_concent: locale["trails_project_concent"],
+      call_template: locale["trails_call_template"],
+      hall: locale["trails_hall"],
+      payment_notes: locale["trails_payment_notes"],
+      free_parking: locale["trails_free_parking"],
+      comments: locale["trails_comments"],
     };
   }, [locale]);
 
@@ -160,22 +193,6 @@ function TrailID({ country }) {
     await getTrail(id);
     alert("Success");
   }
-
-  useEffect(() => {
-    socket.on("updateTrails", ({ data }) => {
-      if (trailsCountryForCheck === data.country) {
-        let updatedTrails = trails?.map((trail) => {
-          const updatedTrail = data.trails.filter((el) => Number(el.id) === trail.id)[0];
-          return updatedTrail ? updatedTrail : trail;
-        });
-        dispatch({
-          type: reducerTrailsTypes.GET_TRAILS,
-          payload: { trails: updatedTrails, country: data.country },
-        });
-      }
-    });
-    // eslint-disable-next-line
-  }, [trails]);
 
   useEffect(() => {
     const temporaryTrails = trails?.filter((item) => Number(item?.id) === Number(id))[0];

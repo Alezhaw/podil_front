@@ -6,8 +6,8 @@ export const update = async (callTemplate: ICallTemplate, country: string) => {
     const { data } = await axios.post("api/callTemplates/update", { country, callTemplate });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 

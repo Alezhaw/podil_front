@@ -116,11 +116,11 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           style={{ color: "grey" }}
           onClick={async () => {
             const result = await update(dictionaryObject, country);
-            if (result) {
+            if (!result?.message) {
               await getAllDictionary({ country });
               alert("Sucess");
             } else {
-              alert("Something went wrong");
+              alert(result.message);
             }
           }}
         >

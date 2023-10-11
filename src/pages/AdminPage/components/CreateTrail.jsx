@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
@@ -9,16 +9,9 @@ import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
 import Forms from "../../../api/trails/forms";
 import TrailSelect from "./TrailSelect";
 
-function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail }) {
+function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, messages }) {
   const dispatch = useDispatch();
-  const { locale } = useAppSelector((store) => store.user);
   const { allDictionary, allCitiesWithRegions } = useAppSelector((store) => store.trails);
-
-  const messages = useMemo(() => {
-    return {
-      days_of_the_week: locale["days_of_the_week"],
-    };
-  }, [locale]);
 
   function getValueById(id, key, array) {
     if (!id) {
@@ -26,17 +19,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
     }
     const item = array?.filter((item) => item.id === Number(id))[0];
     return item ? item[key] : "";
-  }
-
-  function getDayName(date) {
-    if (!date) {
-      return "";
-    }
-    if (!messages.days_of_the_week) {
-      return "";
-    }
-    const d = new Date(date);
-    return messages.days_of_the_week[d.getDay()];
   }
 
   async function getAllDictionary({ country }) {
@@ -94,21 +76,21 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px", background: "rgba(255, 255, 255, 0.1)" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Planning person</h6>
+            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.planning_person}</h6>
               <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
-            </div>
+            </div> */}
             {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Planning person</h6>
               <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
             </div> */}
 
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Company</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.company}</h6>
               <TrailSelect valueKey="company_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.regiments} arrayKey="name" />
             </div>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Route №</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.route_search}</h6>
               <input
                 onChange={(e) => setNewTrail((prev) => ({ ...prev, route_number: Number(e.target.value) }))}
                 className="tableInput"
@@ -118,50 +100,8 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
                 value={newTrail.route_number || 0}
               />
             </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Departure dates</h6>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setNewTrail((prev) => ({ ...prev, departure_dates: [e.target.value, prev.departure_dates ? prev.departure_dates[1] : null].filter((el) => !!el) }))}
-                  className="tableInput"
-                  type="date"
-                  value={[newTrail.departure_dates].flat()[0] || "0000-00-00"}
-                />
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) =>
-                    setNewTrail((prev) => ({
-                      ...prev,
-                      departure_dates: [prev.departure_dates ? prev.departure_dates[0] : null, e.target.value].filter((el) => !!el),
-                    }))
-                  }
-                  className="tableInput"
-                  type="date"
-                  value={[newTrail.departure_dates].flat()[1] || "0000-00-00"}
-                />
-              </div>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Date scheduled</h6>
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{newTrail.date_scheduled}</h6>
-            </div>
-            <div style={{ flexDirection: "column", alignItems: "center", color: "black" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>Presentation date</h6>
-              <input
-                style={{ padding: "0px 5px" }}
-                onChange={(e) => setNewTrail((prev) => ({ ...prev, presentation_date: e.target.value }))}
-                className="tableInput"
-                type="date"
-                value={newTrail.presentation_date || "0000-00-00"}
-              />
-              {getDayName(newTrail.presentation_date)}
-            </div>
-
             <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Region</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.region}</h6>
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -176,8 +116,26 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
                 value={getValueById(newTrail.regionId, "region", allDictionary?.regions)}
               />
             </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>City</h6>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.date_scheduled}</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{newTrail.date_scheduled}</h6>
+            </div> */}
+            {/* <div style={{ flexDirection: "column", alignItems: "center", color: "black" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center" }}>{messages?.presentation_date}</h6>
+              <input
+                style={{ padding: "0px 5px" }}
+                onChange={(e) => setNewTrail((prev) => ({ ...prev, presentation_date: e.target.value }))}
+                className="tableInput"
+                type="date"
+                value={newTrail.presentation_date || "0000-00-00"}
+              />
+              {getDayName(newTrail.presentation_date)}
+            </div> */}
+
+            <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.city_search}</h6>
               <Autocomplete
                 disablePortal
                 id="movie-customized-option-demo"
@@ -192,10 +150,8 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
                 value={getValueById(newTrail.city_id, "city_name", allCitiesWithRegions)}
               />
             </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Presentation hours</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.presentation_hours}</h6>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <Select
                   labelId="demo-simple-select-standard-label"
@@ -217,25 +173,31 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
               </FormControl>
             </div>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Rental hours</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.rental_hours}</h6>
               <div className="tableInput">{getValueById(newTrail.presentation_time_id, "rental_hours", allDictionary?.presentationTimes)}</div>
-            </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Project sales</h6>
-              <TrailSelect valueKey="project_sales_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectSales} arrayKey="name" />
-            </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Project concent</h6>
-              <TrailSelect valueKey="project_concent_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectConcent} arrayKey="name" />
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Call template</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.project_sales}</h6>
+              <TrailSelect valueKey="project_sales_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectSales} arrayKey="name" />
+            </div>
+            <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.project_concent}</h6>
+              <TrailSelect valueKey="project_concent_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.projectConcent} arrayKey="name" />
+            </div>
+            <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.reservation_status}</h6>
+              <TrailSelect valueKey="reservation_status_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.reservationStatuses} arrayKey="name" />
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ flexDirection: "column" }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.call_template}</h6>
               <TrailSelect valueKey="call_template_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.callTamplates} arrayKey="name" />
             </div>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Autozonning</h6>
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.autozonning}</h6>
               <textarea
                 onChange={(e) => setNewTrail((prev) => ({ ...prev, autozonning: e.target.value }))}
                 className="tableInput"
@@ -245,15 +207,11 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail })
                 value={newTrail.autozonning || ""}
               />
             </div>
-            <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Reservation status</h6>
-              <TrailSelect valueKey="reservation_status_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.reservationStatuses} arrayKey="name" />
-            </div>
           </div>
         </div>
 
         <div className="tabl-flex-admin-button-global2" onClick={() => createTrail({ newTrail, setNewTrail })}>
-          Create trail
+          {messages?.create_trail}
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import { Container, Button } from "@material-ui/core";
 import { ContainerForTable } from "./Table.styled";
 import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
 import TrailSelect from "./TrailSelect";
 
 function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndName, getValueById, createCity }) {
-  const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms } = useAppSelector((store) => store.trails);
+  const { allUsers } = useAppSelector((store) => store.user);
+  const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, departure, departureDate } = useAppSelector((store) => store.trails);
 
   function getDayName(date) {
     if (!date) {
@@ -23,49 +23,49 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
       <table style={{ textAlign: "center" }}>
         <thead style={{ background: "#5a5959" }}>
           <tr style={{ background: "none" }}>
-            <th className="basesTableCell">Planning person</th>
-            <th className="basesTableCell">Date scheduled</th>
-            <th className="basesTableCell">Company</th>
-            <th className="basesTableCell">City type</th>
-            <th className="basesTableCell">Population</th>
-            <th className="basesTableCell">Route №</th>
-            <th className="basesTableCell">Departure dates</th>
-            <th className="basesTableCell">Presentation date</th>
-            <th className="basesTableCell">Presentation hours</th>
-            <th className="basesTableCell">Rental hours</th>
-            <th className="basesTableCell">Region</th>
-            <th className="basesTableCell">City</th>
-            <th className="basesTableCell">Institution</th>
-            <th className="basesTableCell">Address</th>
-            <th className="basesTableCell">Reservation status</th>
-            <th className="basesTableCell">Alternative</th>
-            <th className="basesTableCell">Telephone</th>
-            <th className="basesTableCell">Cost</th>
-            <th className="basesTableCell">Payment method</th>
-            <th className="basesTableCell">Contract status</th>
-            <th className="basesTableCell">Comment</th>
-            <th className="basesTableCell">Send to Podil</th>
-            <th className="basesTableCell">Send to Bases</th>
-            <th className="basesTableCell">Send to speaker</th>
-            <th className="basesTableCell">Send to Scenario</th>
-            <th className="basesTableCell">Autozonning</th>
-            <th className="basesTableCell">Date of the previous presentation</th>
-            <th className="basesTableCell">Project sales</th>
-            <th className="basesTableCell">Project concent</th>
-            <th className="basesTableCell">Call template</th>
-            <th className="basesTableCell">Hall</th>
-            <th className="basesTableCell">Payment notes</th>
-            <th className="basesTableCell">Free parking</th>
-            <th className="basesTableCell">Comments</th>
+            <th className="basesTableCell">{messages?.planning_person}</th>
+            <th className="basesTableCell">{messages?.date_scheduled}</th>
+            <th className="basesTableCell">{messages?.company}</th>
+            <th className="basesTableCell">{messages?.city_type}</th>
+            <th className="basesTableCell">{messages?.population}</th>
+            <th className="basesTableCell">{messages?.route}</th>
+            <th className="basesTableCell">{messages?.departure_dates}</th>
+            <th className="basesTableCell">{messages?.presentation_date}</th>
+            <th className="basesTableCell">{messages?.presentation_hours}</th>
+            <th className="basesTableCell">{messages?.rental_hours}</th>
+            <th className="basesTableCell">{messages?.region}</th>
+            <th className="basesTableCell">{messages?.city}</th>
+            <th className="basesTableCell">{messages?.institution}</th>
+            <th className="basesTableCell">{messages?.address}</th>
+            <th className="basesTableCell">{messages?.reservation_status}</th>
+            <th className="basesTableCell">{messages?.alternative}</th>
+            <th className="basesTableCell">{messages?.telephone}</th>
+            <th className="basesTableCell">{messages?.cost}</th>
+            <th className="basesTableCell">{messages?.payment_method}</th>
+            <th className="basesTableCell">{messages?.contract_status}</th>
+            <th className="basesTableCell">{messages?.comment}</th>
+            <th className="basesTableCell">{messages?.send_to_podil}</th>
+            <th className="basesTableCell">{messages?.send_to_bases}</th>
+            <th className="basesTableCell">{messages?.send_to_speaker}</th>
+            <th className="basesTableCell">{messages?.send_to_scenario}</th>
+            <th className="basesTableCell">{messages?.autozonning}</th>
+            <th className="basesTableCell">{messages?.date_of_previous_presentation}</th>
+            <th className="basesTableCell">{messages?.project_sales}</th>
+            <th className="basesTableCell">{messages?.project_concent}</th>
+            <th className="basesTableCell">{messages?.call_template}</th>
+            <th className="basesTableCell">{messages?.hall}</th>
+            <th className="basesTableCell">{messages?.payment_notes}</th>
+            <th className="basesTableCell">{messages?.free_parking}</th>
+            <th className="basesTableCell">{messages?.comments}</th>
           </tr>
         </thead>
         <tbody>
           <tr style={{ textAlign: "center" }}>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-              <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={trail} setTrail={setTrail} array={allDictionary?.planningPeople} arrayKey="name" />
+              <div className="tableInput">{getValueById(trail.planning_person_id, "nickname", allUsers)}</div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-              <div className="tableInput">{trail.date_scheduled}</div>
+              <input className="tableInput" type="date" autoComplete="off" value={trail.date_scheduled || undefined} disabled />
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <TrailSelect valueKey="company_id" trail={trail} setTrail={setTrail} array={allDictionary?.regiments} arrayKey="name" />
@@ -89,37 +89,14 @@ function TrailTableID({ country, messages, trail, setTrail, getFormsByCityAndNam
             </td>
             <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
               <div>
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setTrail((prev) => ({ ...prev, departure_dates: [e.target.value, prev.departure_dates ? prev.departure_dates[1] : null].filter((el) => !!el) }))}
-                  className="tableInput"
-                  type="date"
-                  value={[trail.departure_dates].flat()[0] || "0000-00-00"}
-                />
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) =>
-                    setTrail((prev) => ({
-                      ...prev,
-                      departure_dates: [prev.departure_dates ? prev.departure_dates[0] : null, e.target.value].filter((el) => !!el),
-                    }))
-                  }
-                  className="tableInput"
-                  type="date"
-                  value={[trail.departure_dates].flat()[1] || "0000-00-00"}
-                />
+                {(getValueById(trail.departure_id, "range", departure) || [])?.map((date, index) => (
+                  <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
+                ))}
               </div>
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
               <div className="tableInput">
-                <input
-                  style={{ padding: "0px 5px" }}
-                  onChange={(e) => setTrail((prev) => ({ ...prev, presentation_date: e.target.value }))}
-                  className="tableInput"
-                  type="date"
-                  value={trail.presentation_date || "0000-00-00"}
-                />
-                {getDayName(trail.presentation_date)}
+                {getValueById(trail.departure_date_id, "data", departureDate) || ""} {getDayName(getValueById(trail.departure_date_id, "data", departureDate))}
               </div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>

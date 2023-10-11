@@ -154,5 +154,11 @@ export const texts = {
   trails_create_trail: "Создать трассу",
   trails_new_departure: "Новый выезд",
   trails_create: "Создать",
+  trails_dictionary_save: "СОХРАНИТЬ ИЗМЕНЕНИЯ",
+  trails_dictionary_delete: "УДАЛИТЬ ЭЛЕМЕНТ",
+  trails_dictionary_add: "ДОБАВИТЬ ЭЛЕМЕНТ",
+  trails_dictionary_element: "ЭЛЕМЕНТЫ",
+  trails_dictionary_new_element: "НОВЫЙ ЭЛЕМЕНТ",
+  trails_dictionary_edit_element: "РЕДАКТИРОВАНИЕ",
   days_of_the_week: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
 };

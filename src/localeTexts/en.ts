@@ -153,5 +153,11 @@ export const texts = {
   trails_create_trail: "Create trail",
   trails_new_departure: "New departure",
   trails_create: "Create",
+  trails_dictionary_save: "SAVE CHANGES",
+  trails_dictionary_delete: "DELETE ELEMENT",
+  trails_dictionary_add: "ADD ELEMENT",
+  trails_dictionary_element: "ELEMENTS",
+  trails_dictionary_new_element: "NEW ELEMENT",
+  trails_dictionary_edit_element: "EDITING",
   days_of_the_week: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };

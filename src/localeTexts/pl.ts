@@ -153,5 +153,11 @@ export const texts = {
   trails_create_trail: "Utwórz szlak",
   trails_new_departure: "Nowy wyjazd",
   trails_create: "Tworzyć",
+  trails_dictionary_save: "ZAPISZ ZMIANY",
+  trails_dictionary_delete: "USUŃ ELEMENT",
+  trails_dictionary_add: "DODAJ ELEMENTU",
+  trails_dictionary_element: "ELEMENTY",
+  trails_dictionary_new_element: "NOWY ELEMENT",
+  trails_dictionary_edit_element: "REDAGOWANIE",
   days_of_the_week: ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
 };

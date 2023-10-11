@@ -20,6 +20,14 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
   const messages = useMemo(() => {
     return {
       days_of_the_week: locale["days_of_the_week"],
+      trails_dictionary_save: locale["trails_dictionary_save"],
+      trails_dictionary_delete: locale["trails_dictionary_delete"],
+      trails_dictionary_add: locale["trails_dictionary_add"],
+      trails_dictionary_element: locale["trails_dictionary_element"],
+      trails_dictionary_new_element: locale["trails_dictionary_new_element"],
+      trails_dictionary_edit_element: locale["trails_dictionary_edit_element"],
+      trails_presentation_hours: locale["trails_presentation_hours"],
+      trails_rental_hours: locale["trails_rental_hours"],
     };
   }, [locale]);
 
@@ -60,7 +68,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           options={array?.map((el) => ({ ...el, label: el[key] }))}
           sx={{ width: 300 }}
           onChange={(e, values) => setDictionaryObject(values)}
-          renderInput={(params) => <TextField {...params} label="Elements" variant="standard" />}
+          renderInput={(params) => <TextField {...params} label={messages.trails_dictionary_element} variant="standard" />}
           value={dictionaryObject?.id ? array?.filter((el) => el.id === dictionaryObject?.id)[0][key] : ""}
         />
         {dictionaryObject.id ? (
@@ -73,6 +81,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
                 autoComplete="off"
                 required
                 value={[dictionaryObject[key]].flat()[0] || ""}
+                label={"1 " + messages.trails_presentation_hours}
               />
               <TextField
                 onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
@@ -81,6 +90,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
                 autoComplete="off"
                 required
                 value={[dictionaryObject[key]].flat()[1] || ""}
+                label={"2 " + messages.trails_presentation_hours}
               />
               <TextField
                 onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
@@ -89,6 +99,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
                 autoComplete="off"
                 required
                 value={[dictionaryObject[key]].flat()[2] || ""}
+                label={"3 " + messages.trails_presentation_hours}
               />
 
               <TextField
@@ -98,6 +109,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
                 autoComplete="off"
                 required
                 value={dictionaryObject.rental_hours || ""}
+                label={messages.trails_rental_hours}
               />
             </>
           ) : (
@@ -108,6 +120,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
               autoComplete="off"
               required
               value={dictionaryObject[key] || ""}
+              label={messages.trails_dictionary_edit_element}
             />
           )
         ) : null}
@@ -124,7 +137,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
             }
           }}
         >
-          Save Changes
+          {messages.trails_dictionary_save}
         </Button>
         <Button
           style={{ color: "grey" }}
@@ -139,7 +152,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
             }
           }}
         >
-          Delete element
+          {messages.trails_dictionary_delete}
         </Button>
 
         {key === "presentation_hour" ? (
@@ -151,7 +164,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
               autoComplete="off"
               required
               variant="filled"
-              defaultValue="Время презентации"
+              label={"1 " + messages.trails_presentation_hours}
             />
             <TextField
               onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
@@ -160,7 +173,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
               autoComplete="off"
               required
               variant="filled"
-              defaultValue="Время презентации"
+              label={"2 " + messages.trails_presentation_hours}
             />
             <TextField
               onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
@@ -169,7 +182,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
               autoComplete="off"
               required
               variant="filled"
-              defaultValue="Время презентации"
+              label={"3 " + messages.trails_presentation_hours}
             />
 
             <TextField
@@ -179,16 +192,16 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
               autoComplete="off"
               required
               variant="filled"
-              defaultValue="Время аренды"
+              label={messages.trails_rental_hours}
             />
           </>
         ) : (
           <TextField
             onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: e.target.value, relevance_status: true }))}
-            style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
             placeholder=""
             autoComplete="off"
             required
+            label={messages.trails_dictionary_new_element}
           />
         )}
 
@@ -197,7 +210,6 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           size="medium"
           onClick={async () => {
             const result = await create(newDictionaryObject, country);
-            console.log(1, result);
             if (!result?.message) {
               // setNewDictionaryObject({});
               await getAllDictionary({ country });
@@ -215,7 +227,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
             // }
           }}
         >
-          Add element
+          {messages.trails_dictionary_add}
         </Button>
       </ContainerForEditMenu>
     </TrailsDictionariesEditTable>

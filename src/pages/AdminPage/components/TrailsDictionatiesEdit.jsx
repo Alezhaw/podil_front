@@ -1,10 +1,12 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, Button } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
+import { TrailsDictionariesEditTable } from "./trailsDictionariesEdit.styled";
+import { ContainerForEditMenu } from "./trailsDictionariesEdit.styled";
 
 function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
   const dispatch = useDispatch();
@@ -45,13 +47,12 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
   }, [country]);
 
   return (
-    <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.95)" }} className="modalStyles" background="white">
-      <div onClick={(e) => e.stopPropagation()} style={{ flexDirection: "column", zIndex: 1, background: "rgba(255, 255, 255, 0.95)" }} className="pages-user-block">
+    <TrailsDictionariesEditTable>
+      <ContainerForEditMenu onClick={(e) => e.stopPropagation()}>
         <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: "-50px", right: "0px" }}>
           <CloseIcon style={{ cursor: "pointer", marginBottom: "20px" }} onClick={() => setIsOpen(false)}></CloseIcon>
         </div>
 
-        <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{title}</h6>
         <Autocomplete
           disablePortal
           id="combo-box-demo"
@@ -62,65 +63,57 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           renderInput={(params) => <TextField {...params} label="Elements" variant="standard" />}
           value={dictionaryObject?.id ? array?.filter((el) => el.id === dictionaryObject?.id)[0][key] : ""}
         />
-        {key === "presentation_hour" ? (
-          <>
-            <input
-              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [e.target.value, prev[key] ? prev[key][1] : null, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-              className="tabl-flex-admin-user-scores "
-              style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              value={[dictionaryObject[key]].flat()[0] || ""}
-            />
-            <input
-              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-              className="tabl-flex-admin-user-scores "
-              style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              value={[dictionaryObject[key]].flat()[1] || ""}
-            />
-            <input
-              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
-              className="tabl-flex-admin-user-scores "
-              style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              value={[dictionaryObject[key]].flat()[2] || ""}
-            />
+        {dictionaryObject.id ? (
+          key === "presentation_hour" ? (
+            <>
+              <TextField
+                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [e.target.value, prev[key] ? prev[key][1] : null, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={[dictionaryObject[key]].flat()[0] || ""}
+              />
+              <TextField
+                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={[dictionaryObject[key]].flat()[1] || ""}
+              />
+              <TextField
+                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={[dictionaryObject[key]].flat()[2] || ""}
+              />
 
-            <input
-              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, rental_hours: e.target.value }))}
-              className="tabl-flex-admin-user-scores "
-              style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+              <TextField
+                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, rental_hours: e.target.value }))}
+                type="text"
+                placeholder=""
+                autoComplete="off"
+                required
+                value={dictionaryObject.rental_hours || ""}
+              />
+            </>
+          ) : (
+            <TextField
+              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: e.target.value }))}
               type="text"
               placeholder=""
               autoComplete="off"
               required
-              value={dictionaryObject.rental_hours || ""}
+              value={dictionaryObject[key] || ""}
             />
-          </>
-        ) : (
-          <input
-            onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: e.target.value }))}
-            className="tabl-flex-admin-user-scores "
-            style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
-            type="text"
-            placeholder=""
-            autoComplete="off"
-            required
-            value={dictionaryObject[key] || ""}
-          />
-        )}
+          )
+        ) : null}
 
-        <div
-          className="tabl-flex-admin-button-global2"
+        <Button
+          style={{ color: "grey" }}
           onClick={async () => {
             const result = await update(dictionaryObject, country);
             if (result) {
@@ -132,9 +125,9 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           }}
         >
           Save Changes
-        </div>
-        <div
-          className="tabl-flex-admin-button-global2"
+        </Button>
+        <Button
+          style={{ color: "grey" }}
           onClick={async () => {
             const result = await remove(dictionaryObject, country);
             if (result) {
@@ -147,34 +140,85 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           }}
         >
           Delete element
-        </div>
+        </Button>
 
-        <input
-          className="tabl-flex-admin-user-scores "
-          onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: e.target.value, relevance_status: true }))}
-          style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
-          placeholder=""
-          autoComplete="off"
-          required
-        />
+        {key === "presentation_hour" ? (
+          <>
+            <TextField
+              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [e.target.value, prev[key] ? prev[key][1] : null, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              required
+              variant="filled"
+              defaultValue="Время презентации"
+            />
+            <TextField
+              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              required
+              variant="filled"
+              defaultValue="Время презентации"
+            />
+            <TextField
+              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              required
+              variant="filled"
+              defaultValue="Время презентации"
+            />
 
-        <div
-          className="tabl-flex-admin-button-global2"
+            <TextField
+              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, rental_hours: e.target.value, relevance_status: true }))}
+              type="text"
+              placeholder=""
+              autoComplete="off"
+              required
+              variant="filled"
+              defaultValue="Время аренды"
+            />
+          </>
+        ) : (
+          <TextField
+            onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: e.target.value, relevance_status: true }))}
+            style={{ color: "white", borderRadius: "5px", minWidth: "0px" }}
+            placeholder=""
+            autoComplete="off"
+            required
+          />
+        )}
+
+        <Button
+          style={{ color: "grey" }}
+          size="medium"
           onClick={async () => {
             const result = await create(newDictionaryObject, country);
-            if (result) {
-              setNewDictionaryObject({});
+            console.log(1, result);
+            if (!result?.message) {
+              // setNewDictionaryObject({});
               await getAllDictionary({ country });
               alert("Sucess");
             } else {
-              alert("Something went wrong");
+              alert(result.message);
             }
+
+            // if (result) {
+            //   setNewDictionaryObject({});
+            //   await getAllDictionary({ country });
+            //   alert("Sucess");
+            // } else {
+            //   alert("Something went wrong");
+            // }
           }}
         >
           Add element
-        </div>
-      </div>
-    </div>
+        </Button>
+      </ContainerForEditMenu>
+    </TrailsDictionariesEditTable>
   );
 }
 

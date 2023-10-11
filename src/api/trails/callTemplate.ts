@@ -16,8 +16,8 @@ export const remove = async (callTemplate: ICallTemplate, country: string) => {
     const { data } = await axios.post("api/callTemplates/remove", { country, callTemplate: { ...callTemplate, relevance_status: false } });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -25,8 +25,8 @@ export const create = async (callTemplate: ICallTemplate, country: string) => {
   try {
     const { data } = await axios.post("api/callTemplates/create", { country, callTemplate });
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 

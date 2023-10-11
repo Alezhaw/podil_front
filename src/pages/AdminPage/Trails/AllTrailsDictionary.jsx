@@ -51,7 +51,6 @@ function AllTrailsDictionary({ country }) {
     setDictionary([
       { array: allDictionary?.callTamplates, title: messages?.trails_call_template, key: "name", update: CallTemplate.update, remove: CallTemplate.remove, create: CallTemplate.create },
       { array: allDictionary?.contractStatuses, title: messages?.trails_contract_status, key: "name", update: ContactStatus.update, remove: ContactStatus.remove, create: ContactStatus.create },
-      { array: allDictionary?.planningPeople, title: messages?.trails_planning_person, key: "name", update: PlanningPeople.update, remove: PlanningPeople.remove, create: PlanningPeople.create },
       {
         array: allDictionary?.presentationTimes,
         title: messages?.trails_presentation_time,
@@ -66,7 +65,7 @@ function AllTrailsDictionary({ country }) {
       { array: allDictionary?.regions, title: messages?.trails_region, key: "region", update: Region.update, remove: Region.remove, create: Region.create },
     ]);
     console.log("popka", dictionary, allDictionary?.callTamplates);
-  }, [allDictionary]);
+  }, [allDictionary, messages]);
 
   useEffect(() => {
     getAllDictionary({ country });

@@ -17,6 +17,8 @@ function DepartureDate({ item, index, date, messages, allTrails, country, change
     call_template_id: 2,
     planning_person_id: user?.id,
     date_scheduled: new Date().toISOString().split("T")[0],
+    departure_id: item.id,
+    departure_date_id: date.id,
   });
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,7 +52,7 @@ function DepartureDate({ item, index, date, messages, allTrails, country, change
       </tr>
       <AllTrailsTable key={index} messages={messages} allTrails={trails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={weekDays} />
       {!checkFilter
-        ? Array(3 - rowNumber).fill(
+        ? Array(3 - (rowNumber > 2 ? 3 : rowNumber)).fill(
             <tr style={{ cursor: "pointer", height: "50px", background: "lightgray", borderBottom: "5px solid white" }} onClick={() => setIsOpen(true)}>
               <td colSpan={100}></td>
             </tr>

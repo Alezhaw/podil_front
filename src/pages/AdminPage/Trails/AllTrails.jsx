@@ -170,8 +170,9 @@ function AllTrails({ country }) {
     const result = await Trail.createTrail(trail, country);
     if (result?.id) {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+
       alert("Sucess");
-      setNewTrail({});
+      //  setNewTrail({});
       setIsOpen(false);
     } else {
       getFilteredTrails({ search, searchRoute, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }); // вывести ошибку

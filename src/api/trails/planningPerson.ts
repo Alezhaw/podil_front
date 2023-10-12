@@ -27,8 +27,8 @@ export const update = async (planningPeople: IPlanningPeople, country: string) =
     const { data } = await axios.post("api/planningPerson/update", { country, planningPeople });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -37,17 +37,17 @@ export const remove = async (planningPeople: IPlanningPeople, country: string) =
     const { data } = await axios.post("api/planningPerson/remove", { country, planningPeople: { ...planningPeople, relevance_status: false } });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
 export const create = async (planningPeople: IPlanningPeople, country: string) => {
   try {
-    const { data } = await axios.post("api/planningPeople/create", { country, planningPeople });
+    const { data } = await axios.post("api/planningPerson/create", { country, planningPeople });
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 

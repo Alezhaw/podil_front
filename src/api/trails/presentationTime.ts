@@ -6,8 +6,8 @@ export const update = async (presentationTime: IPresentationTime, country: strin
     const { data } = await axios.post("api/presentationTime/update", { country, presentationTime });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -16,8 +16,8 @@ export const remove = async (presentationTime: IPresentationTime, country: strin
     const { data } = await axios.post("api/presentationTime/remove", { country, presentationTime: { ...presentationTime, relevance_status: false } });
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 
@@ -25,8 +25,8 @@ export const create = async (presentationTime: IPresentationTime, country: strin
   try {
     const { data } = await axios.post("api/presentationTime/create", { country, presentationTime });
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    return e?.response?.data;
   }
 };
 

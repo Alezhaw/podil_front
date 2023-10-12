@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
@@ -17,6 +18,7 @@ import CreateDeparture from "../components/CreateDeparture";
 
 function AllTrails({ country }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [searchForInput, setSearchForInput] = useState("");
@@ -87,6 +89,7 @@ function AllTrails({ country }) {
       yes: locale["trails_yes"],
       no: locale["trails_no"],
       create: locale["trails_create"],
+      edit: locale["trails_edit_departure"],
     };
   }, [locale]);
 
@@ -185,7 +188,6 @@ function AllTrails({ country }) {
   async function createDeparture({ newDeparture, setNewDeparture, setIsOpen }) {
     const departure = newDeparture;
     const checkDates = departure.dates ? departure.dates[0] : false;
-    console.log(1, departure);
     if (!checkDates) {
       return alert("Нет дат");
     }
@@ -296,13 +298,18 @@ function AllTrails({ country }) {
       </div>
 
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
+        <div onClick={() => navigate(`/adminPanel/departure/${country}`)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
+          {messages.edit}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginTop: "40px" }}>
         <div onClick={() => setIsOpen(true)} style={{ maxWidth: "205px !important" }} className="tabl-flex-admin-button-global2">
           {messages.new_departure}
         </div>
       </div>
       {isOpen ? (
         <CreateDeparture
-          country={country}
           setIsOpen={setIsOpen}
           messages={messages}
           newDeparture={newDeparture}

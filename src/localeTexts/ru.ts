@@ -154,6 +154,7 @@ export const texts = {
   trails_free_parking: "Бесплатная парковка",
   trails_comments: "Комментарии",
   trails_create_trail: "Создать трассу",
+  trails_edit_departure: "Изменить выезды",
   trails_new_departure: "Новый выезд",
   trails_create: "Создать",
   days_of_the_week: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],

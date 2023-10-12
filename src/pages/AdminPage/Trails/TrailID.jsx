@@ -8,7 +8,6 @@ import Podzial from "../../../api/podzial";
 import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
 import Forms from "../../../api/trails/forms";
 import TrailTableID from "../components/TrailTableID";
-import { socket } from "../../../App";
 
 function TrailID({ country }) {
   const { id } = useParams();
@@ -16,7 +15,7 @@ function TrailID({ country }) {
   const navigate = useNavigate();
   const statebackground = !!localStorage.getItem("backroundImg");
   const { user, locale } = useAppSelector((store) => store.user);
-  const { trails, allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, trailsCountryForCheck } = useAppSelector((store) => store.trails);
+  const { trails, allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms } = useAppSelector((store) => store.trails);
   const [trail, setTrail] = useState({});
 
   const messages = useMemo(() => {

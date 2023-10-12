@@ -9,6 +9,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import CityID from "./pages/AdminPage/Podzial/CityID";
 import TrailID from "./pages/AdminPage/Trails/TrailID";
+import EditDeparture from "./pages/AdminPage/Trails/EditDeparture/EditDeparture";
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
@@ -165,6 +166,8 @@ function App() {
         <Route path="/adminPanel/trails/RU/:id" element={<TrailID country="RU" />} />
         <Route path="/adminPanel/trails/KZ/:id" element={<TrailID country="KZ" />} />
         <Route path="/adminPanel/trails/PL/:id" element={<TrailID country="PL" />} />
+
+        <Route path="/adminPanel/departure/:country" element={<EditDeparture />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />
         <Route path="/login/" element={<UserInput />} />

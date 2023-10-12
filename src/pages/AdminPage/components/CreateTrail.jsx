@@ -76,15 +76,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px", background: "rgba(255, 255, 255, 0.1)" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.planning_person}</h6>
-              <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
-            </div> */}
-            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>Planning person</h6>
-              <TrailSelect forPlanningPerson valueKey="planning_person_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.planningPeople} arrayKey="name" />
-            </div> */}
-
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.company}</h6>
               <TrailSelect valueKey="company_id" trail={newTrail} setTrail={setNewTrail} array={allDictionary?.regiments} arrayKey="name" />
@@ -118,22 +109,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {/* <div style={{ flexDirection: "column" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.date_scheduled}</h6>
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{newTrail.date_scheduled}</h6>
-            </div> */}
-            {/* <div style={{ flexDirection: "column", alignItems: "center", color: "black" }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center" }}>{messages?.presentation_date}</h6>
-              <input
-                style={{ padding: "0px 5px" }}
-                onChange={(e) => setNewTrail((prev) => ({ ...prev, presentation_date: e.target.value }))}
-                className="tableInput"
-                type="date"
-                value={newTrail.presentation_date || "0000-00-00"}
-              />
-              {getDayName(newTrail.presentation_date)}
-            </div> */}
-
             <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.city_search}</h6>
               <Autocomplete

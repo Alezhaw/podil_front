@@ -1,17 +1,9 @@
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/material";
-import { useAppSelector } from "../../../store/reduxHooks";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
-import Trail from "../../../api/trails/trails";
-import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
-import Forms from "../../../api/trails/forms";
-import TrailSelect from "./TrailSelect";
+import { useEffect } from "react";
 import { List, ListItem, ListItemText, Button } from "@mui/material";
 
-function CreateDeparture({ country, setIsOpen, newDeparture, setNewDeparture, createTrail, messages, weekDays, createDeparture }) {
+function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, weekDays, createDeparture }) {
   function getDayName(date) {
     const d = new Date(date);
     return weekDays[d.getDay()];

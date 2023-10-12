@@ -154,6 +154,7 @@ export const texts = {
   trails_free_parking: "Free parking",
   trails_comments: "Comments",
   trails_create_trail: "Create trail",
+  trails_edit_departure: "Edit departures",
   trails_new_departure: "New departure",
   trails_create: "Create",
   days_of_the_week: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

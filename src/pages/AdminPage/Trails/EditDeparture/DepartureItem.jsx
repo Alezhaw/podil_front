@@ -11,6 +11,8 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
   const [isOpen, setIsOpen] = useState(false);
   const [updatedDeparture, setUpdatedDeparture] = useState({});
 
+  const replaceDots = (date) => String(date)?.replaceAll("-", ".");
+
   async function updateDeparture({ newDeparture, setNewDeparture, setIsOpen }) {
     const departure = newDeparture;
     if (!departure.dateTo || !departure.dateFrom) {
@@ -109,10 +111,11 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
           setNewDeparture={setUpdatedDeparture}
           weekDays={messages.days_of_the_week}
           createDeparture={updateDeparture}
+          replaceDots={replaceDots}
         />
       ) : null}
       <Typography variant="h5" component="h2" style={{ paddingBottom: "20px" }}>
-        {item?.range[sort ? 1 : 0]} - {item?.range[sort ? 0 : 1]}{" "}
+        {replaceDots(item?.range[sort ? 1 : 0])} - {replaceDots(item?.range[sort ? 0 : 1])}{" "}
         <IconButton onClick={() => setIsOpen(true)}>
           <EditIcon style={{ color: "white", margin: "0px 5px" }} />
         </IconButton>
@@ -123,7 +126,7 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
       <Box style={{ position: "relative" }}>
         {dates?.map((date) => (
           <Typography variant="body1" component="h2" style={{ padding: "5px" }} key={date.id}>
-            {date.data}
+            {replaceDots(date.data)}
             <Checkbox color="default" value={date.id} onChange={changeDeleteDates} style={{ color: "white" }} />
           </Typography>
         ))}

@@ -3,7 +3,7 @@ import AllTrailsTable from "./AllTrailsTable";
 import { useAppSelector } from "../../../store/reduxHooks";
 import CreateTrail from "./CreateTrail";
 
-function DepartureDate({ item, index, date, messages, allTrails, country, changeDeleteTrails, weekDays, createTrail, search, planningPersonIds, dateFrom, dateTo }) {
+function DepartureDate({ item, index, date, messages, allTrails, country, changeDeleteTrails, weekDays, createTrail, search, planningPersonIds, dateFrom, dateTo, replaceDots }) {
   const checkFilter = search || !!planningPersonIds || dateFrom || dateTo;
   const { user } = useAppSelector((store) => store.user);
   const { presentationTimes } = useAppSelector((store) => store.trails);
@@ -46,9 +46,9 @@ function DepartureDate({ item, index, date, messages, allTrails, country, change
     <>
       {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} messages={messages} /> : null}
       <tr style={{ border: "1px solid lightgray", textAlign: "start" }} key={`date ${index}`}>
-        <td colSpan={100}>{String(date.data)?.replaceAll("-", ".")}</td>
+        <td colSpan={100}>{replaceDots(date.data)}</td>
       </tr>
-      <AllTrailsTable key={index} messages={messages} allTrails={trails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={weekDays} />
+      <AllTrailsTable key={index} messages={messages} allTrails={trails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={weekDays} replaceDots={replaceDots} />
       {!checkFilter
         ? Array(3 - (rowNumber > 2 ? 3 : rowNumber)).fill(
             <tr style={{ cursor: "pointer", height: "50px", background: "lightgray", borderBottom: "5px solid white" }} onClick={() => setIsOpen(true)}>

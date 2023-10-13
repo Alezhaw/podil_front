@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
 
-function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, weekDays }) {
+function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, weekDays, replaceDots }) {
   const navigate = useNavigate();
   const { allUsers } = useAppSelector((store) => store.user);
   const { callTamplates, citiesWithRegions, contractStatuses, forms, presentationTimes, projectConcent, projectSales, regiments, regions, reservationStatuses, departure, departureDate } =
@@ -31,7 +31,7 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
             <div className="tableInput">{getValueById(item.planning_person_id, "nickname", allUsers)}</div>
           </td>
           <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
-            <div className="tableInput">{item.date_scheduled}</div>
+            <div className="tableInput">{replaceDots(item.date_scheduled)}</div>
           </td>
           <td className="basesTableCell" style={{ maxWidth: "unset" }}>
             <div className="tableInput">{getValueById(item.company_id, "name", regiments)}</div>
@@ -49,7 +49,7 @@ function AllTrailsTable({ messages, allTrails, country, changeDeleteTrails, week
             {(getValueById(item.departure_id, "range", departure) || [])?.map((date, index) => (
               // <input key={index} className="tableInput" type="date" autoComplete="off" value={date || undefined} disabled />
               <div key={index} style={{ margin: "0 10px", width: "65px" }}>
-                {date}
+                {replaceDots(date)}
               </div>
             ))}
           </td>

@@ -93,6 +93,8 @@ function AllTrails({ country }) {
     };
   }, [locale]);
 
+  const replaceDots = (date) => String(date)?.replaceAll("-", ".");
+
   async function getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country }) {
     setLoadingSpinner(false);
     const data = await Departure.getFiltered({
@@ -316,6 +318,7 @@ function AllTrails({ country }) {
           setNewDeparture={setNewDeparture}
           weekDays={messages.days_of_the_week}
           createDeparture={createDeparture}
+          replaceDots={replaceDots}
         />
       ) : null}
       <h3 style={{ textAlign: "center" }}>{messages.title}</h3>

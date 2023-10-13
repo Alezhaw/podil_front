@@ -3,7 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useEffect } from "react";
 import { List, ListItem, ListItemText, Button } from "@mui/material";
 
-function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, weekDays, createDeparture }) {
+function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, weekDays, createDeparture, replaceDots }) {
   function getDayName(date) {
     const d = new Date(date);
     return weekDays[d.getDay()];
@@ -65,7 +65,7 @@ function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, w
                 <List>
                   {newDeparture?.dates?.map((date, index) => (
                     <ListItem style={{ height: 46, left: 0, right: undefined, top: 0, width: "100%", padding: "0px 20px" }} key={index} component="div" disablePadding>
-                      <ListItemText primary={`${date} ${getDayName(date)}`} />
+                      <ListItemText primary={`${replaceDots(date)} ${getDayName(date)}`} />
                       <CloseIcon style={{ cursor: "pointer" }} onClick={() => deleteDate(date)} />
                     </ListItem>
                   ))}

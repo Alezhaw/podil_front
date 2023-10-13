@@ -4,6 +4,7 @@ import DepartureDate from "./DepartureDate";
 function DepartureTable({ item, departureDate, messages, allTrails, country, changeDeleteTrails, weekDays, sort, createTrail, search, planningPersonIds, dateFrom, dateTo }) {
   const [isOpen, setIsOpen] = useState(true);
   const [dates, setDates] = useState([]);
+  const replaceDots = (date) => String(date)?.replaceAll("-", ".");
 
   useEffect(() => {
     setDates(
@@ -29,7 +30,7 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
         }}
       >
         <td colSpan="100" style={{ color: "white" }}>
-          {String(item.range[sort ? 1 : 0])?.replaceAll("-", ".")} - {String(item.range[sort ? 0 : 1])?.replaceAll("-", ".")}
+          {replaceDots(item.range[sort ? 1 : 0])} - {replaceDots(item.range[sort ? 0 : 1])}
         </td>
       </tr>
       {isOpen
@@ -49,6 +50,7 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
               planningPersonIds={planningPersonIds[0]}
               dateFrom={dateFrom}
               dateTo={dateTo}
+              replaceDots={replaceDots}
             />
           ))
         : null}

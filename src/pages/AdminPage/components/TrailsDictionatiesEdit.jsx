@@ -143,12 +143,12 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
           style={{ color: "grey" }}
           onClick={async () => {
             const result = await remove(dictionaryObject, country);
-            if (result) {
+            if (!result?.message) {
               setDictionaryObject({});
               await getAllDictionary({ country });
               alert("Sucess");
             } else {
-              alert("Something went wrong");
+              alert(result.message);
             }
           }}
         >

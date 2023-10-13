@@ -42,13 +42,11 @@ function DepartureDate({ item, index, date, messages, allTrails, country, change
     // eslint-disable-next-line
   }, [allTrails, date]);
 
-  if (!user?.id) return alert("Войдите в аккаунт");
-
   return (
     <>
       {isOpen ? <CreateTrail country={country} setIsOpen={setIsOpen} createTrail={createTrail} newTrail={newTrail} setNewTrail={setNewTrail} messages={messages} /> : null}
       <tr style={{ border: "1px solid lightgray", textAlign: "start" }} key={`date ${index}`}>
-        <td colSpan={100}>{date.data}</td>
+        <td colSpan={100}>{String(date.data)?.replaceAll("-", ".")}</td>
       </tr>
       <AllTrailsTable key={index} messages={messages} allTrails={trails} country={country} changeDeleteTrails={changeDeleteTrails} weekDays={weekDays} />
       {!checkFilter

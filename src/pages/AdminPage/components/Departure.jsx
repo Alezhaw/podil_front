@@ -18,6 +18,7 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
     );
     // eslint-disable-next-line
   }, [departureDate, sort]);
+
   return (
     <>
       <tr
@@ -28,7 +29,7 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
         }}
       >
         <td colSpan="100" style={{ color: "white" }}>
-          {item.range[sort ? 1 : 0]} - {item.range[sort ? 0 : 1]}
+          {String(item.range[sort ? 1 : 0])?.replaceAll("-", ".")} - {String(item.range[sort ? 0 : 1])?.replaceAll("-", ".")}
         </td>
       </tr>
       {isOpen

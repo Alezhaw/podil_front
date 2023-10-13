@@ -198,7 +198,7 @@ function AllTrails({ country }) {
       setNewDeparture({});
       setIsOpen(false);
     } else {
-      getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
+      await getFilteredTrails({ search, planningPersonIds, filterDate, sortId, itemsPerPage, page, country });
       alert(result.message);
     }
   }

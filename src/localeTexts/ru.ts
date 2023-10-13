@@ -161,5 +161,9 @@ export const texts = {
   trails_dictionary_element: "ЭЛЕМЕНТЫ",
   trails_dictionary_new_element: "НОВЫЙ ЭЛЕМЕНТ",
   trails_dictionary_edit_element: "РЕДАКТИРОВАНИЕ",
+  delete_dates: "Удалить даты",
+  are_you_sure: "Вы уверены?",
+  departure_update_error: "Выберите даты",
+  departure_dates_error: "Нет дат",
   days_of_the_week: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
 };

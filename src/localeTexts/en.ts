@@ -160,5 +160,9 @@ export const texts = {
   trails_dictionary_element: "ELEMENTS",
   trails_dictionary_new_element: "NEW ELEMENT",
   trails_dictionary_edit_element: "EDITING",
+  delete_dates: "Delete dates",
+  are_you_sure: "Are you sure?",
+  departure_update_error: "Select dates",
+  departure_dates_error: "No dates",
   days_of_the_week: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };

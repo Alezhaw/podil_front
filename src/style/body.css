@@ -78,10 +78,10 @@
 }
 
 .styleAdminPanel {
-  /* background: linear-gradient(122deg, #3c3b3b, #4d4d4b, #716f6f,#979793); */
-  /* background: url(../image/girlAnime.jpg) center fixed; */
-  background: url(../image/wallpaperflare.com_wallpaper-2.jpg) center fixed;
-  background-size: cover;
+  background: linear-gradient(122deg, #48788d, #83a8c7, #80bcce, #75b9e0);
+  /*background: url(../image/girlAnime.jpg) center fixed;*/
+  /* background: url(../image/wallpaperflare.com_wallpaper-2.jpg) center fixed;
+  background-size: cover; */
 }
 
 .fileInput {
@@ -208,9 +208,9 @@
 }
 
 .styleAdminPanel2 {
-  /* background: linear-gradient(122deg, #3c3b3b, #4d4d4b, #716f6f, #979793); */
-  background: url(../image/wallpaperflare.com_wallpaper-4.jpg) center fixed;
-  background-size: cover;
+  background: linear-gradient(122deg, #3c3b3b, #4d4d4b, #716f6f, #979793);
+  /* background: url(../image/wallpaperflare.com_wallpaper-4.jpg) center fixed;
+  background-size: cover; */
 }
 
 .tabl-flex-admin {

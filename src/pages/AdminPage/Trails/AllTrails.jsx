@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Trail from "../../../api/trails/trails";
@@ -109,15 +109,15 @@ function AllTrails({ country }) {
     setLoadingSpinner(true);
     dispatch({
       type: reducerTrailsTypes.GET_TRAILS,
-      payload: { trails: data?.trails || [], country },
+      payload: data?.trails,
     });
     dispatch({
       type: reducerTrailsTypes.GET_DEPARTURE,
-      payload: { departure: data?.departure || [], country },
+      payload: data?.departure || [],
     });
     dispatch({
       type: reducerTrailsTypes.GET_DEPARTURE_DATE,
-      payload: { departureDate: data?.departureDate || [], country },
+      payload: data?.departureDate || [],
     });
     if (data) {
       setCount(data.count);
@@ -141,13 +141,11 @@ function AllTrails({ country }) {
           { reducer: reducerTrailsTypes.GET_RESERVATION_STATUSES, key: "reservationStatuses" },
         ];
         dictionary.map((item) => {
-          let payload = {
-            country,
-          };
-          payload[item.key] = data[item.key] || [];
+          // let payload = {};
+          // payload[item.key] = data[item.key] || [];
           dispatch({
             type: item.reducer,
-            payload: payload,
+            payload: data[item.key],
           });
         });
       }

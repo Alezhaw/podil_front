@@ -13,7 +13,7 @@ import EditDeparture from "./pages/AdminPage/Trails/EditDeparture/EditDeparture"
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
-import { reducerTrailsTypes } from "./store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "./store/Trails/trailsTypes";
 import io from "socket.io-client";
 import { defaultUrl } from "./api/axios";
 
@@ -25,8 +25,8 @@ export const socket = io.connect(defaultUrl, {
 
 function App() {
   const dispatch = useDispatch();
-  const { user, storedCities, bases, countryForCheck, selectedLang } = useAppSelector((store) => store.user);
-  const { trails, trailsCountryForCheck } = useAppSelector((store) => store.trails);
+  const { user, storedCities, bases, selectedLang, country } = useAppSelector((store) => store.user);
+  const { trails } = useAppSelector((store) => store.trails);
 
   useEffect(() => {
     selectLocale();
@@ -50,7 +50,7 @@ function App() {
 
   useEffect(() => {
     socket.on("updateCities", ({ data }) => {
-      if (countryForCheck === data.country) {
+      if (country === data.country) {
         let updatedCities = storedCities?.map((city) => {
           const updatedCity = data.cities.filter((el) => Number(el.id) === city.id)[0];
           return updatedCity ? updatedCity : city;
@@ -61,7 +61,7 @@ function App() {
         updatedCities = [...updatedCities, ...newTimes];
         dispatch({
           type: reducerTypes.GET_CITIES,
-          payload: { cities: updatedCities, country: data.country },
+          payload: updatedCities,
         });
       }
     });
@@ -70,14 +70,14 @@ function App() {
 
   useEffect(() => {
     socket.on("updateTrails", ({ data }) => {
-      if (trailsCountryForCheck === data.country) {
+      if (country === data.country) {
         let updatedTrails = trails?.map((trail) => {
           const updatedTrail = data.trails.filter((el) => Number(el.id) === trail.id)[0];
           return updatedTrail ? updatedTrail : trail;
         });
         dispatch({
           type: reducerTrailsTypes.GET_TRAILS,
-          payload: { trails: updatedTrails, trailsCountryForCheck: data.country },
+          payload: updatedTrails,
         });
       }
     });
@@ -86,18 +86,18 @@ function App() {
 
   useEffect(() => {
     socket.on("deleteCity", ({ data }) => {
-      if (countryForCheck === data.country) {
+      if (country === data.country) {
         if (data.deleteTime ?? false) {
           const filteredCities = storedCities?.filter((el) => Number(el.id) !== Number(data.deleteTime));
           dispatch({
             type: reducerTypes.GET_CITIES,
-            payload: { cities: filteredCities, country: data.country },
+            payload: filteredCities,
           });
         } else {
           const filteredCities = storedCities?.filter((el) => Number(el.id_for_base) !== Number(data.deleteCity));
           dispatch({
             type: reducerTypes.GET_CITIES,
-            payload: { cities: filteredCities, trailsCountryForCheck: data.country },
+            payload: filteredCities,
           });
         }
       }
@@ -107,9 +107,7 @@ function App() {
 
   useEffect(() => {
     socket.on("updateBases", ({ data }) => {
-      if (countryForCheck === data.country) {
-        const country = data.country;
-
+      if (country === data.country) {
         let updatedBases = bases?.map((city) => {
           const updatedBase = data.bases.filter((el) => Number(el.id) === city.id)[0];
           return updatedBase ? updatedBase : city;
@@ -120,7 +118,7 @@ function App() {
         updatedBases = [...updatedBases, ...newBases];
         dispatch({
           type: reducerTypes.GET_BASES,
-          payload: { bases: updatedBases, country: country },
+          payload: updatedBases,
         });
       }
     });
@@ -129,13 +127,11 @@ function App() {
 
   useEffect(() => {
     socket.on("deleteBase", ({ data }) => {
-      if (countryForCheck === data.country) {
-        const country = data.country;
-
+      if (country === data.country) {
         const filteredBases = bases?.filter((el) => Number(el.id) !== Number(data.deleteBase));
         dispatch({
           type: reducerTypes.GET_BASES,
-          payload: { bases: filteredBases, country: country },
+          payload: filteredBases,
         });
       }
     });
@@ -144,11 +140,13 @@ function App() {
 
   useEffect(() => {
     socket.on("deleteTrails", ({ data }) => {
-      const filteredTrails = trails?.filter((el) => Number(el.id) !== Number(data.id));
-      dispatch({
-        type: reducerTrailsTypes.GET_TRAILS,
-        payload: { trails: filteredTrails, trailsCountryForCheck: data.country },
-      });
+      if (country === data.country) {
+        const filteredTrails = trails?.filter((el) => Number(el.id) !== Number(data.id));
+        dispatch({
+          type: reducerTrailsTypes.GET_TRAILS,
+          payload: filteredTrails,
+        });
+      }
     });
     // eslint-disable-next-line
   }, [trails]);

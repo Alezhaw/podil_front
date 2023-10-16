@@ -3,7 +3,7 @@ import { Autocomplete, TextField, Button } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
 import { TrailsDictionariesEditTable } from "./trailsDictionariesEdit.styled";
 import { ContainerForEditMenu } from "./trailsDictionariesEdit.styled";
@@ -36,7 +36,7 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
     if (allDictionary) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DICTIONARY,
-        payload: { allDictionary, country },
+        payload: allDictionary,
       });
     }
   }

@@ -69,7 +69,7 @@ function CheckScenario({ country }) {
       setCount(data.count);
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: { cities: data.cities, country },
+        payload: data.cities,
       });
     }
   }

@@ -3,7 +3,7 @@ import { MenuItem, FormControl, Select, Autocomplete, TextField } from "@mui/mat
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
 import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
 import Forms from "../../../api/trails/forms";
@@ -26,7 +26,7 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
     if (allDictionary) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DICTIONARY,
-        payload: { allDictionary, country },
+        payload: allDictionary,
       });
     }
   }
@@ -36,7 +36,7 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
     if (allCitiesWithRegions) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS,
-        payload: { allCitiesWithRegions, country },
+        payload: allCitiesWithRegions,
       });
     }
   }
@@ -46,7 +46,7 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
     if (allForms) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_FORMS,
-        payload: { allForms, country },
+        payload: allForms,
       });
     }
   }

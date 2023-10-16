@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/reduxHooks";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
 import Podzial from "../../../api/podzial";
 import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
@@ -113,9 +113,9 @@ function TrailID({ country }) {
     if (data) {
       dispatch({
         type: reducerTrailsTypes.GET_TRAILS,
-        payload: { trails: data.trails, country },
+        payload: data.trails,
       });
-      getDictionary({ country, trails: data.trails });
+      await getDictionary({ country, trails: data.trails });
     }
   }
 
@@ -136,13 +136,11 @@ function TrailID({ country }) {
           { reducer: reducerTrailsTypes.GET_RESERVATION_STATUSES, key: "reservationStatuses" },
         ];
         dictionary.map((item) => {
-          let payload = {
-            country,
-          };
-          payload[item.key] = data[item.key] || [];
+          // let payload = {};
+          // payload[item.key] = data[item.key] || [];
           dispatch({
             type: item.reducer,
-            payload: payload,
+            payload: data[item.key],
           });
         });
       }
@@ -155,7 +153,7 @@ function TrailID({ country }) {
     if (allDictionary) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DICTIONARY,
-        payload: { allDictionary, country },
+        payload: allDictionary,
       });
     }
   }
@@ -165,7 +163,7 @@ function TrailID({ country }) {
     if (allCitiesWithRegions) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS,
-        payload: { allCitiesWithRegions, country },
+        payload: allCitiesWithRegions,
       });
     }
   }
@@ -175,7 +173,7 @@ function TrailID({ country }) {
     if (allForms) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_FORMS,
-        payload: { allForms, country },
+        payload: allForms,
       });
     }
   }

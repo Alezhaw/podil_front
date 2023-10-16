@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useAppSelector } from "../../../store/reduxHooks";
 import { useDispatch } from "react-redux";
 import Trail from "../../../api/trails/trails";
-import { reducerTrailsTypes } from "../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import TrailsDictionatiesEdit from "../components/TrailsDictionatiesEdit";
 import CallTemplate from "../../../api/trails/callTemplate";
 import ContactStatus from "../../../api/trails/contactStatus";
@@ -43,7 +43,7 @@ function AllTrailsDictionary({ country }) {
       console.log("zalupka", allDictionary);
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DICTIONARY,
-        payload: { allDictionary, country },
+        payload: allDictionary,
       });
     }
   }

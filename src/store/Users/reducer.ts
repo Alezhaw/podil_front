@@ -13,13 +13,11 @@ export interface IUsersReducer {
   citiesRu: ICities[] | [];
   storedCities: ICities[] | [];
   citiesKz: ICities[] | [];
-  basesRu: IBase[] | [];
   bases: IBase[] | [];
-  basesKz: IBase[] | [];
   logsCity: ILogsCity[] | [];
   logsBase: ILogsBase[] | [];
-  countryForCheck: string;
   selectedLang: string;
+  country: string;
   locale: { [key: string]: string };
   speakerTemplates: ISpeakerTemplates[] | [];
 }
@@ -30,13 +28,11 @@ export const INITIAL: IUsersReducer = {
   citiesRu: [],
   storedCities: [],
   citiesKz: [],
-  basesRu: [],
   bases: [],
-  basesKz: [],
   logsCity: [],
   logsBase: [],
-  countryForCheck: "",
   selectedLang: localStorage.getItem("selected-lang") || "EN",
+  country: localStorage.getItem("country") || "RU",
   locale: {},
   speakerTemplates: [],
 };
@@ -48,21 +44,17 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
     case reducerTypes.GET_ALL_USERS:
       return { ...state, allUsers: payload };
     case reducerTypes.GET_CITIES:
-      return { ...state, storedCities: payload.cities, countryForCheck: payload.country };
-    case reducerTypes.GET_BASES_RU:
-      return { ...state, basesRu: payload };
+      return { ...state, storedCities: payload };
     case reducerTypes.GET_BASES:
-      return { ...state, bases: payload.bases, countryForCheck: payload.country };
-    case reducerTypes.GET_BASES_KZ:
-      return { ...state, basesKz: payload };
+      return { ...state, bases: payload };
     case reducerTypes.GET_LOGS_CITIES:
       return { ...state, logsCity: payload };
     case reducerTypes.GET_LOGS_BASES:
       return { ...state, logsBase: payload };
-    case reducerTypes.GET_COUNTRY_FOR_CHECK:
-      return { ...state, countryForCheck: payload };
     case reducerTypes.GET_SELECTED_LANG:
       return { ...state, selectedLang: payload };
+    case reducerTypes.GET_COUNTRY:
+      return { ...state, country: payload };
     case reducerTypes.GET_SELECTED_LOCALE:
       return { ...state, locale: payload };
     case reducerTypes.GET_SPEAKER_TEMPLATES:

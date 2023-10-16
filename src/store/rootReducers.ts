@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { UserReducer } from "./Users/reducer";
 import { IUsersReducer } from "./Users/reducer";
-import { ITrailsReducer } from "./Users/trails/trailsReducer";
-import { TrailsReducer } from "./Users/trails/trailsReducer";
+import { ITrailsReducer } from "./Trails/trailsReducer";
+import { TrailsReducer } from "./Trails/trailsReducer";
 
 export interface IRootReducer {
   user: IUsersReducer;

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import { reducerTrailsTypes } from "../../../../store/Users/trails/trailsTypes";
+import { reducerTrailsTypes } from "../../../../store/Trails/trailsTypes";
 import { useAppSelector } from "../../../../store/reduxHooks";
 import Departure from "../../../../api/trails/departure";
 import { Pagination, PaginationItem } from "@mui/material";
@@ -52,11 +52,11 @@ function EditDeparture() {
     if (data) {
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DEPARTURE,
-        payload: { allDeparture: data?.departure || [], country },
+        payload: data?.departure || [],
       });
       dispatch({
         type: reducerTrailsTypes.GET_ALL_DEPARTURE_DATE,
-        payload: { allDepartureDate: data?.departureDate || [], country },
+        payload: data?.departureDate || [],
       });
       if (data) {
         setCount(data.count);

@@ -95,7 +95,7 @@ function CityID({ country }) {
     if (data) {
       dispatch({
         type: reducerTypes.GET_CITIES,
-        payload: { cities: data, country },
+        payload: data,
       });
     }
   }
@@ -105,7 +105,7 @@ function CityID({ country }) {
     if (data) {
       dispatch({
         type: reducerTypes.GET_BASES,
-        payload: { bases: data.sort((a, b) => a.id - b.id), country },
+        payload: data.sort((a, b) => a.id - b.id),
       });
     }
   }

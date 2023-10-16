@@ -164,7 +164,6 @@ function App() {
         <Route path="/adminPanel/trails/RU/:id" element={<TrailID country="RU" />} />
         <Route path="/adminPanel/trails/KZ/:id" element={<TrailID country="KZ" />} />
         <Route path="/adminPanel/trails/PL/:id" element={<TrailID country="PL" />} />
-
         <Route path="/adminPanel/departure/:country" element={<EditDeparture />} />
         <Route path="/adminPanel" element={<AdminPanel />} />
         <Route path="/login/:logout" element={<UserInput />} />

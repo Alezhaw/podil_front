@@ -109,22 +109,6 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
-              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.city_search}</h6>
-              <Autocomplete
-                disablePortal
-                id="movie-customized-option-demo"
-                disableClearable
-                options={allCitiesWithRegions?.map((el) => ({ ...el, label: el.city_name }))}
-                sx={{ width: 300 }}
-                onChange={(e, values) => {
-                  setNewTrail((prev) => ({ ...prev, city_id: Number(values?.id) }));
-                  setNewTrail((prev) => ({ ...prev, autozonning: values?.autozonning }));
-                }}
-                renderInput={(params) => <TextField {...params} label="City" variant="standard" />}
-                value={getValueById(newTrail.city_id, "city_name", allCitiesWithRegions)}
-              />
-            </div>
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.presentation_hours}</h6>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -150,6 +134,23 @@ function CreateTrail({ country, setIsOpen, newTrail, setNewTrail, createTrail, m
             <div style={{ flexDirection: "column" }} className="pages-user-block">
               <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.rental_hours}</h6>
               <div className="tableInput">{getValueById(newTrail.presentation_time_id, "rental_hours", allDictionary?.presentationTimes)}</div>
+            </div>
+            <div style={{ flexDirection: "column", zIndex: 1 }} className="pages-user-block">
+              <h6 style={{ margin: "0", textAlign: "center", color: "black" }}>{messages?.city_search}</h6>
+              <Autocomplete
+                disablePortal
+                id="movie-customized-option-demo"
+                disableClearable
+                disabled={!newTrail.regionId}
+                options={allCitiesWithRegions?.map((el) => ({ ...el, label: el.city_name }))}
+                sx={{ width: 300 }}
+                onChange={(e, values) => {
+                  setNewTrail((prev) => ({ ...prev, city_id: Number(values?.id) }));
+                  setNewTrail((prev) => ({ ...prev, autozonning: values?.autozonning }));
+                }}
+                renderInput={(params) => <TextField {...params} label="City" variant="standard" />}
+                value={getValueById(newTrail.city_id, "city_name", allCitiesWithRegions)}
+              />
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>

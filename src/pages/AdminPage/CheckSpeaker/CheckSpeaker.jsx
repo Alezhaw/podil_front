@@ -2,7 +2,6 @@ import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
-import Checkbox from "@mui/material/Checkbox";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import Podzial from "../../../api/podzial";
@@ -15,6 +14,7 @@ import { allCitiesTableMock, forSpeakerMock } from "../../../components/mock/Out
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { getFormatTime } from "../../../utils/utils";
+import { OutlinedInput, InputLabel, MenuItem, FormControl, ListItemText, Select, Checkbox, NativeSelect } from "@mui/material";
 
 function CheckScenario({ country }) {
   const dispatch = useDispatch();
@@ -49,6 +49,18 @@ function CheckScenario({ country }) {
       to: locale["to"],
     };
   }, [locale]);
+
+  const handleChangeFilterColumns = (e) => {
+    const updatedFilterColumns = filterColumns.map((fc) => {
+      if (fc.column === e.target.id) {
+        return { ...fc, value: !fc.value };
+      }
+      return fc;
+    });
+    setFilterColumns(updatedFilterColumns);
+    localStorage.setItem("filterColumnsCheckSpeaker", JSON.stringify(updatedFilterColumns));
+    e.stopPropagation();
+  };
 
   async function getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate }) {
     setLoadingSpinner(false);
@@ -219,6 +231,21 @@ function CheckScenario({ country }) {
             }}
             color="error"
           />
+          <FormControl sx={{ m: 1, width: 100 }} color="grey">
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Тип прозвона
+            </InputLabel>
+            <NativeSelect
+              defaultValue={null}
+              inputProps={{
+                name: "age",
+                id: "uncontrolled-native",
+              }}
+            >
+              <option value={10}>Holodka</option>
+              <option value={20}>Podtw</option>
+            </NativeSelect>
+          </FormControl>
           <DropdownButton id="dropdown-basic-button" title="For Speaker" style={{ background: "transparent", border: "none" }} variant="secondary">
             <Dropdown.Item
               onClick={(e) => {
@@ -248,7 +275,26 @@ function CheckScenario({ country }) {
               3{" "}
             </Dropdown.Item>
           </DropdownButton>
-          <DropdownButton id="dropdown-basic-button" title={messages.columns} style={{ background: "transparent", border: "none" }} variant="secondary">
+          <FormControl sx={{ m: 1, width: 100 }} color="grey" text>
+            <InputLabel id="demo-multiple-checkbox-label">{messages.columns}</InputLabel>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={filterColumns.filter((item) => item.value).map((item) => item.column)}
+              onChange={handleChangeFilterColumns}
+              input={<OutlinedInput label={messages.columns} />}
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {filterColumns.map((item, index) => (
+                <MenuItem key={index} value={item.column}>
+                  <Checkbox checked={item.value} />
+                  <ListItemText primary={item.column} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {/* <DropdownButton id="dropdown-basic-button" title={messages.columns} style={{ background: "transparent", border: "none" }} variant="secondary">
             {filterColumns.map((el, index) => (
               <Dropdown.Item
                 onClick={(e) => {
@@ -271,7 +317,7 @@ function CheckScenario({ country }) {
                 </div>
               </Dropdown.Item>
             ))}
-          </DropdownButton>
+          </DropdownButton> */}
         </div>
       </div>
 

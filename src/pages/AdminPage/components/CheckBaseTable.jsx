@@ -12,6 +12,8 @@ function CheckBaseTable({ currentCities, country, checkKey, changeCheck, filterC
   const [open, setOpen] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
 
+  console.log("zalupa", currentCities);
+
   function formatDate(date) {
     return String(date)?.split("T")[0]?.replaceAll("-", ".") || "";
   }

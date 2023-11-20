@@ -1,7 +1,7 @@
 .messages {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 1rem;
 }
 
 .message {

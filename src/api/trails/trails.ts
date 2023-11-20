@@ -47,7 +47,7 @@ export const getFilteredTrails = async ({
       },
       { signal: controllerGetFilteredTrails.signal }
     );
-    return data;
+    return data || [];
   } catch (e) {
     if (axios.isCancel(e)) {
       console.log("Request canceled", e.message);

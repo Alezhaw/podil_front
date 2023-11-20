@@ -1,4 +1,4 @@
-import { MenuItem, FormControl, Select } from "@mui/material";
+import { MenuItem, FormControl, Select, Checkbox } from "@mui/material";
 
 export const validateCreditCard = (item) => {
   const itemReplace = item.replaceAll(" ", "");
@@ -102,7 +102,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell">
-            <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+            <div className="tableInput" style={{ textAlign: "center" }}>
               {item.l_p_for_pl || item.l_p || ""}
             </div>
           </th>
@@ -114,14 +114,14 @@ export const allCitiesTableMock = (locale) => {
       column: messages.time,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell" style={{ minWidth: "85px" }}>
           {messages.time}
         </th>
       ),
       firstRow: () => <th></th>,
       content: ({ item }) => (
         <th className="basesTableCell">
-          <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+          <div className="tableInput" style={{ textAlign: "center" }}>
             {item.time}
           </div>
         </th>
@@ -138,7 +138,7 @@ export const allCitiesTableMock = (locale) => {
       firstRow: () => <th></th>,
       content: ({ item }) => (
         <th className="basesTableCell">
-          <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+          <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
             {item.coming || ""}
           </div>
         </th>
@@ -155,7 +155,7 @@ export const allCitiesTableMock = (locale) => {
       firstRow: () => <th></th>,
       content: ({ item }) => (
         <th className="basesTableCell">
-          <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+          <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
             {item.pary || ""}
           </div>
         </th>
@@ -174,19 +174,11 @@ export const allCitiesTableMock = (locale) => {
         index === 0 ? (
           item.explains !== null ? (
             <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
-              <input
-                // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wyjasnienia: !!e.target.checked })))}
-                className="tableInput"
-                style={{ width: "25px", height: "25px" }}
-                type="checkbox"
-                autoComplete="off"
-                checked={!!item.explains}
-                readOnly
-              />
+              <Checkbox className="checkboxOnWhiteBackground" checked={!!item.explains} disabled />
             </th>
           ) : (
             <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "86px", background: "#f2ffac", color: "black" }}>
-              <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+              <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
                 {item.explains_for_pl || ""}
               </div>
             </th>
@@ -207,7 +199,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
-            <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
               {item.projekt || ""}
             </div>
           </th>
@@ -227,7 +219,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
-            <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
               {item.timezone || 0}
             </div>
           </th>
@@ -248,7 +240,7 @@ export const allCitiesTableMock = (locale) => {
         const itemArray = [item.region, item.city_lokal, item.adress, [item.institution, item.hall], item.date, item.population, item.city_note];
         return index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
-            <div className="tableInput" style={{ width: "250px", textAlign: "center" }}>
+            <div className="tableInput" style={{ textAlign: "center" }}>
               {item.timezone ?? ""}{" "}
               {itemArray?.map((el) => (
                 <>
@@ -275,7 +267,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
-            <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "100px", textAlign: "center" }}>
               {item.calling_scheme || ""}
             </div>
           </th>
@@ -294,7 +286,7 @@ export const allCitiesTableMock = (locale) => {
       firstRow: () => <th></th>,
       content: ({ item }) => (
         <th className="basesTableCell">
-          <div className="tableInput" style={{ width: "50px", textAlign: "center" }}>
+          <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
             {item.limit || ""}
           </div>
         </th>
@@ -312,7 +304,7 @@ export const allCitiesTableMock = (locale) => {
       firstRow: () => <th></th>,
       content: ({ currentCities, changeStatus, item, changeCitiesStatus, setChangeStatus, citiesStatus, index }) =>
         index === 0 ? (
-          <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
+          <td rowSpan={`${currentCities.length}`} className="basesTableCell black" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
             {changeStatus ? (
               <div className="tableInput" style={{ textAlign: "center" }}>
                 {messages.loading}...
@@ -324,7 +316,7 @@ export const allCitiesTableMock = (locale) => {
                   id="demo-simple-select-standard"
                   value={item.status}
                   onChange={(e) => changeCitiesStatus(setChangeStatus, e.target.value, item.id_for_base)}
-                  style={{ fontWeight: 700, fontSize: "16px" }}
+                  style={{ fontWeight: 700, fontSize: "16px", color: "black", ":before": { borderBottom: "1px solid black" } }}
                 >
                   {citiesStatus.map((item, index) => (
                     <MenuItem value={index}>{item}</MenuItem>
@@ -349,15 +341,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
-            <input
-              // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, w_toku: e.target.checked })))}
-              className="tableInput"
-              style={{ width: "25px", height: "25px" }}
-              type="checkbox"
-              autoComplete="off"
-              checked={!!item.w_toku}
-              readOnly
-            />
+            <Checkbox className="checkboxOnWhiteBackground" checked={!!item.w_toku} disabled />
           </th>
         ) : (
           ""
@@ -375,15 +359,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "85px" }}>
-            <input
-              // onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, zamkniete: e.target.checked })))}
-              className="tableInput"
-              style={{ width: "25px", height: "25px" }}
-              type="checkbox"
-              autoComplete="off"
-              checked={!!item.closed}
-              readOnly
-            />
+            <Checkbox className="checkboxOnWhiteBackground" checked={!!item.closed} disabled />
           </th>
         ) : (
           ""
@@ -481,7 +457,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
-            <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "100px", textAlign: "center" }}>
               {item.present || ""}
             </div>
           </th>
@@ -521,7 +497,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-            <div className="tableInput" style={{ width: "100px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "100px", textAlign: "center" }}>
               {item.wb_1 || ""}
             </div>
           </th>
@@ -541,7 +517,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-            <div className="tableInput" style={{ width: "70px", textAlign: "center" }}>
+            <div className="tableInput" style={{ minWidth: "70px", textAlign: "center" }}>
               {item.wb_2 || ""}
             </div>
           </th>
@@ -588,10 +564,10 @@ export const allCitiesTableMock = (locale) => {
       value: true,
       header: () => (
         <>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
-              <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
-              <th>{messages.topical_quantity_invites}</th>
+              <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
+              <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
             </tr>
             <tr style={{ background: "none" }}>
               <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
@@ -599,10 +575,10 @@ export const allCitiesTableMock = (locale) => {
               </th>
             </tr>
           </th>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
-              <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
-              <th>{messages.topical_quantity_invites}</th>
+              <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
+              <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
             </tr>
             <tr style={{ background: "none" }}>
               <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
@@ -610,10 +586,10 @@ export const allCitiesTableMock = (locale) => {
               </th>
             </tr>
           </th>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px" }}>
+          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
-              <th style={{ borderRight: "1px solid black" }}>{messages.numbers_for_consent}</th>
-              <th>{messages.topical_quantity_invites}</th>
+              <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
+              <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
             </tr>
             <tr style={{ background: "none" }}>
               <th colSpan="2" style={{ borderTop: "1px solid black", position: "relative", top: "6px" }}>
@@ -695,7 +671,7 @@ export const allCitiesTableMock = (locale) => {
       value: true,
       header: () => (
         <th colSpan="6" style={{ border: "1px solid black" }}>
-          <th colSpan="6" style={{ width: "335px", borderBottom: "1px solid black", height: "75px" }}>
+          <th colSpan="6" style={{ minWidth: "335px", borderBottom: "1px solid black", height: "75px" }}>
             {messages.vip}
           </th>
           <tr style={{ height: "55px", background: "none" }}>
@@ -722,7 +698,7 @@ export const allCitiesTableMock = (locale) => {
         <>
           {index === 0 ? (
             <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-              <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
+              <div className="tableInput" style={{ textAlign: "center", minWidth: "100px" }}>
                 {item.vip_id || ""}
               </div>
             </th>
@@ -731,7 +707,7 @@ export const allCitiesTableMock = (locale) => {
           )}
           {index === 0 ? (
             <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-              <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
+              <div className="tableInput" style={{ textAlign: "center", minWidth: "100px" }}>
                 {item.vip_format || ""}
               </div>
             </th>
@@ -740,22 +716,22 @@ export const allCitiesTableMock = (locale) => {
           )}
 
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.vip_limit || ""}
             </div>
           </th>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.vip_coming || ""}
             </div>
           </th>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.vip_total_steam || ""}
             </div>
           </th>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.vip_percent_coming || ""}
             </div>
           </th>
@@ -774,7 +750,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "100px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "100px" }}>
               {item.system || ""}
             </div>
           </th>
@@ -807,17 +783,17 @@ export const allCitiesTableMock = (locale) => {
       content: ({ item }) => (
         <>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.consent_results_confirmation || ""}
             </div>
           </th>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.refusal_results_confirmation || ""}
             </div>
           </th>
           <th className="basesTableCell">
-            <div className="tableInput" style={{ textAlign: "center", width: "50px" }}>
+            <div className="tableInput" style={{ textAlign: "center", minWidth: "50px" }}>
               {item.dots_results_confirmation || ""}
             </div>
           </th>
@@ -848,14 +824,14 @@ export const allCitiesTableMock = (locale) => {
         <>
           {index === 0 ? (
             <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "70.8px" }}>
-              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_consent} readOnly />
+              <Checkbox className="checkboxOnWhiteBackground" checked={!!item.sms_consent} disabled />
             </th>
           ) : (
             ""
           )}
           {index === 0 ? (
             <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "95px" }}>
-              <input className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" autoComplete="off" checked={!!item.sms_confirmation} readOnly />
+              <Checkbox className="checkboxOnWhiteBackground" checked={!!item.sms_confirmation} disabled />
             </th>
           ) : (
             ""
@@ -875,7 +851,7 @@ export const allCitiesTableMock = (locale) => {
       content: ({ index, currentCities, item, changeDeleteCities }) =>
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "75px" }}>
-            <input onChange={(e) => changeDeleteCities(e.target.checked, item?.id_for_base)} className="tableInput" style={{ width: "25px", height: "25px" }} type="checkbox" />
+            <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => changeDeleteCities(e.target.checked, item?.id_for_base)} />
           </th>
         ) : (
           ""

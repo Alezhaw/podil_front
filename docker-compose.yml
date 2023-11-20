@@ -1,0 +1,17 @@
+version: "1.0"
+name: podil-app
+services:
+  frontend:
+    image: podil-app
+    container_name: podil-app
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - mynetwork
+volumes:
+  frontend:
+networks:
+  mynetwork:

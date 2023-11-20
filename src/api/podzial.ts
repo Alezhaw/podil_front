@@ -95,7 +95,7 @@ export const getFilteredCities = async ({
       controllerGetFilteredCities.abort();
     }
     controllerGetFilteredCities = new AbortController();
-    const { data } = await axios.post(
+    const result = await axios.post(
       "api/city/search",
       {
         pageSize,
@@ -125,6 +125,7 @@ export const getFilteredCities = async ({
       },
       { signal: controllerGetFilteredCities.signal }
     );
+    const data = result?.data;
     return data;
   } catch (e) {
     if (axios.isCancel(e)) {

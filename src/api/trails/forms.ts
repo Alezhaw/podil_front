@@ -1,4 +1,6 @@
 import axios from "../axios";
+import { IForm } from "../../interfaces/trails/form";
+
 let controllerGetByName: AbortController | null = null;
 
 export const getByName = async ({ city_id, search = "", country = "" }: { city_id: number; search: string; country: string }) => {
@@ -28,6 +30,18 @@ export const getByName = async ({ city_id, search = "", country = "" }: { city_i
   }
 };
 
+export const create = async (form: IForm, country: string) => {
+  //отключить кнопку пока идет создание
+  try {
+    const { data } = await axios.post("api/form/create", { country, form });
+
+    return data;
+  } catch (e: any) {
+    return e?.response?.data;
+  }
+};
+
 export default {
   getByName,
+  create,
 };

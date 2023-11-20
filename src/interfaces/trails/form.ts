@@ -23,6 +23,10 @@ export interface IForm {
   trade_group: string;
   company: string;
   relevanceStatus: boolean;
+  city_id: number;
+  region_id: number | null;
+  city_name: string | null;
+  region_name: string | null;
   createdAt: string | null;
   updatedAt: string | null;
 }

@@ -32,7 +32,7 @@ export const INITIAL: IUsersReducer = {
   logsCity: [],
   logsBase: [],
   selectedLang: localStorage.getItem("selected-lang") || "EN",
-  country: localStorage.getItem("country") || "RU",
+  country: localStorage.getItem("country") || "PL",
   locale: {},
   speakerTemplates: [],
 };

@@ -98,11 +98,7 @@ function UserRegistr() {
 
   async function getUsers(e) {
     offReserch(e);
-    let checkRu = "false";
-    let res = await fetch("https://api.db-ip.com/v2/free/self");
-    let data = await res.json();
-    if (data?.countryCode === "RU") checkRu = "true";
-    const result = await axiosRegistration(login, password, nickname, checkRu);
+    const result = await axiosRegistration(login, password, nickname);
     if (typeof result === "string") {
       result === "Пользователь с таким email уже существует" ? setErrorEmail(result) : setErrorLogin(result);
     } else {

@@ -1,21 +1,33 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
+import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import UserRegistr from "./pages/UserRegistr/UserRegistr";
 import UserInput from "./pages/UserInput/UserInput";
-import AdminPanel from "./pages/AdminPage/AdminPanel";
-import UserID from "./pages/AdminPage/Users/UserID";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import CityID from "./pages/AdminPage/Podzial/CityID";
-import TrailID from "./pages/AdminPage/Trails/TrailID";
-import EditDeparture from "./pages/AdminPage/Trails/EditDeparture/EditDeparture";
+import UserID from "./pages/Users/UserID";
+import CityID from "./pages/Podzial/CityID";
+import TrailID from "./pages/Trails/TrailID";
+import EditDeparture from "./pages/Trails/Departure/EditDeparture/EditDeparture";
+import AllUsers from "./pages/Users/AllUsers";
+import AllCities from "./pages/Podzial/AllCities";
+import AllTrails from "./pages/Trails/AllTrails";
+import AllTrailsDictionary from "./pages/Trails/Dictionary/AllTrailsDictionary";
+import CheckBases from "./pages/CheckBases/CheckBases";
+import CheckSpeaker from "./pages/CheckSpeaker/CheckSpeaker";
+import CheckScenario from "./pages/CheckScenario/CheckScenario";
+import LogsCities from "./pages/Logs/LogsCities";
+import LogsBases from "./pages/Logs/LogsBases";
+import MapsPage from "./pages/Map/MapsPage";
 import "./style/body.css";
 import { useAppSelector } from "./store/reduxHooks";
 import { reducerTypes } from "./store/Users/types";
 import { reducerTrailsTypes } from "./store/Trails/trailsTypes";
 import io from "socket.io-client";
 import { defaultUrl } from "./api/axios";
+import Header from "./components/Header/Header";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 export const socket = io.connect(defaultUrl, {
   reconnection: true,
@@ -25,13 +37,30 @@ export const socket = io.connect(defaultUrl, {
 
 function App() {
   const dispatch = useDispatch();
-  const { user, storedCities, bases, selectedLang, country } = useAppSelector((store) => store.user);
+  const { storedCities, bases, selectedLang, country, user } = useAppSelector((store) => store.user);
   const { trails } = useAppSelector((store) => store.trails);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: theme,
+    },
+  });
 
   useEffect(() => {
     selectLocale();
     // eslint-disable-next-line
   }, [selectedLang]);
+
+  useEffect(() => {
+    if (!user.id) {
+      dispatch({
+        type: reducerTypes.GET_USER,
+        payload: localStorage.getItem("token") ? jwt_decode(localStorage.getItem("token")) : null,
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   async function selectLocale() {
     let texts = {};
@@ -153,24 +182,31 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<UserInput />} />
-        <Route path="/adminPanel/user/:id" element={<UserID />} />
-        <Route path="/adminPanel/city/:id_for_base" element={<CityID />} />
-        <Route path="/adminPanel/RU/:id_for_base" element={<CityID country="RU" />} />
-        <Route path="/adminPanel/KZ/:id_for_base" element={<CityID country="KZ" />} />
-        <Route path="/adminPanel/PL/:id_for_base" element={<CityID country="PL" />} />
-        <Route path="/adminPanel/trails/RU/:id" element={<TrailID country="RU" />} />
-        <Route path="/adminPanel/trails/KZ/:id" element={<TrailID country="KZ" />} />
-        <Route path="/adminPanel/trails/PL/:id" element={<TrailID country="PL" />} />
-        <Route path="/adminPanel/departure/:country" element={<EditDeparture />} />
-        <Route path="/adminPanel" element={<AdminPanel />} />
-        <Route path="/login/:logout" element={<UserInput />} />
-        <Route path="/login/" element={<UserInput />} />
-        <Route path="/registr" element={<UserRegistr />} />
-      </Routes>
-      <Footer />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Header theme={theme} setTheme={setTheme} />
+        <Routes>
+          <Route path="/" element={<UserInput />} />
+          <Route path="/users" element={<AllUsers />} />
+          <Route path="/podil" element={<AllCities />} />
+          <Route path="/trails" element={<AllTrails />} />
+          <Route path="/dictionary" element={<AllTrailsDictionary />} />
+          <Route path="/bases" element={<CheckBases />} />
+          <Route path="/speaker" element={<CheckSpeaker />} />
+          <Route path="/scenario" element={<CheckScenario />} />
+          <Route path="/logsCities" element={<LogsCities />} />
+          <Route path="/logsBases" element={<LogsBases />} />
+          <Route path="/trailMap" element={<MapsPage />} />
+          <Route path="/users/:id" element={<UserID />} />
+          <Route path="/city/:id_for_base" element={<CityID />} />
+          <Route path="/trails/:id" element={<TrailID />} />
+          <Route path="/trailsDepartureEdit" element={<EditDeparture />} />
+          <Route path="/login/:logout" element={<UserInput />} />
+          <Route path="/login/" element={<UserInput />} />
+          <Route path="/registr" element={<UserRegistr />} />
+          <Route path="/*" element={<PageNotFound />} />
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

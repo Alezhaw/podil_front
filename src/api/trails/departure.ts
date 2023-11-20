@@ -64,12 +64,13 @@ export const getFiltered = async ({
     }
     controllerGetFiltered = new AbortController();
     const { data } = await axios.post("api/departure/search", { search, planningPersonIds, dateTo, dateFrom, sort, pageSize, page, country }, { signal: controllerGetFiltered.signal });
-    return data;
+    return data || [];
   } catch (e) {
     if (axios.isCancel(e)) {
       return console.log("Request canceled", e.message);
     } else {
-      return console.error(e);
+      console.error(e);
+      return [];
     }
   }
 };

@@ -1,7 +1,8 @@
 import axios from "../axios";
+import { ICitiesWithReg } from "../../interfaces/trails/citiesWithReg";
 let controllerGetByRegion: AbortController | null = null;
 
-export const getByRegion = async ({ region_id, country = "" }: { region_id: number; country: string }) => {
+export const getByRegion = async ({ region_id, country = "", city_name = "" }: { region_id: number; country: string; city_name: string }) => {
   try {
     if (!region_id) {
       return;
@@ -15,6 +16,7 @@ export const getByRegion = async ({ region_id, country = "" }: { region_id: numb
       {
         region_id,
         country,
+        city_name,
       },
       { signal: controllerGetByRegion.signal }
     );

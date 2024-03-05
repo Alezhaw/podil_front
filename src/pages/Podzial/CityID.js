@@ -1,21 +1,24 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button, Menu, MenuItem } from "@mui/material";
 import { useAppSelector } from "../../store/reduxHooks";
 import { reducerTypes } from "../../store/Users/types";
 import Podzial from "../../api/podzial";
-import { Button, Menu, MenuItem } from "@mui/material";
+import Blazor from "../../api/blazor/blazor";
 import CityTableID from "./components/CityTableID";
 import Base from "./components/Base";
 import CreateBase from "./components/CreateBase";
 import { getFormatTime } from "../../utils/utils";
 import { PageContainer } from "../../components/Page.styled";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { customAlert } from "../../components/Alert/AlertFunction";
+import CreateCityForTest from "../Trails/components/CreateCityForTest";
 
 function CityID() {
   const { id_for_base } = useParams();
   const dispatch = useDispatch();
-  const { user, storedCities, bases, locale, country } = useAppSelector((store) => store.user);
+  const { user, storedCities, bases, locale, country, servers, instances } = useAppSelector((store) => store.user);
   const navigate = useNavigate();
   const [firstTime, setFirstTime] = useState({});
   const [secondTime, setSecondTime] = useState({});
@@ -26,6 +29,7 @@ function CityID() {
   const [newBase, setNewBase] = useState({});
   const [deleteBases, setDeleteBases] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCreateForTest, setIsOpenCreateForTest] = useState(false);
 
   const messages = useMemo(() => {
     return {
@@ -40,7 +44,15 @@ function CityID() {
       apply_for_bases: locale["city_id_apply_for_bases"],
       new_base: locale["city_id_new_base"],
       create_base: locale["city_id_create_base"],
+      update_base: locale["city_id_update_base"],
       search: locale["search"],
+      send_to_podil: locale["trails_send_to_podil"],
+      send_to_bases: locale["trails_send_to_bases"],
+      send_to_speaker: locale["trails_send_to_speaker"],
+      send_to_scenario: locale["trails_send_to_scenario"],
+      create_city_for_test: locale["trail_create_city_for_test"],
+      create_city_title: locale["note"],
+      create: locale["trails_create"],
       headers: {
         delete: locale["delete"],
         lp: locale["l_p"],
@@ -69,6 +81,7 @@ function CityID() {
         undermining_scenariuszy: locale["undermining_scenariuszy"],
         present: locale["present"],
         numbers_for_1_consent: locale["numbers_for_1_consent"],
+        wb: locale["wb"],
         wb_1: locale["wb_1"],
         wb_2: locale["wb_2"],
         quantity_invites: locale["quantity_invites"],
@@ -125,18 +138,46 @@ function CityID() {
     const result = await Podzial.createCities(city, country);
     await getCity(id_for_base);
     if (result[0]?.error) {
-      return alert("Error");
+      return customAlert({ message: "Error" });
     }
-    alert("Success");
+    customAlert({ message: "Success", severity: "success" });
+  }
+
+  async function createCityForTest(times, calling_scheme, statusByTest) {
+    let cities = times?.map((item) => ({
+      time: item?.time,
+      calling_scheme,
+      l_p_for_pl: country !== "PL" ? null : item?.l_p_for_pl,
+      region: item?.region,
+      city_lokal: item?.city_lokal,
+      adress: item?.adress,
+      institution: item?.institution,
+      date: item?.date,
+      population: item?.population,
+      project: item?.project,
+      present: item?.present,
+      trailId: item?.trailId,
+      check_base: false,
+      check_speaker: false,
+      check_scenario: false,
+      status: 3,
+      ...statusByTest,
+    }));
+    const result = await Podzial.createCities(cities, country);
+    await getCity(id_for_base);
+    if (result[0]?.error) {
+      return customAlert({ message: "Error" });
+    }
+    customAlert({ message: "Success", severity: "success" });
   }
 
   async function deleteTime(id, country) {
     const result = await Podzial.deleteTime(id, country);
     if (result) {
       await getCity(id_for_base);
-      alert("Deleted");
+      customAlert({ message: "Deleted", severity: "success" });
     } else {
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
     }
   }
 
@@ -144,18 +185,27 @@ function CityID() {
     const result = await Podzial.createBase(currentBases, country);
     if (result.update) {
       await getBasesForCity(id_for_base);
-      alert("Updated");
+      customAlert({ message: "Updated", severity: "success" });
     } else {
       if (result.notIdForBase) {
-        return alert("Не указан id_for_base");
+        return customAlert({ message: "Не указан id_for_base" });
       }
       if (result.bases[0]) {
         await getBasesForCity(id_for_base);
         setNewBase({ id_for_base: currentCities[0]?.id_for_base });
         setIsOpen(false);
-        return alert("Created");
+        return customAlert({ message: "Created", severity: "success" });
       }
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
+    }
+  }
+
+  async function updateBase({ country, id_for_bases }) {
+    const result = await Podzial.updateBaseByGazoo(country, id_for_bases);
+    if (result) {
+      customAlert({ message: "Success", severity: "success" });
+    } else {
+      customAlert({ message: "Something went wrong" });
     }
   }
 
@@ -164,9 +214,27 @@ function CityID() {
       await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBase(country, Number(id))));
       setDeleteBases([]);
       await getBasesForCity(id_for_base);
-      alert("Success");
+      customAlert({ message: "Success", severity: "success" });
     } catch (e) {
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
+    }
+  }
+
+  async function getServers() {
+    try {
+      const result = await Promise.all([await Blazor.getInstances(), await Blazor.getServer()]);
+      let instances = result[0];
+      let servers = result[1];
+      dispatch({
+        type: reducerTypes.GET_SERVER,
+        payload: servers,
+      });
+      dispatch({
+        type: reducerTypes.GET_INSTANCE,
+        payload: instances,
+      });
+    } catch (e) {
+      customAlert({ message: `Error getting server list` });
     }
   }
 
@@ -202,7 +270,7 @@ function CityID() {
 
   useEffect(() => {
     if (user?.role === "USER") {
-      alert("Нет доступа");
+      customAlert({ message: "You don't have access" });
       navigate("/login");
     }
   }, [user?.role, navigate, user]);
@@ -216,33 +284,36 @@ function CityID() {
     if (!checkCurrentBases) {
       getBasesForCity(id_for_base);
     }
+    getServers();
     // eslint-disable-next-line
   }, [user]);
 
   return (
     <PageContainer>
       <div style={{ marginTop: "1rem", color: "white" }}>
+        {isOpenCreateForTest ? (
+          <CreateCityForTest setIsOpen={setIsOpenCreateForTest} item={[firstTime, secondTime, thirdTime]?.filter((el) => !!el.time)} createCity={createCityForTest} messages={messages} forCityId />
+        ) : null}
         <div style={{ overflowX: "auto" }}>
           <CityTableID setCity={setCity} currentCities={currentCities} deleteTime={deleteTime} country={country} messages={messages.headers} />
         </div>
         <div
           style={{
-            width: "100%",
             display: "flex",
             marginTop: "1rem",
-            justifyContent: "center",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
-            <Button onClick={() => createCity(firstTime, secondTime, thirdTime)} variant="outlined">
-              {messages.apply}
-            </Button>
-          </div>
+          <Button onClick={() => createCity(firstTime, secondTime, thirdTime)} variant="outlined">
+            {messages.apply}
+          </Button>
+          <Button onClick={() => setIsOpenCreateForTest(true)} variant="outlined">
+            {messages.create_city_for_test}
+          </Button>
         </div>
         <div>
-          {/* <div style={{ overflowX: 'auto', padding: '0px 25px', marginTop: '25px' }}> */}
           <div style={{ overflow: "auto" }}>
-            {/* <table style={{ minWidth: `${currentBases?.length * 358}px`, textAlign: 'center' }}> */}
             <div style={{ padding: "0px", margin: "1rem 0px 0px" }}>
               <table style={{ textAlign: "center" }}>
                 <tbody style={{ display: "flex", flexDirection: "row" }}>
@@ -262,10 +333,16 @@ function CityID() {
               flexDirection: "row",
             }}
           >
-            <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
-              <Button onClick={() => createBase(currentBases)} variant="outlined" hidden={!currentBases[0]}>
-                {messages.apply_for_bases}
-              </Button>
+            <div style={{ minWidth: "50%", display: "flex" }}>
+              <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
+                <Button onClick={() => createBase(currentBases)} variant="outlined" hidden={!currentBases[0]}>
+                  {messages.apply_for_bases}
+                </Button>
+
+                <Button onClick={() => updateBase({ country, id_for_bases: [currentCities?.flat()?.map((el) => el?.id_for_base)] })} variant="outlined" hidden={!currentBases[0]}>
+                  {messages?.update_base}
+                </Button>
+              </div>
             </div>
             <div style={{ minWidth: "50%", display: "flex", justifyContent: "flex-end" }}>
               <Button onClick={() => deleteBase(deleteBases)} variant="outlined" hidden={!deleteBases[0]}>
@@ -290,6 +367,8 @@ function CityID() {
               getFilteredBases={Podzial.getFilteredBases}
               country={country}
               messages={messages}
+              servers={servers}
+              instances={instances}
             />
           ) : (
             ""

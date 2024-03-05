@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import Base from "../Podzial/components/Base";
-import { Button, IconButton, Paper } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Podzial from "../../api/podzial";
 import { socket } from "../../App";
+import { customAlert } from "../../components/Alert/AlertFunction";
 
 function DropdownBaseTable({ item, country }) {
   const [newBases, setNewBases] = useState([{ id: 1, id_for_base: item.id_for_base }]);
@@ -16,19 +17,19 @@ function DropdownBaseTable({ item, country }) {
       setNewBases([{ id: 1, id_for_base: item.id_for_base }]);
       if (result.update) {
         await getBasesForCity(item);
-        alert("Updated");
+        customAlert({ message: "Updated", severity: "success" });
       } else {
         if (result.notIdForBase) {
-          return alert("Не указан id_for_base");
+          return customAlert({ message: "Не указан id_for_base" });
         }
         if (result.bases[0]) {
           await getBasesForCity(item);
-          return alert("Created");
+          return customAlert({ message: "Created", severity: "success" });
         }
-        alert("Not changes");
+        customAlert({ message: "Something went wrong", severity: "warning" });
       }
     } catch (e) {
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
     }
   }
 
@@ -37,9 +38,9 @@ function DropdownBaseTable({ item, country }) {
       await Promise.all(deleteBases?.map(async (id) => await Podzial.deleteBase(country, Number(id))));
       setDeleteBases([]);
       await getBasesForCity(item);
-      alert("Success");
+      customAlert({ message: "Success", severity: "success" });
     } catch (e) {
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
     }
   }
 
@@ -104,6 +105,9 @@ function DropdownBaseTable({ item, country }) {
         <Button variant="outlined" onClick={async () => deleteBase(deleteBases, item)}>
           Delete
         </Button>
+        {/* <Button variant="outlined" onClick={async () => Podzial.updateBaseByGazoo(country, [item?.id_for_base])}>
+          TEST
+        </Button> */}
       </div>
       <div style={{ display: "flex", flexDirection: "row", paddingTop: "1rem" }}>
         {currentBases

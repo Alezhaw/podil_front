@@ -27,6 +27,8 @@ export interface IForm {
   region_id: number | null;
   city_name: string | null;
   region_name: string | null;
+  start_coord: number | null;
+  end_coord: number | null;
   createdAt: string | null;
   updatedAt: string | null;
 }

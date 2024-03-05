@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useTheme } from "@mui/material";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
 export const PageContainer = styled.div(() => {
   const theme = useTheme();
@@ -12,12 +13,48 @@ export const PageContainer = styled.div(() => {
   position: relative;
   color: ${theme.palette.text.primary};
 
+  .noBorder {
+    border: 0;
+  }
+
+  .background {
+    background: ${theme.palette.mode === "light" ? "#F3F1F2" : "#1b1b1d"}; 
+  }
+
+  .scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+  .scroll::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #cccccc;
+  }
+
   .sizeForBases {
     min-width: 0;
   }
 
+  .selectInputNoWrap {
+    .css-17idfle-MuiSelect-select-MuiInputBase-input-MuiInput-input.MuiSelect-select {
+      white-space: unset;
+    }
+  }
+
+  .basePadding {
+    padding: 6px;
+    input {
+      padding: 8px 10px;
+    }
+  }
+
+  .baseWidth {
+    width: -webkit-fill-available;
+  }
+
   .inputBaseID {
-    max-width: 300px;
+    max-width: 400px;
+    max-height: 350px;
   }
 
   .checkboxOnWhiteBackground {
@@ -71,6 +108,12 @@ export const PageContainer = styled.div(() => {
     padding: 15px 20px;
   }
 
+  .createColumn {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+  }
+
   .createContainer {
     background: ${theme.palette.mode === "light" ? "#DBDEE1" : "#242526"};
     display: flex;
@@ -90,6 +133,20 @@ export const PageContainer = styled.div(() => {
     text-align: left;
   }
 
+  .disableBlackColor {
+    input {
+      -webkit-text-fill-color: ${theme.palette.text.primary};
+    }
+  }
+
+  .disablePrimaryColor {
+    .Mui-disabled {
+      color: gray;
+      border: 1px solid gray;
+    }
+    
+  }
+
   .modalContentStyles {
     border: 1px solid ${theme.palette.text.primary};
     padding: 2rem;
@@ -106,11 +163,11 @@ export const PageContainer = styled.div(() => {
 
   .black {
     .MuiInputBase-root {
-      color: black
+      color: black;
     }
 
     .MuiFormLabel-root {
-      color: black
+      color: black;
     }
 
     .MuiInputBase-root::before {
@@ -118,9 +175,12 @@ export const PageContainer = styled.div(() => {
     }
 
     .MuiSvgIcon-root {
-      color: black
+      color: black;
     }
-    
+
+    .Mui-disabled {
+      -webkit-text-fill-color: gray;
+    }
   }
 
   .bases {
@@ -140,20 +200,51 @@ export const PageContainer = styled.div(() => {
     tr {
       th {
         text-align: center;
-      }
-    } 
-  }
+        }
+      } 
+    }
     tbody {
       tr {
         th {
           text-align: center;
-        }
+          }
         td {
           text-align: center;
+          }
+        } 
         }
-      } 
     }
+
+  .colorTable {
+    tbody {
+      background: ${theme.palette.mode === "light" ? "#F3F1F2" : "#1b1b1d"}; 
+      td {
+        color: ${theme.palette.text.primary};
+      }
     }
+
+    .tableInput {
+      color: ${theme.palette.text.primary};
+      font-size: 1rem;
+      font-size: Max(1rem, 1em);
+      font-family: inherit;
+      padding: 0.25em 0.5em;
+      background-color: unset;
+      border: 2px solid var(--input-border);
+      border-radius: 4px;
+      transition: 180ms box-shadow ease-in-out;
+      width: 7.5rem;
+    }
+
+    .tableInput[disabled] {
+      color: ${theme.palette.text.primary};
+      background-color: unset;
+    }
+    
+  }
+
+  .autoWidth {
+      width: auto !important;
   }
 
   .pointer {
@@ -429,4 +520,118 @@ export const PageContainer = styled.div(() => {
     overflow: auto;
   }
 }`;
+});
+
+export const OtherStyle = styled.div(() => {
+  const theme = useTheme();
+  return `
+  .close {
+    background: ${theme.palette.mode === "light" ? "#F3F1F2" : "#1b1b1d"};
+    position: absolute;
+    top: 1rem;
+    right: 4rem;
+    z-index: 402;
+  }
+
+  .close:hover {
+    background: ${theme.palette.mode === "light" ? "#DBDEE1" : "#242526"}; 
+    box-shadow: none;
+  }
+
+  .resize {
+    min-width: calc(600px - 1rem - 60px);
+    max-width: 80vw;
+    min-height: 500px;
+    max-height: 100vh;
+    overflow: auto;
+    resize: both;
+  }
+
+  .scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+  .scroll::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #cccccc;
+  }
+
+  .editForm {
+  background: ${theme.palette.mode === "light" ? "#F3F1F2" : "#1b1b1d"}; 
+  color: ${theme.palette.text.primary};
+  position: absolute;
+  z-index: 401;
+  padding: 2.5rem 1rem 2rem 60px;
+  border: 1px solid black;
+
+  .createContainer {
+    background: ${theme.palette.mode === "light" ? "#DBDEE1" : "#242526"};
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .createBlock {
+    background: ${theme.palette.mode === "light" ? "#DBDEE1" : "#242526"};
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 15px 20px;
+  }
+
+  .createTitle {
+    min-width: 165px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  .createSelect {
+    width: 100%;
+    text-align: left;
+  }
+
+  .close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+
+  .edit {
+    position: absolute;
+    right: 2.5rem;
+    top: 0px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 1rem;
+    overflow: auto;
+  }
+
+  .spaceBetween {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  }
+
+  .tableWithoutTdMaxWidth {
+    td {
+      max-width: none;
+    }
+  }
+  `;
+});
+
+export const CustomTooltipMUI = styled(({ className, ...props }) => <Tooltip {...props} classes={{ popper: className }} />)({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 500,
+    fontSize: "16px",
+    background: "rgba(0, 0, 0, .9)",
+  },
 });

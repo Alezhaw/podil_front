@@ -7,6 +7,7 @@ import { reducerTypes } from "../../store/Users/types";
 import { Checkbox, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PageContainer } from "../../components/Page.styled";
+import { customAlert } from "../../components/Alert/AlertFunction";
 
 function AllUsersID() {
   const { allUsers, user, locale } = useAppSelector((store) => store.user);
@@ -48,18 +49,18 @@ function AllUsersID() {
   async function changeRole(roleUser) {
     setRoleUser(roleUser);
     if (!user.id) {
-      return alert("Please login");
+      return customAlert({ message: "Please login" });
     }
     const result = await axiosChangeRole(roleUser, currentUser?.id, user?.email, user?.password);
     if (result?.response?.data?.message === "No access") {
       setRoleUser(currentUser?.role);
-      return alert("No access");
+      return customAlert({ message: "No access" });
     }
     if (result?.response?.data?.message) {
       setRoleUser(currentUser?.role);
-      return alert("Something went wrong");
+      return customAlert({ message: "Something went wrong" });
     }
-    alert("Sucess");
+    customAlert({ message: "Success", severity: "success" });
   }
 
   useEffect(() => {
@@ -142,7 +143,7 @@ function AllUsersID() {
                 await Promise.all(deleteUsers?.map(async (id) => await axiosRemoveUser(Number(id), user?.id)));
                 setDeleteUsers([]);
                 await getAllUsers();
-                alert("Success");
+                customAlert({ message: "Success", severity: "success" });
               }}
               hidden={!deleteUsers[0]}
               style={{ position: "relative", top: "1rem" }}

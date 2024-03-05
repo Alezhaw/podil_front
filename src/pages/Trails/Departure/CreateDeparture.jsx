@@ -1,14 +1,28 @@
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { List, ListItem, ListItemText, Button, useTheme, Typography } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import NumberInput from "../../../components/NumberInput";
+import { useAppSelector } from "../../../store/reduxHooks";
+import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
+import Trail from "../../../api/trails/trails";
+import TrailSelect from "../components/TrailSelect";
+import EditDictionaryButton from "../components/EditDictionaryButton";
+import Regiment from "../../../api/trails/regiment";
+import { getFormatDate } from "../../../utils/utils";
+import MyDatePicker from '../../../components/forPages/MyDatePicker';
 
-function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, weekDays, createDeparture, replaceDots }) {
+function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, weekDays, createDeparture, replaceDots, forEdit }) {
+  const dispatch = useDispatch();
+  const { country } = useAppSelector((store) => store.user);
+  const { allDictionary } = useAppSelector((store) => store.trails);
+  const [isOpenDictionary, setIsOpenDictionary] = useState(null);
+  const [dictionary, setDictionary] = useState({});
   const theme = useTheme();
+  const [value, setValue] = useState(0);
 
   function getDayName(date) {
     const d = new Date(date);
@@ -27,15 +41,24 @@ function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, w
 
   useEffect(() => {
     if (!newDeparture.dateFrom || !newDeparture.dateTo) return;
+
     let dateFrom = new Date(newDeparture.dateFrom);
-    dateFrom.setDate(dateFrom.getDate() + 1);
     let dateTo = new Date(newDeparture.dateTo);
-    dateTo.setDate(dateTo.getDate() + 1);
+    if (!forEdit) {
+      dateFrom.setDate(dateFrom.getDate() + 1);
+      dateTo.setDate(dateTo.getDate() + 1);
+    }
 
     let daylist = getDaysArray(dateFrom, dateTo);
-    setNewDeparture((prev) => ({ ...prev, range: [dateFrom, dateTo], dates: daylist.map((v) => v.toISOString().split("T")[0]) }));
+    setNewDeparture((prev) => ({ ...prev, range: [dateFrom.toISOString().split("T")[0], dateTo.toISOString().split("T")[0]], dates: daylist.map((v) => v.toISOString().split("T")[0]) }));
     // eslint-disable-next-line
   }, [newDeparture.dateFrom, newDeparture.dateTo]);
+
+  useEffect(() => {
+    setDictionary({
+      regiments: { array: allDictionary?.regiments, title: messages?.trails_regiment, keyName: "regiments", key: "name", update: Regiment.update, remove: Regiment.remove, create: Regiment.create },
+    });
+  }, [allDictionary, messages]);
 
   return (
     <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.95)" }} className="modalStyles">
@@ -52,23 +75,17 @@ function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, w
             <Typography variant="body1" component="h2" sx={{ textAlign: "center" }}>
               {messages?.departure_dates}
             </Typography>
-            <div style={{ display: "flex", flexDirection: "row", gap: "1rem", textAlign: "center", width: "350px", justifyContent: "space-evenly" }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label={messages?.from}
-                  onChange={(e) => setNewDeparture((prev) => ({ ...prev, dateFrom: e }))}
-                  slotProps={{ textField: { size: "small" } }}
-                  defaultValue={dayjs(new Date(newDeparture.dateFrom))}
-                />
-              </LocalizationProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label={messages?.to}
-                  onChange={(e) => setNewDeparture((prev) => ({ ...prev, dateTo: e }))}
-                  slotProps={{ textField: { size: "small" } }}
-                  defaultValue={dayjs(new Date(newDeparture.dateTo))}
-                />
-              </LocalizationProvider>
+            <div style={{ display: "flex", flexDirection: "row", gap: "1rem", textAlign: "center", justifyContent: "space-evenly" }}>
+              <MyDatePicker
+                label={messages?.from}
+                onChange={(e) => setNewDeparture((prev) => ({ ...prev, dateFrom: e }))}
+                defaultValue={dayjs(new Date(newDeparture.dateFrom))}
+              />
+              <MyDatePicker
+                label={messages?.to}
+                onChange={(e) => setNewDeparture((prev) => ({ ...prev, dateTo: e }))}
+                defaultValue={dayjs(new Date(newDeparture.dateTo))}
+              />
             </div>
           </div>
           <div style={{ marginTop: 0 }} className="createBlock">
@@ -77,7 +94,7 @@ function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, w
                 <List>
                   {newDeparture?.dates?.map((date, index) => (
                     <ListItem style={{ height: 46, left: 0, right: undefined, top: 0, width: "100%", padding: "0px 1rem" }} key={index} component="div" disablePadding>
-                      <ListItemText primary={`${replaceDots(date)} ${getDayName(date)}`} />
+                      <ListItemText primary={`${getFormatDate(replaceDots(date))} ${getDayName(date)}`} />
                       <CloseIcon style={{ cursor: "pointer" }} onClick={() => deleteDate(date)} />
                     </ListItem>
                   ))}
@@ -85,6 +102,29 @@ function CreateDeparture({ setIsOpen, newDeparture, setNewDeparture, messages, w
               </div>
             </div>
           </div>
+          <div style={{ flexDirection: "row", alignItems: "center" }} className="createBlock">
+            <Typography variant="body1" component="h2" sx={{ textAlign: "center", minWidth: "120px" }}>
+              {messages?.route_number}
+            </Typography>
+            <NumberInput style={{ width: "-webkit-fill-available" }} value={newDeparture?.route_number || 0} onChange={(event, val) => setNewDeparture((prev) => ({ ...prev, route_number: val }))} />
+          </div>
+
+          <div style={{ flexDirection: "row", alignItems: "center" }} className="createBlock">
+            <Typography variant="body1" component="h2" sx={{ textAlign: "center", minWidth: "120px" }}>
+              {messages?.company}
+            </Typography>
+            <TrailSelect
+              formStyle={{ width: "-webkit-fill-available" }}
+              valueKey="company_id"
+              trail={newDeparture}
+              setTrail={setNewDeparture}
+              array={allDictionary?.regiments}
+              label="Company"
+              arrayKey="name"
+            />
+            <EditDictionaryButton isOpen={isOpenDictionary} setIsOpen={setIsOpenDictionary} name="regiments" country={country} item={dictionary.regiments} />
+          </div>
+
           <Button variant="outlined" onClick={() => createDeparture({ newDeparture, setNewDeparture, setIsOpen })}>
             {messages.create}
           </Button>

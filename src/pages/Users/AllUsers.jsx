@@ -9,6 +9,7 @@ import { TextField, Checkbox, Button, Table, TableBody, TableCell, TableContaine
 import { PageContainer } from "../../components/Page.styled";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PaginationBlock from "../../components/forPages/PaginationBlock";
+import { customAlert } from "../../components/Alert/AlertFunction";
 
 function AllUsers() {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ function AllUsers() {
               await Promise.all(deleteUsers?.map(async (id) => await axiosRemoveUser(Number(id), user.id)));
               setDeleteUsers([]);
               await getAllUsers();
-              alert("Success");
+              customAlert({ message: "Success", severity: "success" });
             }}
             hidden={!deleteUsers[0]}
           >
@@ -135,6 +136,7 @@ function AllUsers() {
         itemsPerPageForInput={itemsPerPage}
         setItemsPerPageForInput={setItemsPerPage}
         messages={messages}
+        noZoom
       />
     </PageContainer>
   );

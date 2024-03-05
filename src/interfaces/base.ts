@@ -12,6 +12,8 @@ export interface IBase {
   sogl_2: number | null;
   sogl_3: number | null;
   comment: string | null;
+  gazooServerId: string | null;
+  gazooCampaignId: number | null;
   createdAt: string | null;
   updatedAt: string | null;
 }

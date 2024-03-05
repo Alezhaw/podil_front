@@ -9,7 +9,13 @@ export const reducerTypes = {
   GET_SELECTED_LANG: "reducer/GET_SELECTED_LANG",
   GET_COUNTRY: "reducer/GET_COUNTRY",
   GET_SELECTED_LOCALE: "reducer/GET_SELECTED_LOCALE",
+  GET_ALERT: "reducer/GET_ALERT",
   GET_SPEAKER_TEMPLATES: "reducer/GET_SPEAKER_TEMPLATES",
+  GET_LISTS: "reducer/GET_LISTS",
+  GET_SERVER: "reducer/GET_SERVER",
+  GET_INSTANCE: "reducer/GET_INSTANCE",
+  GET_TRAILS_FOR_CAMPAIGN: "reducer/GET_TRAILS_FOR_CAMPAIGN",
+  GET_DEPARTURE: "reducer/GET_DEPARTURE",
 };
 
 export const sagaTypes = {

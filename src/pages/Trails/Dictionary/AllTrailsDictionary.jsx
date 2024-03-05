@@ -29,7 +29,7 @@ function AllTrailsDictionary() {
       trails_form: locale["admin_panel_trails_form"],
       trails_planning_person: locale["admin_panel_trails_planning_person"],
       trails_presentation_time: locale["admin_panel_trails_presentation_time"],
-      trails_project_concent: locale["admin_panel_trails_project_concent"],
+      trails_project_concent: locale["trails_project_concent"],
       trails_project_sales: locale["admin_panel_trails_project_sales"],
       trails_regiment: locale["admin_panel_trails_regiment"],
       trails_region: locale["admin_panel_trails_region"],
@@ -49,20 +49,53 @@ function AllTrailsDictionary() {
   }
   useEffect(() => {
     setDictionary([
-      { array: allDictionary?.callTamplates, title: messages?.trails_call_template, key: "name", update: CallTemplate.update, remove: CallTemplate.remove, create: CallTemplate.create },
-      { array: allDictionary?.contractStatuses, title: messages?.trails_contract_status, key: "name", update: ContactStatus.update, remove: ContactStatus.remove, create: ContactStatus.create },
+      {
+        array: allDictionary?.callTamplates,
+        title: messages?.trails_call_template,
+        keyName: "callTamplates",
+        key: "name",
+        update: CallTemplate.update,
+        remove: CallTemplate.remove,
+        create: CallTemplate.create,
+      },
+      {
+        array: allDictionary?.contractStatuses,
+        title: messages?.trails_contract_status,
+        keyName: "contractStatuses",
+        key: "name",
+        update: ContactStatus.update,
+        remove: ContactStatus.remove,
+        create: ContactStatus.create,
+      },
       {
         array: allDictionary?.presentationTimes,
         title: messages?.trails_presentation_time,
         key: "presentation_hour",
+        keyName: "presentationTimes",
         update: PresentationTime.update,
         remove: PresentationTime.remove,
         create: PresentationTime.create,
       },
-      { array: allDictionary?.projectConcent, title: messages?.trails_project_concent, key: "name", update: ProjectConcent.update, remove: ProjectConcent.remove, create: ProjectConcent.create },
-      { array: allDictionary?.projectSales, title: messages?.trails_project_sales, key: "name", update: ProjectSales.update, remove: ProjectSales.remove, create: ProjectSales.create },
-      { array: allDictionary?.regiments, title: messages?.trails_regiment, key: "name", update: Regiment.update, remove: Regiment.remove, create: Regiment.create },
-      { array: allDictionary?.regions, title: messages?.trails_region, key: "region", update: Region.update, remove: Region.remove, create: Region.create },
+      {
+        array: allDictionary?.projectConcent,
+        title: messages?.trails_project_concent,
+        keyName: "projectConcent",
+        key: "name",
+        update: ProjectConcent.update,
+        remove: ProjectConcent.remove,
+        create: ProjectConcent.create,
+      },
+      {
+        array: allDictionary?.projectSales,
+        title: messages?.trails_project_sales,
+        keyName: "projectSales",
+        key: "name",
+        update: ProjectSales.update,
+        remove: ProjectSales.remove,
+        create: ProjectSales.create,
+      },
+      { array: allDictionary?.regiments, title: messages?.trails_regiment, keyName: "regiments", key: "name", update: Regiment.update, remove: Regiment.remove, create: Regiment.create },
+      { array: allDictionary?.regions, title: messages?.trails_region, keyName: "regions", key: "region", update: Region.update, remove: Region.remove, create: Region.create },
     ]);
   }, [allDictionary, messages]);
 

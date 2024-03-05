@@ -3,6 +3,7 @@ import { ITrails } from "../../interfaces/trails/trails";
 
 let controllerGetFilteredTrails: AbortController | null = null;
 let controllerGetTrailsById: AbortController | null = null;
+let controllerGetTrailsByCityId: AbortController | null = null;
 let controllerGetDictionaryByTrails: AbortController | null = null;
 let controllerGetAllDictionary: AbortController | null = null;
 
@@ -66,6 +67,23 @@ export const getTrailsById = async ({ ids, country = "" }: { ids: number[]; coun
     }
     controllerGetTrailsById = new AbortController();
     const { data } = await axios.post("api/trail/getByIds", { ids, country }, { signal: controllerGetTrailsById.signal });
+    return data;
+  } catch (e) {
+    if (axios.isCancel(e)) {
+      return console.log("Request canceled", e.message);
+    } else {
+      return console.error(e);
+    }
+  }
+};
+
+export const getTrailsByCityId = async ({ ids, country = "" }: { ids: number[]; country: string }) => {
+  try {
+    if (controllerGetTrailsByCityId !== null) {
+      controllerGetTrailsByCityId.abort();
+    }
+    controllerGetTrailsByCityId = new AbortController();
+    const { data } = await axios.post("api/trail/getByCityIds", { ids, country }, { signal: controllerGetTrailsByCityId.signal });
     return data;
   } catch (e) {
     if (axios.isCancel(e)) {
@@ -156,6 +174,7 @@ export const removeTrail = async (id: number, country: string) => {
 export default {
   getFilteredTrails,
   getTrailsById,
+  getTrailsByCityId,
   getDictionary,
   getAllDictionary,
   createTrail,

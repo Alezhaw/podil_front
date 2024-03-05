@@ -4,8 +4,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import Departure from "../../../../api/trails/departure";
 import DepartureDate from "../../../../api/trails/departureDate";
 import CreateDeparture from "../CreateDeparture";
+import { customAlert } from "../../../../components/Alert/AlertFunction";
+import { getValueById } from "../../../../components/functions";
+import { getFormatDate } from "../../../../utils/utils";
 
-function DepartureItem({ country, item, sort, allDepartureDate, messages, getDeparture }) {
+function DepartureItem({ country, item, sort, allDepartureDate, messages, getDeparture, filterDate, allDictionary }) {
   const [dates, setDates] = useState([]);
   const [deleteDates, setDeleteDates] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -16,21 +19,21 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
   async function updateDeparture({ newDeparture, setNewDeparture, setIsOpen }) {
     const departure = newDeparture;
     if (!departure.dateTo || !departure.dateFrom) {
-      return alert(messages.update_error);
+      return customAlert({ message: messages.update_error, severity: "success" });
     }
     const checkDates = departure.dates ? departure.dates[0] : false;
     if (!checkDates) {
-      return alert(messages.dates_error);
+      return customAlert({ message: messages.dates_error, severity: "success" });
     }
     const result = await Departure.update(departure, country);
     if (result && !result?.message) {
-      await getDeparture();
-      alert("Sucess");
+      await getDeparture(filterDate);
+      customAlert({ message: "Success", severity: "success" });
       setNewDeparture({});
       setIsOpen(false);
     } else {
-      await getDeparture();
-      alert(result.message);
+      await getDeparture(filterDate);
+      return customAlert({ message: result.message });
     }
   }
 
@@ -41,13 +44,13 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
       try {
         const result = await Departure.remove(Number(value), country);
         if (result) {
-          await getDeparture();
-          alert("Sucess");
+          await getDeparture(filterDate);
+          customAlert({ message: "Success", severity: "success" });
         } else {
-          alert("Something went wrong");
+          customAlert({ message: "Something went wrong" });
         }
       } catch (e) {
-        alert("Something went wrong");
+        customAlert({ message: "Something went wrong" });
       }
     } else {
       return;
@@ -57,18 +60,18 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
   async function deleteDate() {
     try {
       if (!deleteDates[0]) {
-        return alert("Not date for delete");
+        return customAlert({ message: "Not date for delete" });
       }
       const result = await Promise.all(deleteDates?.map(async (id) => await DepartureDate.remove(Number(id), country)));
       if (result ? result[0] : null) {
         setDeleteDates([]);
-        await getDeparture();
-        alert("Success");
+        await getDeparture(filterDate);
+        customAlert({ message: "Success", severity: "success" });
       } else {
-        alert("Something went wrong");
+        customAlert({ message: "Something went wrong" });
       }
     } catch (e) {
-      alert("Something went wrong");
+      customAlert({ message: "Something went wrong" });
     }
   }
 
@@ -112,21 +115,27 @@ function DepartureItem({ country, item, sort, allDepartureDate, messages, getDep
           weekDays={messages.days_of_the_week}
           createDeparture={updateDeparture}
           replaceDots={replaceDots}
+          forEdit={true}
         />
       ) : null}
       <Typography variant="h5" component="h2" style={{ paddingBottom: "1rem" }}>
-        {replaceDots(item?.range[sort ? 1 : 0])} - {replaceDots(item?.range[sort ? 0 : 1])}{" "}
-        <IconButton onClick={() => setIsOpen(true)}>
-          <EditIcon style={{ margin: "0px 5px" }} />
-        </IconButton>
-        <Button style={{ fontWeight: 600 }} value={item.id} onClick={deleteDeparture}>
-          {messages.delete}
-        </Button>
+        <div>
+          {getFormatDate(replaceDots(item?.range[sort ? 1 : 0]))} - {getFormatDate(replaceDots(item?.range[sort ? 0 : 1]))}{" "}
+          <IconButton onClick={() => setIsOpen(true)}>
+            <EditIcon style={{ margin: "0px 5px" }} />
+          </IconButton>
+          <Button style={{ fontWeight: 600 }} value={item.id} onClick={deleteDeparture}>
+            {messages.delete}
+          </Button>
+        </div>{" "}
+        <div>
+          {item?.route_number} / {getValueById(item.company_id, "name", allDictionary?.regiments)}
+        </div>
       </Typography>
       <Box style={{ position: "relative" }}>
         {dates?.map((date) => (
           <Typography variant="body1" component="h2" style={{ padding: "5px" }} key={date.id}>
-            {replaceDots(date.data)}
+            {getFormatDate(replaceDots(date.data))}
             <Checkbox color="primary" value={date.id} onChange={changeDeleteDates} />
           </Typography>
         ))}

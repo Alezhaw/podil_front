@@ -10,6 +10,8 @@ import TrailID from "./pages/Trails/TrailID";
 import EditDeparture from "./pages/Trails/Departure/EditDeparture/EditDeparture";
 import AllUsers from "./pages/Users/AllUsers";
 import AllCities from "./pages/Podzial/AllCities";
+import AllPotw from "./pages/Podzial/Potw/AllPotw";
+import ShowLists from "./pages/Podzial/Lists/ShowLists";
 import AllTrails from "./pages/Trails/AllTrails";
 import AllTrailsDictionary from "./pages/Trails/Dictionary/AllTrailsDictionary";
 import CheckBases from "./pages/CheckBases/CheckBases";
@@ -28,6 +30,7 @@ import Header from "./components/Header/Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import Alert from "./components/Alert/Alert";
 
 export const socket = io.connect(defaultUrl, {
   reconnection: true,
@@ -188,7 +191,10 @@ function App() {
         <Routes>
           <Route path="/" element={<UserInput />} />
           <Route path="/users" element={<AllUsers />} />
-          <Route path="/podil" element={<AllCities />} />
+          <Route path="/podil" element={<AllCities variant="podil" />} />
+          <Route path="/podilPotw" element={<AllPotw />} />
+          <Route path="/lists" element={<AllCities variant="lists" />} />
+          <Route path="/lists/:id_for_base" element={<ShowLists />} />
           <Route path="/trails" element={<AllTrails />} />
           <Route path="/dictionary" element={<AllTrailsDictionary />} />
           <Route path="/bases" element={<CheckBases />} />
@@ -206,6 +212,7 @@ function App() {
           <Route path="/registr" element={<UserRegistr />} />
           <Route path="/*" element={<PageNotFound />} />
         </Routes>
+        <Alert />
       </ThemeProvider>
     </>
   );

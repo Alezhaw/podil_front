@@ -64,6 +64,8 @@ export interface ICities {
   l_p_for_pl: string | null;
   explains_for_pl: string | null;
   trailId: number | null;
+  departureId: number | null;
+  departure_date_id: number | null;
   visible_in_podil: boolean;
   visible_in_bases: boolean;
   visible_in_speaker: boolean;

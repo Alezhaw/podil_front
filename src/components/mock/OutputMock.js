@@ -1,4 +1,6 @@
+import * as React from "react";
 import { MenuItem, FormControl, Select, Checkbox } from "@mui/material";
+import { timeColors, getFormatTimeByTime, getFormatDate } from "../../utils/utils";
 
 export const validateCreditCard = (item) => {
   const itemReplace = item.replaceAll(" ", "");
@@ -36,12 +38,11 @@ export const forSpeakerMock = [
   },
 ];
 
-export const citiesStatus = ["Canceled", "In progress", "Closed", "Waiting"];
-
 export const citiesStatusColor = ["#8B00FF", "#00FF00", "#FF2400", "#FFFFFF"];
 
 export const allCitiesTableMock = (locale) => {
   const messages = {
+    link: locale["link"],
     lp: locale["l_p"],
     time: locale["time"],
     coming: locale["coming"],
@@ -49,7 +50,9 @@ export const allCitiesTableMock = (locale) => {
     explains: locale["explains"],
     project: locale["project"],
     timezone: locale["timezone"],
+    date: locale["date"],
     city_lokal: locale["city_lokal"],
+    address: locale["address"],
     note: locale["note"],
     limit: locale["limit"],
     status: locale["status"],
@@ -61,6 +64,7 @@ export const allCitiesTableMock = (locale) => {
     undermining_scenariuszy: locale["undermining_scenariuszy"],
     present: locale["present"],
     numbers_for_1_consent: locale["numbers_for_1_consent"],
+    wb: locale["wb"],
     wb_1: locale["wb_1"],
     wb_2: locale["wb_2"],
     quantity_invites: locale["quantity_invites"],
@@ -91,10 +95,39 @@ export const allCitiesTableMock = (locale) => {
   };
   return [
     {
+      column: messages.link,
+      value: true,
+      header: () => (
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
+          {messages.link}
+        </th>
+      ),
+      firstRow: () => <th></th>,
+      content: ({ index, currentCities, item, currentTrail, currentInstance }) =>
+        index === 0 ? (
+          <th rowSpan={`${currentCities.length}`} className="basesTableCell">
+            <div className="tableInput" style={{ textAlign: "center" }}>
+              {currentTrail && currentInstance && (
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`${currentInstance?.ApiAddress}/Campaign/Campaign/${currentTrail?.gazooCampaignId}/callResults`}
+                  style={{ color: "black", textDecoration: "auto" }}
+                >
+                  {currentTrail?.gazooCampaignId} {currentInstance?.Name}
+                </a>
+              )}
+            </div>
+          </th>
+        ) : (
+          ""
+        ),
+    },
+    {
       column: messages.lp,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
           {messages.lp}
         </th>
       ),
@@ -114,31 +147,43 @@ export const allCitiesTableMock = (locale) => {
       column: messages.time,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "85px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "85px" }}>
           {messages.time}
         </th>
       ),
       firstRow: () => <th></th>,
-      content: ({ item }) => (
-        <th className="basesTableCell">
-          <div className="tableInput" style={{ textAlign: "center" }}>
-            {item.time}
-          </div>
-        </th>
-      ),
+      content: ({ item }) => {
+        let timeColorIndex = 2;
+        const timeInteger = getFormatTimeByTime(item?.time);
+        switch (true) {
+          case timeInteger < 12:
+            timeColorIndex = 0;
+            break;
+          case timeInteger < 16:
+            timeColorIndex = 1;
+            break;
+        }
+        return (
+          <th className="basesTableCell" style={{ background: timeColors[timeColorIndex] }}>
+            <div className="tableInput" style={{ textAlign: "center" }}>
+              {item.time}
+            </div>
+          </th>
+        );
+      },
     },
     {
       column: messages.coming,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "110px" }}>
           {messages.coming}
         </th>
       ),
       firstRow: () => <th></th>,
       content: ({ item }) => (
         <th className="basesTableCell">
-          <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
+          <div className="tableInput" style={{ textAlign: "center" }}>
             {item.coming || ""}
           </div>
         </th>
@@ -148,7 +193,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.couples,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
           {messages.couples}
         </th>
       ),
@@ -165,7 +210,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.explains,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "86px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "86px" }}>
           {messages.explains}
         </th>
       ),
@@ -191,7 +236,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.project,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
           {messages.project}
         </th>
       ),
@@ -200,7 +245,7 @@ export const allCitiesTableMock = (locale) => {
         index === 0 ? (
           <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
             <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
-              {item.projekt || ""}
+              {item.project || ""}
             </div>
           </th>
         ) : (
@@ -211,7 +256,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.timezone,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "78px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "78px" }}>
           {messages.timezone}
         </th>
       ),
@@ -228,25 +273,45 @@ export const allCitiesTableMock = (locale) => {
         ),
     },
     {
+      column: messages.date,
+      value: true,
+      header: () => (
+        <th className="basesTableCell noBorder" style={{ minWidth: "120px" }}>
+          {messages.date}
+        </th>
+      ),
+      firstRow: () => <th></th>,
+      content: ({ index, currentCities, item }) =>
+        index === 0 ? (
+          <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
+            <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
+              {getFormatDate(item.date) || ""}
+            </div>
+          </th>
+        ) : (
+          ""
+        ),
+    },
+    {
       column: messages.city_lokal,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "250px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "250px" }}>
           {messages.city_lokal}
         </th>
       ),
       firstRow: () => <th></th>,
       content: ({ index, currentCities, item, citiesStatusColor }) => {
-        const itemArray = [item.region, item.city_lokal, item.adress, [item.institution, item.hall], item.date, item.population, item.city_note];
+        const itemArray = [item.region, item.city_lokal, [item.institution, item.hall], item.population, item.city_note];
         return index === 0 ? (
           <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: citiesStatusColor[item.status] }} className="basesTableCell">
             <div className="tableInput" style={{ textAlign: "center" }}>
               {item.timezone ?? ""}{" "}
-              {itemArray?.map((el) => (
-                <>
+              {(itemArray || [])?.map((el, keyIndex) => (
+                <React.Fragment key={keyIndex}>
                   {[el].flat()?.reduce((sum, acc) => (sum || "") + " " + (acc || ""), "") || ""}
                   {el ? <br /> : null}
-                </>
+                </React.Fragment>
               ))}
             </div>
           </th>
@@ -256,10 +321,30 @@ export const allCitiesTableMock = (locale) => {
       },
     },
     {
+      column: messages.address,
+      value: true,
+      header: () => (
+        <th className="basesTableCell noBorder" style={{ minWidth: "200px" }}>
+          {messages.address}
+        </th>
+      ),
+      firstRow: () => <th></th>,
+      content: ({ index, currentCities, item }) =>
+        index === 0 ? (
+          <th rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ minWidth: "78px" }}>
+            <div className="tableInput" style={{ minWidth: "50px", textAlign: "center" }}>
+              {item.adress || ""}
+            </div>
+          </th>
+        ) : (
+          ""
+        ),
+    },
+    {
       column: messages.note,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
           {messages.note}
         </th>
       ),
@@ -279,7 +364,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.limit,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px" }}>
           {messages.limit}
         </th>
       ),
@@ -297,7 +382,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.status,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "160px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "160px" }}>
           {messages.status}
         </th>
       ),
@@ -318,8 +403,10 @@ export const allCitiesTableMock = (locale) => {
                   onChange={(e) => changeCitiesStatus(setChangeStatus, e.target.value, item.id_for_base)}
                   style={{ fontWeight: 700, fontSize: "16px", color: "black", ":before": { borderBottom: "1px solid black" } }}
                 >
-                  {citiesStatus.map((item, index) => (
-                    <MenuItem value={index}>{item}</MenuItem>
+                  {(citiesStatus || [])?.map((item, index) => (
+                    <MenuItem key={index} value={index}>
+                      {item}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -333,7 +420,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.during,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "85px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "85px" }}>
           {messages.during}
         </th>
       ),
@@ -351,7 +438,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.closed_mock,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "85px", maxWidth: "85px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "85px", maxWidth: "85px" }}>
           {messages.closed_mock}
         </th>
       ),
@@ -369,7 +456,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.add_scenario,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "140px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "140px" }}>
           {messages.add_scenario}
         </th>
       ),
@@ -389,7 +476,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.scenario,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "97.5px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "97.5px" }}>
           {messages.scenario}
         </th>
       ),
@@ -409,7 +496,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.verification_dkj,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "94px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "94px" }}>
           {messages.verification_dkj}
         </th>
       ),
@@ -429,7 +516,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.undermining_scenariuszy,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "96px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "96px" }}>
           {messages.undermining_scenariuszy}
         </th>
       ),
@@ -449,7 +536,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.present,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "100.8px" }}>
           {messages.present}
         </th>
       ),
@@ -469,7 +556,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.numbers_for_1_consent,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "78.4px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "78.4px" }}>
           {messages.numbers_for_1_consent}
         </th>
       ),
@@ -489,8 +576,8 @@ export const allCitiesTableMock = (locale) => {
       column: messages.wb_1,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
-          {messages.wb_1}
+        <th className="basesTableCell noBorder" style={{ minWidth: "100.8px" }}>
+          {messages.wb}
         </th>
       ),
       firstRow: () => <th></th>,
@@ -500,23 +587,6 @@ export const allCitiesTableMock = (locale) => {
             <div className="tableInput" style={{ minWidth: "100px", textAlign: "center" }}>
               {item.wb_1 || ""}
             </div>
-          </th>
-        ) : (
-          ""
-        ),
-    },
-    {
-      column: messages.wb_2,
-      value: true,
-      header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
-          {messages.wb_2}
-        </th>
-      ),
-      firstRow: () => <th></th>,
-      content: ({ index, currentCities, item }) =>
-        index === 0 ? (
-          <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
             <div className="tableInput" style={{ minWidth: "70px", textAlign: "center" }}>
               {item.wb_2 || ""}
             </div>
@@ -525,11 +595,31 @@ export const allCitiesTableMock = (locale) => {
           ""
         ),
     },
+    // {
+    //   column: messages.wb_2,
+    //   value: true,
+    //   header: () => (
+    //     <th className="basesTableCell" style={{ minWidth: "70.8px" }}>
+    //       {messages.wb_2}
+    //     </th>
+    //   ),
+    //   firstRow: () => <th></th>,
+    //   content: ({ index, currentCities, item }) =>
+    //     index === 0 ? (
+    //       <th rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+    //         <div className="tableInput" style={{ minWidth: "70px", textAlign: "center" }}>
+    //           {item.wb_2 || ""}
+    //         </div>
+    //       </th>
+    //     ) : (
+    //       ""
+    //     ),
+    // },
     {
       column: messages.quantity_invites,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "87px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "87px" }}>
           {messages.quantity_invites}
         </th>
       ),
@@ -546,7 +636,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.consent_another_city,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "70.8px", background: "#c8ff03", color: "black" }}>
           {messages.consent_another_city}
         </th>
       ),
@@ -564,7 +654,7 @@ export const allCitiesTableMock = (locale) => {
       value: true,
       header: () => (
         <>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
+          <th colSpan="2" style={{ minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
               <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
               <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
@@ -575,7 +665,7 @@ export const allCitiesTableMock = (locale) => {
               </th>
             </tr>
           </th>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
+          <th colSpan="2" style={{ minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
               <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
               <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
@@ -586,7 +676,7 @@ export const allCitiesTableMock = (locale) => {
               </th>
             </tr>
           </th>
-          <th colSpan="2" style={{ border: "1px solid black", minWidth: "130px", padding: "10px" }}>
+          <th colSpan="2" style={{ minWidth: "130px", padding: "10px" }}>
             <tr style={{ background: "none" }}>
               <th style={{ borderRight: "1px solid black", paddingRight: "10px" }}>{messages.numbers_for_consent}</th>
               <th style={{ paddingLeft: "10px" }}>{messages.topical_quantity_invites}</th>
@@ -670,7 +760,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.vip,
       value: true,
       header: () => (
-        <th colSpan="6" style={{ border: "1px solid black" }}>
+        <th colSpan="6">
           <th colSpan="6" style={{ minWidth: "335px", borderBottom: "1px solid black", height: "75px" }}>
             {messages.vip}
           </th>
@@ -742,7 +832,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.system,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ minWidth: "100.8px" }}>
+        <th className="basesTableCell noBorder" style={{ minWidth: "100.8px" }}>
           {messages.system}
         </th>
       ),
@@ -762,7 +852,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.confirmation,
       value: true,
       header: () => (
-        <th colSpan="3" style={{ border: "1px solid black" }}>
+        <th colSpan="3">
           <th colSpan="3" style={{ borderBottom: "1px solid black", height: "75px" }}>
             {messages.confirmation}
           </th>
@@ -804,7 +894,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.sms,
       value: true,
       header: () => (
-        <th colSpan="2" style={{ border: "1px solid black" }}>
+        <th colSpan="2">
           <th colSpan="2" style={{ borderBottom: "1px solid black", height: "75px" }}>
             {messages.sms}
           </th>
@@ -843,7 +933,7 @@ export const allCitiesTableMock = (locale) => {
       column: messages.delete,
       value: true,
       header: () => (
-        <th className="basesTableCell" style={{ maxWidth: "75px" }}>
+        <th className="basesTableCell noBorder" style={{ maxWidth: "75px" }}>
           {messages.delete}
         </th>
       ),

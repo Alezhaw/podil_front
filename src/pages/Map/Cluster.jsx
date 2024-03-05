@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup, Circle, CircleMarker, Polyline, Polygon, Rectangle, SVGOverlay, useMapEvents, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
+import { LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
 import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
@@ -25,7 +25,7 @@ function Cluster({ myIcon }) {
                 maxWidth: 250,
                 className: "popup-classname",
               };
-              console.log(1, feature);
+              //console.log(1, feature);
               const data = feature.properties;
               leafletLayer.bindPopup(() => {
                 return [data.Miasto, data.Rejonizacja].join(",");

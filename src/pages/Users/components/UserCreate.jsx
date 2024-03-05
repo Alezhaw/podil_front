@@ -6,11 +6,12 @@ import { axiosRegistration } from "../../../api/user";
 import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../../store/Users/types";
 import { useAppSelector } from "../../../store/reduxHooks";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 function UserCreate({ setIsOpen, getAllUsers }) {
   const dispatch = useDispatch();
   const { user } = useAppSelector((store) => store.user);
+  const theme = useTheme();
   const [nickname, setNickname] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -127,9 +128,21 @@ function UserCreate({ setIsOpen, getAllUsers }) {
   }, [emailError, errorLogin, passwordError, passwordNoChect, checked, errorLoginLength]);
 
   return (
-    <div>
-      <div style={{ paddingTop: "30px", paddingBottom: "30px", minHeight: "75vh" }} className="container">
-        <h3>Crate User</h3>
+    <div onClick={() => setIsOpen(false)} style={{ background: "rgba(17, 17, 18, 0.95)" }} className="modalStyles">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="modalContentStyles styledScroll"
+        style={{
+          background: theme.palette.mode === "light" ? "#F3F1F2" : "#1b1b1d",
+          color: theme.palette.text.primary,
+          alignItems: "baseline",
+          position: "relative",
+          maxHeight: "80vh",
+          //width: "80vh",
+          overflow: "auto",
+        }}
+      >
+        <h3>Create User</h3>
         <hr className="hr-viss" />
         <Form className="width-form">
           <Form.Group controlId="formBasicEmailV1">

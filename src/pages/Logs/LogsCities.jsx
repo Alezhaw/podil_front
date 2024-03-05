@@ -191,6 +191,7 @@ function LogsCities() {
         itemsPerPageForInput={itemsPerPageForInput}
         setItemsPerPageForInput={setItemsPerPageForInput}
         messages={messages}
+        noZoom
       />
     </PageContainer>
   );

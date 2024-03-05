@@ -1,26 +1,41 @@
-import { Form } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
-
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Button, Typography, Divider, TextField, Box, FormControl } from "@mui/material";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { axiosLogin } from "../../api/user";
 import { reducerTypes } from "../../store/Users/types";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/reduxHooks";
+import { PageContainer } from "../../components/Page.styled";
+import { customAlert } from "../../components/Alert/AlertFunction";
 
 function UserInput() {
   const dispatch = useDispatch();
-  const { user } = useAppSelector((store) => store.user);
+  const { user, locale } = useAppSelector((store) => store.user);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [errorLogin, setErrorLogin] = useState("");
   const [emailDirty, setEmailDirty] = useState(false);
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailError, setEmailError] = useState("Login is empty");
-  const [passwordError, setPasswordError] = useState("Password is empty");
   const [formValid, setFormValid] = useState(false);
   const navigate = useNavigate();
   const { logout } = useParams();
+
+  const messages = useMemo(() => {
+    return {
+      title: locale["login_title"],
+      username: locale["login_username"],
+      password: locale["login_password"],
+      signIn: locale["login_sign_in"],
+      emptyLog: locale["login_empty_log"],
+      minCharacters: locale["login_min_characters"],
+      incorrectPass: locale["login_password_incorrect"],
+      emptyPass: locale["login_password_empty"],
+    };
+  }, [locale]);
+
+  const [emailError, setEmailError] = useState(messages?.emptyLog);
+  const [passwordError, setPasswordError] = useState("emptyPass");
 
   const blurHandler = (e) => {
     switch (e.currentTarget.name) {
@@ -36,7 +51,7 @@ function UserInput() {
 
   function cheakLengthLogin(e) {
     if (e.currentTarget.value.length < 5) {
-      setErrorLogin("Минимум 5 символов");
+      setErrorLogin(messages?.minCharacters);
     } else {
       setErrorLogin("");
     }
@@ -54,9 +69,9 @@ function UserInput() {
   function passwordUser(e) {
     setPassword(e.currentTarget.value);
     if (e.target.value.length < 4) {
-      setPasswordError("Incorrect password");
+      setPasswordError("incorrectPass");
       if (!e.target.value) {
-        setPasswordError("Password is empty");
+        setPasswordError("emptyPass");
       }
     } else {
       setPasswordError("");
@@ -76,12 +91,17 @@ function UserInput() {
   }
 
   async function getUsers(e) {
-    offReserch(e);
-    dispatch({
-      type: reducerTypes.GET_USER,
-      payload: await axiosLogin(login, password),
-    });
-    navigate("/podil");
+    const result = await axiosLogin(login, password);
+    if (!result?.message) {
+      offReserch(e);
+      dispatch({
+        type: reducerTypes.GET_USER,
+        payload: await axiosLogin(login, password),
+      });
+      navigate("/podil");
+    } else {
+      customAlert({ message: result?.message });
+    }
   }
 
   useEffect(() => {
@@ -93,14 +113,16 @@ function UserInput() {
   }, [navigate, user]);
 
   return (
-    <div className="bg-img">
-      <div style={{ paddingBottom: "30px", paddingTop: "30px", minHeight: "100vh" }} className="container">
-        <h3 className="header-inner_title login-inner_title">Login</h3>
-        <hr className="hr-viss" />
-        <Form className="width-form">
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label className="color-input-name">Username:</Form.Label>
-            <Form.Control
+    <PageContainer>
+      <div style={{ padding: "1rem 10rem" }}>
+        <Typography variant="h3" style={{ paddingBottom: "1rem" }}>
+          {messages?.title}
+        </Typography>
+        <Divider />
+        <FormControl style={{ maxWidth: "30vw", display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <Box style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <Typography>{messages?.username}:</Typography>
+            <TextField
               onBlur={(e) => blurHandler(e)}
               name="login"
               value={login}
@@ -111,25 +133,20 @@ function UserInput() {
               type="email"
               placeholder=""
             />
-            {emailDirty && emailError && <div style={{ color: "red" }}>{emailError}</div>}
-            {errorLogin ? <div style={{ color: "red" }}>{errorLogin}</div> : ""}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label className="color-input-name">Password:</Form.Label>
-            <Form.Control onBlur={(e) => blurHandler(e)} name="password" value={password} onChange={passwordUser} type="password" placeholder="" />
-            {passwordDirty && passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Link className="link-hover-effects" to="/registr">
-              Registration
-            </Link>
-          </Form.Group>
-          <button disabled={!formValid} onClick={(e) => getUsers(e)} className="btn-class-v2">
-            Sign in
-          </button>
-        </Form>
+            {emailDirty && emailError && <div style={{ color: "red" }}>{messages?.emptyLog}</div>}
+            {errorLogin ? <div style={{ color: "red" }}>{messages?.minCharacters}</div> : ""}
+          </Box>
+          <Box style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <Typography>{messages?.password}:</Typography>
+            <TextField onBlur={(e) => blurHandler(e)} name="password" value={password} onChange={passwordUser} type="password" placeholder="" />
+            {passwordDirty && passwordError && <div style={{ color: "red" }}>{messages[passwordError]}</div>}
+          </Box>
+          <Button variant="outlined" disabled={!formValid} onClick={(e) => getUsers(e)}>
+            {messages?.signIn}
+          </Button>
+        </FormControl>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

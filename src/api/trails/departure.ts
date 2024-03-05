@@ -22,13 +22,27 @@ export const getById = async ({ ids, country = "" }: { ids: number[]; country: s
   }
 };
 
-export const getForEditing = async ({ sort = true, pageSize = 5, page = 0, country = "" }: { sort: boolean; pageSize: number; page: number; country: string }) => {
+export const getForEditing = async ({
+  sort = true,
+  pageSize = 5,
+  page = 0,
+  country = "",
+  dateTo,
+  dateFrom,
+}: {
+  sort: boolean;
+  pageSize: number;
+  page: number;
+  country: string;
+  dateTo: string;
+  dateFrom: string;
+}) => {
   try {
     if (controllerGetForEditing !== null) {
       controllerGetForEditing.abort();
     }
     controllerGetForEditing = new AbortController();
-    const { data } = await axios.post("api/departure/getForEditing", { sort, pageSize, page, country }, { signal: controllerGetForEditing.signal });
+    const { data } = await axios.post("api/departure/getForEditing", { sort, dateTo, dateFrom, pageSize, page, country }, { signal: controllerGetForEditing.signal });
     return data;
   } catch (e) {
     if (axios.isCancel(e)) {

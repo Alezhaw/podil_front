@@ -1,20 +1,25 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { Autocomplete, TextField, Button } from "@mui/material";
-import { useAppSelector } from "../../../store/reduxHooks";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+import CloseIcon from "@mui/icons-material/Close";
+import { Autocomplete, TextField, Button, Checkbox, FormControlLabel } from "@mui/material";
+import { useAppSelector } from "../../../store/reduxHooks";
 import { reducerTrailsTypes } from "../../../store/Trails/trailsTypes";
 import Trail from "../../../api/trails/trails";
 import { TrailsDictionariesEditTable } from "./trailsDictionariesEdit.styled";
 import { ContainerForEditMenu } from "./trailsDictionariesEdit.styled";
+import { customAlert } from "../../../components/Alert/AlertFunction";
+import TrailsSwitchDictionary from "./components/TrailsSwitchDictionary";
+import CitiesWithRegions from "../../../api/trails/citiesWithRegion";
+import { getValueById } from "../../../components/functions";
 
 function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
   const dispatch = useDispatch();
-  const { array, key, title, update, remove, create } = item;
+  const [search, setSearch] = useState("");
+  const { array, keyName, key, title, update, remove, create } = item;
   const { locale } = useAppSelector((store) => store.user);
   const { allDictionary, allCitiesWithRegions } = useAppSelector((store) => store.trails);
-  const [dictionaryObject, setDictionaryObject] = useState({});
-  const [newDictionaryObject, setNewDictionaryObject] = useState({});
+  const [dictionaryObject, setDictionaryObject] = useState({ relevance_status: true });
+  const [newDictionaryObject, setNewDictionaryObject] = useState({ relevance_status: true });
 
   const messages = useMemo(() => {
     return {
@@ -27,6 +32,9 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
       trails_dictionary_edit_element: locale["trails_dictionary_edit_element"],
       trails_presentation_hours: locale["trails_presentation_hours"],
       trails_rental_hours: locale["trails_rental_hours"],
+      alternative: locale["trails_alternative"],
+      timezone: locale["timezone"],
+      city_search: locale["trails_city"],
     };
   }, [locale]);
 
@@ -40,12 +48,14 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
     }
   }
 
-  function getValueById(id, key, array) {
-    if (!id) {
-      return "";
+  async function getCitiesByName({ country, search = "" }) {
+    const allCitiesWithRegions = await CitiesWithRegions.getByName({ country, search });
+    if (allCitiesWithRegions) {
+      dispatch({
+        type: reducerTrailsTypes.GET_ALL_CITIES_WITH_REGIONS,
+        payload: allCitiesWithRegions,
+      });
     }
-    const item = array?.filter((item) => item.id === Number(id))[0];
-    return item ? item[key] : "";
   }
 
   useEffect(() => {
@@ -53,86 +63,89 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
     // eslint-disable-next-line
   }, [country]);
 
+  useEffect(() => {
+    getCitiesByName({ country, search });
+    // eslint-disable-next-line
+  }, [search]);
+
   return (
     <TrailsDictionariesEditTable>
-      <ContainerForEditMenu onClick={(e) => e.stopPropagation()}>
-        <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: "-50px", right: "0px" }}>
-          <CloseIcon style={{ cursor: "pointer", marginBottom: "1rem" }} onClick={() => setIsOpen(false)}></CloseIcon>
+      <ContainerForEditMenu onClick={(e) => e.stopPropagation()} className="scroll">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(null);
+          }}
+          style={{ cursor: "pointer", position: "absolute", top: "1rem", right: "1rem" }}
+        >
+          <CloseIcon />
         </div>
 
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          disableClearable
-          options={array?.map((el) => ({ ...el, label: el[key] }))}
-          sx={{ width: 300 }}
-          onChange={(e, values) => setDictionaryObject(values)}
-          renderInput={(params) => <TextField {...params} label={messages.trails_dictionary_element} variant="standard" />}
-          value={dictionaryObject?.id ? array?.filter((el) => el.id === dictionaryObject?.id)[0][key] : ""}
-        />
-        {dictionaryObject.id ? (
-          key === "presentation_hour" ? (
-            <>
-              <TextField
-                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [e.target.value, prev[key] ? prev[key][1] : null, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-                type="text"
-                placeholder=""
-                autoComplete="off"
-                required
-                value={[dictionaryObject[key]].flat()[0] || ""}
-                label={"1 " + messages.trails_presentation_hours}
-              />
-              <TextField
-                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-                type="text"
-                placeholder=""
-                autoComplete="off"
-                required
-                value={[dictionaryObject[key]].flat()[1] || ""}
-                label={"2 " + messages.trails_presentation_hours}
-              />
-              <TextField
-                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
-                type="text"
-                placeholder=""
-                autoComplete="off"
-                required
-                value={[dictionaryObject[key]].flat()[2] || ""}
-                label={"3 " + messages.trails_presentation_hours}
-              />
-
-              <TextField
-                onChange={(e) => setDictionaryObject((prev) => ({ ...prev, rental_hours: e.target.value }))}
-                type="text"
-                placeholder=""
-                autoComplete="off"
-                required
-                value={dictionaryObject.rental_hours || ""}
-                label={messages.trails_rental_hours}
-              />
-            </>
-          ) : (
-            <TextField
-              onChange={(e) => setDictionaryObject((prev) => ({ ...prev, [key]: e.target.value }))}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              value={dictionaryObject[key] || ""}
-              label={messages.trails_dictionary_edit_element}
+        {keyName === "citiesWithRegions" ? (
+          <>
+            <Autocomplete
+              style={{ margin: "8px" }}
+              id="movie-customized-option-demo"
+              // disabled={!newTrail?.regionId}
+              disablePortal
+              disableClearable
+              options={array?.map((el) => ({ ...el, label: `${el.city_name} (${allDictionary?.regions?.find((region) => region.id === el?.region_id)?.region})` }))}
+              sx={{ width: 300 }}
+              onChange={(e, values) => {
+                setDictionaryObject(values);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onChange={(e) => {
+                    setDictionaryObject({ relevance_status: true });
+                    setSearch(e.target.value);
+                  }}
+                  label="City"
+                  variant="standard"
+                />
+              )}
+              value={getValueById(dictionaryObject.id, "city_name", array)}
+              componentsProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: "flip",
+                      enabled: false,
+                    },
+                    {
+                      name: "preventOverflow",
+                      enabled: false,
+                    },
+                  ],
+                },
+              }}
             />
-          )
-        ) : null}
+          </>
+        ) : (
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            disableClearable
+            options={array?.map((el) => ({ ...el, label: `${el[key]} ${el?.alternative ? messages?.alternative : ""}` }))}
+            sx={{ width: 300 }}
+            onChange={(e, values) => setDictionaryObject(values)}
+            renderInput={(params) => <TextField {...params} label={messages.trails_dictionary_element} variant="standard" />}
+            value={dictionaryObject?.id ? array?.find((el) => el.id === dictionaryObject?.id)[key] : ""}
+          />
+        )}
+        {dictionaryObject.id ? <TrailsSwitchDictionary keyName={keyName} keyProperty={key} dictionaryObject={dictionaryObject} setDictionaryObject={setDictionaryObject} messages={messages} /> : null}
 
         <Button
           disabled={!dictionaryObject?.id}
           onClick={async () => {
             const result = await update(dictionaryObject, country);
             if (!result?.message) {
+              await getCitiesByName({ country, search });
               await getAllDictionary({ country });
-              alert("Sucess");
+              customAlert({ message: "Success", severity: "success" });
             } else {
-              alert(result.message);
+              customAlert({ message: result.message });
             }
           }}
         >
@@ -145,64 +158,17 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
             if (!result?.message) {
               setDictionaryObject({});
               await getAllDictionary({ country });
-              alert("Sucess");
+              await getCitiesByName({ country, search });
+              customAlert({ message: "Success", severity: "success" });
             } else {
-              alert(result.message);
+              customAlert({ message: result.message });
             }
           }}
         >
           {messages.trails_dictionary_delete}
         </Button>
 
-        {key === "presentation_hour" ? (
-          <>
-            <TextField
-              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [e.target.value, prev[key] ? prev[key][1] : null, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              variant="filled"
-              label={"1 " + messages.trails_presentation_hours}
-            />
-            <TextField
-              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, e.target.value, prev[key] ? prev[key][2] : null].filter((el) => !!el) }))}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              variant="filled"
-              label={"2 " + messages.trails_presentation_hours}
-            />
-            <TextField
-              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: [prev[key] ? prev[key][0] : null, prev[key] ? prev[key][1] : null, e.target.value].filter((el) => !!el) }))}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              variant="filled"
-              label={"3 " + messages.trails_presentation_hours}
-            />
-
-            <TextField
-              onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, rental_hours: e.target.value, relevance_status: true }))}
-              type="text"
-              placeholder=""
-              autoComplete="off"
-              required
-              variant="filled"
-              label={messages.trails_rental_hours}
-            />
-          </>
-        ) : (
-          <TextField
-            onChange={(e) => setNewDictionaryObject((prev) => ({ ...prev, [key]: e.target.value, relevance_status: true }))}
-            placeholder=""
-            autoComplete="off"
-            required
-            label={messages.trails_dictionary_new_element}
-          />
-        )}
+        <TrailsSwitchDictionary keyName={keyName} keyProperty={key} dictionaryObject={newDictionaryObject} setDictionaryObject={setNewDictionaryObject} messages={messages} />
 
         <Button
           size="medium"
@@ -211,10 +177,11 @@ function TrailsDictionatiesEdit({ country, setIsOpen, item }) {
             const result = await create(newDictionaryObject, country);
             if (!result?.message) {
               setNewDictionaryObject({});
+              await getCitiesByName({ country, search });
               await getAllDictionary({ country });
-              alert("Sucess");
+              customAlert({ message: "Success", severity: "success" });
             } else {
-              alert(result.message);
+              customAlert({ message: result.message });
             }
 
             // if (result) {

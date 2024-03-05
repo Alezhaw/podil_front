@@ -1,5 +1,6 @@
 import { MenuItem, FormControl, Select, Container, Button, Checkbox } from "@mui/material";
 import "../../../components/forPages/input.css";
+import { timeColors, getFormatTimeByTime, getFormatDate } from "../../../utils/utils";
 
 function CityTableID({ setCity, currentCities, deleteTime, country, messages }) {
   function formatDate(date) {
@@ -70,8 +71,8 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
             <th className="basesTableCell">{messages.undermining_scenariuszy}</th>
             <th className="basesTableCell">{messages.present}</th>
             <th className="basesTableCell">{messages.numbers_for_1_consent}</th>
-            <th className="basesTableCell">{messages.wb_1}</th>
-            <th className="basesTableCell">{messages.wb_2}</th>
+            <th className="basesTableCell">{messages.wb}</th>
+            {/* <th className="basesTableCell">{messages.wb_2}</th> */}
             <th className="basesTableCell">{messages.quantity_invites}</th>
             <th className="basesTableCell" style={{ background: "#c8ff03", color: "black" }}>
               {messages.consent_another_city}
@@ -196,441 +197,464 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
           </tr>
         </thead>
         <tbody style={{ background: "white" }}>
-          {currentCities?.map((item, index) => (
-            <tr key={item.id === "create" ? `${item.id_for_base + item.time + index}` : item.id}>
-              <td>
-                {" "}
-                <Button
-                  style={{ background: "lightgreen", color: "black" }}
-                  onClick={async () => {
-                    let checkConfirm = window.confirm("Are you sure?");
-                    if (checkConfirm) {
-                      await deleteTime(Number(item.id), country);
-                    }
-                  }}
-                >
-                  {messages.delete}
-                </Button>
-              </td>
-              {index === 0 ? (
-                country === "PL" ? (
-                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+          {currentCities?.map((item, index) => {
+            let timeColorIndex = 2;
+            const timeInteger = getFormatTimeByTime(item?.time);
+            switch (true) {
+              case timeInteger < 12:
+                timeColorIndex = 0;
+                break;
+              case timeInteger < 16:
+                timeColorIndex = 1;
+                break;
+            }
+
+            return (
+              <tr key={item.id === "create" ? `${item.id_for_base + item.time + index}` : item.id}>
+                <td>
+                  {" "}
+                  <Button
+                    style={{ background: "lightgreen", color: "black" }}
+                    onClick={async () => {
+                      let checkConfirm = window.confirm("Are you sure?");
+                      if (checkConfirm) {
+                        await deleteTime(Number(item.id), country);
+                      }
+                    }}
+                  >
+                    {messages.delete}
+                  </Button>
+                </td>
+                {index === 0 ? (
+                  country === "PL" ? (
+                    <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                      <textarea
+                        onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p_for_pl: e.target.value })))}
+                        className="tableInput textArea styledScroll"
+                        type="text"
+                        style={{ width: "100px", minHeight: "100px" }}
+                        autoComplete="off"
+                        value={item.l_p_for_pl || ""}
+                      />
+                    </td>
+                  ) : (
+                    <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                      <input
+                        onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p: e.target.value })))}
+                        className="tableInput"
+                        style={{ width: "50px" }}
+                        type="number"
+                        autoComplete="off"
+                        value={item.l_p || ""}
+                      />
+                    </td>
+                  )
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell" style={{ background: timeColors[timeColorIndex] }}>
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, time: e.target.value.trim() || " " }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.time}
+                  />
+                </td>
+                <td className="basesTableCell">
+                  <textarea disabled className="tableInput textArea styledScroll" type="text" style={{ width: "100px" }} autoComplete="off" value={item.coming || ""} />
+                </td>
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, couples: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.couples || ""}
+                  />
+                </td>
+                {index === 0 ? (
+                  country === "PL" ? (
+                    <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
+                      <textarea
+                        onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains_for_pl: !!e.target.value })))}
+                        className="tableInput textArea styledScroll"
+                        style={{ width: "100px", minHeight: "50px" }}
+                        type="text"
+                        autoComplete="off"
+                        value={item.explains_for_pl || ""}
+                      />
+                    </td>
+                  ) : (
+                    <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
+                      <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains: !!e.target.checked })))} checked={!!item.explains} />
+                    </td>
+                  )
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
                     <textarea
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p_for_pl: e.target.value })))}
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, projekt: e.target.value })))}
                       className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px" }}
                       type="text"
-                      style={{ width: "100px", minHeight: "100px" }}
                       autoComplete="off"
-                      value={item.l_p_for_pl || ""}
+                      value={item.project || ""}
                     />
                   </td>
                 ) : (
+                  ""
+                )}
+                {index === 0 ? (
                   <td rowSpan={`${currentCities.length}`} className="basesTableCell">
                     <input
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, l_p: e.target.value })))}
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, timezone: e.target.value })))}
                       className="tableInput"
                       style={{ width: "50px" }}
                       type="number"
                       autoComplete="off"
-                      value={item.l_p || ""}
-                    />
-                  </td>
-                )
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, time: e.target.value.trim() || " " }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.time}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, coming: e.target.value }))}
-                  className="tableInput"
-                  style={{ minWidth: "0px", width: "100px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.coming || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, couples: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.couples || ""}
-                />
-              </td>
-              {index === 0 ? (
-                country === "PL" ? (
-                  <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
-                    <textarea
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains_for_pl: !!e.target.value })))}
-                      className="tableInput textArea styledScroll"
-                      style={{ width: "100px", minHeight: "50px" }}
-                      type="text"
-                      autoComplete="off"
-                      value={item.explains_for_pl || ""}
+                      value={item.timezone || 0}
                     />
                   </td>
                 ) : (
-                  <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "#f2ffac", color: "black" }}>
-                    <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, explains: !!e.target.checked })))} checked={!!item.explains} />
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, region: e.target.value })))}
+                      className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.region || ""}
+                    />
                   </td>
-                )
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell" style={{ background: "lightgreen", color: "black" }}>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_lokal: e.target.value })))}
+                      className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.city_lokal || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, adress: e.target.value })))}
+                      className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.adress || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, institution: e.target.value })))}
+                      className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.institution || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, hall: e.target.value })))}
+                      className="tableInput textArea styledScroll"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.hall || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, date: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="date"
+                      autoComplete="off"
+                      value={item.date || undefined}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, population: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={item.population || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, calling_scheme: e.target.value })))}
+                      className="tableInput styledScroll textArea"
+                      style={{ width: "120px", height: "125px", padding: "10px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.calling_scheme || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <textarea
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_note: e.target.value })))}
+                      className="tableInput styledScroll textArea"
+                      style={{ width: "120px", height: "125px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.city_note || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, projekt: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "50px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.projekt || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, timezone: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "50px" }}
-                    type="number"
-                    autoComplete="off"
-                    value={item.timezone || 0}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, region: e.target.value })))}
-                    className="tableInput textArea styledScroll"
-                    style={{ width: "120px", height: "125px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.region || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_lokal: e.target.value })))}
-                    className="tableInput textArea styledScroll"
-                    style={{ width: "120px", height: "125px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.city_lokal || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, adress: e.target.value })))}
-                    className="tableInput textArea styledScroll"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.adress || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, institution: e.target.value })))}
-                    className="tableInput textArea styledScroll"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.institution || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, hall: e.target.value })))}
-                    className="tableInput textArea styledScroll"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.hall || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, date: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="date"
-                    autoComplete="off"
-                    value={item.date || undefined}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, population: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="number"
-                    autoComplete="off"
-                    value={item.population || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, calling_scheme: e.target.value })))}
-                    className="tableInput styledScroll textArea"
-                    style={{ width: "120px", height: "125px", padding: "10px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.calling_scheme || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <textarea
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, city_note: e.target.value })))}
-                    className="tableInput styledScroll textArea"
-                    style={{ width: "120px", height: "125px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.city_note || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, limit: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.limit || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell black" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
-                  <FormControl variant="standard" sx={{ m: 1, minWidth: 120, display: "flex", flexDirection: "column" }}>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={item.status}
-                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, status: e.target.value })))}
-                      style={{ fontWeight: 700, color: "black" }}
-                    >
-                      {messages?.citiesStatus?.map((item, index) => (
-                        <MenuItem key={index} value={index}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, during: !!e.target.checked })))} checked={!!item.during} />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, closed: !!e.target.checked })))} checked={!!item.closed} />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, add_scenario: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "auto" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.add_scenario || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, scenario: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "auto" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.scenario || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, verification_dkj: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "auto" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.verification_dkj || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, undermining_scenariuszyy: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "auto" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.undermining_scenariuszyy || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, present: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "100px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.present || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, numbers_for_1_consent: e.target.value })))}
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, limit: e.target.value }))}
                     className="tableInput"
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.numbers_for_1_consent).toFixed() || ""}
+                    value={item.limit || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell black" style={{ minWidth: "160px", fontWeight: 700, fontSize: "16px" }}>
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120, display: "flex", flexDirection: "column" }}>
+                      <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={item.status}
+                        onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, status: e.target.value })))}
+                        style={{ fontWeight: 700, color: "black" }}
+                      >
+                        {messages?.citiesStatus?.map((item, index) => (
+                          <MenuItem key={index} value={index}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, during: !!e.target.checked })))} checked={!!item.during} />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <Checkbox className="checkboxOnWhiteBackground" onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, closed: !!e.target.checked })))} checked={!!item.closed} />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, add_scenario: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "auto" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.add_scenario || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, scenario: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "auto" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.scenario || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, verification_dkj: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "auto" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.verification_dkj || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, undermining_scenariuszyy: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "auto" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.undermining_scenariuszyy || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px", background: "lightgreen", color: "black" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, present: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.present || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, numbers_for_1_consent: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "50px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={Number(item.numbers_for_1_consent).toFixed() || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_1: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px", borderBottom: "1px solid gray" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.wb_1 || ""}
+                    />
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_2: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "70px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={item.wb_2 || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_1: e.target.value })))}
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, quantity_invites: e.target.value }))}
                     className="tableInput"
-                    style={{ width: "100px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.wb_1 || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, wb_2: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "70px" }}
+                    style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={item.wb_2 || ""}
+                    value={item.quantity_invites || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, quantity_invites: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.quantity_invites || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, consent_another_city: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.consent_another_city || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, consent_another_city: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="number"
+                    autoComplete="off"
+                    value={item.consent_another_city || ""}
+                  />
+                </td>
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({
+                            ...prev,
+                            days_numbers_for_consent: [
+                              e.target.value,
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                            ].filter((el) => !!el),
+                          }))
+                        )
+                      }
+                      className="tableInput"
+                      style={{ width: "50px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[0] || 0 : 0).toFixed() || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
                   <input
                     onChange={(e) =>
                       setCity?.map((item) =>
                         item((prev) => ({
                           ...prev,
-                          days_numbers_for_consent: [
+                          days_topical_quantity_invites: [
                             e.target.value,
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
                           ].filter((el) => !!el),
                         }))
                       )
@@ -639,44 +663,44 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[0] || 0 : 0).toFixed() || ""}
+                    value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[0] || 0 : 0).toFixed() || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) =>
-                    setCity?.map((item) =>
-                      item((prev) => ({
-                        ...prev,
-                        days_topical_quantity_invites: [
-                          e.target.value,
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
-                        ].filter((el) => !!el),
-                      }))
-                    )
-                  }
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[0] || 0 : 0).toFixed() || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({
+                            ...prev,
+                            days_numbers_for_consent: [
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
+                              e.target.value,
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                            ].filter((el) => !!el),
+                          }))
+                        )
+                      }
+                      className="tableInput"
+                      style={{ width: "50px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[1] || 0 : 0).toFixed() || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
                   <input
                     onChange={(e) =>
                       setCity?.map((item) =>
                         item((prev) => ({
                           ...prev,
-                          days_numbers_for_consent: [
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
+                          days_topical_quantity_invites: [
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
                             e.target.value,
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[2] : null,
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
                           ].filter((el) => !!el),
                         }))
                       )
@@ -685,43 +709,43 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[1] || 0 : 0).toFixed() || ""}
+                    value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[1] || 0 : 0).toFixed() || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) =>
-                    setCity?.map((item) =>
-                      item((prev) => ({
-                        ...prev,
-                        days_topical_quantity_invites: [
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
-                          e.target.value,
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[2] : null,
-                        ].filter((el) => !!el),
-                      }))
-                    )
-                  }
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[1] || 0 : 0).toFixed() || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) =>
+                        setCity?.map((item) =>
+                          item((prev) => ({
+                            ...prev,
+                            days_numbers_for_consent: [
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
+                              prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
+                              e.target.value,
+                            ].filter((el) => !!el),
+                          }))
+                        )
+                      }
+                      className="tableInput"
+                      style={{ width: "50px" }}
+                      type="number"
+                      autoComplete="off"
+                      value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[2] || 0 : 0).toFixed() || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
                   <input
                     onChange={(e) =>
                       setCity?.map((item) =>
                         item((prev) => ({
                           ...prev,
-                          days_numbers_for_consent: [
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[0] : null,
-                            prev.days_numbers_for_consent ? prev.days_numbers_for_consent[1] : null,
+                          days_topical_quantity_invites: [
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
+                            prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
                             e.target.value,
                           ].filter((el) => !!el),
                         }))
@@ -731,170 +755,147 @@ function CityTableID({ setCity, currentCities, deleteTime, country, messages }) 
                     style={{ width: "50px" }}
                     type="number"
                     autoComplete="off"
-                    value={Number(item.days_numbers_for_consent ? item.days_numbers_for_consent[2] || 0 : 0).toFixed() || ""}
+                    value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[2] || 0 : 0).toFixed() || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) =>
-                    setCity?.map((item) =>
-                      item((prev) => ({
-                        ...prev,
-                        days_topical_quantity_invites: [
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[0] : null,
-                          prev.days_topical_quantity_invites ? prev.days_topical_quantity_invites[1] : null,
-                          e.target.value,
-                        ].filter((el) => !!el),
-                      }))
-                    )
-                  }
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={Number(item.days_topical_quantity_invites ? item.days_topical_quantity_invites[2] || 0 : 0).toFixed() || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_id: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "100px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.vip_id || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
-                  <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_format: e.target.value })))}
-                    className="tableInput"
-                    style={{ width: "100px" }}
-                    type="text"
-                    autoComplete="off"
-                    value={item.vip_format || ""}
-                  />
-                </td>
-              ) : (
-                ""
-              )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_id: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.vip_id || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, vip_format: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.vip_format || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
 
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_limit: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.vip_limit || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_coming: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.vip_coming || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_total_steam: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.vip_total_steam || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_percent_coming: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="text"
-                  autoComplete="off"
-                  value={item.vip_percent_coming || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                <td className="basesTableCell">
                   <input
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, system: e.target.value })))}
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_limit: e.target.value }))}
                     className="tableInput"
-                    style={{ width: "100px" }}
+                    style={{ width: "50px" }}
                     type="text"
                     autoComplete="off"
-                    value={item.system || ""}
+                    value={item.vip_limit || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, consent_results_confirmation: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.consent_results_confirmation || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, refusal_results_confirmation: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.refusal_results_confirmation || ""}
-                />
-              </td>
-              <td className="basesTableCell">
-                <input
-                  onChange={(e) => setCity[index]((prev) => ({ ...prev, dots_results_confirmation: e.target.value }))}
-                  className="tableInput"
-                  style={{ width: "50px" }}
-                  type="number"
-                  autoComplete="off"
-                  value={item.dots_results_confirmation || ""}
-                />
-              </td>
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <Checkbox
-                    className="checkboxOnWhiteBackground"
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_consent: !!e.target.checked })))}
-                    checked={!!item.sms_consent}
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_coming: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.vip_coming || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-              {index === 0 ? (
-                <td rowSpan={`${currentCities.length}`} className="basesTableCell">
-                  <Checkbox
-                    className="checkboxOnWhiteBackground"
-                    onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_confirmation: !!e.target.checked })))}
-                    checked={!!item.sms_confirmation}
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_total_steam: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.vip_total_steam || ""}
                   />
                 </td>
-              ) : (
-                ""
-              )}
-            </tr>
-          ))}
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, vip_percent_coming: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="text"
+                    autoComplete="off"
+                    value={item.vip_percent_coming || ""}
+                  />
+                </td>
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} style={{ maxWidth: "250px", padding: "0px" }} className="basesTableCell">
+                    <input
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, system: e.target.value })))}
+                      className="tableInput"
+                      style={{ width: "100px" }}
+                      type="text"
+                      autoComplete="off"
+                      value={item.system || ""}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, consent_results_confirmation: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="number"
+                    autoComplete="off"
+                    value={item.consent_results_confirmation || ""}
+                  />
+                </td>
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, refusal_results_confirmation: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="number"
+                    autoComplete="off"
+                    value={item.refusal_results_confirmation || ""}
+                  />
+                </td>
+                <td className="basesTableCell">
+                  <input
+                    onChange={(e) => setCity[index]((prev) => ({ ...prev, dots_results_confirmation: e.target.value }))}
+                    className="tableInput"
+                    style={{ width: "50px" }}
+                    type="number"
+                    autoComplete="off"
+                    value={item.dots_results_confirmation || ""}
+                  />
+                </td>
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <Checkbox
+                      className="checkboxOnWhiteBackground"
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_consent: !!e.target.checked })))}
+                      checked={!!item.sms_consent}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+                {index === 0 ? (
+                  <td rowSpan={`${currentCities.length}`} className="basesTableCell">
+                    <Checkbox
+                      className="checkboxOnWhiteBackground"
+                      onChange={(e) => setCity?.map((item) => item((prev) => ({ ...prev, sms_confirmation: !!e.target.checked })))}
+                      checked={!!item.sms_confirmation}
+                    />
+                  </td>
+                ) : (
+                  ""
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </Container>

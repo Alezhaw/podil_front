@@ -15,10 +15,14 @@ export const axiosRegistration = async (email: string, password: string, nicknam
 };
 
 export const axiosLogin = async (email: string, password: string) => {
-  const { data } = await axios.post("api/user/login", { email, password });
-  localStorage.setItem("token", data.token);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
-  return jwt_decode(data.token);
+  try {
+    const { data } = await axios.post("api/user/login", { email, password });
+    localStorage.setItem("token", data.token);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+    return jwt_decode(data.token);
+  } catch (error: any) {
+    return error?.response?.data;
+  }
 };
 
 export const check = async () => {

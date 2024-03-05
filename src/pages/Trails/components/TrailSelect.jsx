@@ -1,8 +1,8 @@
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
 
-function TrailSelect({ forPlanningPerson, valueKey, trail, setTrail, array, arrayKey, className, label }) {
+function TrailSelect({ forPlanningPerson, valueKey, trail, setTrail, array, arrayKey, className, label, formStyle }) {
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} style={formStyle}>
       {label ? <InputLabel>{label}</InputLabel> : null}
       <Select
         className={className}

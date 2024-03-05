@@ -6,6 +6,19 @@ import { IBase } from "../../interfaces/base";
 import { ILogsCity } from "../../interfaces/logsCity";
 import { ILogsBase } from "../../interfaces/logsBase";
 import { ISpeakerTemplates } from "../../interfaces/speakerTemplates";
+import { IList } from "../../interfaces/lists/list";
+import { IInstance } from "../../interfaces/blazor/instance";
+import { IServer } from "../../interfaces/blazor/server";
+import { ITrails } from "../../interfaces/trails/trails";
+import { IDeparture } from "../../interfaces/trails/departure";
+
+function getAlertValue(state: IUsersReducer, payload: any) {
+  if (payload.message) {
+    return [...state.alert, { message: payload.message, id: new Date().getTime(), severity: payload?.severity }];
+  } else {
+    return state.alert.filter((el) => el.id !== payload.id);
+  }
+}
 
 export interface IUsersReducer {
   user: IUser | {};
@@ -19,7 +32,13 @@ export interface IUsersReducer {
   selectedLang: string;
   country: string;
   locale: { [key: string]: string };
+  alert: { id: number; message: string }[];
   speakerTemplates: ISpeakerTemplates[] | [];
+  lists: IList[] | [];
+  servers: IServer[] | [];
+  instances: IInstance[] | [];
+  trailsForCampaign: ITrails[] | [];
+  departure: IDeparture[] | [];
 }
 
 export const INITIAL: IUsersReducer = {
@@ -34,7 +53,13 @@ export const INITIAL: IUsersReducer = {
   selectedLang: localStorage.getItem("selected-lang") || "EN",
   country: localStorage.getItem("country") || "PL",
   locale: {},
+  alert: [],
   speakerTemplates: [],
+  lists: [],
+  servers: [],
+  instances: [],
+  trailsForCampaign: [],
+  departure: [],
 };
 
 export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
@@ -57,8 +82,20 @@ export const UserReducer = (state = INITIAL, { type, payload }: IAction) => {
       return { ...state, country: payload };
     case reducerTypes.GET_SELECTED_LOCALE:
       return { ...state, locale: payload };
+    case reducerTypes.GET_ALERT:
+      return { ...state, alert: getAlertValue(state, payload) };
     case reducerTypes.GET_SPEAKER_TEMPLATES:
       return { ...state, speakerTemplates: payload };
+    case reducerTypes.GET_LISTS:
+      return { ...state, lists: payload };
+    case reducerTypes.GET_SERVER:
+      return { ...state, servers: payload };
+    case reducerTypes.GET_INSTANCE:
+      return { ...state, instances: payload };
+    case reducerTypes.GET_TRAILS_FOR_CAMPAIGN:
+      return { ...state, trailsForCampaign: payload };
+    case reducerTypes.GET_DEPARTURE:
+      return { ...state, departure: payload };
     default:
       return state;
   }

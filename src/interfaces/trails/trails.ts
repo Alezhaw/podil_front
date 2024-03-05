@@ -12,13 +12,16 @@ export interface ITrails {
   form_id: number;
   reservation_status_id: number;
   alternative: string;
+  landmarks: string;
   contract_status_id: number;
+  contract_comment: string;
   comment: string;
   sent_to_podil: boolean;
   sent_to_bases: boolean;
   sent_to_speaker: boolean;
   sent_to_scenario: boolean;
   autozonning: string;
+  regionalization_comment: string;
   date_of_the_previous_presentation: Date | null;
   project_sales_id: number;
   project_concent_id: number;
@@ -26,6 +29,9 @@ export interface ITrails {
   relevanceStatus: boolean;
   departure_id: number;
   departure_date_id: number;
+  gazooServerId: string;
+  gazooCampaignId: number;
+  stopped: boolean;
   createdAt: string | null;
   updatedAt: string | null;
 }

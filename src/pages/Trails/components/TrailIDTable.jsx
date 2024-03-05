@@ -1,10 +1,13 @@
-import { ContainerForTable } from "../../../components/forPages/Table.styled";
-import { MenuItem, FormControl, Select, Autocomplete, TextField, Container, Button } from "@mui/material";
+import { MenuItem, FormControl, Select, Autocomplete, TextField, Container } from "@mui/material";
 import { useAppSelector } from "../../../store/reduxHooks";
 import TrailSelect from "./TrailSelect";
+import { sortPresentationHour } from "../../../components/functions";
 import "../../../components/forPages/input.css";
+import { getValueById } from "../../../components/functions";
+import TimeWithLimits from "./TimeWithLimits";
+import { getFormatDate, colors, reservationStatusColumnColors, reservationStatusColors, contractStatusColors } from "../../../utils/utils";
 
-function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndName, getValueById, createCity }) {
+function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndName, createCity, limits, setLimits, rowNumber }) {
   const { allUsers } = useAppSelector((store) => store.user);
   const { allDictionary, citiesWithRegions, allCitiesWithRegions, forms, allForms, departure, departureDate } = useAppSelector((store) => store.trails);
 
@@ -26,30 +29,37 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
           <tr>
             <th className="basesTableCell">{messages?.planning_person}</th>
             <th className="basesTableCell">{messages?.date_scheduled}</th>
-            <th className="basesTableCell">{messages?.company}</th>
+            {/* <th className="basesTableCell">{messages?.company}</th> */}
             <th className="basesTableCell">{messages?.city_type}</th>
             <th className="basesTableCell">{messages?.population}</th>
             <th className="basesTableCell">{messages?.route}</th>
+            {/* <th className="basesTableCell">{messages?.team_number}</th> */}
             <th className="basesTableCell">{messages?.departure_dates}</th>
             <th className="basesTableCell">{messages?.presentation_date}</th>
             <th className="basesTableCell">{messages?.presentation_hours}</th>
+            <th className="basesTableCell">{messages?.limit}</th>
             <th className="basesTableCell">{messages?.rental_hours}</th>
+            <th className="basesTableCell">{messages?.timezone}</th>
             <th className="basesTableCell">{messages?.region}</th>
             <th className="basesTableCell">{messages?.city}</th>
             <th className="basesTableCell">{messages?.institution}</th>
             <th className="basesTableCell">{messages?.address}</th>
             <th className="basesTableCell">{messages?.reservation_status}</th>
-            <th className="basesTableCell">{messages?.alternative}</th>
+            <th className="basesTableCell">{messages?.landmarks}</th>
             <th className="basesTableCell">{messages?.telephone}</th>
             <th className="basesTableCell">{messages?.cost}</th>
             <th className="basesTableCell">{messages?.payment_method}</th>
             <th className="basesTableCell">{messages?.contract_status}</th>
+            <th className="basesTableCell">{messages?.contract_comment}</th>
             <th className="basesTableCell">{messages?.comment}</th>
             <th className="basesTableCell">{messages?.send_to_podil}</th>
             <th className="basesTableCell">{messages?.send_to_bases}</th>
             <th className="basesTableCell">{messages?.send_to_speaker}</th>
             <th className="basesTableCell">{messages?.send_to_scenario}</th>
-            <th className="basesTableCell">{messages?.autozonning}</th>
+            <th className="basesTableCell" onClick={() => console.log(1, trail)}>
+              {messages?.autozonning}
+            </th>
+            <th className="basesTableCell">{messages?.regionalization_comment}</th>
             <th className="basesTableCell">{messages?.date_of_previous_presentation}</th>
             <th className="basesTableCell">{messages?.project_sales}</th>
             <th className="basesTableCell">{messages?.project_concent}</th>
@@ -68,16 +78,16 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
               <input className="tableInput" type="date" autoComplete="off" value={trail.date_scheduled || undefined} disabled />
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            {/* <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
               <TrailSelect valueKey="company_id" trail={trail} setTrail={setTrail} array={allDictionary?.regiments} arrayKey="name" />
-            </td>
+            </td> */}
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.city_id, "city_type", citiesWithRegions) || getValueById(trail.city_id, "city_type", allCitiesWithRegions)}</div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.city_id, "population", citiesWithRegions) || getValueById(trail.city_id, "population", allCitiesWithRegions)}</div>
             </td>
-            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            {/* <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <input
                 onChange={(e) => setTrail((prev) => ({ ...prev, route_number: Number(e.target.value) }))}
                 className="tableInput"
@@ -86,7 +96,10 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 autoComplete="off"
                 value={trail.route_number || ""}
               />
-              {/* <div className="tableInput">{trail.route_number || ""}</div> */}
+              <div className="tableInput">{trail.route_number || ""}</div>
+            </td> */}
+            <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
+              <div>{getValueById(trail.departure_id, "route_number", departure) || []}</div>
             </td>
             <td className="basesTableCell" style={{ padding: "0px", maxWidth: "unset" }}>
               <div>
@@ -97,7 +110,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
               <div className="tableInput">
-                {getValueById(trail.departure_date_id, "data", departureDate) || ""} {getDayName(getValueById(trail.departure_date_id, "data", departureDate))}
+                {getFormatDate(trail?.presentation_date)} {getDayName(trail?.presentation_date)}
               </div>
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
@@ -106,20 +119,44 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                   disablePortal
                   id="movie-customized-option-demo"
                   disableClearable
-                  options={allDictionary?.presentationTimes?.map((el) => ({ ...el, label: el.presentation_hour?.join(" ") }))}
+                  options={sortPresentationHour(allDictionary?.presentationTimes)
+                    //?.filter((el) => el?.presentation_hour?.length <= 3 + [getValueById(trail.presentation_time_id, "presentation_hour", allDictionary?.presentationTimes)]?.flat()?.length - rowNumber)
+                    ?.map((el) => ({ ...el, label: `${el.presentation_hour?.join(" ")} ${el?.alternative ? messages?.alternative : ""}` }))}
                   sx={{ width: 200 }}
                   onChange={(e, values) => {
                     setTrail((prev) => ({ ...prev, presentation_time_id: Number(values?.id) }));
                   }}
                   renderInput={(params) => <TextField {...params} label="Times" variant="standard" />}
-                  value={[getValueById(trail.presentation_time_id, "presentation_hour", allDictionary?.presentationTimes)]?.flat()?.join(" ")}
+                  value={`${[getValueById(trail.presentation_time_id, "presentation_hour", allDictionary?.presentationTimes)]?.flat()?.join(" ")} ${
+                    getValueById(trail.presentation_time_id, "alternative", allDictionary?.presentationTimes) ? messages?.alternative : ""
+                  }`}
                 />
               </div>
             </td>
+            <TimeWithLimits limits={limits} setLimits={setLimits} />
+            {/* <td className="basesTableCell black" style={{ minWidth: "100px", padding: "0px" }}>
+              <div className="tableInput">
+                {limits?.map((el, index) => (
+                  <div key={`${el.time} ${index}`} style={{ display: "flex", flexDirection: "row", gap: "0.5rem", alignItems: "center", background: "black" }}>
+                    {el?.time}
+                    <TextField
+                      style={{ color: "black" }}
+                      variant="standard"
+                      type="number"
+                      value={el?.limit}
+                      onChange={(e) => setLimits((prev) => prev?.map((item) => (item.time === el.time ? { ...item, limit: e.target.value } : item)))}
+                    />
+                  </div>
+                ))}
+              </div>
+            </td> */}
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <div className="tableInput">{getValueById(trail.presentation_time_id, "rental_hours", allDictionary?.presentationTimes)}</div>
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">
+              <div className="tableInput">{getValueById(trail.regionId, "timezone", allDictionary?.regions)}</div>
+            </td>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: reservationStatusColumnColors[trail.reservation_status_id || 0] }}>
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -134,7 +171,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 value={getValueById(trail.regionId, "region", allDictionary?.regions)}
               />
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: reservationStatusColumnColors[trail.reservation_status_id || 0] }}>
               <Autocomplete
                 disablePortal
                 id="movie-customized-option-demo"
@@ -142,14 +179,13 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 options={allCitiesWithRegions?.map((el) => ({ ...el, label: el.city_name }))}
                 sx={{ width: 300 }}
                 onChange={(e, values) => {
-                  setTrail((prev) => ({ ...prev, city_id: Number(values?.id) }));
-                  setTrail((prev) => ({ ...prev, autozonning: values?.autozonning }));
+                  setTrail((prev) => ({ ...prev, city_id: Number(values?.id), autozonning: [values?.autozonning].flat()[0] }));
                 }}
                 renderInput={(params) => <TextField {...params} label="City" variant="standard" />}
                 value={getValueById(trail.city_id, "city_name", allCitiesWithRegions)}
               />
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: reservationStatusColumnColors[trail.reservation_status_id || 0] }}>
               {/* <div className="tableInput">{getValueById(trail.form_id, "local", forms) || getValueById(trail.form_id, "local", allForms)}</div> */}
               <Autocomplete
                 disablePortal
@@ -176,25 +212,27 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 value={getValueById(trail.form_id, "local", forms) || getValueById(trail.form_id, "local", allForms)}
               />
             </td>
-            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
-              <div className="tableInput">{getValueById(trail.form_id, "address", forms) || getValueById(trail.form_id, "address", allForms)}</div>
+            <td className="basesTableCell" style={{ maxWidth: "unset", background: reservationStatusColumnColors[trail.reservation_status_id || 0] }}>
+              <div className="tableInput" style={{ width: "400px" }}>
+                {getValueById(trail.form_id, "address", forms) || getValueById(trail.form_id, "address", allForms)}
+              </div>
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: reservationStatusColors[trail.reservation_status_id || 0] }}>
               <TrailSelect valueKey="reservation_status_id" trail={trail} setTrail={setTrail} array={allDictionary?.reservationStatuses} arrayKey="name" />
             </td>
-            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell" style={{ maxWidth: "unset", background: trail.landmarks ? "white" : colors?.red }}>
               <textarea
-                onChange={(e) => setTrail((prev) => ({ ...prev, alternative: e.target.value }))}
+                onChange={(e) => setTrail((prev) => ({ ...prev, landmarks: e.target.value }))}
                 className="tableInput styledScroll textArea"
                 style={{ width: "120px", height: "125px", padding: "10px" }}
                 type="text"
                 autoComplete="off"
-                value={trail.alternative || ""}
+                value={trail.landmarks || ""}
               />
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               {(getValueById(trail.form_id, "telephone", forms) || getValueById(trail.form_id, "telephone", allForms) || []).map((el, index) => (
-                <div className="tableInput" key={index}>
+                <div className="tableInput" style={{ whiteSpace: "nowrap" }} key={index}>
                   {el}
                 </div>
               ))}
@@ -210,6 +248,16 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
             </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <textarea
+                onChange={(e) => setTrail((prev) => ({ ...prev, contract_comment: e.target.value }))}
+                className="tableInput styledScroll textArea"
+                style={{ width: "120px", height: "125px", padding: "10px" }}
+                type="text"
+                autoComplete="off"
+                value={trail.contract_comment || ""}
+              />
+            </td>
+            <td className="basesTableCell" style={{ maxWidth: "unset" }}>
+              <textarea
                 onChange={(e) => setTrail((prev) => ({ ...prev, comment: e.target.value }))}
                 className="tableInput styledScroll textArea"
                 style={{ width: "120px", height: "125px", padding: "10px" }}
@@ -218,7 +266,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 value={trail.comment || ""}
               />
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: trail.sent_to_podil ? colors.green : colors.red }}>
               <div className="tableInput">{trail.sent_to_podil || ""}</div>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -236,7 +284,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 </Select>
               </FormControl>
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: trail.sent_to_bases ? colors.green : colors.red }}>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <Select
                   labelId="demo-simple-select-standard-label"
@@ -253,7 +301,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 </Select>
               </FormControl>
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: trail.sent_to_speaker ? colors.green : colors.red }}>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <Select
                   labelId="demo-simple-select-standard-label"
@@ -270,7 +318,7 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 </Select>
               </FormControl>
             </td>
-            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+            <td className="basesTableCell black" style={{ maxWidth: "unset", background: trail.sent_to_scenario ? colors.green : colors.red }}>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <Select
                   labelId="demo-simple-select-standard-label"
@@ -287,14 +335,33 @@ function TrailIDTable({ country, messages, trail, setTrail, getFormsByCityAndNam
                 </Select>
               </FormControl>
             </td>
+            <td className="basesTableCell black" style={{ maxWidth: "unset" }}>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  disabled={[getValueById(trail.city_id, "autozonning", allCitiesWithRegions)]?.flat()?.length < 2}
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={trail?.autozonning || ""}
+                  onChange={(e) => {
+                    setTrail((prev) => ({ ...prev, autozonning: e.target.value }));
+                  }}
+                >
+                  {[getValueById(trail.city_id, "autozonning", allCitiesWithRegions)]?.flat()?.map((item, index) => (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </td>
             <td className="basesTableCell" style={{ maxWidth: "unset" }}>
               <textarea
-                onChange={(e) => setTrail((prev) => ({ ...prev, autozonning: e.target.value }))}
+                onChange={(e) => setTrail((prev) => ({ ...prev, regionalization_comment: e.target.value }))}
                 className="tableInput styledScroll textArea"
                 style={{ width: "120px", height: "125px", padding: "10px" }}
                 type="text"
                 autoComplete="off"
-                value={trail.autozonning || ""}
+                value={trail.regionalization_comment || ""}
               />
             </td>
             <td style={{ padding: "0px", maxWidth: "unset" }} className="basesTableCell">

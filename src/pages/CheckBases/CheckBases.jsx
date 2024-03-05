@@ -5,10 +5,9 @@ import { useDispatch } from "react-redux";
 import { reducerTypes } from "../../store/Users/types";
 import { TextField, Checkbox, Button, FormControlLabel, Menu, MenuList, MenuItem } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Podzial from "../../api/podzial";
+import Blazor from "../../api/blazor/blazor";
 import CheckBaseTable from "../../components/forPages/CheckTable";
 import { ContainerForTable } from "../../components/forPages/Table.styled";
 import Spinner from "react-bootstrap/Spinner";
@@ -16,6 +15,8 @@ import { allCitiesTableMock } from "../../components/mock/OutputMock";
 import { getFormatTime } from "../../utils/utils";
 import { PageContainer } from "../../components/Page.styled";
 import PaginationBlock from "../../components/forPages/PaginationBlock";
+import { customAlert } from "../../components/Alert/AlertFunction";
+import MyDatePicker from "../../components/forPages/MyDatePicker";
 
 function CheckBases() {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function CheckBases() {
   const [filterCanceled, setFilterCanceled] = useState(false);
   const [filterColumns, setFilterColumns] = useState([]);
   const [sortId, setSortId] = useState(true);
-  const { storedCities, user, locale, country, selectedLang } = useAppSelector((store) => store.user);
+  const { storedCities, user, locale, country, selectedLang, trailsForCampaign, servers, instances } = useAppSelector((store) => store.user);
   const [cities, setCities] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -36,6 +37,7 @@ function CheckBases() {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [zoom, setZoom] = useState(Number(localStorage.getItem("tableZoomBases")) || 1);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,6 +45,11 @@ function CheckBases() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function changeZoom(e, value) {
+    localStorage.setItem("tableZoomBases", value);
+    setZoom(value);
+  }
 
   const messages = useMemo(() => {
     return {
@@ -81,6 +88,32 @@ function CheckBases() {
         type: reducerTypes.GET_CITIES,
         payload: data.cities,
       });
+      dispatch({
+        type: reducerTypes.GET_LISTS,
+        payload: data.lists,
+      });
+      dispatch({
+        type: reducerTypes.GET_TRAILS_FOR_CAMPAIGN,
+        payload: data.trails,
+      });
+    }
+  }
+
+  async function getServers() {
+    try {
+      const result = await Promise.all([await Blazor.getInstances(), await Blazor.getServer()]);
+      let instances = result[0];
+      let servers = result[1];
+      dispatch({
+        type: reducerTypes.GET_SERVER,
+        payload: servers,
+      });
+      dispatch({
+        type: reducerTypes.GET_INSTANCE,
+        payload: instances,
+      });
+    } catch (e) {
+      customAlert({ message: `Error getting server list` });
     }
   }
 
@@ -91,7 +124,7 @@ function CheckBases() {
     if (data) {
       await getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate });
     } else {
-      alert(`Something went wrong ${id_for_base}`);
+      customAlert({ message: `Something went wrong ${id_for_base}` });
     }
   }
 
@@ -102,7 +135,7 @@ function CheckBases() {
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     } else {
-      alert(`Change status error, id: ${id_for_base}`);
+      customAlert({ message: `Change status error, id: ${id_for_base}` });
     }
   }
 
@@ -142,9 +175,14 @@ function CheckBases() {
     // eslint-disable-next-line
   }, [page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, country, filterDate]);
 
+  useEffect(() => {
+    getServers();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <PageContainer>
-      <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1, gap: "1rem" }}>
         <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
           <TextField
             size="small"
@@ -165,43 +203,45 @@ function CheckBases() {
             }}
           />
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={messages?.from}
-              onChange={(e) =>
-                setFilterDate((prev) => {
-                  let date = new Date(e);
-                  date.setDate(date.getDate() + 1);
-                  return { ...prev, dateFrom: date };
-                })
-              }
-              slotProps={{
-                textField: { size: "small" },
-                actionBar: {
-                  actions: ["clear"],
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <MyDatePicker
+            label={messages?.from}
+            onChange={(e) =>
+              setFilterDate((prev) => {
+                let date = new Date(e);
+                date.setDate(date.getDate() + 1);
+                let dateFrom = null;
+                try {
+                  dateFrom = date.toISOString().split("T")[0];
+                } catch {
+                  return prev;
+                }
+                if (!e) {
+                  dateFrom = null;
+                }
+                return { ...prev, dateFrom };
+              })
+            }
+          />
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={messages?.to}
-              onChange={(e) =>
-                setFilterDate((prev) => {
-                  let date = new Date(e);
-                  date.setDate(date.getDate() + 1);
-                  return { ...prev, dateTo: date };
-                })
-              }
-              slotProps={{
-                textField: { size: "small" },
-                actionBar: {
-                  actions: ["clear"],
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <MyDatePicker
+            label={messages?.to}
+            onChange={(e) =>
+              setFilterDate((prev) => {
+                let date = new Date(e);
+                date.setDate(date.getDate() + 1);
+                let dateTo = null;
+                try {
+                  dateTo = date.toISOString().split("T")[0];
+                } catch {
+                  return prev;
+                }
+                if (!e) {
+                  dateTo = null;
+                }
+                return { ...prev, dateTo };
+              })
+            }
+          />
         </div>
 
         <div style={{ borderRadius: "5px", zIndex: 10, justifyContent: "space-between", alignItems: "center" }}>
@@ -298,7 +338,7 @@ function CheckBases() {
       {loadingSpinner ? (
         <div style={{ overflowX: "auto", textAlign: "center" }}>
           <ContainerForTable>
-            <table>
+            <table style={{ zoom }}>
               <thead className="tableHeader">
                 <tr className="tableHeader">
                   <th style={{ minWidth: "70.8px", border: "1px solid black" }}></th>
@@ -321,6 +361,9 @@ function CheckBases() {
                     changeCitiesStatus={changeCitiesStatus}
                     filterColumns={filterColumns}
                     citiesStatus={messages?.citiesStatus}
+                    trailsForCampaign={trailsForCampaign}
+                    servers={servers}
+                    instances={instances}
                   />
                 ))}
               </tbody>
@@ -341,6 +384,8 @@ function CheckBases() {
         itemsPerPageForInput={itemsPerPageForInput}
         setItemsPerPageForInput={setItemsPerPageForInput}
         messages={messages}
+        zoom={zoom}
+        changeZoom={changeZoom}
       />
     </PageContainer>
   );

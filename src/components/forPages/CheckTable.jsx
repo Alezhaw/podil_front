@@ -8,10 +8,13 @@ import { IconButton } from "@mui/material";
 
 import DropdownSpeakerTable from "../../pages/CheckSpeaker/DropdownSpeakerTable";
 
-function CheckTable({ currentCities, country, checkKey, changeCheck, filterColumns, filterSpeaker, changeCitiesStatus, citiesStatus }) {
+function CheckTable({ currentCities, country, checkKey, changeCheck, filterColumns, filterSpeaker, changeCitiesStatus, citiesStatus, trailsForCampaign, servers, instances }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
+  const currentTrail = trailsForCampaign?.find((el) => el.id === currentCities[0]?.trailId);
+  const currentServer = servers?.find((el) => el.id === currentTrail?.gazooServerId);
+  const currentInstance = instances?.find((el) => el?.ApiAddress === currentServer?.url);
 
   return (
     <>
@@ -40,7 +43,7 @@ function CheckTable({ currentCities, country, checkKey, changeCheck, filterColum
               ?.filter((el) => el.value)
               .map((el) => {
                 //console.log(index, item, filterColumns);
-                return el.content({ index, currentCities, item, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus, changeCheck, citiesStatusColor });
+                return el.content({ index, currentCities, item, changeStatus, changeCitiesStatus, setChangeStatus, citiesStatus, changeCheck, citiesStatusColor, currentTrail, currentInstance });
               })}
             {index === 0 ? (
               <th rowSpan={`${currentCities.length}`} className="default-col not-bold row-borders" style={{ border: "1px solid black" }}>

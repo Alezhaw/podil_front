@@ -185,6 +185,7 @@ function LogsBases() {
         itemsPerPageForInput={itemsPerPageForInput}
         setItemsPerPageForInput={setItemsPerPageForInput}
         messages={messages}
+        noZoom
       />
     </PageContainer>
   );

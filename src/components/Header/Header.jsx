@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { HeaderContainer } from "./Header.styled";
-import { FormControl, InputLabel, Menu, MenuItem, Select, Typography, Button, useTheme } from "@mui/material";
+import { FormControl, InputLabel, Menu, MenuItem, Select, Typography, Button, Stack, Slider, Box, useTheme } from "@mui/material";
 import { reducerTypes } from "../../store/Users/types";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -14,12 +14,15 @@ function Header({ theme, setTheme }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentTheme = useTheme();
-  const { locale, country, selectedLang, user } = useAppSelector((store) => store.user);
+  const { locale, country, selectedLang } = useAppSelector((store) => store.user);
   const countries = ["RU", "KZ", "PL"];
   const languages = ["EN", "PL", "RU"];
   const [anchorElLogs, setAnchorElLogs] = useState(null);
   const logsMenuOpen = Boolean(anchorElLogs);
   const [logsPage, setLogsPage] = useState("");
+  const [anchorElPodil, setAnchorElPodil] = useState(null);
+  const podilMenuOpen = Boolean(anchorElPodil);
+  const [podilPage, setPodilPage] = useState("");
   const [anchorElProfile, setAnchorElProfile] = useState(null);
   const profileMenuOpen = Boolean(anchorElProfile);
 
@@ -28,6 +31,8 @@ function Header({ theme, setTheme }) {
       return: locale["return"],
       users: locale["admin_panel_users"],
       podil: locale["admin_panel_podil"],
+      potw: locale["admin_panel_potw"],
+      lists: locale["admin_panel_lists"],
       trails: locale["admin_panel_trails"],
       map: locale["admin_panel_map"],
       trails_dictionary: locale["admin_panel_trails_dictionary"],
@@ -83,18 +88,26 @@ function Header({ theme, setTheme }) {
   }
 
   useEffect(() => {
-    let logs = messages.logs;
+    let logs = messages?.logs;
+    let podil = messages?.podil;
     switch (true) {
       case window.location.href.includes("logsCities"):
-        logs = ` ${messages.logs} ${messages.logs_cities}`;
+        logs = ` ${messages?.logs} ${messages?.logs_cities}`;
         break;
       case window.location.href.includes("logsBases"):
-        logs = ` ${messages.logs} ${messages.logs_bases}`;
+        logs = ` ${messages?.logs} ${messages?.logs_bases}`;
+        break;
+      case window.location.href.includes("podilPotw"):
+        podil = ` ${messages?.potw}`;
+        break;
+      case window.location.href.includes("podil"):
+        podil = ` ${messages?.podil} `;
         break;
       default:
     }
 
     setLogsPage(logs);
+    setPodilPage(podil);
     // eslint-disable-next-line
   }, [messages, window.location.href]);
 
@@ -104,8 +117,8 @@ function Header({ theme, setTheme }) {
     <HeaderContainer theme={currentTheme}>
       <div className="countrySelect">
         <FormControl variant="outlined" sx={{ m: 1, minWidth: "80px" }} size="small">
-          <InputLabel>{messages.logs_country}</InputLabel>
-          <Select label={messages.logs_country} labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={country} onChange={changeCountry} style={{ textAlign: "center" }}>
+          <InputLabel>{messages?.logs_country}</InputLabel>
+          <Select label={messages?.logs_country} labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={country} onChange={changeCountry} style={{ textAlign: "center" }}>
             {countries.map((item, index) => (
               <MenuItem key={index} value={item}>
                 {item}
@@ -117,10 +130,40 @@ function Header({ theme, setTheme }) {
 
       <div className="container">
         <Typography className={`button ${window.location.href.includes("users") && "active"}`} variant="body1" component="h2" onClick={() => navigate("users")}>
-          {messages.users}
+          {messages?.users}
         </Typography>
-        <Typography className={`button ${window.location.href.includes("podil") && "active"}`} variant="body1" component="h2" onClick={() => navigate("podil")}>
-          {messages.podil}
+
+        <Typography
+          className={`button ${window.location.href.includes("podil") && "active"}`}
+          variant="body1"
+          component="h2"
+          onClick={(e) => setAnchorElPodil((prev) => (!!prev ? null : e.currentTarget))}
+        >
+          {podilPage}
+        </Typography>
+        <Menu id="basic-menu" anchorEl={anchorElPodil} open={podilMenuOpen} onClose={() => setAnchorElPodil(null)} MenuListProps={{ "aria-labelledby": "basic-button" }}>
+          <MenuItem
+            onClick={() => {
+              navigate("podil");
+              setPodilPage(` ${messages?.podil}`);
+              setAnchorElPodil(null);
+            }}
+          >
+            {messages?.podil}
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              navigate("podilPotw");
+              setLogsPage(` ${messages.potw}`);
+              setAnchorElPodil(null);
+            }}
+          >
+            {messages?.potw}
+          </MenuItem>
+        </Menu>
+
+        <Typography className={`button ${window.location.href.includes("lists") && "active"}`} variant="body1" component="h2" onClick={() => navigate("lists")}>
+          {messages.lists}
         </Typography>
         <Typography className={`button ${window.location.href.includes("trails") && "active"}`} variant="body1" component="h2" onClick={() => navigate("trails")}>
           {messages.trails}
@@ -174,12 +217,7 @@ function Header({ theme, setTheme }) {
         <AccountCircleIcon className="userIcon" />
       </Button>
       <Menu id="basic-menu" anchorEl={anchorElProfile} open={profileMenuOpen} onClose={() => setAnchorElProfile(null)} MenuListProps={{ "aria-labelledby": "basic-button" }}>
-        <MenuItem
-          onClick={() => {
-            // navigate("/bases");
-            // setAnchorElProfile(null);
-          }}
-        >
+        <MenuItem>
           <FormControl variant="outlined" sx={{ m: 1, minWidth: "80px" }} size="small">
             <InputLabel>{messages.language}</InputLabel>
             <Select

@@ -1,0 +1,31 @@
+export interface IList {
+  id: number;
+  present: string;
+  present_status: number;
+  full_name: string;
+  coupon_number: string;
+  telephone: string[];
+  guests: number;
+  couples: number;
+  passport: number;
+  age: number;
+  instead: string;
+  guest_full_name: string;
+  client_with_bank_refusal: string;
+  guest_telephone: string;
+  left_not_admitted: string;
+  reason_id: number;
+  reason: string;
+  sms: number;
+  notes: string;
+  presentation_number: number;
+  location: string;
+  time: string;
+  address: string;
+  team: number;
+  who_called: string;
+  id_for_base: number;
+  relevance_status: boolean;
+  createdAt: string | null;
+  updatedAt: string | null;
+}

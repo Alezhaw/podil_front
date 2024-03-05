@@ -1,10 +1,31 @@
 import { useEffect, useState } from "react";
 import DepartureDate from "./DepartureDate";
+import { Button } from "@mui/material";
+import Map from "../components/Map";
+import { getFormatDate } from "../../../utils/utils";
 
-function DepartureTable({ item, departureDate, messages, allTrails, country, changeDeleteTrails, weekDays, sort, createTrail, search, planningPersonIds, dateFrom, dateTo }) {
-  const [isOpen, setIsOpen] = useState(true);
+function DepartureTable({
+  item,
+  departureDate,
+  allTrails,
+  changeDeleteTrails,
+  weekDays,
+  sort,
+  search,
+  planningPersonIds,
+  dateFrom,
+  dateTo,
+  getDictionary,
+  createTrail,
+  messages,
+  createCity,
+  updateDeparture,
+  zoom,
+}) {
+  const [isOpen, setIsOpen] = useState(!(JSON.parse(localStorage.getItem("hideDepartureDate")) || [])?.find((el) => String(el) === String(item?.id)));
   const [dates, setDates] = useState([]);
   const replaceDots = (date) => String(date)?.replaceAll("-", ".");
+  const [isOpenMap, setIsOpenMap] = useState(false);
 
   useEffect(() => {
     setDates(
@@ -22,15 +43,27 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
 
   return (
     <>
-      <tr
-        rowSpan={10}
-        style={{ border: "1px solid black", textAlign: "start", cursor: "pointer", background: "#242526", color: "white" }}
-        onClick={() => {
-          setIsOpen((prev) => !prev);
-        }}
-      >
-        <td colSpan="100" className="tableHeader">
-          {replaceDots(item.range[sort ? 1 : 0])} - {replaceDots(item.range[sort ? 0 : 1])}
+      <tr rowSpan={10} style={{ border: "1px solid black", textAlign: "start", background: "#242526", color: "white" }}>
+        <td colSpan="100" className="tableHeader" style={{ padding: "6px" }}>
+          <div style={{ display: "flex", gap: "2rem", position: "sticky", left: "13px", width: "calc(100vw - 100px)", alignItems: "center" }}>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setIsOpen((prev) => {
+                  const hideDepartureDate = JSON.parse(localStorage.getItem("hideDepartureDate")) || [];
+                  if (!prev) {
+                    localStorage.setItem("hideDepartureDate", JSON.stringify(hideDepartureDate?.filter((el) => String(el) !== String(item?.id))));
+                  } else {
+                    localStorage.setItem("hideDepartureDate", JSON.stringify([...hideDepartureDate, item?.id]));
+                  }
+                  return !prev;
+                });
+              }}
+            >
+              {getFormatDate(replaceDots(item.range[sort ? 1 : 0]))} - {getFormatDate(replaceDots(item.range[sort ? 0 : 1]))}
+            </div>
+            <Button onClick={() => setIsOpenMap((prev) => !prev)}>{messages.halls}</Button>
+          </div>
         </td>
       </tr>
       {isOpen
@@ -42,7 +75,7 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
               date={date}
               messages={messages}
               allTrails={allTrails?.filter((el) => el.departure_date_id === date.id)}
-              country={country}
+              trailsLength={allTrails?.filter((el) => el.departure_id === item.id)?.length}
               changeDeleteTrails={changeDeleteTrails}
               weekDays={weekDays}
               createTrail={createTrail}
@@ -51,9 +84,15 @@ function DepartureTable({ item, departureDate, messages, allTrails, country, cha
               dateFrom={dateFrom}
               dateTo={dateTo}
               replaceDots={replaceDots}
+              departureIndex={index}
+              createCity={createCity}
+              updateDeparture={updateDeparture}
+              zoom={zoom}
             />
           ))
         : null}
+
+      {isOpenMap ? <Map selectedDeparture={item.id} isOpenMap={isOpenMap} setIsOpenMap={setIsOpenMap} getDictionary={getDictionary} /> : null}
     </>
   );
 }

@@ -5,6 +5,7 @@ import { IBase } from "../interfaces/base";
 let controllerGetAllCities: AbortController | null = null;
 let controllerGetFilteredCities: AbortController | null = null;
 let controllerGetAllBases: AbortController | null = null;
+let controllerBasesByIds: AbortController | null = null;
 
 export const createCities = async (cities: ICities[], country: string) => {
   try {
@@ -138,6 +139,15 @@ export const getFilteredCities = async ({
   }
 };
 
+export const getByTrail = async (trailId: number, calling_scheme: string, country: string) => {
+  try {
+    const { data } = await axios.post("api/city/getByTrail", { trailId, calling_scheme, country });
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getOneCity = async (id_for_base: number, country: string) => {
   try {
     const { data } = await axios.post("api/city/getOne", { id_for_base, country });
@@ -157,9 +167,9 @@ export const changeCheck = async (id_for_base?: number, id?: number, country?: s
   }
 };
 
-export const changeStatus = async (status: number, country: string, id_for_base?: number, id?: number) => {
+export const changeStatus = async (status: number, country: string, id_for_base?: number, id?: number, trailId?: number) => {
   try {
-    const { data } = await axios.post("api/city/changeStatus", { id_for_base, id, status, country });
+    const { data } = await axios.post("api/city/changeStatus", { id_for_base, id, trailId, status, country });
 
     return data;
   } catch (e) {
@@ -197,6 +207,26 @@ export const createBase = async (bases: IBase[], country: string) => {
   }
 };
 
+export const createBaseByTrail = async (base: IBase, country: string, trailId: number) => {
+  try {
+    const { data } = await axios.post("api/base/createByTrail", { base, country, trailId });
+
+    return data.result;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const updateBaseByGazoo = async (country: string, id_for_bases: number[]) => {
+  try {
+    const { data } = await axios.post("api/base/updateByGazoo", { country, id_for_bases });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getAllBases = async (country: string) => {
   try {
     if (controllerGetAllBases !== null) {
@@ -218,6 +248,20 @@ export const getAllBases = async (country: string) => {
 export const getBasesForCity = async (id_for_base: number, country: string) => {
   try {
     const { data } = await axios.post("api/base/getForCity", { id_for_base, country });
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getBasesByIdsForBase = async (ids: number[], country: string) => {
+  try {
+    if (controllerBasesByIds !== null) {
+      controllerBasesByIds.abort();
+    }
+    controllerBasesByIds = new AbortController();
+    const { data } = await axios.post("api/base/getByIds", { ids, country }, { signal: controllerBasesByIds.signal });
 
     return data;
   } catch (e) {
@@ -249,11 +293,15 @@ export default {
   createCities,
   createCitiesByTrails,
   createBase,
+  createBaseByTrail,
+  updateBaseByGazoo,
   getAllCities,
   getFilteredCities,
   getFilteredBases,
   getBasesForCity,
+  getBasesByIdsForBase,
   getAllBases,
+  getByTrail,
   getOneCity,
   changeCheck,
   changeStatus,

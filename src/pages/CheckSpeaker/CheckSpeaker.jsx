@@ -11,11 +11,11 @@ import { allCitiesTableMock, forSpeakerMock } from "../../components/mock/Output
 import { getFormatTime } from "../../utils/utils";
 import { InputLabel, MenuItem, FormControl, Checkbox, TextField, Button, FormControlLabel, Menu, MenuList, Select } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { PageContainer } from "../../components/Page.styled";
 import PaginationBlock from "../../components/forPages/PaginationBlock";
+import { customAlert } from "../../components/Alert/AlertFunction";
+import MyDatePicker from "../../components/forPages/MyDatePicker";
 
 function CheckSpeaker() {
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ function CheckSpeaker() {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [zoom, setZoom] = useState(Number(localStorage.getItem("tableZoomSpeaker")) || 1);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +45,11 @@ function CheckSpeaker() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function changeZoom(e, value) {
+    localStorage.setItem("tableZoomSpeaker", value);
+    setZoom(value);
+  }
 
   const messages = useMemo(() => {
     return {
@@ -104,7 +110,7 @@ function CheckSpeaker() {
     if (data) {
       getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterComplete, filterCanceled, filterDate });
     } else {
-      alert(`Something went wrong ${id_for_base}`);
+      customAlert({ message: `Something went wrong ${id_for_base}` });
     }
   }
 
@@ -115,7 +121,7 @@ function CheckSpeaker() {
     if (result) {
       //getFilteredCities({ page, itemsPerPage, sortId, search, filterInProgress, filterZamkniete });
     } else {
-      alert(`Change status error, id: ${id_for_base}`);
+      customAlert({ message: `Change status error, id: ${id_for_base}` });
     }
   }
 
@@ -166,7 +172,7 @@ function CheckSpeaker() {
 
   return (
     <PageContainer>
-      <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1, gap: "1rem" }}>
         <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
           <TextField
             size="small"
@@ -187,43 +193,44 @@ function CheckSpeaker() {
             }}
           />
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={messages?.from}
-              onChange={(e) =>
-                setFilterDate((prev) => {
-                  let date = new Date(e);
-                  date.setDate(date.getDate() + 1);
-                  return { ...prev, dateFrom: date };
-                })
-              }
-              slotProps={{
-                textField: { size: "small" },
-                actionBar: {
-                  actions: ["clear"],
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label={messages?.to}
-              onChange={(e) =>
-                setFilterDate((prev) => {
-                  let date = new Date(e);
-                  date.setDate(date.getDate() + 1);
-                  return { ...prev, dateTo: date };
-                })
-              }
-              slotProps={{
-                textField: { size: "small" },
-                actionBar: {
-                  actions: ["clear"],
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <MyDatePicker
+            label={messages?.from}
+            onChange={(e) =>
+              setFilterDate((prev) => {
+                let date = new Date(e);
+                date.setDate(date.getDate() + 1);
+                let dateFrom = null;
+                try {
+                  dateFrom = date.toISOString().split("T")[0];
+                } catch {
+                  return prev;
+                }
+                if (!e) {
+                  dateFrom = null;
+                }
+                return { ...prev, dateFrom };
+              })
+            }
+          />
+          <MyDatePicker
+            label={messages?.to}
+            onChange={(e) =>
+              setFilterDate((prev) => {
+                let date = new Date(e);
+                date.setDate(date.getDate() + 1);
+                let dateTo = null;
+                try {
+                  dateTo = date.toISOString().split("T")[0];
+                } catch {
+                  return prev;
+                }
+                if (!e) {
+                  dateTo = null;
+                }
+                return { ...prev, dateTo };
+              })
+            }
+          />
         </div>
 
         <div style={{ borderRadius: "5px", justifyContent: "space-between", alignItems: "center", display: "flex" }}>
@@ -283,25 +290,6 @@ function CheckSpeaker() {
               <MenuItem value={20}>Podtw</MenuItem>
             </Select>
           </FormControl>
-          {/* <FormControl sx={{ m: 1, width: 100 }} color="grey" text>
-            <InputLabel id="demo-multiple-checkbox-label">{messages.columns}</InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={filterColumns.filter((item) => item.value).map((item) => item.column)}
-              onChange={handleChangeFilterColumns}
-              input={<OutlinedInput label={messages.columns} />}
-              renderValue={(selected) => selected.join(", ")}
-            >
-              {filterColumns.map((item, index) => (
-                <MenuItem key={index} value={item.column}>
-                  <Checkbox checked={item.value} />
-                  <ListItemText primary={item.column} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
           <Button variant="outlined" id="basic-button" aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} onClick={handleClick}>
             {messages.columns}
           </Button>
@@ -352,16 +340,18 @@ function CheckSpeaker() {
       {loadingSpinner ? (
         <div style={{ overflowX: "auto", textAlign: "center" }}>
           <ContainerForTable>
-            <table>
+            <table style={{ zoom }}>
               <thead className="tableHeader">
                 <tr className="tableHeader">
-                  <th className="tableHeader" style={{ minWidth: "70.8px" }}></th>
-                  <th className="tableHeader" style={{ minWidth: "70.8px" }}>
+                  <th className="tableHeader" style={{ minWidth: "70.8px", border: "1px solid black" }}></th>
+                  <th className="tableHeader" style={{ minWidth: "70.8px", border: "1px solid black" }}>
                     ID
                   </th>
 
                   {filterColumns?.filter((el) => el.value).map((el) => el.header())}
-                  <th className="tableHeader">{messages.complete}</th>
+                  <th className="tableHeader" style={{ border: "1px solid black" }}>
+                    {messages.complete}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -396,6 +386,8 @@ function CheckSpeaker() {
         itemsPerPageForInput={itemsPerPageForInput}
         setItemsPerPageForInput={setItemsPerPageForInput}
         messages={messages}
+        zoom={zoom}
+        changeZoom={changeZoom}
       />
     </PageContainer>
   );

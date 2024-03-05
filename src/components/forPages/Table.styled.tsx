@@ -4,7 +4,8 @@ export const ContainerForTable = styled.div`
   width: 100%;
   margin-top: 24px;
   color: white;
-  min-height: 600px;
+  min-height: calc(100vh - 60px - 1rem - 58px - 36.5px - 48px);
+  max-height: calc(100vh - 60px - 1rem - 58px - 36.5px - 48px);
 
   .table-wrapper {
     min-height: 300px;
